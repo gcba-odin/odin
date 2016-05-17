@@ -4,6 +4,7 @@ config/local.js
 # Logs
 logs
 *.log
+npm-debug.log*
 
 # Runtime data
 pids
@@ -40,3 +41,8 @@ nbproject
 .idea
 .node_history
 .tmp
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
