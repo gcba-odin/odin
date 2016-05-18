@@ -141,6 +141,15 @@ module.exports = {
                 description: 'An example category.',
                 createdBy: 'dogPzIz8'
             }
-        ]
+        ],
+        Statuses: [
+            {
+                
+            },
+            {},
+            {},
+            {},
+            {}
+        ],
     }
 }
