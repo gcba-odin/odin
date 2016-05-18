@@ -15,25 +15,47 @@ module.exports = {
       unique: true,
       index: true,
       defaultsTo: shortId.generate,
-      primaryKey: true
+      primaryKey: true,
+      size: 15
     },
     username: {
       type: 'string',
       required: true,
       unique: true,
-      alphanumericdashed: true
+      size: 25
     },
 
     password: {
-      type: 'string'
+      type: 'string',
+      required: true,
     },
 
     email: {
       type: 'email',
       required: true,
-      unique: true
+      unique: true,
+      size: 250
+    },
+    firstName: {
+      type: 'string',
+      defaultsTo: '',
+      size: 50
+    },
+    lastName: {
+      type: 'string',
+      defaultsTo: '',
+      size: 100
+    },
+    avatar: {
+      type: 'string',
+      size: 500
     },
 
+    //Todo : organization & createdBy relation
+
+    fullname(){
+      return this.firstName + ' ' + this.lastName;
+    },
     toJSON() {
       let obj = this.toObject();
 
