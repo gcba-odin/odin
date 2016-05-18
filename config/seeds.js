@@ -9,7 +9,7 @@ module.exports = {
                 email: 'hwagner0@merriam-webster.com',
                 firstName: 'Henry',
                 lastName: 'Wagner',
-                avatar: '',
+                avatar: 'http://i.imgur.com/cuKC0Us.jpg',
                 active: true,
                 organization: '23TplPdS',
                 createdBy: 'dogPzIz8'
@@ -21,7 +21,7 @@ module.exports = {
                 email: 'hfoster1@cbsnews.com',
                 firstName: 'Howard',
                 lastName: 'Foster',
-                avatar: '',
+                avatar: 'http://i.imgur.com/cuKC0Us.jpg',
                 active: true,
                 organization: '23TplPdS',
                 createdBy: 'dogPzIz8'
@@ -33,7 +33,7 @@ module.exports = {
                 email: 'achavez2@go.com',
                 firstName: 'Ashley',
                 lastName: 'Chavez',
-                avatar: '',
+                avatar: 'http://i.imgur.com/cuKC0Us.jpg',
                 active: true,
                 organization: '23TplPdS',
                 createdBy: 'dogPzIz8'
@@ -45,7 +45,7 @@ module.exports = {
                 email: 'mfrazier3@gizmodo.com',
                 firstName: 'Melissa',
                 lastName: 'Frazier',
-                avatar: '',
+                avatar: 'http://i.imgur.com/cuKC0Us.jpg',
                 active: true,
                 organization: '23TplPdS',
                 createdBy: 'dogPzIz8'
@@ -57,7 +57,7 @@ module.exports = {
                 email: 'pmorrison4@wp.com',
                 firstName: 'Peter',
                 lastName: 'Morrison',
-                avatar: '',
+                avatar: 'http://i.imgur.com/cuKC0Us.jpg',
                 active: true,
                 organization: '23TplPdS',
                 createdBy: 'dogPzIz8'
