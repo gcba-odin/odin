@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['Users', 'Organizations', 'Categories'],
+        order: ['Users', 'Organizations', 'Categories', 'Statuses', 'Filetypes', 'Files', 'Databases', 'Datasets'],
         Users: [
             {
                 id: 'dogPzIz8',
@@ -145,62 +145,238 @@ module.exports = {
         Statuses: [
             {
                 id: 'nWRhpRV',
-                name: 'Draft',
+                name: 'Draft'
             },
             {
                 id: 'oWRhpRV',
-                name: 'Under review',
+                name: 'Under review'
             },
             {
                 id: 'pWRhpRV',
-                name: 'Rejected',
+                name: 'Rejected'
             },
             {
                 id: 'qWRhpRV',
-                name: 'Published',
+                name: 'Published'
             },
             {
                 id: 'rWRhpRV',
-                name: 'Unpublished',
+                name: 'Unpublished'
             }
         ],
         Filetypes: [
             {
                 id: 'sWRhpRV',
-                name: 'csv',
+                name: 'csv'
             },
             {
                 id: 'tWRhpRV',
-                name: 'html',
+                name: 'html'
             },
             {
                 id: 'uWRhpRV',
-                name: 'ics',
+                name: 'ics'
             },
             {
                 id: 'vWRhpRV',
-                name: 'pdf',
+                name: 'pdf'
             },
             {
                 id: 'wWRhpRV',
-                name: 'rar',
+                name: 'rar'
             },
             {
                 id: 'xWRhpRV',
-                name: 'shp',
+                name: 'shp'
             },
             {
                 id: 'yWRhpRV',
-                name: 'xls',
+                name: 'xls'
             },
             {
                 id: 'zWRhpRV',
-                name: 'xml',
+                name: 'xml'
             },
             {
                 id: '0WRhpRV',
-                name: 'zip',
+                name: 'zip'
             }
         ],
+        Files: [
+            {
+                id: 'sWRhpRa',
+                name: 'File 1',
+                description: 'An example file.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                url: 'http://i.imgur.com/u7CUz6v.png',
+                visibility: 1,
+                publishedAt: '2011-01-01 00:00:01+03'
+            },
+            {
+                id: 'tWRhpRb',
+                name: 'File 2',
+                description: 'An example file.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                url: 'http://i.imgur.com/u7CUz6v.png',
+                visibility: 1,
+                publishedAt: '2011-01-01 00:00:02+03'
+            },
+            {
+                id: 'uWRhpRc',
+                name: 'File 3',
+                description: 'An example file.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                url: 'http://i.imgur.com/u7CUz6v.png',
+                visibility: 1,
+                publishedAt: '2011-01-01 00:00:03+03'
+            },
+            {
+                id: 'vWRhpRd',
+                name: 'File 4',
+                description: 'An example file.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                url: 'http://i.imgur.com/u7CUz6v.png',
+                visibility: 1,
+                publishedAt: '2011-01-01 00:00:04+03'
+            },
+            {
+                id: 'wWRhpRe',
+                name: 'File 5',
+                description: 'An example file.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                url: 'http://i.imgur.com/u7CUz6v.png',
+                visibility: 1,
+                publishedAt: '2011-01-01 00:00:05+03'
+            }
+        ],
+        Databases: [
+            {
+                id: 'sWRhpRf',
+                name: 'Database 1',
+                collection: 'ExampleCollection',
+                url: 'http://i.imgur.com/u7CUz6v.png'
+            },
+            {
+                id: 'sWRhpRg',
+                name: 'Database 2',
+                collection: 'ExampleCollection',
+                url: 'http://i.imgur.com/u7CUz6v.png'
+            },
+            {
+                id: 'sWRhpRh',
+                name: 'Database 3',
+                collection: 'ExampleCollection',
+                url: 'http://i.imgur.com/u7CUz6v.png'
+            },
+            {
+                id: 'sWRhpRi',
+                name: 'Database 4',
+                collection: 'ExampleCollection',
+                url: 'http://i.imgur.com/u7CUz6v.png'
+            },
+            {
+                id: 'sWRhpRj',
+                name: 'Database 5',
+                collection: 'ExampleCollection',
+                url: 'http://i.imgur.com/u7CUz6v.png'
+            }
+        ],
+        Datasets: [
+            {
+                id: 'sWRhpRk',
+                name: 'Dataset 1',
+                description: 'An example dataset.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                visibility: 1,
+                starred: true,
+                optional1: undefined,
+                optional2: undefined,
+                optional3: undefined,
+                optional4: undefined,
+                optional5: undefined,
+                optional6: undefined,
+                optional7: undefined,
+                optional8: undefined,
+                optional9: undefined,
+                optional10: undefined,
+                publishedAt: '2011-01-01 00:00:01+03'
+            },
+            {
+                id: 'sWRhpRl',
+                name: 'Dataset 2',
+                description: 'An example dataset.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                visibility: 1,
+                starred: true,
+                optional1: undefined,
+                optional2: undefined,
+                optional3: undefined,
+                optional4: undefined,
+                optional5: undefined,
+                optional6: undefined,
+                optional7: undefined,
+                optional8: undefined,
+                optional9: undefined,
+                optional10: undefined,
+                publishedAt: '2011-01-01 00:00:02+03'
+            },
+            {
+                id: 'sWRhpRm',
+                name: 'Dataset 3',
+                description: 'An example dataset.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                visibility: 1,
+                starred: true,
+                optional1: undefined,
+                optional2: undefined,
+                optional3: undefined,
+                optional4: undefined,
+                optional5: undefined,
+                optional6: undefined,
+                optional7: undefined,
+                optional8: undefined,
+                optional9: undefined,
+                optional10: undefined,
+                publishedAt: '2011-01-01 00:00:03+03'
+            },
+            {
+                id: 'sWRhpRn',
+                name: 'Dataset 4',
+                description: 'An example dataset.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                visibility: 1,
+                starred: true,
+                optional1: undefined,
+                optional2: undefined,
+                optional3: undefined,
+                optional4: undefined,
+                optional5: undefined,
+                optional6: undefined,
+                optional7: undefined,
+                optional8: undefined,
+                optional9: undefined,
+                optional10: undefined,
+                publishedAt: '2011-01-01 00:00:04+03'
+            },
+            {
+                id: 'sWRhpRo',
+                name: 'Dataset 5',
+                description: 'An example dataset.',
+                notes: 'Lorem ipsum dolor sit amet...',
+                visibility: 1,
+                starred: true,
+                optional1: undefined,
+                optional2: undefined,
+                optional3: undefined,
+                optional4: undefined,
+                optional5: undefined,
+                optional6: undefined,
+                optional7: undefined,
+                optional8: undefined,
+                optional9: undefined,
+                optional10: undefined,
+                publishedAt: '2011-01-01 00:00:05+03'
+            }
+        ]
     }
 }
