@@ -164,5 +164,43 @@ module.exports = {
                 name: 'Unpublished',
             }
         ],
+        Filetypes: [
+            {
+                id: 'sWRhpRV',
+                name: 'csv',
+            },
+            {
+                id: 'tWRhpRV',
+                name: 'html',
+            },
+            {
+                id: 'uWRhpRV',
+                name: 'ics',
+            },
+            {
+                id: 'vWRhpRV',
+                name: 'pdf',
+            },
+            {
+                id: 'wWRhpRV',
+                name: 'rar',
+            },
+            {
+                id: 'xWRhpRV',
+                name: 'shp',
+            },
+            {
+                id: 'yWRhpRV',
+                name: 'xls',
+            },
+            {
+                id: 'zWRhpRV',
+                name: 'xml',
+            },
+            {
+                id: '0WRhpRV',
+                name: 'zip',
+            }
+        ],
     }
 }
