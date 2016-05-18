@@ -144,12 +144,25 @@ module.exports = {
         ],
         Statuses: [
             {
-                
+                id: 'nWRhpRV',
+                name: 'Draft',
             },
-            {},
-            {},
-            {},
-            {}
+            {
+                id: 'oWRhpRV',
+                name: 'Under review',
+            },
+            {
+                id: 'pWRhpRV',
+                name: 'Rejected',
+            },
+            {
+                id: 'qWRhpRV',
+                name: 'Published',
+            },
+            {
+                id: 'rWRhpRV',
+                name: 'Unpublished',
+            }
         ],
     }
 }
