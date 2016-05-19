@@ -1,13 +1,13 @@
 "use strict";
 
 /**
- * Category
- * @description :: Model for storing Category records
+ * Database
+ * @description :: Model for storing Database records
  */
 var shortId = require('shortid');
 
 module.exports = {
-    // schema: true,
+    schema: true,
 
     attributes: {
         id: {
@@ -23,18 +23,15 @@ module.exports = {
             required: true,
             size: 150
         },
-        description: {
+        collection: {
             type: 'string',
-            size: 350
+            size: 150
         },
-        createdBy: {
-            model: 'user',
-            required: true
+        url: {
+            type: 'string',
+            size: 500
         },
-        datasets: {
-            collection: 'dataset',
-            via: 'category'
-        },
+
         toJSON() {
             return this.toObject();
         }

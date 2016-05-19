@@ -1,13 +1,13 @@
 "use strict";
 
 /**
- * Category
- * @description :: Model for storing Category records
+ * Organization
+ * @description :: Model for storing Organization records
  */
 var shortId = require('shortid');
 
 module.exports = {
-    // schema: true,
+    schema: true,
 
     attributes: {
         id: {
@@ -27,13 +27,34 @@ module.exports = {
             type: 'string',
             size: 350
         },
+        adress: {
+            type: 'string',
+            size: 150
+        },
+        active: {
+            type: 'boolean'
+        },
         createdBy: {
-            model: 'user',
-            required: true
+            model: 'user'
+        },
+        users: {
+            collection: 'user',
+            via: 'organization'
+        },
+        parent: {
+            model: 'organization'
+        },
+        childs: {
+            collection: 'organization',
+            via: 'parent'
+        },
+        files: {
+            collection: 'file',
+            via: 'organization'
         },
         datasets: {
             collection: 'dataset',
-            via: 'category'
+            via: 'organization'
         },
         toJSON() {
             return this.toObject();
