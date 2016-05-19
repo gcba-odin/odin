@@ -16,7 +16,7 @@ var hasOwnProperty = utils.object.hasOwnProperty;
  * on adapters that haven't implemented the join interface yet.
  */
 
-var Operations = module.exports = function(context, criteria, parent) {
+var Operations = module.exports = function(context, criteria, parent, metaContainer) {
 
   // Build up a cache
   this.cache = {};
@@ -29,6 +29,8 @@ var Operations = module.exports = function(context, criteria, parent) {
 
   // Set parent
   this.parent = parent;
+
+  this.metaContainer = metaContainer;
 
   // Hold a default value for pre-combined results (native joins)
   this.preCombined = false;
@@ -119,8 +121,6 @@ Operations.prototype._seedCache = function _seedCache() {
  */
 
 Operations.prototype._buildOperations = function _buildOperations() {
-
-  var self = this;
   var operations = [];
 
   // Check if joins were used, if not only a single operation is needed on a single connection
@@ -216,7 +216,7 @@ Operations.prototype._stageOperations = function _stageOperations(connections) {
       // Look into the previous operations and see if this is a child of any of them
       var child = false;
       localOpts.forEach(function(localOpt) {
-        if (localOpt.join.child != join.parent) return;
+        if (localOpt.join.child !== join.parent) return;
         localOpt.child = operation;
         child = true;
       });
@@ -281,7 +281,6 @@ Operations.prototype._createParentOperation = function _createParentOperation(co
   // Remove the joins from the criteria object, this will be an in-memory join
   var tmpCriteria = _.cloneDeep(this.criteria);
   delete tmpCriteria.joins;
-
   connectionName = this.context.adapterDictionary[this.parent];
 
   // If findOne was used, use the same connection `find` is on.
@@ -408,7 +407,7 @@ Operations.prototype._runOperation = function _runOperation(collectionName, meth
   var collection = this.context.waterline.collections[collectionName];
 
   // Run the operation
-  collection.adapter[method](criteria, cb);
+  collection.adapter[method](criteria, cb, this.metaContainer);
 
 };
 
@@ -505,13 +504,11 @@ Operations.prototype._buildChildOpts = function _buildChildOpts(parentResults, c
             obj[pk] = _.clone(userCriteria.where);
             userCriteria.where = obj;
           }
-
-          userCriteria = userCriteria.where;
         }
       }
 
 
-      criteria = _.merge(userCriteria, criteria);
+      criteria = _.merge(userCriteria, { where: criteria });
     }
 
     // Normalize criteria
@@ -670,16 +667,17 @@ Operations.prototype._runChildOperations = function _runChildOperations(intermed
     if (hasOwnProperty(userCriteria, 'where')) {
       if (userCriteria.where === undefined) {
         delete userCriteria.where;
-      } else {
-        userCriteria = userCriteria.where;
       }
     }
 
     delete userCriteria.sort;
-    criteria = _.extend(criteria, userCriteria);
+    delete userCriteria.skip;
+    delete userCriteria.limit;
+
+    criteria = _.merge({}, userCriteria, { where: criteria });
   }
 
-  criteria = normalize.criteria({ where: criteria });
+  criteria = normalize.criteria(criteria);
 
   // Empty the cache for the join table so we can only add values used
   var cacheCopy = _.cloneDeep(self.cache[opt.join.parent]);

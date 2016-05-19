@@ -25,7 +25,7 @@ module.exports = {
    * @return Deferred object if no callback
    */
 
-  findOne: function(criteria, cb) {
+  findOne: function(criteria, cb, metaContainer) {
     var self = this;
 
     if (typeof criteria === 'function') {
@@ -53,6 +53,17 @@ module.exports = {
     // Transform Search Criteria
     criteria = self._transformer.serialize(criteria);
 
+    // If a projection is being used, ensure that the Primary Key is included
+    if(criteria.select) {
+      _.each(this._schema.schema, function(val, key) {
+        if (_.has(val, 'primaryKey') && val.primaryKey) {
+          criteria.select.push(key);
+        }
+      });
+
+      criteria.select = _.uniq(criteria.select);
+    }
+
     // serialize populated object
     if (criteria.joins) {
       criteria.joins.forEach(function(join) {
@@ -72,7 +83,7 @@ module.exports = {
     }
 
     // Build up an operations set
-    var operations = new Operations(self, criteria, 'findOne');
+    var operations = new Operations(self, criteria, 'findOne', metaContainer);
 
     // Run the operations
     operations.run(function(err, values) {
@@ -191,20 +202,33 @@ module.exports = {
    * @return Deferred object if no callback
    */
 
-  find: function(criteria, options, cb) {
+  find: function(criteria, options, cb, metaContainer) {
     var self = this;
-
     var usage = utils.capitalize(this.identity) + '.find([criteria],[options]).exec(callback|switchback)';
 
     if (typeof criteria === 'function') {
       cb = criteria;
       criteria = null;
-      options = null;
+
+      if(arguments.length === 1) {
+        options = null;
+      }
     }
 
+    // If options is a function, we want to check for any more values before nulling
+    // them out or overriding them.
     if (typeof options === 'function') {
-      cb = options;
-      options = null;
+
+      // If cb also exists it means there is a metaContainer value
+      if (cb) {
+        metaContainer = cb;
+        cb = options;
+        options = null;
+      } else {
+        cb = options;
+        options = null;
+      }
+
     }
 
     // If the criteria is an array of objects, wrap it in an "or"
@@ -240,6 +264,17 @@ module.exports = {
       criteria = _.extend({}, criteria, options);
     }
 
+    // If a projection is being used, ensure that the Primary Key is included
+    if(criteria.select) {
+      _.each(this._schema.schema, function(val, key) {
+        if (_.has(val, 'primaryKey') && val.primaryKey) {
+          criteria.select.push(key);
+        }
+      });
+
+      criteria.select = _.uniq(criteria.select);
+    }
+
     // Transform Search Criteria
     if (!self._transformer) {
       throw new Error('Waterline can not access transformer-- maybe the context of the method is being overridden?');
@@ -258,7 +293,7 @@ module.exports = {
     }
 
     // Build up an operations set
-    var operations = new Operations(self, criteria, 'find');
+    var operations = new Operations(self, criteria, 'find', metaContainer);
 
     // Run the operations
     operations.run(function(err, values) {
@@ -320,7 +355,6 @@ module.exports = {
         results = waterlineCriteria('parent', { parent: results }, _criteria).results;
 
         // Serialize values coming from an in-memory join before modelizing
-        var _results = [];
         results.forEach(function(res) {
 
           // Go Ahead and perform any sorts on the associated data
