@@ -4,12 +4,63 @@
  * File
  * @description :: Model for storing File records
  */
+var shortId = require('shortid');
 
 module.exports = {
   schema: true,
 
   attributes: {
-    // Fill your attributes here
+      id: {
+          type: 'string',
+          unique: true,
+          index: true,
+          defaultsTo: shortId.generate,
+          primaryKey: true,
+          size: 15
+      },
+      name: {
+          type: 'string',
+          required: true,
+          size: 150
+      },
+      description: {
+          type: 'string',
+          size: 350
+      },
+      notes: {
+          type: 'string',
+          size: 500
+      },
+      url: {
+          type: 'string',
+          size: 500
+      },
+      visibility: {
+          type: 'boolean'
+      },
+      publishedAt: {
+          type: 'datetime'
+      },
+      type: {
+          model: 'filetype',
+          required: true
+      },
+      status: {
+          model: 'status',
+          required: true
+      },
+      organization: {
+          model: 'organization',
+          required: true
+      },
+      dataset: {
+          model: 'dataset',
+          required: true
+      },
+      createdBy: {
+          model: 'user',
+          required: true
+      },
 
     toJSON() {
       return this.toObject();
