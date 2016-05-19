@@ -51,7 +51,7 @@ module.exports = {
      */
     postgres: {
       adapter: 'sails-postgresql',
-      database: 'sails-yeoman',
+      database: 'odin',
       host: 'localhost',
       user: 'postgres',
       password: 'postgres',

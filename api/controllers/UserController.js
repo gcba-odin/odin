@@ -13,6 +13,7 @@ module.exports = {
     req.logout();
     res.redirect('/');
   },
+    
   /**
    * Sign in by email\password
    * @param req
@@ -28,7 +29,7 @@ module.exports = {
    * @param req
    * @param res
    */
-  refresh_token(req, res) {
+  refreshToken(req, res) {
     if (!req.param('token')) return res.badRequest(null, {message: 'You must provide token parameter'});
 
     const oldDecoded = CipherService.jwt.decodeSync(req.param('token'));
