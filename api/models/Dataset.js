@@ -79,9 +79,6 @@ module.exports = {
         category: {
             model: 'category'
         },
-        organization: {
-            model: 'organization'
-        },
         createdBy: {
             model: 'user'
         },

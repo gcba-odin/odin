@@ -52,10 +52,6 @@ module.exports = {
             collection: 'file',
             via: 'organization'
         },
-        datasets: {
-            collection: 'dataset',
-            via: 'organization'
-        },
         toJSON() {
             return this.toObject();
         }

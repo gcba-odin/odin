@@ -27,7 +27,8 @@ coverage
 build/Release
 
 # Dependency directory
-# node_modules
+
+node_modules
 
 # Documentation folder
 docs
