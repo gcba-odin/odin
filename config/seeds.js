@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['Users', 'Organizations', 'Categories', 'Statuses', 'Filetypes', 'Files', 'Databases', 'Datasets'],
+        order: ['Users', 'Organizations', 'Categories', 'Statuses', 'Databases', 'Datasets', 'Filetypes', 'Files'],
         Users: [{
             id: 'dogPzIz8',
             username: 'henrywagner',
@@ -140,75 +140,6 @@ module.exports = {
             id: 'rWRhpRV',
             name: 'Unpublished'
         }],
-        Filetypes: [{
-            id: 'sWRhpRV',
-            name: 'csv'
-        }, {
-            id: 'tWRhpRV',
-            name: 'html'
-        }, {
-            id: 'uWRhpRV',
-            name: 'ics'
-        }, {
-            id: 'vWRhpRV',
-            name: 'pdf'
-        }, {
-            id: 'wWRhpRV',
-            name: 'rar'
-        }, {
-            id: 'xWRhpRV',
-            name: 'shp'
-        }, {
-            id: 'yWRhpRV',
-            name: 'xls'
-        }, {
-            id: 'zWRhpRV',
-            name: 'xml'
-        }, {
-            id: '0WRhpRV',
-            name: 'zip'
-        }],
-        Files: [{
-            id: 'sWRhpRa',
-            name: 'File 1',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
-            publishedAt: '2011-01-01 00:00:01+03'
-        }, {
-            id: 'tWRhpRb',
-            name: 'File 2',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
-            publishedAt: '2011-01-01 00:00:02+03'
-        }, {
-            id: 'uWRhpRc',
-            name: 'File 3',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
-            publishedAt: '2011-01-01 00:00:03+03'
-        }, {
-            id: 'vWRhpRd',
-            name: 'File 4',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
-            publishedAt: '2011-01-01 00:00:04+03'
-        }, {
-            id: 'wWRhpRe',
-            name: 'File 5',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
-            publishedAt: '2011-01-01 00:00:05+03'
-        }],
         Databases: [{
             id: 'sWRhpRf',
             name: 'Database 1',
@@ -339,6 +270,100 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:05+03',
             category: 'mWRhpRV',
             status: 'rWRhpRV',
+            createdBy: 'dogPzIz8'
+        }],
+        Filetypes: [{
+            id: 'sWRhpRV',
+            name: 'csv'
+        }, {
+            id: 'tWRhpRV',
+            name: 'html'
+        }, {
+            id: 'uWRhpRV',
+            name: 'ics'
+        }, {
+            id: 'vWRhpRV',
+            name: 'pdf'
+        }, {
+            id: 'wWRhpRV',
+            name: 'rar'
+        }, {
+            id: 'xWRhpRV',
+            name: 'shp'
+        }, {
+            id: 'yWRhpRV',
+            name: 'xls'
+        }, {
+            id: 'zWRhpRV',
+            name: 'xml'
+        }, {
+            id: '0WRhpRV',
+            name: 'zip'
+        }],
+        Files: [{
+            id: 'sWRhpRa',
+            name: 'File 1',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visibility: 1,
+            publishedAt: '2011-01-01 00:00:01+03',
+            type: 'sWRhpRV',
+            status: 'nWRhpRV',
+            organization: 'eWRhpRV',
+            dataset: 'sWRhpRk',
+            createdBy: 'dogPzIz8'
+        }, {
+            id: 'tWRhpRb',
+            name: 'File 2',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visibility: 1,
+            publishedAt: '2011-01-01 00:00:02+03',
+            type: 'tWRhpRV',
+            status: 'oWRhpRV',
+            organization: 'dWRhpRV',
+            dataset: 'sWRhpRl',
+            createdBy: 'dogPzIz8'
+        }, {
+            id: 'uWRhpRc',
+            name: 'File 3',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visibility: 1,
+            publishedAt: '2011-01-01 00:00:03+03',
+            type: 'uWRhpRV',
+            status: 'pWRhpRV',
+            organization: 'fWRhpRV',
+            dataset: 'sWRhpRm',
+            createdBy: 'dogPzIz8'
+        }, {
+            id: 'vWRhpRd',
+            name: 'File 4',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visibility: 1,
+            publishedAt: '2011-01-01 00:00:04+03',
+            type: 'vWRhpRV',
+            status: 'qWRhpRV',
+            organization: 'gWRhpRV',
+            dataset: 'sWRhpRn',
+            createdBy: 'dogPzIz8'
+        }, {
+            id: 'wWRhpRe',
+            name: 'File 5',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visibility: 1,
+            publishedAt: '2011-01-01 00:00:05+03',
+            type: 'wWRhpRV',
+            status: 'rWRhpRV',
+            organization: 'hWRhpRV',
+            dataset: 'sWRhpRo',
             createdBy: 'dogPzIz8'
         }]
     }
