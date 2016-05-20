@@ -13,13 +13,13 @@ module.exports = {
     req.logout();
     res.redirect('/');
   },
-    
+
   /**
    * Sign in by email\password
    * @param req
    * @param res
    */
-  signin(req, res) {
+  login(req, res) {
     passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
   },
 
