@@ -23,7 +23,7 @@ module.exports = {
 
     attributes: {
       hidden: ['password'],
-      readOnly: ['createdBy', 'createdAt', 'updatedAt']
+      readOnly: ['createdBy', 'createdAt', 'updatedAt', 'deletedAt']
     }
   }
 };

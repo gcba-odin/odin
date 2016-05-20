@@ -85,9 +85,7 @@ module.exports = {
             let hidden = sails.config.models.attributes.hidden;
             let readOnly = sails.config.models.attributes.readOnly;
 
-            let merged = _.merge(hidden, readOnly, function(a, b) {
-                return _.isArray(a) ? _.union(a, b) : undefined;
-            });
+            let merged = _.concat(hidden, readOnly);
 
             merged.forEach(function(element) {
                 delete obj[element];
