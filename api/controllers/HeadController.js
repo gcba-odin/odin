@@ -19,12 +19,6 @@ module.exports = {
                 else return res.ok();
                 });
         }
-        // const where = actionUtil.parseCriteria(req);
-        // const query = model.find(null, fields.length > 0 ? {select: fields} : null).where(where).limit(limit).skip(skip).sort(sort);
-        // const findQuery = _.reduce(_.intersection(populate, takeAlias(model.associations)), populateAlias, query);
-        // console.log(fields);
-        // console.log(where);
-        // console.log(query);
-        // console.log(findQuery);
+        return res.ok;
     }
 };

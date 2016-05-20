@@ -9,11 +9,6 @@ const passport = require('passport');
 
 module.exports = {
 
-  logout: function (req, res) {
-    req.logout();
-    res.redirect('/');
-  },
-
   /**
    * Sign in by email\password
    * @param req

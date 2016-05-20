@@ -17,7 +17,7 @@ module.exports = {
      * When enabled, GET, POST, PUT and DELETE routes will be generated for everyone of a controller's actions
      * @type {Boolean}
      */
-    actions: true,
+    actions: false,
 
     /**
      * When enabled, `index` action will be default action
