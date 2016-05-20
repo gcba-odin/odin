@@ -67,7 +67,7 @@ module.exports = {
 
         //Todo : organization & createdBy relation
 
-        fullname(){
+        fullName() {
             return this.firstName + ' ' + this.lastName;
         },
         toJSON() {
