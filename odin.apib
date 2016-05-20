@@ -1,0 +1,1345 @@
+FORMAT: 1A
+
+# ODIN API
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa. Nunc accumsan nec urna quis fringilla. 
+
+# Group Users
+
+## User [/users/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+    
++ Attributes (User Base)
+    + id: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (number) - datetime
+    + updatedAt: 1415203908 (number) - datetime
+    + createdBy: hwX6aOr7 (string, required)
+
+### Retrieve a User [GET]
+Retrieves the user with the given ID.
+
++ Response 200 (application/json)
+    + Attributes (Get User Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Update a User [PATCH]
+Updates the user with the given ID.
+
+
++ Request
+    + Attributes (User Base)
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+    
+### Delete a User [DELETE]
+Delete the user with the given ID
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 204 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get User Head [HEAD]
+
+Get the user Head with the given ID
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get User Options [OPTIONS]
+
+Get the user options with the given ID
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+===========================================================================
+
+## Users  [/users]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus, 
+malesuada ut congue fermentum, tincidunt a massa. 
+Nunc accumsan nec urna quis fringilla. 
+
+### Retrieve all users [GET]
+Get all users
+
++ Response 200 (application/json)
+    + Attributes (array[User])
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 206 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)    
+
+### Create a User [POST]
+Creates a User
+
++ Request
+    + Attributes (User Base)
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get Users Head [HEAD]
+
+Get the users Head
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get Users Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+======================================================================================
+
+## User login  [/users/login]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus, malesuada ut congue fermentum, tincidunt a massa. Nunc accumsan nec urna quis fringilla. Fusce ut nunc in libero consectetur bibendum volutpat eget odio. 
+
+### Login a user [POST]
++ Attributes
+    + username: john_doe (string, required)
+    + password: security123 (string, required)
+    
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get Login Head [HEAD]
+
+Get the users Head
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get Login Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+=================================================================================================
+
+## User first  [/users/first]
+
+### Get first user [GET]
+Get first user
+
++ Response 200 (application/json)
+    + Attributes (Get User Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get First User Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get First User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+## User last  [/users/last]
+
+### Get last user [GET]
+Get last user
+
++ Response 200 (application/json)
+    + Attributes (Get User Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get last User Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get last User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+## User count  [/users/count]
+
+### Get count user [GET]
+Get count user
+
++ Response 200 (application/json)
+    + Attributes (Get User Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get count User Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+### Get count User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get User Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get User Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get User Response Error)
+
+=============================================================================
+=============================================================================
+
+# Group Datasets
+
+## Dataset [/datasets/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+    
++ Attributes (Dataset Base)
+    + id: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (number) - datetime
+    + updatedAt: 1415203908 (number) - datetime
+
+### Retrieve a Dataset [GET]
+Retrieves the Dataset with the given ID.
+
++ Response 200 (application/json)
+    + Attributes (Get Dataset Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Update a Dataset [PATCH]
+Updates the Dataset with the given ID.
+
+
++ Request
+    + Attributes (Dataset Base)
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
+### Delete a Dataset [DELETE]
+Delete the Dataset with the given ID
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 204 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get Dataset Head [HEAD]
+
+Get the Dataset Head with the given ID
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get Dataset Options [OPTIONS]
+
+Get the Dataset options with the given ID
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+===========================================================================
+
+## Datasets  [/datasets]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus, 
+malesuada ut congue fermentum, tincidunt a massa. 
+Nunc accumsan nec urna quis fringilla. 
+
+### Retrieve all Datasets [GET]
+Get all Datasets
+
++ Response 200 (application/json)
+    + Attributes (array[Dataset])
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 206 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)    
+
+### Create a Dataset [POST]
+Creates a Dataset
+
++ Request
+    + Attributes (Dataset Base)
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get Datasets Head [HEAD]
+
+Get the Datasets Head
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get Datasets Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+======================================================================================
+
+## Dataset first  [/datasets/first]
+
+### Get first Dataset [GET]
+Get first Dataset
+
++ Response 200 (application/json)
+    + Attributes (Get Dataset Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get First Dataset Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get First Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+## Dataset last  [/datasets/last]
+
+### Get last Dataset [GET]
+Get last Dataset
+
++ Response 200 (application/json)
+    + Attributes (Get Dataset Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get last Dataset Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get last Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+## Dataset count  [/datasets/count]
+
+### Get count Dataset [GET]
+Get count Dataset
+
++ Response 200 (application/json)
+    + Attributes (Get Dataset Response)
+
++ Response 202 (application/json)
+    + Attributes (General Response)
+    
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get count Dataset Head [HEAD]
+
++ Response 200 (application/json)
+    + Attributes (General Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+### Get count Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json)
+    + Attributes (Options Response)
+    
++ Response 202 (application/json)
+    + Attributes (General Response)
+
++ Response 400 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 401 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 403 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 404 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 406 (application/json)
+    + Attributes (Get Dataset Response Error)
+
++ Response 410 (application/json)
+    + Attributes (Get Dataset Response Error)
+    
++ Response 500 (application/json)
+    + Attributes (Get Dataset Response Error)
+
+# Data Structure
+
+## User Base (object)
++ username: john_doe (string,required)
++ password: security123 (string, required)
++ email: johndoe@example.com (string,required)
++ firstName: john (string)
++ lastName: doe (string)
++ avatar: http://site.com/avatar/dogPzIz8 (string)
++ organization: lpgB47a1 (string, required)
++ active: true (boolean)
+
+## Dataset Base (object)
++ name: examplename (string,required)
++ description: description of dataset (string)
++ notes: some notes about the dataset (string)
++ visibility: true (boolean)
++ starred: true (boolean)
++ optional1: some optional data (string)
++ optional2: some optional data (string)
++ optional3: some optional data (string)
++ optional4: some optional data (string)
++ optional5: some optional data (string)
++ optional6: some optional data (string)
++ optional7: some optional data (string)
++ optional8: some optional data (string)
++ optional9: some optional data (string)
++ optional10: some optional data (string)
++ publishedAt: 1415203908 (number) - datetime
++ category: PPBqWA9(string)
++ status: hwX6aOr7 (string)
++ organization: a4vhAoFG (string)
++ createdBy: nYrnfYEv (string)
+
+
+## General Response (object)
++ meta (Metadata Response)
++ links (object)
+
+## General Response Error (object)
++ meta (Metadata Response)
++ links (object)
+
+## Options Response (object)
++ meta (Metadata Response)
++ methods (Methods Response)
++ links (object)
+
+## Get User Response (object)
++ meta (Metadata Response)
++ data (User)
++ links (object)
+
+## Get User Response Error (object)
++ meta (Metadata Response)
++ error (object)
++ links (object)
+
+## Get Count Response
++ meta (Metadata Response)
++ data (object)
++ links (object)
+## Metadata Response (object)
++ statusCode
++ statusMessage
+
+## Methods Response (object)
++ url (string)
++ headers (object)
++ parameters (object)
