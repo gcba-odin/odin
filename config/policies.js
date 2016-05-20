@@ -16,7 +16,8 @@ module.exports = {
         '*': true,
         UserController: {
             '*': ['isAuthenticated'],
-            'login': true
+            'login': true,
+            'create':true
         }
     }
 };
