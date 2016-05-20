@@ -4,6 +4,7 @@
   "main": "app.js",
   "dependencies": {
     "bluebird": "^3.4.0",
+    "kerberos": "0.0.21",
     "lodash": "^4.12.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.0.0",
