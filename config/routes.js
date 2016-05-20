@@ -9,6 +9,7 @@
 module.exports = {
     routes: {
         'POST /users/login': 'User.login',
+        'GET /users/foo': 'User.foo',
         'GET /users/refreshToken': 'User.refreshToken',
         'PATCH /users/:id' : { blueprint: 'update', model: 'user' },
         'HEAD /users': { controller: 'Head', action: 'Head', model: 'user'},

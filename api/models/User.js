@@ -64,12 +64,22 @@ module.exports = {
             collection: 'dataset',
             via: 'createdBy'
         },
-
-        //Todo : organization & createdBy relation
+        //TODO: test this
+        readAttributes: function () {
+            console.log(this.toObject());
+            console.log(this.toJSON());
+            console.log(this.attributes);
+            console.log(this);
+            // let obj = this.toObject();
+            // delete obj.password;
+            // return obj;
+            return 'obj';
+        },
 
         fullName() {
             return this.firstName + ' ' + this.lastName;
         },
+<<<<<<< HEAD
 
         toJSON() {
             let obj = this.toObject();
@@ -83,11 +93,15 @@ module.exports = {
             merged.forEach(function(element) {
                 delete obj[element];
             }, this);
+=======
+        toJSON: function () {
+            let obj = this.toObject();
+            delete obj.password;
+>>>>>>> 1b06b19bcf58032cff4430ad924703342215a688
 
             return obj;
-        }
+        },
     },
-
     beforeUpdate(values, next) {
         if (false === values.hasOwnProperty('password')) return next();
         if (/^\$2[aby]\$[0-9]{2}\$.{53}$/.test(values.password)) return next();
