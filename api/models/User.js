@@ -70,6 +70,7 @@ module.exports = {
         fullName() {
             return this.firstName + ' ' + this.lastName;
         },
+
         toJSON() {
             let obj = this.toObject();
             let hidden = sails.config.models.attributes.hidden;
