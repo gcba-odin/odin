@@ -13,7 +13,7 @@ module.exports = {
     /**
      * Allow CORS on all routes by default?
      */
-    allRoutes: false,
+    allRoutes: true,
 
     /**
      * Which domains which are allowed CORS access?
