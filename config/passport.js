@@ -30,7 +30,7 @@ const LOCAL_STRATEGY_CONFIG = {
  */
 const JWT_STRATEGY_CONFIG = {
     secretOrKey: 'c5158dbb8972e48256e18d69d401e938068bf6100f1418c4ab2fcdf25dc9c1b0',
-    jwtFromRequest: ExtractJwt.versionOneCompatibility({tokenBodyField: 'access_token'}),
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
     tokenQueryParameterName: 'access_token',
     authScheme: 'Bearer',
     session: false,
@@ -47,7 +47,9 @@ const JWT_STRATEGY_CONFIG = {
  */
 const _onLocalStrategyAuth = (req, username, password, next) => {
     User
-        .findOne({[LOCAL_STRATEGY_CONFIG.usernameField]: username})
+        .findOne({
+            [LOCAL_STRATEGY_CONFIG.usernameField]: username
+        })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
             if (!HashService.bcrypt.compareSync(password, user.password)) return next(null, null, sails.config.errors.USER_NOT_FOUND);
@@ -65,7 +67,9 @@ const _onLocalStrategyAuth = (req, username, password, next) => {
  */
 const _onJwtStrategyAuth = (req, payload, next) => {
     User
-        .findOne({id: payload.id})
+        .findOne({
+            id: payload.id
+        })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
             return next(null, user, {});
@@ -89,9 +93,11 @@ module.exports = {
             if (error || !user) return res.negotiate(error || info);
 
             return res.ok({
-                token: CipherService.jwt.encodeSync({id: user.id})
-                // We dont need user data returned
-                // user: user
+                token: CipherService.jwt.encodeSync({
+                        id: user.id
+                    })
+                    // We dont need user data returned
+                    // user: user
             });
         }
     }
