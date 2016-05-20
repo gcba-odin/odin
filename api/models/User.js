@@ -76,7 +76,7 @@ module.exports = {
             return 'obj';
         },
 
-        fullname: function () {
+        fullName() {
             return this.firstName + ' ' + this.lastName;
         },
         toJSON: function () {
