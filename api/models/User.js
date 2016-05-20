@@ -64,21 +64,28 @@ module.exports = {
             collection: 'dataset',
             via: 'createdBy'
         },
+        //TODO: test this
+        readAttributes: function () {
+            console.log(this.toObject());
+            console.log(this.toJSON());
+            console.log(this.attributes);
+            console.log(this);
+            // let obj = this.toObject();
+            // delete obj.password;
+            // return obj;
+            return 'obj';
+        },
 
-        //Todo : organization & createdBy relation
-
-        fullname(){
+        fullname: function () {
             return this.firstName + ' ' + this.lastName;
         },
-        toJSON() {
+        toJSON: function () {
             let obj = this.toObject();
-
             delete obj.password;
 
             return obj;
-        }
+        },
     },
-
     beforeUpdate(values, next) {
         if (false === values.hasOwnProperty('password')) return next();
         if (/^\$2[aby]\$[0-9]{2}\$.{53}$/.test(values.password)) return next();
