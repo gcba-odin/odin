@@ -1,7 +1,7 @@
 module.exports = {
     fixtures: {
-        order: ['Users', 'Organizations', 'Categories', 'Statuses', 'Databases', 'Datasets', 'Filetypes', 'Files'],
-        Users: [{
+        order: ['User', 'Organization', 'Category', 'Status', 'Database', 'Dataset', 'Filetype', 'File'],
+        User: [{
             id: 'dogPzIz8',
             username: 'henrywagner',
             password: '123',
@@ -57,7 +57,7 @@ module.exports = {
             organization: '23TplPdS',
             createdBy: 'dogPzIz8'
         }],
-        Organizations: [{
+        Organization: [{
             id: 'eWRhpRV',
             name: 'ACME',
             description: 'An example organization.',
@@ -98,7 +98,7 @@ module.exports = {
             parent: undefined,
             createdBy: 'dogPzIz8'
         }],
-        Categories: [{
+        Category: [{
             id: 'iWRhpRV',
             name: 'Art',
             description: 'An example category.',
@@ -124,7 +124,7 @@ module.exports = {
             description: 'An example category.',
             createdBy: 'dogPzIz8'
         }],
-        Statuses: [{
+        Status: [{
             id: 'nWRhpRV',
             name: 'Draft'
         }, {
@@ -140,7 +140,7 @@ module.exports = {
             id: 'rWRhpRV',
             name: 'Unpublished'
         }],
-        Databases: [{
+        Database: [{
             id: 'sWRhpRf',
             name: 'Database 1',
             collection: 'ExampleCollection',
@@ -166,7 +166,7 @@ module.exports = {
             collection: 'ExampleCollection',
             url: 'http://i.imgur.com/u7CUz6v.png'
         }],
-        Datasets: [{
+        Dataset: [{
             id: 'sWRhpRk',
             name: 'Dataset 1',
             description: 'An example dataset.',
@@ -272,7 +272,7 @@ module.exports = {
             status: 'rWRhpRV',
             createdBy: 'dogPzIz8'
         }],
-        Filetypes: [{
+        Filetype: [{
             id: 'sWRhpRV',
             name: 'csv'
         }, {
@@ -300,7 +300,7 @@ module.exports = {
             id: '0WRhpRV',
             name: 'zip'
         }],
-        Files: [{
+        File: [{
             id: 'sWRhpRa',
             name: 'File 1',
             description: 'An example file.',
