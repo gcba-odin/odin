@@ -22,7 +22,7 @@ module.exports = {
       adapter: 'sails-mongo',
       host: 'localhost',
       port: 27017,
-      database: 'sails-yeoman'
+      database: 'odin'
     },
 
     /**
@@ -34,7 +34,7 @@ module.exports = {
       port: 6379,
       host: 'localhost',
       password: '',
-      database: 'sails-yeoman',
+      database: 'odin',
       options: {
         parser: 'hiredis',
         return_buffers: false,
@@ -70,7 +70,7 @@ module.exports = {
       port: 3306,
       user: '',
       password: '',
-      database: 'sails-yeoman',
+      database: 'odin',
       charset: 'utf8',
       collation: 'utf8_swedish_ci'
     },
@@ -84,7 +84,7 @@ module.exports = {
       user: '',
       password: '',
       host: 'localhost',
-      database: 'sails-yeoman',
+      database: 'odin',
       options: {
         encrypt: false
       }
@@ -100,7 +100,7 @@ module.exports = {
       port: 2424,
       user: '',
       password: '',
-      database: 'sails-yeoman',
+      database: 'odin',
       options: {
         databaseType: 'graph',
         storage: 'plocal',
@@ -131,7 +131,7 @@ module.exports = {
     filemaker: {
       adapter: 'sails-filemaker',
       host: 'localhost',
-      database: 'sails-yeoman',
+      database: 'odin',
       userName: '',
       password: ''
     },
