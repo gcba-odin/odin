@@ -1,6 +1,5 @@
 "use strict";
 
-const _ = require('lodash');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 /**

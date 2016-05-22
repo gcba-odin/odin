@@ -1,6 +1,5 @@
 "use strict";
 
-const _ = require('lodash');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 const takeAliases = _.partial(_.map, _, item => item.alias);
