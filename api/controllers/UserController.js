@@ -18,13 +18,6 @@ module.exports = {
         passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
     },
     
-    foo(req,res){
-        User.findOne({ sort: "createdAt ASC"}).exec(function (err, record) {
-            console.log(record);
-            record.getFullName();
-
-        });
-    },
     /**
      * Accept JSON Web Token and updates with new one
      * @param req
