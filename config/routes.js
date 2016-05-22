@@ -11,7 +11,7 @@ module.exports = {
         
         // Users
         
-        'POST /users/login': 'User.login', // falta el logout!!!
+        'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
                 
         'GET /users/first': { blueprint: 'first', model: 'user' },
