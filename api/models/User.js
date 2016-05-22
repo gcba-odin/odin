@@ -24,12 +24,10 @@ module.exports = {
             unique: true,
             size: 25
         },
-
         password: {
             type: 'string',
             required: true,
         },
-
         email: {
             type: 'email',
             required: true,
@@ -64,6 +62,7 @@ module.exports = {
             collection: 'dataset',
             via: 'createdBy'
         },
+        
         //TODO: test this
         readAttributes: function() {
             console.log(this.toObject());
