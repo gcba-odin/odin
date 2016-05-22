@@ -37,6 +37,10 @@ module.exports = {
         starred: {
             type: 'boolean'
         },
+        optional1: {
+            type: 'string',
+            size: 500
+        },
         optional2: {
             type: 'string',
             size: 500
