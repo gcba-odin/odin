@@ -7,8 +7,6 @@
  * The general catch-all error when the server-side throws an exception.
  */
 
-const _ = require('lodash');
-
 module.exports = function (data, config) {
   const response = _.assign({
     code: _.get(config, 'code', 'E_INTERNAL_SERVER_ERROR'),

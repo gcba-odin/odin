@@ -9,8 +9,6 @@
  * In a POST request the response will contain an entity describing or containing the result of the action.
  */
 
-const _ = require('lodash');
-
 module.exports = function (data, config) {
   const response = _.assign({
     statusCode: '200',

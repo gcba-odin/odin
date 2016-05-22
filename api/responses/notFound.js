@@ -8,8 +8,6 @@
  * Used when the requested resource is not found, whether it doesn't exist.
  */
 
-const _ = require('lodash');
-
 module.exports = function (data, config) {
   const response = _.assign({
     code: _.get(config, 'code', 'E_NOT_FOUND'),

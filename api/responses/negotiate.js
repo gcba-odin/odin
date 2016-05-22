@@ -6,8 +6,6 @@
  * Calls the appropriate custom response for a given error
  */
 
-const _ = require('lodash');
-
 module.exports = function (error) {
   const res = this.res;
   const code = _.get(error, 'code');

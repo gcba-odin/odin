@@ -9,8 +9,6 @@
  * Response body content may or may not be present.
  */
 
-const _ = require('lodash');
-
 module.exports = function (data, config) {
   const response = _.assign({
     code: _.get(config, 'code', 'CREATED'),
