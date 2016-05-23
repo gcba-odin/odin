@@ -20,7 +20,8 @@ module.exports = function (data, config) {
         // code: _.get(config, 'code', 'OK'),
         // message: _.get(config, 'message', 'Operation is successfully executed'),
         meta: _.get(config,'meta',{}),
-        data: data || {}
+        data: data || {},
+        links: _.get(config,'links',{}),
     }, _.get(config, 'root', {}));
 
     // Add headers to the res object as needed

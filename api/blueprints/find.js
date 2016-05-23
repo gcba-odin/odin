@@ -43,7 +43,8 @@ module.exports = (req, res) => {
             //     end: builder.skip + builder.limit,
             //     page: Math.floor(builder.skip / builder.limit)
             // },
-            meta: builder.meta
+            meta: builder.meta,
+            links: builder.links
         }])
         .spread(res.ok)
         .catch(res.negotiate);

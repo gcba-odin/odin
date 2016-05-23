@@ -16,6 +16,7 @@
  * See also lodash documentation: https://lodash.com/docs
  *
  */
+var pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ResponseBuilder {
@@ -131,9 +132,9 @@ class ResponseGET extends ResponseBuilder {
         const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
         this._many = many;
 
-        // Don't forget to set 'many' in blueprints/find.js (ie, builder.many(true))
+        // Don't forget to set 'many' in blueprints/find.js (ie, new Response.ResponseGET(req, res, true);
 
-        if (this.many()) {
+        if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
             const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
@@ -150,9 +151,16 @@ class ResponseGET extends ResponseBuilder {
                 end: _skip + _limit,
                 page: Math.floor(_skip / _limit)
             });
-
-            // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
-            this.links = {};
+            _model.count().exec(function count(err, cant) {
+                    var model = pluralize(_model.adapter.identity);
+                    var linkToModel = req.host + ':' + req.port + '/' + model + '?skip=';
+                    var skipLast = _skip - _limit;
+                    this.links = {
+                        next: (_skip + _limit < cant ? linkToModel + (_skip + _limit) : ''),
+                        last: ( skipLast > -1 ) ? linkToModel + skipLast : '',
+                    };
+                }.bind(this)
+            );
         } else {
             const _pk = _actionUtil.requirePk(this.req);
             _query = _model.find(_pk, _fields.length > 0 ? {
@@ -167,28 +175,19 @@ class ResponseGET extends ResponseBuilder {
     }
 
     addData(value) {
-        if (this.many()) {
+        if (this._many) {
             if (_.isPlainObject(this.data)) this.data = [];
             else if (_.isArray(this.data)) this.data = _.concat(this.data, value);
-            else new Error('Data is not an array. It should be, since many() returns true.');
+            else new Error('Data is not an array. It should be, since many is true.');
         } else {
             if (_.isArray(this.data)) this.data = {};
             else if (_.isPlainObject(this.data)) _addValue(value, this.data);
-            else new Error('Data is not an object. It should be, since many() returns false.');
+            else new Error('Data is not an object. It should be, since many is false.');
         }
 
         return this; // Allows chaining
     }
 
-    /**
-     * Is the client requesting many items or just one? Getter / setter
-     */
-    many(value) {
-        if (value) { // Acts as setter
-            this._many = _.isBoolean(value) ? value : new Error('many() must receive a boolean.');
-            return this; // Allows chaining
-        } else return this._many; // Acts as getter
-    }
 }
 
 class ResponsePOST extends ResponseBuilder {
