@@ -4,6 +4,11 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const takeAlias = _.partial(_.map, _, item => item.alias);
 const populateAlias = (model, alias) => model.populate(alias);
 
+/**
+ * This is a class that builds a response. That is, 
+ */
+
+
 class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
@@ -31,6 +36,7 @@ class ResponseBuilder {
     
     build() {
         let body;
+        let elements = {meta: this.meta, error: this.error, data: this.data, links: this.links};
         
         // Guard clauses
         
@@ -39,17 +45,17 @@ class ResponseBuilder {
         if (!_.isPlainObject(this.meta)) new Error('Meta is not an object.');
         if (!_.isPlainObject(this.links)) new Error('Links is not an object.');
         if (this.meta === _emptyMeta) new Error('Meta is empty.');
-        // if (this.links === {}) new Error('Links is empty.');
+        // if (_.isEmpty(this.links)) new Error('Links is empty.');
         
         // this.res.set(this.headers);
         
-        if (error === {}) {
+        if (_.isEmpty(error)) {
             if (!_.isPlainObject(this.data) && !_.isArray(this.data)) new Error('Data is not an object or an array.');
-            body = {meta: this.meta, data: this.data, links: this.links}
+            body = _.omit(elements, 'error');
         }
         else {
             if (!_.isPlainObject(this.error)) new Error('Error is not an object.');
-            body = {meta: this.meta, error: this.error, links: this.links}
+            body = _.omit(elements, 'data');
         };
         
         return body;
