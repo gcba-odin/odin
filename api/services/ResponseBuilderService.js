@@ -16,7 +16,7 @@
  * See also lodash documentation: https://lodash.com/docs
  *
  */
-var pluralize = require('pluralize');
+// var pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ResponseBuilder {
@@ -145,19 +145,34 @@ class ResponseGET extends ResponseBuilder {
 
 
             this.meta = _.assign(this.meta, {
-                criteria: _where,
+                // criteria: _where,
                 limit: _limit,
                 start: _skip,
                 end: _skip + _limit,
                 page: Math.floor(_skip / _limit)
             });
-            _model.count().exec(function count(err, cant) {
-                    var model = pluralize(_model.adapter.identity);
-                    var linkToModel = req.host + ':' + req.port + '/' + model + '?skip=';
-                    var skipLast = _skip - _limit;
+
+            //If no criteria
+            if (JSON.stringify(_where) != '{}') {
+                this.meta = _.assign(this.meta, {
+                    criteria: _where
+                });
+            }
+            //Delete the skip query parameter
+            var requestQuery = req.query;
+            delete requestQuery.skip;
+
+            _model.count(requestQuery).exec(function count(err, cant) {
+                    //    check if no parameters given
+                    var params = (JSON.stringify(requestQuery) != '{}');
+                    // If we have &skip or ?skip, we delete it from the url
+                    var url = req.url.replace(/.skip=\d+/g, "");
+
+                    var linkToModel = req.host + ':' + req.port + url + (params ? '&' : '?') + 'skip=';
+
                     this.links = {
                         next: (_skip + _limit < cant ? linkToModel + (_skip + _limit) : ''),
-                        last: ( skipLast > -1 ) ? linkToModel + skipLast : '',
+                        last: ( _skip - _limit > -1 ) ? linkToModel + _skip - _limit : '',
                     };
                 }.bind(this)
             );
