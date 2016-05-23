@@ -37,7 +37,6 @@ class ResponseBuilder {
         const _takeAlias = _.partial(_.map, _, item => item.alias);
         const _populateAlias = (model, alias) => model.populate(alias);
 
-        var _many = false;
         var _addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
@@ -97,38 +96,20 @@ class ResponseBuilder {
      }
      */
 
+    /**
+     * Add one key/value pair to the meta object. To set the entire object at once, do it directly: builder.meta = meta
+     */
     addMeta(value) {
         _addValue(value, this.meta);
         return this; // Allows chaining
     }
 
-    addData(value) {
-        if (this.many()) {
-            if (_.isPlainObject(this.data)) this.data = [];
-            else if (_.isArray(this.data)) this.data = _.concat(this.data, value);
-            else new Error('Data is not an array. It should be, since many() returns true.');
-        } else {
-            if (_.isArray(this.data)) this.data = {};
-            else if (_.isPlainObject(this.data)) _addValue(value, this.data);
-            else new Error('Data is not an object. It should be, since many() returns false.');
-        }
-
-        return this; // Allows chaining
-    }
-
+    /**
+     * Add one key/value pair to the links object. To set the entire object at once, do it directly: builder.links = link
+     */
     addLink(value) {
         _addValue(value, this.links);
         return this; // Allows chaining
-    }
-
-    /**
-     * Is the client requesting many items or just one? Getter / setter
-     */
-    many(value) {
-        if (value) { // Acts as setter
-            _many = _.isBoolean(value) ? value : new Error('many() must receive a boolean.');
-            return this; // Allows chaining
-        } else return _many; // Acts as getter
     }
 }
 
@@ -145,6 +126,8 @@ class ResponseGET extends ResponseBuilder {
         const _model = _actionUtil.parse_Model(this.req);
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
+
+        var _many = false;
 
         this.findQuery = _.reduce(_.intersection(_populate, _takeAlias(_model.associations)), _populateAlias, _query);
 
@@ -176,6 +159,30 @@ class ResponseGET extends ResponseBuilder {
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {};
         }
+    }
+
+    addData(value) {
+        if (this.many()) {
+            if (_.isPlainObject(this.data)) this.data = [];
+            else if (_.isArray(this.data)) this.data = _.concat(this.data, value);
+            else new Error('Data is not an array. It should be, since many() returns true.');
+        } else {
+            if (_.isArray(this.data)) this.data = {};
+            else if (_.isPlainObject(this.data)) _addValue(value, this.data);
+            else new Error('Data is not an object. It should be, since many() returns false.');
+        }
+
+        return this; // Allows chaining
+    }
+
+    /**
+     * Is the client requesting many items or just one? Getter / setter
+     */
+    many(value) {
+        if (value) { // Acts as setter
+            _many = _.isBoolean(value) ? value : new Error('many() must receive a boolean.');
+            return this; // Allows chaining
+        } else return _many; // Acts as getter
     }
 }
 
