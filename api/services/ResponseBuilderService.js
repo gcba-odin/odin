@@ -131,6 +131,7 @@ class ResponseGET extends ResponseBuilder {
 
         this.findQuery = _.reduce(_.intersection(_populate, _takeAlias(_model.associations)), _populateAlias, _query);
 
+        // Don't forget to set 'many' in blueprints/find.js (ie, builder.many(true))
         if (this.many()) {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
