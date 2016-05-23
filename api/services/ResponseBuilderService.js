@@ -1,13 +1,19 @@
 "use strict";
 
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-const takeAlias = _.partial(_.map, _, item => item.alias);
-const populateAlias = (model, alias) => model.populate(alias);
 
 /**
- * This is a class that builds a response. That is, 
+ * This is a class that builds a response. It takes in the metadata and data that should go in the response and  
+ * outputs a properly structured response body (as an object).
+ * 
+ * Can be extended to support setting the response headers and returning the whole response object instead of just the  
+ * body, thus turning it into a proper response builder (rather than a mere response body builder, like it is now). 
+ * 
+ * This class is not meant to be instantiated as is; it's an abstract class. A subclass should provide the missing inputs 
+ * and configurations needed for a specific use case (ie, a response to a GET request may be nothing like a response to a  
+ * DELETE request), in order to build an automatically customized response body. The subclass is the one that should be 
+ * made available for use, via the module.exports object.
+ * 
  */
-
 
 class ResponseBuilder {
     constructor(req, res) {
@@ -24,6 +30,11 @@ class ResponseBuilder {
         this.links = {};
         this.error = {};
         
+        const _emptyMeta = _.cloneDeep(this.meta);
+        const _actionUtil = require('sails/lib/hooks/blueprints/_actionUtil');
+        const _takeAlias = _.partial(_.map, _, item => item.alias);
+        const _populateAlias = (model, alias) => model.populate(alias);
+        
         var _many = false;
         var _addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
@@ -31,14 +42,18 @@ class ResponseBuilder {
                 target[value[0]] = value[1];
             }
         }
-        var _emptyMeta = _.cloneDeep(this.meta);
     }
     
+    /**
+     * Builds the response body. The subclasses must provide the custom building blocks.
+     */
     build() {
         let body;
         let elements = {meta: this.meta, error: this.error, data: this.data, links: this.links};
         
-        // Guard clauses
+        /**
+         * Guard clauses
+         */
         
         // if (!_.isInteger(this.status)) new Error('Status must be an integer.');
         // if (!_.isPlainObject(this.headers)) new Error('Headers is not an object.');
@@ -60,6 +75,10 @@ class ResponseBuilder {
         
         return body;
     }
+    
+    /**
+     * Getters/Setters
+     */
     
    /*
     addHeader(value) {
@@ -104,37 +123,43 @@ class ResponseBuilder {
         else return _many; // Acts as getter         
     }
 }
+
+
+/**
+ * A class that builds a response to a GET request. Subclasses ResponseBuilder, providing its own meta and links objects.
+ */
  
-class GetResponse extends ResponseBuilder {
+class ResponseGET extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
             
-        this.model = actionUtil.parseModel(this.req);
-        this.fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        this.populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
-        this.findQuery = _.reduce(_.intersection(this.populate, takeAlias(this.model.associations)), populateAlias, this.query);
+        const _model = _actionUtil.parse_Model(this.req);
+        const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+        const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
+        
+        this.findQuery = _.reduce(_.intersection(_populate, _takeAlias(_model.associations)), _populateAlias, _query);
 
         if (this.many()) { 
-            this.where = actionUtil.parseCriteria(this.req);
-            this.limit = actionUtil.parseLimit(this.req);
-            this.skip = this.req.param('page') * this.limit || actionUtil.parseSkip(this.req);
-            this.sort = actionUtil.parseSort(this.req);
-            this.quert = this.model.find(null, this.fields.length > 0 ? {select: this.fields} : null).where(this.where).limit(this.limit).skip(this.skip).sort(this.sort);
+            const _where = _actionUtil.parseCriteria(this.req);
+            const _limit = _actionUtil.parseLimit(this.req);
+            const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
+            const _sort = _actionUtil.parseSort(this.req);
+            const _query = _model.find(null, _fields.length > 0 ? {select: _fields} : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
             
             this.meta = _.assign(this.meta, {
-                criteria: this.where,
-                limit: this.limit,
-                start: this.skip,
-                end: this.skip + this.limit,
-                page: Math.floor(this.skip / this.limit)
+                criteria: _where,
+                limit: _limit,
+                start: _skip,
+                end: _skip + _limit,
+                page: Math.floor(_skip / _limit)
             });
             
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {};
         }
         else {
-            this.pk = actionUtil.requirePk(this.req);
-            this.query = this.model.find(this.pk, this.fields.length > 0 ? {select: this.fields} : null);
+            const _pk = _actionUtil.requirePk(this.req);
+            const _query = _model.find(_pk, _fields.length > 0 ? {select: _fields} : null);
             
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {};
@@ -142,7 +167,7 @@ class GetResponse extends ResponseBuilder {
     }  
 }
  
-class PostResponse extends ResponseBuilder {
+class ResponsePOST extends ResponseBuilder {
      constructor(req, res) {
          super(req, res);
          
@@ -150,35 +175,35 @@ class PostResponse extends ResponseBuilder {
      }
 }
 
-class PatchResponse extends ResponseBuilder {
+class ResponsePATCH extends ResponseBuilder {
      constructor(req, res) {
          super(req, res);
      }
 }
 
-class DeleteResponse extends ResponseBuilder {
+class ResponseDELETE extends ResponseBuilder {
      constructor(req, res) {
          super(req, res);
      }
 }
 
-class HeadResponse extends ResponseBuilder {
+class ResponseHEAD extends ResponseBuilder {
      constructor(req, res) {
          super(req, res);
      }
 }
 
-class OptionsResponse extends ResponseBuilder {
+class ResponseOPTIONS extends ResponseBuilder {
      constructor(req, res) {
          super(req, res);
      }
 }
 
 module.exports = {
-     GetResponse,
-     PostResponse,
-     PatchResponse,
-     DeleteResponse,
-     HeadResponse,
-     OptionsResponse
+     ResponseGET,
+     ResponsePOST,
+     ResponsePATCH,
+     ResponseDELETE,
+     ResponseHEAD,
+     ResponseOPTIONS
 }
