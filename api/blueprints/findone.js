@@ -18,8 +18,14 @@ module.exports = (req, res) => {
   const populate = req.param('populate') ? req.param('populate').replace(/ /g, '').split(',') : [];
   const Model = actionUtil.parseModel(req);
   const pk = actionUtil.requirePk(req);
-  const query = Model.find(pk, fields.length > 0 ? {select: fields} : null);
+  const query = Model.find(pk, fields.length > 0 ? {
+    select: fields
+  } : null);
   const findQuery = _.reduce(_.intersection(populate, takeAliases(Model.associations)), populateAliases, query);
+
+  // Create Builder instance here, then execute findQuery off it (ie, builder.findQuery)
+  // Then save the instance in the config object (the one with the 'root' key)
+  // And move over to the response file to finish the response off
 
   findQuery
     .then(record => record[0] ? res.ok(record[0]) : res.notFound())

@@ -22,12 +22,14 @@ module.exports = (req, res) => {
   const limit = actionUtil.parseLimit(req);
   const skip = req.param('page') * limit || actionUtil.parseSkip(req);
   const sort = actionUtil.parseSort(req);
-  const query = Model.find(null, fields.length > 0 ? {select: fields} : null).where(where).limit(limit).skip(skip).sort(sort);
+  const query = Model.find(null, fields.length > 0 ? {
+    select: fields
+  } : null).where(where).limit(limit).skip(skip).sort(sort);
   const findQuery = _.reduce(_.intersection(populate, takeAlias(Model.associations)), populateAlias, query);
 
- // Create Builder instance here, then execute findQuery off it
- // Then save the instance in the config object (the one with the 'root' key)
- // And move over to the response file to finish the response off
+  // Create Builder instance here, then execute findQuery off it (ie, builder.findQuery)
+  // Then save the instance in the config object (the one with the 'root' key)
+  // And move over to the response file to finish the response off
 
   findQuery
     .then(records => [records, {
