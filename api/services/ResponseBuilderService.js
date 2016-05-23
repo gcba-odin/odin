@@ -16,7 +16,7 @@
  * See also lodash documentation: https://lodash.com/docs
  *
  */
-// var pluralize = require('pluralize');
+const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ResponseBuilder {
@@ -178,12 +178,15 @@ class ResponseGET extends ResponseBuilder {
             );
         } else {
             const _pk = _actionUtil.requirePk(this.req);
+            const model = pluralize(_model.adapter.identity);
             _query = _model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
 
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
-            this.links = {};
+            this.links = {
+                all:  req.host + ':' + req.port + '/'+ model
+            };
         }
         this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(_model.associations)), this._populateAlias, _query);
 
