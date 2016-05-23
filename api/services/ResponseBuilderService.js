@@ -16,6 +16,7 @@
  * See also lodash documentation: https://lodash.com/docs
  *
  */
+const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ResponseBuilder {
     constructor(req, res) {
@@ -32,12 +33,11 @@ class ResponseBuilder {
         this.links = {};
         this.error = {};
 
-        const _emptyMeta = _.cloneDeep(this.meta);
-        const _actionUtil = require('sails/lib/hooks/blueprints/_actionUtil');
-        const _takeAlias = _.partial(_.map, _, item => item.alias);
-        const _populateAlias = (model, alias) => model.populate(alias);
+        this._emptyMeta = _.cloneDeep(this.meta);
+        this._takeAlias = _.partial(_.map, _, item => item.alias);
+        this._populateAlias = (model, alias) => model.populate(alias);
 
-        var _addValue = function(value, target) {
+        this._addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -80,7 +80,8 @@ class ResponseBuilder {
         } else {
             if (!_.isPlainObject(this.error)) new Error('Error is not an object.');
             body = _.omit(elements, 'data');
-        };
+        }
+        ;
 
         return body;
     }
@@ -91,8 +92,8 @@ class ResponseBuilder {
 
     /*
      addHeader(value) {
-         _addValue(value, this.headers);
-         return this; // Allows chaining
+     _addValue(value, this.headers);
+     return this; // Allows chaining
      }
      */
 
@@ -120,26 +121,27 @@ class ResponseBuilder {
  */
 
 class ResponseGET extends ResponseBuilder {
-    constructor(req, res) {
+    constructor(req, res, many) {
         super(req, res);
 
-        const _model = _actionUtil.parse_Model(this.req);
+        var _query = '';
+
+        const _model = _actionUtil.parseModel(this.req);
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
-
-        var _many = false;
-
-        this.findQuery = _.reduce(_.intersection(_populate, _takeAlias(_model.associations)), _populateAlias, _query);
+        this._many = many;
 
         // Don't forget to set 'many' in blueprints/find.js (ie, builder.many(true))
+
         if (this.many()) {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
             const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
             const _sort = _actionUtil.parseSort(this.req);
-            const _query = _model.find(null, _fields.length > 0 ? {
+            _query = _model.find(null, _fields.length > 0 ? {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
+
 
             this.meta = _.assign(this.meta, {
                 criteria: _where,
@@ -153,13 +155,15 @@ class ResponseGET extends ResponseBuilder {
             this.links = {};
         } else {
             const _pk = _actionUtil.requirePk(this.req);
-            const _query = _model.find(_pk, _fields.length > 0 ? {
+            _query = _model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
 
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {};
         }
+        this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(_model.associations)), this._populateAlias, _query);
+
     }
 
     addData(value) {
@@ -181,9 +185,9 @@ class ResponseGET extends ResponseBuilder {
      */
     many(value) {
         if (value) { // Acts as setter
-            _many = _.isBoolean(value) ? value : new Error('many() must receive a boolean.');
+            this._many = _.isBoolean(value) ? value : new Error('many() must receive a boolean.');
             return this; // Allows chaining
-        } else return _many; // Acts as getter
+        } else return this._many; // Acts as getter
     }
 }
 
