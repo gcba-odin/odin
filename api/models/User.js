@@ -62,18 +62,6 @@ module.exports = {
             collection: 'dataset',
             via: 'createdBy'
         },
-        
-        //TODO: test this
-        readAttributes: function() {
-            console.log(this.toObject());
-            console.log(this.toJSON());
-            console.log(this.attributes);
-            console.log(this);
-            // let obj = this.toObject();
-            // delete obj.password;
-            // return obj;
-            return 'obj';
-        },
 
         fullName() {
             return this.firstName + ' ' + this.lastName;
@@ -91,7 +79,7 @@ module.exports = {
             }, this);
 
             return obj;
-        },
+        }
     },
 
     beforeUpdate(values, next) {
