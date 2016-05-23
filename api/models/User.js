@@ -69,15 +69,15 @@ module.exports = {
 
         toJSON() {
             let obj = this.toObject();
-            let hidden = sails.config.models.attributes.hidden;
-            let readOnly = sails.config.models.attributes.readOnly;
-
-            let merged = _.concat(hidden, readOnly);
-
-            merged.forEach(function(element) {
-                delete obj[element];
-            }, this);
-
+            // let hidden = sails.config.models.attributes.hidden;
+            // let readOnly = sails.config.models.attributes.readOnly;
+            //
+            // let merged = _.concat(hidden, readOnly);
+            //
+            // merged.forEach(function(element) {
+            //     delete obj[element];
+            // }, this);
+            delete obj.password;
             return obj;
         }
     },
