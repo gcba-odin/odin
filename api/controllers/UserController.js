@@ -17,7 +17,7 @@ module.exports = {
     login(req, res) {
         passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
     },
-    
+
     /**
      * Accept JSON Web Token and updates with new one
      * @param req
@@ -31,5 +31,18 @@ module.exports = {
         res.ok({
             token: CipherService.jwt.encodeSync({id: oldDecoded.id})
         });
+    },
+    foo(req, res){
+        var methods = (OptionsMethodsService.getMethods.collectionMethods());
+        // Key has the function that returns the parameters & value has the HTTP verb
+        var methodsArray = [];
+        _.forEach(methods, function (key, methodVerb) {
+            methodsArray.push({
+                "verb": methodVerb,
+                "url": req.path,
+                "parameters": key(User)
+            });
+        });
+        console.log(methodsArray);
     }
 };

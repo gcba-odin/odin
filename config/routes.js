@@ -22,7 +22,7 @@ module.exports = {
         
         'PATCH /users/:id' : { blueprint: 'update', model: 'user' },
         'HEAD /users/:id': { controller: 'Head', action: 'Head', model: 'user'},
-        // 'OPTIONS /users/:id': { blueprinst: 'update', model: 'user' },
+        'OPTIONS /users/:id': { controller : 'user', model: 'user', action: 'foo' },
         
         
         // Organizations

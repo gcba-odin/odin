@@ -239,22 +239,30 @@ class ResponseDELETE extends ResponseBuilder {
     }
 }
 
-class ResponseHEAD extends ResponseBuilder {
-    constructor(req, res) {
-        super(req, res);
-    }
-}
+// class ResponseHEAD extends ResponseBuilder {
+//     constructor(req, res) {
+//         super(req, res);
+//     }
+// }
 
 class ResponseOPTIONS extends ResponseBuilder {
-    constructor(req, res, many) {
+    //Constructor get the methods to build the parameters response body
+    //Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
+    constructor(req, res, methods, headers={}, count=false) {
         super(req, res);
-        //Check if the request contains a collection
-        if (many) {
-            var verbs = ['GET','POST',OPTIONS,]
-        }
-        else {
-
-        }
+        var model = _actionUtil.parseModel(req);
+        //this will be the array containing all the HTTP verbs, ie. [ { GET : { id : { type:string } } } ]
+        var methodsArray = [];
+        // Key has the function that returns the parameters & value has the HTTP verb
+        _.forEach(methods, function (key, methodVerb) {
+            //TODO: headers: {?}, we can set it on the model in the getAttributes and setAttributes.
+            methodsArray.push({
+                "verb": methodVerb,
+                "url": req.path,
+                "parameters": key(model)
+            });
+        });
+        this.methods = methodsArray;
     }
 }
 
@@ -263,6 +271,6 @@ module.exports = {
     ResponsePOST,
     ResponsePATCH,
     ResponseDELETE,
-    ResponseHEAD,
+    // ResponseHEAD,
     ResponseOPTIONS
-}
+};
