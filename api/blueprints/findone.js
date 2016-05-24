@@ -37,4 +37,5 @@ module.exports = (req, res) => {
         ] : res.notFound())
         .spread(res.ok)
         .catch(res.negotiate);
+    //TODO: Check 'Unhandled rejection Error: Can't set headers after they are sent.' Error when sending a non existing ID
 };

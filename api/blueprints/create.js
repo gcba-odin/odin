@@ -1,6 +1,6 @@
 "use strict";
 
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const Response = require('../services/ResponseBuilderService');
 
 /**
  * Create Record
@@ -9,11 +9,13 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
  * An API call to create and return a single model instance using the specified parameters.
  */
 module.exports = (req, res) => {
-  const Model = actionUtil.parseModel(req);
-  const values = actionUtil.parseValues(req);
+    var builder = new Response.ResponsePOST(req, res);
 
-  Model
-    .create(_.omit(values, 'id'))
-    .then(res.created)
-    .catch(res.negotiate);
+    builder.create
+        .then(records => [records, {
+            meta: builder.meta,
+            links: builder.links
+        }])
+        .spread(res.created)
+        .catch(res.negotiate);
 };

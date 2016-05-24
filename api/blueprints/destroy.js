@@ -1,6 +1,6 @@
 "use strict";
 
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const Response = require('../services/ResponseBuilderService');
 
 /**
  * Destroy One Record
@@ -9,11 +9,14 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
  * Destroys the single model instance with the specified `id` from the data adapter for the given model if it exists.
  */
 module.exports = (req, res) => {
-  const Model = actionUtil.parseModel(req);
-  const pk = actionUtil.requirePk(req);
-
-  Model
-    .destroy(pk)
-    .then(records => records[0] ? res.ok(records[0]) : res.notFound())
-    .catch(res.negotiate);
+    var builder = new Response.ResponseDELETE(req, res);
+    builder.destroy
+        .then(record => record[0] ? [
+            {
+                meta: builder.meta,
+                links: builder.links
+            }
+        ] : res.notFound())
+        .spread(res.deleted)
+        .catch(res.negotiate);
 };

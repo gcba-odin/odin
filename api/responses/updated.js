@@ -10,13 +10,15 @@
  */
 
 module.exports = function (data, config) {
-  const response = _.assign({
-    statusCode: '200',
-    statusMessage:'OK',
-    code: _.get(config, 'code', 'UPDATED'),
-    message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
-  }, _.get(config, 'root', {}));
+    const response = _.assign({
+        meta: _.get(config, 'meta', {}),
+        links: _.get(config, 'links', {})
+        // statusCode: '200',
+        // statusMessage:'OK',
+        // code: _.get(config, 'code', 'UPDATED'),
+        // message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
+    });
 
-  this.res.status(200);
-  this.res.jsonx(response);
+    this.res.status(200);
+    this.res.jsonx(response);
 };

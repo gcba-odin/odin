@@ -1,6 +1,6 @@
 "use strict";
 
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const Response = require('../services/ResponseBuilderService');
 
 /**
  * Update One Record
@@ -9,12 +9,15 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
  * An API call to update a model instance with the specified `id`, treating the other unbound parameters as attributes.
  */
 module.exports = (req, res) => {
-  const Model = actionUtil.parseModel(req);
-  const pk = actionUtil.requirePk(req);
-  const values = actionUtil.parseValues(req);
+    var builder = new Response.ResponsePATCH(req, res);
 
-  Model
-    .update(pk, _.omit(values, 'id'))
-    .then(records => records[0] ? res.updated() : res.notFound())
-    .catch(res.negotiate);
+    builder.update
+        .then(record => record[0] ? [
+            record[0], {
+                meta: builder.meta,
+                links: builder.links
+            }
+        ] : res.notFound())
+        .spread(res.updated)
+        .catch(res.negotiate);
 };

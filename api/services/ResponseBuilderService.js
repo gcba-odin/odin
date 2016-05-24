@@ -18,7 +18,7 @@
  */
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-
+//TODO: Extract common variables on parent class ResponseBuilder, ie. model?
 class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
@@ -152,7 +152,7 @@ class ResponseGET extends ResponseBuilder {
                 page: Math.floor(_skip / _limit)
             });
 
-            //If no criteria
+            //If criteria was given, we added to the meta
             if (JSON.stringify(_where) != '{}') {
                 this.meta = _.assign(this.meta, {
                     criteria: _where
@@ -172,20 +172,20 @@ class ResponseGET extends ResponseBuilder {
 
                     this.links = {
                         next: (_skip + _limit < cant ? linkToModel + (_skip + _limit) : ''),
-                        last: ( _skip - _limit > -1 ) ? linkToModel + _skip - _limit : '',
+                        last: ( _skip - _limit > -1 ) ? linkToModel + (_skip - _limit) : ''
                     };
                 }.bind(this)
             );
         } else {
             const _pk = _actionUtil.requirePk(this.req);
-            const model = pluralize(_model.adapter.identity);
+            const modelName = pluralize(_model.adapter.identity);
             _query = _model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
 
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {
-                all:  req.host + ':' + req.port + '/'+ model
+                all: req.host + ':' + req.port + '/' + modelName
             };
         }
         this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(_model.associations)), this._populateAlias, _query);
@@ -212,18 +212,30 @@ class ResponsePOST extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
+        const _model = _actionUtil.parseModel(req);
+        const _values = _actionUtil.parseValues(req);
+        this.create = _model.create(_.omit(_values, 'id'));
     }
 }
 
 class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
+        const _model = _actionUtil.parseModel(req);
+        const _pk = _actionUtil.requirePk(req);
+        const _values = _actionUtil.parseValues(req);
+
+        this.update = _model.update(_pk, _.omit(_values, 'id'))
+
     }
 }
 
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
+        const _model = _actionUtil.parseModel(req);
+        const _pk = _actionUtil.requirePk(req);
+        this.destroy = _model.destroy(_pk)
     }
 }
 
@@ -234,8 +246,15 @@ class ResponseHEAD extends ResponseBuilder {
 }
 
 class ResponseOPTIONS extends ResponseBuilder {
-    constructor(req, res) {
+    constructor(req, res, many) {
         super(req, res);
+        //Check if the request contains a collection
+        if (many) {
+            var verbs = ['GET','POST',OPTIONS,]
+        }
+        else {
+
+        }
     }
 }
 
