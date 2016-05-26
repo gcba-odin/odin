@@ -8,12 +8,15 @@
  */
 
 module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_INTERNAL_SERVER_ERROR'),
-    message: _.get(config, 'message', 'Something bad happened on the server'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
-
-  this.res.status(500);
-  this.res.jsonx(response);
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_INTERNAL_SERVER_ERROR'),
+        message: _.get(config, 'message', 'Something bad happened on the server'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
+    res.set({
+        'Content-Type': 'application/json',
+        'Accept-Charset': 'utf-8'
+    });
+    this.res.status(500);
+    this.res.send(response);
 };

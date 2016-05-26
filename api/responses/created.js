@@ -19,6 +19,10 @@ module.exports = function (data, config) {
     //     message: _.get(config, 'message', 'The request has been fulfilled and resulted in a new resource being created'),
     //     data: data || {}
     // }, _.get(config, 'root', {}));
+    res.set({
+        'Content-Type': 'application/json',
+        'Accept-Charset': 'utf-8'
+    });
     this.res.status(201);
-    this.res.jsonx(response);
+    this.res.send(response);
 };

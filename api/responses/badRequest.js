@@ -9,12 +9,16 @@
  */
 
 module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_BAD_REQUEST'),
-    message: _.get(config, 'message', 'The request cannot be fulfilled due to bad syntax'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_BAD_REQUEST'),
+        message: _.get(config, 'message', 'The request cannot be fulfilled due to bad syntax'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
 
-  this.res.status(400);
-  this.res.jsonx(response);
+    res.set({
+        'Content-Type': 'application/json',
+        'Accept-Charset': 'utf-8'
+    });
+    this.res.status(400);
+    this.res.send(response);
 };

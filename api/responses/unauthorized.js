@@ -9,12 +9,16 @@
  */
 
 module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_UNAUTHORIZED'),
-    message: _.get(config, 'message', 'Missing or invalid authentication token'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_UNAUTHORIZED'),
+        message: _.get(config, 'message', 'Missing or invalid authentication token'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
 
-  this.res.status(401);
-  this.res.jsonx(response);
+    res.set({
+        'Content-Type': 'application/json',
+        'Accept-Charset': 'utf-8'
+    });
+    this.res.status(401);
+    this.res.send(response);
 };
