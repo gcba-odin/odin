@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['User', 'Organization', 'Category', 'Status', 'Database', 'Dataset', 'Filetype', 'File'],
+        order: ['User', 'Organization', 'Category', 'Status', 'Database', 'Filetype', 'File', 'UpdateFrequency', 'Tag', 'Dataset', 'Config'],
         User: [{
             id: 'dogPzIz9',
             username: 'admin',
@@ -253,6 +253,261 @@ module.exports = {
             collection: 'ExampleCollection',
             url: 'http://i.imgur.com/u7CUz6v.png'
         }],
+        Filetype: [{
+            id: 'sWRhpRV',
+            name: 'csv'
+        }, {
+            id: 'tWRhpRV',
+            name: 'html'
+        }, {
+            id: 'uWRhpRV',
+            name: 'ics'
+        }, {
+            id: 'vWRhpRV',
+            name: 'pdf'
+        }, {
+            id: 'wWRhpRV',
+            name: 'rar'
+        }, {
+            id: 'xWRhpRV',
+            name: 'shp'
+        }, {
+            id: 'yWRhpRV',
+            name: 'xls'
+        }, {
+            id: 'zWRhpRV',
+            name: 'xml'
+        }, {
+            id: '0WRhpRV',
+            name: 'zip'
+        }],
+        File: [{
+            id: 'sWRhpRa',
+            name: 'File 1',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:01+03',
+            models: {
+                type: {
+                    name: 'csv'
+                },
+                status: {
+                    name: 'Draft'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'tWRhpRb',
+            name: 'File 2',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:02+03',
+            models: {
+                type: {
+                    name: 'html'
+                },
+                status: {
+                    name: 'Under Review'
+                },
+                organization: {
+                    name: 'Umbrella Corp'
+                },
+                dataset: {
+                    name: 'Dataset 2'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'uWRhpRc',
+            name: 'File 3',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:03+03',
+            models: {
+                type: {
+                    name: 'ics'
+                },
+                status: {
+                    name: 'Rejected'
+                },
+                organization: {
+                    name: 'Oscorp'
+                },
+                dataset: {
+                    name: 'Dataset 3'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'vWRhpRd',
+            name: 'File 4',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:04+03',
+            models: {
+                type: {
+                    name: 'rar'
+                },
+                status: {
+                    name: 'Published'
+                },
+                organization: {
+                    name: 'Aperture Labs'
+                },
+                dataset: {
+                    name: 'Dataset 4'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'wWRhpRe',
+            name: 'File 5',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:05+03',
+            models: {
+                type: {
+                    name: 'pdf'
+                },
+                status: {
+                    name: 'Unpublished'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 5'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }],
+        UpdateFrequency: [{
+            id: 'tWRhpR2',
+            name: 'Eventual'
+        }, {
+            id: 'zWRhpR8',
+            name: 'Biannual'
+        }, {
+            id: 'sWRhpR1',
+            name: 'Annual'
+        }, {
+            id: 'wWRhpR5',
+            name: 'Semestral'
+        }, {
+            id: 'vWRhpR4',
+            name: 'Quarterly'
+        }, {
+            id: '0WRhpR9',
+            name: 'Bimonthly'
+        }, {
+            id: 'uWRhpR3',
+            name: 'Monthly'
+        }, {
+            id: 'yWRhpR7',
+            name: 'Weekly'
+        }, {
+            id: 'xWRhpR6',
+            name: 'Real Time'
+        }],
+        Tag: [{
+            id: 'tWRhpz2',
+            name: 'Tag 1',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'uWRhpz2',
+            name: 'Tag 2',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'vWRhpz2',
+            name: 'Tag 3',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'wWRhpz2',
+            name: 'Tag 4',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'xWRhpz2',
+            name: 'Tag 5',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'yWRhpz2',
+            name: 'Tag 6',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'zWRhpz2',
+            name: 'Tag 7',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'aWRhpz1',
+            name: 'Tag 8',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'bWRhpz2',
+            name: 'Tag 9',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }],
         Dataset: [{
             id: 'sWRhpRk',
             name: 'Dataset 1',
@@ -407,155 +662,68 @@ module.exports = {
                 }
             }
         }],
-        Filetype: [{
-            id: 'sWRhpRV',
-            name: 'csv'
-        }, {
-            id: 'tWRhpRV',
-            name: 'html'
-        }, {
-            id: 'uWRhpRV',
-            name: 'ics'
-        }, {
-            id: 'vWRhpRV',
-            name: 'pdf'
-        }, {
-            id: 'wWRhpRV',
-            name: 'rar'
-        }, {
-            id: 'xWRhpRV',
-            name: 'shp'
-        }, {
-            id: 'yWRhpRV',
-            name: 'xls'
-        }, {
-            id: 'zWRhpRV',
-            name: 'xml'
-        }, {
-            id: '0WRhpRV',
-            name: 'zip'
-        }],
-        File: [{
-            id: 'sWRhpRa',
-            name: 'File 1',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:01+03',
+        Config: [{
+            id: '1ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
             models: {
-                type: {
-                    name: 'csv'
-                },
-                status: {
-                    name: 'Draft'
-                },
-                organization: {
-                    name: 'ACME'
-                },
-                dataset: {
-                    name: 'Dataset 1'
-                },
                 createdBy: {
                     username: 'admin'
                 }
             }
         }, {
-            id: 'tWRhpRb',
-            name: 'File 2',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:02+03',
+            id: '2ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
             models: {
-                type: {
-                    name: 'html'
-                },
-                status: {
-                    name: 'Under Review'
-                },
-                organization: {
-                    name: 'Umbrella Corp'
-                },
-                dataset: {
-                    name: 'Dataset 2'
-                },
                 createdBy: {
                     username: 'admin'
                 }
             }
         }, {
-            id: 'uWRhpRc',
-            name: 'File 3',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:03+03',
+            id: '3ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
             models: {
-                type: {
-                    name: 'ics'
-                },
-                status: {
-                    name: 'Rejected'
-                },
-                organization: {
-                    name: 'Oscorp'
-                },
-                dataset: {
-                    name: 'Dataset 3'
-                },
                 createdBy: {
                     username: 'admin'
                 }
             }
         }, {
-            id: 'vWRhpRd',
-            name: 'File 4',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:04+03',
+            id: '4ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
             models: {
-                type: {
-                    name: 'rar'
-                },
-                status: {
-                    name: 'Published'
-                },
-                organization: {
-                    name: 'Aperture Labs'
-                },
-                dataset: {
-                    name: 'Dataset 4'
-                },
                 createdBy: {
                     username: 'admin'
                 }
             }
         }, {
-            id: 'wWRhpRe',
-            name: 'File 5',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:05+03',
+            id: '5ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
             models: {
-                type: {
-                    name: 'pdf'
-                },
-                status: {
-                    name: 'Unpublished'
-                },
-                organization: {
-                    name: 'ACME'
-                },
-                dataset: {
-                    name: 'Dataset 5'
-                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '6ogPzIz9',
+            description: 'An example config.',
+            type: 'string',
+            key: 'key',
+            value: 'value',
+            models: {
                 createdBy: {
                     username: 'admin'
                 }
