@@ -4,6 +4,7 @@
  * User
  * @description :: Model for storing users
  */
+
 var shortId = require('shortid');
 
 module.exports = {
@@ -111,34 +112,28 @@ module.exports = {
             type: 'object'
         },
     },
-    setAttributes()
-    {
-        return _.merge(
-            {
-                password: {
-                    type: 'string'
-                }
-            },this.baseAttributes)
-    }
-    ,
-    getAttributes()
-    {
-        return _.merge(
-            {
-                id: {
-                    type: 'string'
-                },
-                createdAt: {
-                    type: 'datetime'
-                },
-                updatedAt: {
-                    type: 'datetime'
-                }
-            },this.baseAttributes)
+    setAttributes() {
+        return _.merge({
+            password: {
+                type: 'string'
+            }
+        }, this.baseAttributes)
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
     },
 
-    beforeUpdate(values, next)
-    {
+    beforeUpdate(values, next) {
         if (false === values.hasOwnProperty('password')) return next();
         if (/^\$2[aby]\$[0-9]{2}\$.{53}$/.test(values.password)) return next();
 
@@ -148,11 +143,9 @@ module.exports = {
                 next();
             })
             .catch(next);
-    }
-    ,
+    },
 
-    beforeCreate(values, next)
-    {
+    beforeCreate(values, next) {
         if (false === values.hasOwnProperty('password')) return next();
 
         return HashService.bcrypt.hash(values.password)
@@ -162,5 +155,4 @@ module.exports = {
             })
             .catch(next);
     }
-}
-;
+};

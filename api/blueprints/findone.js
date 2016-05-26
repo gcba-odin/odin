@@ -29,12 +29,12 @@ module.exports = (req, res) => {
     // And move over to the response file to finish the response off
     var builder = new Response.ResponseGET(req, res, false);
     builder.findQuery
-        .then(record => record[0] ? [
+        .then(record => record[0] = [
             record[0], {
                 meta: builder.meta,
                 links: builder.links
             }
-        ] : res.notFound())
+        ])
         .spread(res.ok)
         .catch(res.negotiate);
     //TODO: Check 'Unhandled rejection Error: Can't set headers after they are sent.' Error when sending a non existing ID

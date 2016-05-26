@@ -6,14 +6,20 @@
  * Calls the appropriate custom response for a given error
  */
 
-module.exports = function (error) {
+module.exports = function(error) {
   const res = this.res;
   const code = _.get(error, 'code');
   const message = _.get(error, 'reason') || _.get(error, 'message');
   const root = _.get(error, 'root');
   const data = _.get(error, 'invalidAttributes') || _.omit(error, ['name', 'code', 'reason', 'message', 'root', 'status', 'oauthError']);
   const statusCode = _.get(error, 'status') || _.get(error, 'oauthError') || 500;
-  const config = {code, message, root};
+  const config = {
+    code,
+    message,
+    root
+  };
+
+  console.log('Negotiating error: ' + message + ', ' + JSON.stringify(code) + ', ' + JSON.stringify(data) + ', ' + JSON.stringify(root));
 
   if (statusCode === 401) return res.unauthorized(data, config);
   if (statusCode === 403) return res.forbidden(data, config);

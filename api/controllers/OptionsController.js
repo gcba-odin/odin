@@ -9,9 +9,9 @@ const Response = require('../services/ResponseBuilderService');
 module.exports = {
     collection(req, res) {
         var methods = (OptionsMethodsService.getMethods.collectionMethods());
-        var builder = new Response.ResponseOPTIONS(req,res,methods);
-        
-        return res.options();
+        var builder = new Response.ResponseOPTIONS(req, res, methods);
+
+        return res.ok;
     },
     // instance(req, res) {
     //     var model = actionUtil.parseModel(req);

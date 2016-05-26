@@ -12,12 +12,12 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePATCH(req, res);
 
     builder.update
-        .then(record => record[0] ? [
+        .then(record => record[0] = [
             record[0], {
                 meta: builder.meta,
                 links: builder.links
             }
-        ] : res.notFound())
+        ])
         .spread(res.updated)
         .catch(res.negotiate);
 };
