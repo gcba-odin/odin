@@ -18,6 +18,7 @@
  */
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+
 //TODO: Extract common variables on parent class ResponseBuilder, ie. model?
 class ResponseBuilder {
     constructor(req, res) {
@@ -34,6 +35,7 @@ class ResponseBuilder {
         this.links = {};
         this.error = {};
 
+        this._model = _actionUtil.parseModel(req);
         this._emptyMeta = _.cloneDeep(this.meta);
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
@@ -127,7 +129,6 @@ class ResponseGET extends ResponseBuilder {
 
         var _query = '';
 
-        const _model = _actionUtil.parseModel(this.req);
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
         this._many = many;
@@ -139,7 +140,9 @@ class ResponseGET extends ResponseBuilder {
             const _limit = _actionUtil.parseLimit(this.req);
             const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
             const _sort = _actionUtil.parseSort(this.req);
-            _query = _model.find(null, _fields.length > 0 ? {
+            const _page = Math.floor(_skip / _limit) + 1;
+            
+            _query = this._model.find(null, _fields.length > 0 ? {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
 
@@ -149,7 +152,7 @@ class ResponseGET extends ResponseBuilder {
                 limit: _limit,
                 start: _skip,
                 end: _skip + _limit,
-                page: Math.floor(_skip / _limit)
+                page: _page
             });
 
             //If criteria was given, we added to the meta
@@ -162,24 +165,28 @@ class ResponseGET extends ResponseBuilder {
             var requestQuery = req.query;
             delete requestQuery.skip;
 
-            _model.count(requestQuery).exec(function count(err, cant) {
+            this._model.count(requestQuery).exec(function count(err, cant) {
                     //    check if no parameters given
                     var params = (JSON.stringify(requestQuery) != '{}');
                     // If we have &skip or ?skip, we delete it from the url
                     var url = req.url.replace(/.skip=\d+/g, "");
 
-                    var linkToModel = req.host + ':' + req.port + url + (params ? '&' : '?') + 'skip=';
-
-                    this.links = {
-                        next: (_skip + _limit < cant ? linkToModel + (_skip + _limit) : ''),
-                        last: ( _skip - _limit > -1 ) ? linkToModel + (_skip - _limit) : ''
-                    };
+                    const _linkToModel = req.host + ':' + req.port + url + (params ? '&' : '?') + 'skip=';
+                    const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
+                    const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
+                    const _first = (_page > 1 ? _linkToModel + 0 : undefined);
+                    const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
+                    
+                    if (_previous) this.links.previous = _previous;
+                    if (_next) this.links.next = _next;
+                    if (_first) this.links.first = _first;
+                    if (_last) this.links.last = _last;
                 }.bind(this)
             );
         } else {
             const _pk = _actionUtil.requirePk(this.req);
-            const modelName = pluralize(_model.adapter.identity);
-            _query = _model.find(_pk, _fields.length > 0 ? {
+            const modelName = pluralize(this._model.adapter.identity);
+            _query = this._model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
 
@@ -188,7 +195,7 @@ class ResponseGET extends ResponseBuilder {
                 all: req.host + ':' + req.port + '/' + modelName
             };
         }
-        this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(_model.associations)), this._populateAlias, _query);
+        this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
 
     }
 
@@ -212,20 +219,20 @@ class ResponsePOST extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _model = _actionUtil.parseModel(req);
+        
         const _values = _actionUtil.parseValues(req);
-        this.create = _model.create(_.omit(_values, 'id'));
+        this.create = this._model.create(_.omit(_values, 'id'));
     }
 }
 
 class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-        const _model = _actionUtil.parseModel(req);
+
         const _pk = _actionUtil.requirePk(req);
         const _values = _actionUtil.parseValues(req);
 
-        this.update = _model.update(_pk, _.omit(_values, 'id'))
+        this.update = this._model.update(_pk, _.omit(_values, 'id'));
 
     }
 }
@@ -233,9 +240,9 @@ class ResponsePATCH extends ResponseBuilder {
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-        const _model = _actionUtil.parseModel(req);
+
         const _pk = _actionUtil.requirePk(req);
-        this.destroy = _model.destroy(_pk)
+        this.destroy = this._model.destroy(_pk)
     }
 }
 
@@ -250,7 +257,7 @@ class ResponseOPTIONS extends ResponseBuilder {
     //Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, methods, headers={}, count=false) {
         super(req, res);
-        var model = _actionUtil.parseModel(req);
+
         //this will be the array containing all the HTTP verbs, ie. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
@@ -259,7 +266,7 @@ class ResponseOPTIONS extends ResponseBuilder {
             methodsArray.push({
                 "verb": methodVerb,
                 "url": req.path,
-                "parameters": key(model)
+                "parameters": key(this._model)
             });
         });
         this.methods = methodsArray;
