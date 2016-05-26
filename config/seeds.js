@@ -258,7 +258,7 @@ module.exports = {
             name: 'Dataset 1',
             description: 'An example dataset.',
             notes: 'Lorem ipsum dolor sit amet...',
-            visibility: 1,
+            visible: 1,
             starred: true,
             optional1: null,
             optional2: null,
@@ -287,7 +287,7 @@ module.exports = {
             name: 'Dataset 2',
             description: 'An example dataset.',
             notes: 'Lorem ipsum dolor sit amet...',
-            visibility: 1,
+            visible: 1,
             starred: true,
             optional1: null,
             optional2: null,
@@ -318,7 +318,7 @@ module.exports = {
             name: 'Dataset 3',
             description: 'An example dataset.',
             notes: 'Lorem ipsum dolor sit amet...',
-            visibility: 1,
+            visible: 1,
             starred: true,
             optional1: null,
             optional2: null,
@@ -349,7 +349,7 @@ module.exports = {
             name: 'Dataset 4',
             description: 'An example dataset.',
             notes: 'Lorem ipsum dolor sit amet...',
-            visibility: 1,
+            visible: 1,
             starred: true,
             optional1: null,
             optional2: null,
@@ -380,7 +380,7 @@ module.exports = {
             name: 'Dataset 5',
             description: 'An example dataset.',
             notes: 'Lorem ipsum dolor sit amet...',
-            visibility: 1,
+            visible: 1,
             starred: true,
             optional1: null,
             optional2: null,
@@ -441,7 +441,7 @@ module.exports = {
             description: 'An example file.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
+            visible: 1,
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 type: {
@@ -466,7 +466,7 @@ module.exports = {
             description: 'An example file.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
+            visible: 1,
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 type: {
@@ -491,7 +491,7 @@ module.exports = {
             description: 'An example file.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
+            visible: 1,
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 type: {
@@ -516,7 +516,7 @@ module.exports = {
             description: 'An example file.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
+            visible: 1,
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 type: {
@@ -541,7 +541,7 @@ module.exports = {
             description: 'An example file.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
-            visibility: 1,
+            visible: 1,
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 type: {
