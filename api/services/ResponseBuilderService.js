@@ -9,7 +9,7 @@
  * body, thus turning it into a proper response builder (rather than a mere response body builder, like it is now).
  *
  * This class is not meant to be instantiated as is; it's an abstract class. A subclass should provide the missing inputs
- * and configurations needed for a specific use case (ie, a response to a GET request may be nothing like a response to a
+ * and configurations needed for a specific use case (eg, a response to a GET request may be nothing like a response to a
  * DELETE request), in order to build an automatically customized response body. The subclass is the one that should be
  * made available for use, via the module.exports object.
  *
@@ -19,7 +19,7 @@
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
-//TODO: Extract common variables on parent class ResponseBuilder, ie. model?
+//TODO: Extract common variables on parent class ResponseBuilder, eg. model?
 class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
@@ -27,6 +27,8 @@ class ResponseBuilder {
 
         // this.status;
         // this.headers = {};
+        
+        // TODO: Find a way to include the correct code & message (eg, CREATED, Resource has been created.)
         this.meta = {
             code: '',
             message: ''
@@ -119,7 +121,7 @@ class ResponseBuilder {
 
 /**
  * A class that builds a response to a GET request. Subclasses ResponseBuilder, providing its own meta and links objects.
- * Data will be set externally (ie, builder.data = data) in the corresponding response file (ie, responses/ok.js).
+ * Data will be set externally (eg, builder.data = data) in the corresponding response file (eg, responses/ok.js).
  */
 
 class ResponseGET extends ResponseBuilder {
@@ -132,7 +134,7 @@ class ResponseGET extends ResponseBuilder {
         const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
         this._many = many;
 
-        // Don't forget to set 'many' in blueprints/find.js (ie, new Response.ResponseGET(req, res, true);
+        // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
 
         if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
@@ -145,7 +147,6 @@ class ResponseGET extends ResponseBuilder {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
 
-
             this.meta = _.assign(this.meta, {
                 // criteria: _where,
                 limit: _limit,
@@ -154,7 +155,7 @@ class ResponseGET extends ResponseBuilder {
                 page: _page
             });
 
-            // If criteria was given, we added to the meta
+            // If a criteria was given, add it to meta
             if (JSON.stringify(_where) != '{}') {
                 this.meta = _.assign(this.meta, {
                     criteria: _where
@@ -230,9 +231,7 @@ class ResponsePATCH extends ResponseBuilder {
 
         const _pk = _actionUtil.requirePk(this.req);
         const _values = _actionUtil.parseValues(this.req);
-
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
-
     }
 }
 
@@ -257,7 +256,7 @@ class ResponseOPTIONS extends ResponseBuilder {
     constructor(req, res, methods, headers={}, count=false) {
         super(req, res);
 
-        // This will be the array containing all the HTTP verbs, ie. [ { GET : { id : { type:string } } } ]
+        // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
         _.forEach(methods, function (key, methodVerb) {
