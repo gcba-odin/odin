@@ -12,12 +12,18 @@ module.exports = {
         // const fields = req.param('fields') ? req.param('fields').replace(/ /g, '').split(',') : [];
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
+        res.set({
+            'Content-Type': 'application/json',
+            'Accept-Charset': 'utf-8'
+        });
         if (id) {
-            model.findOne({id: id}).exec(function (err,record){
+            model.findOne({
+                id: id
+            }).exec(function(err, record) {
                 if (err) return res.negotiate(err);
-                if (!record) return res.notFound();
-                else return res.ok();
-                });
+                if (!record) return res.notFound;
+                else return res.ok;
+            });
         }
         return res.ok;
     }

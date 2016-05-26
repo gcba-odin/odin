@@ -9,7 +9,7 @@
  * Response body content may or may not be present.
  */
 
-module.exports = function (data, config) {
+module.exports = function(data, config) {
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {}),
@@ -19,6 +19,7 @@ module.exports = function (data, config) {
     //     message: _.get(config, 'message', 'The request has been fulfilled and resulted in a new resource being created'),
     //     data: data || {}
     // }, _.get(config, 'root', {}));
+
     this.res.set({
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'

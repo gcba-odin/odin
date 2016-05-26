@@ -8,7 +8,7 @@
  * Error code response for missing or invalid authentication token.
  */
 
-module.exports = function (data, config) {
+module.exports = function(data, config) {
     const response = _.assign({
         code: _.get(config, 'code', 'E_UNAUTHORIZED'),
         message: _.get(config, 'message', 'Missing or invalid authentication token'),

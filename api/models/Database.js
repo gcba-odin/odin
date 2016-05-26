@@ -4,6 +4,7 @@
  * Database
  * @description :: Model for storing Database records
  */
+
 var shortId = require('shortid');
 
 module.exports = {

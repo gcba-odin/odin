@@ -8,14 +8,14 @@
  * Domain validation errors, missing data, etc.
  */
 
-module.exports = function (data, config) {
+module.exports = function(data, config) {
     const response = _.assign({
         code: _.get(config, 'code', 'E_BAD_REQUEST'),
         message: _.get(config, 'message', 'The request cannot be fulfilled due to bad syntax'),
         data: data || {}
     }, _.get(config, 'root', {}));
 
-    res.set({
+    this.res.set({
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'
     });

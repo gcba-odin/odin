@@ -12,7 +12,8 @@ module.exports = {
         var headers = OptionsMethodsService.getHeaders(req.method);
         console.log(headers);
         var builder = new Response.ResponseOPTIONS(req,res,methods);
-        return res.options(builder);
+        // return res.options(builder);
+        return res.ok;
     },
     // instance(req, res) {
     //     var model = actionUtil.parseModel(req);

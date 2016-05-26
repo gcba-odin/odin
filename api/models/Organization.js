@@ -4,6 +4,7 @@
  * Organization
  * @description :: Model for storing Organization records
  */
+
 var shortId = require('shortid');
 
 module.exports = {

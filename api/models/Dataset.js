@@ -4,6 +4,7 @@
  * Dataset
  * @description :: Model for storing Dataset records
  */
+
 var shortId = require('shortid');
 
 module.exports = {
@@ -31,7 +32,7 @@ module.exports = {
             type: 'string',
             size: 500
         },
-        visibility: {
+        visible: {
             type: 'boolean'
         },
         starred: {
@@ -83,9 +84,6 @@ module.exports = {
         category: {
             model: 'category'
         },
-        createdBy: {
-            model: 'user'
-        },
         status: {
             model: 'status'
         },
@@ -93,6 +91,19 @@ module.exports = {
             collection: 'file',
             via: 'dataset'
         },
+        tags: {
+            collection: 'tag',
+            via: 'datasets',
+            dominant: true
+        },
+        owner: {
+            model: 'user',
+            required: true
+        },
+        createdBy: {
+            model: 'user'
+        },
+
         toJSON() {
             return this.toObject();
         }
