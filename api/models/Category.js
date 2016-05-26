@@ -4,10 +4,11 @@
  * Category
  * @description :: Model for storing Category records
  */
+
 var shortId = require('shortid');
 
 module.exports = {
-    // schema: true,
+    schema: true,
 
     attributes: {
         id: {
@@ -26,6 +27,11 @@ module.exports = {
         description: {
             type: 'string',
             size: 350
+        },
+        active: {
+            type: 'boolean',
+            required: true,
+            defaultsTo: false
         },
         createdBy: {
             model: 'user',

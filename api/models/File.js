@@ -4,6 +4,7 @@
  * File
  * @description :: Model for storing File records
  */
+
 var shortId = require('shortid');
 
 module.exports = {
@@ -45,6 +46,10 @@ module.exports = {
             model: 'filetype',
             required: true
         },
+        updateFrequency: {
+            model: 'updatefrequency',
+            required: true
+        },
         status: {
             model: 'status',
             required: true
@@ -55,6 +60,10 @@ module.exports = {
         },
         dataset: {
             model: 'dataset',
+            required: true
+        },
+        owner: {
+            model: 'user',
             required: true
         },
         createdBy: {
