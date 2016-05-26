@@ -261,6 +261,7 @@ class ResponseOPTIONS extends ResponseBuilder {
     //
     //     this.methods = methodsArray;
     // }
+
 }
 
 module.exports = {
