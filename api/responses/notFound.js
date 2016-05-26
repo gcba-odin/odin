@@ -9,15 +9,15 @@
  */
 
 module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_NOT_FOUND'),
-    message: _.get(config, 'message', 'The requested resource could not be found but may be available again in the future'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
-    res.set({
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_NOT_FOUND'),
+        message: _.get(config, 'message', 'The requested resource could not be found but may be available again in the future'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
+    this.res.set({
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'
     });
-  this.res.status(404);
-  this.res.send(response);
+    this.res.status(404);
+    this.res.send(response);
 };

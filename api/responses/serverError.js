@@ -13,7 +13,7 @@ module.exports = function (data, config) {
         message: _.get(config, 'message', 'Something bad happened on the server'),
         data: data || {}
     }, _.get(config, 'root', {}));
-    res.set({
+    this.res.set({
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'
     });

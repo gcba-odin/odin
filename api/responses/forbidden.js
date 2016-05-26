@@ -14,7 +14,7 @@ module.exports = function (data, config) {
     message: _.get(config, 'message', 'User not authorized to perform the operation'),
     data: data || {}
   }, _.get(config, 'root', {}));
-    res.set({
+    this.res.set({
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'
     });
