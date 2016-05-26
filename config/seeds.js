@@ -2,6 +2,23 @@ module.exports = {
     fixtures: {
         order: ['User', 'Organization', 'Category', 'Status', 'Database', 'Dataset', 'Filetype', 'File'],
         User: [{
+            id: 'dogPzIz9',
+            username: 'admin',
+            password: '123',
+            email: 'admin@super.com',
+            firstName: 'The',
+            lastName: 'Admin',
+            avatar: 'http://i.imgur.com/cuKC0Us.jpg',
+            active: true,
+            models: {
+                organization: {
+                    name: 'ACME'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
             id: 'dogPzIz8',
             username: 'henrywagner',
             password: '123',
@@ -10,8 +27,14 @@ module.exports = {
             lastName: 'Wagner',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            organization: '23TplPdS',
-            createdBy: 'dogPzIz8'
+            models: {
+                organization: {
+                    name: 'Umbrella Corp'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'nYrnfYEv',
             username: 'howardfoster',
@@ -21,8 +44,14 @@ module.exports = {
             lastName: 'Foster',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            organization: '23TplPdS',
-            createdBy: 'dogPzIz8'
+            models: {
+                organization: {
+                    name: 'Oscorp'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'a4vhAoFG',
             username: 'ashleychavez',
@@ -32,8 +61,14 @@ module.exports = {
             lastName: 'Chavez',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            organization: '23TplPdS',
-            createdBy: 'dogPzIz8'
+            models: {
+                organization: {
+                    name: 'ACME'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'hwX6aOr7',
             username: 'melissafrazier',
@@ -43,8 +78,14 @@ module.exports = {
             lastName: 'Frazier',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            organization: '23TplPdS',
-            createdBy: 'dogPzIz8'
+            models: {
+                organization: {
+                    name: 'Umbrella Corp'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'eWRhpRV',
             username: 'petermorrison',
@@ -54,8 +95,14 @@ module.exports = {
             lastName: 'Morrison',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            organization: '23TplPdS',
-            createdBy: 'dogPzIz8'
+            models: {
+                organization: {
+                    name: 'Aperture Labs'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Organization: [{
             id: 'eWRhpRV',
@@ -64,7 +111,11 @@ module.exports = {
             address: 'Example Ave. 254',
             active: true,
             parent: undefined,
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'dWRhpRV',
             name: 'Umbrella Corp',
@@ -72,7 +123,11 @@ module.exports = {
             address: 'Example Ave. 255',
             active: true,
             parent: undefined,
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'fWRhpRV',
             name: 'Star Labs',
@@ -80,7 +135,11 @@ module.exports = {
             address: 'Example Ave. 256',
             active: true,
             parent: undefined,
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'gWRhpRV',
             name: 'Aperture Labs',
@@ -88,7 +147,11 @@ module.exports = {
             address: 'Example Ave. 257',
             active: true,
             parent: undefined,
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'hWRhpRV',
             name: 'Oscorp',
@@ -96,40 +159,64 @@ module.exports = {
             address: 'Example Ave. 258',
             active: true,
             parent: undefined,
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Category: [{
             id: 'iWRhpRV',
             name: 'Art',
             description: 'An example category.',
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'jWRhpRV',
             name: 'Science',
             description: 'An example category.',
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'kWRhpRV',
             name: 'Public Health',
             description: 'An example category.',
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'lWRhpRV',
             name: 'Technology',
             description: 'An example category.',
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'mWRhpRV',
             name: 'Other',
             description: 'An example category.',
-            createdBy: 'dogPzIz8'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Status: [{
             id: 'nWRhpRV',
             name: 'Draft'
         }, {
             id: 'oWRhpRV',
-            name: 'Under review'
+            name: 'Under Review'
         }, {
             id: 'pWRhpRV',
             name: 'Rejected'
@@ -184,9 +271,17 @@ module.exports = {
             optional9: undefined,
             optional10: undefined,
             publishedAt: '2011-01-01 00:00:01+03',
-            category: 'iWRhpRV',
-            status: 'nWRhpRV',
-            createdBy: 'dogPzIz8'
+            models: {
+                category: {
+                    name: 'Art'
+                },
+                status: {
+                    name: 'Draft'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'sWRhpRl',
             name: 'Dataset 2',
@@ -207,7 +302,17 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:02+03',
             category: 'jWRhpRV',
             status: 'oWRhpRV',
-            createdBy: 'dogPzIz8'
+            models: {
+                category: {
+                    name: 'Science'
+                },
+                status: {
+                    name: 'Under Review'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'sWRhpRm',
             name: 'Dataset 3',
@@ -228,7 +333,17 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:03+03',
             category: 'kWRhpRV',
             status: 'pWRhpRV',
-            createdBy: 'dogPzIz8'
+            models: {
+                category: {
+                    name: 'Public Health'
+                },
+                status: {
+                    name: 'Rejected'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'sWRhpRn',
             name: 'Dataset 4',
@@ -249,7 +364,17 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:04+03',
             category: 'lWRhpRV',
             status: 'qWRhpRV',
-            createdBy: 'dogPzIz8'
+            models: {
+                category: {
+                    name: 'Technology'
+                },
+                status: {
+                    name: 'Published'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'sWRhpRo',
             name: 'Dataset 5',
@@ -270,7 +395,17 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:05+03',
             category: 'mWRhpRV',
             status: 'rWRhpRV',
-            createdBy: 'dogPzIz8'
+            models: {
+                category: {
+                    name: 'Other'
+                },
+                status: {
+                    name: 'Unpublished'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Filetype: [{
             id: 'sWRhpRV',
@@ -308,11 +443,23 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visibility: 1,
             publishedAt: '2011-01-01 00:00:01+03',
-            type: 'sWRhpRV',
-            status: 'nWRhpRV',
-            organization: 'eWRhpRV',
-            dataset: 'sWRhpRk',
-            createdBy: 'dogPzIz8'
+            models: {
+                type: {
+                    name: 'csv'
+                },
+                status: {
+                    name: 'Draft'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'tWRhpRb',
             name: 'File 2',
@@ -321,11 +468,23 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visibility: 1,
             publishedAt: '2011-01-01 00:00:02+03',
-            type: 'tWRhpRV',
-            status: 'oWRhpRV',
-            organization: 'dWRhpRV',
-            dataset: 'sWRhpRl',
-            createdBy: 'dogPzIz8'
+            models: {
+                type: {
+                    name: 'html'
+                },
+                status: {
+                    name: 'Under Review'
+                },
+                organization: {
+                    name: 'Umbrella Corp'
+                },
+                dataset: {
+                    name: 'Dataset 2'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'uWRhpRc',
             name: 'File 3',
@@ -334,11 +493,23 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visibility: 1,
             publishedAt: '2011-01-01 00:00:03+03',
-            type: 'uWRhpRV',
-            status: 'pWRhpRV',
-            organization: 'fWRhpRV',
-            dataset: 'sWRhpRm',
-            createdBy: 'dogPzIz8'
+            models: {
+                type: {
+                    name: 'ics'
+                },
+                status: {
+                    name: 'Rejected'
+                },
+                organization: {
+                    name: 'Oscorp'
+                },
+                dataset: {
+                    name: 'Dataset 3'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'vWRhpRd',
             name: 'File 4',
@@ -347,11 +518,23 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visibility: 1,
             publishedAt: '2011-01-01 00:00:04+03',
-            type: 'vWRhpRV',
-            status: 'qWRhpRV',
-            organization: 'gWRhpRV',
-            dataset: 'sWRhpRn',
-            createdBy: 'dogPzIz8'
+            models: {
+                type: {
+                    name: 'rar'
+                },
+                status: {
+                    name: 'Published'
+                },
+                organization: {
+                    name: 'Aperture Labs'
+                },
+                dataset: {
+                    name: 'Dataset 4'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: 'wWRhpRe',
             name: 'File 5',
@@ -360,11 +543,23 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visibility: 1,
             publishedAt: '2011-01-01 00:00:05+03',
-            type: 'wWRhpRV',
-            status: 'rWRhpRV',
-            organization: 'hWRhpRV',
-            dataset: 'sWRhpRo',
-            createdBy: 'dogPzIz8'
+            models: {
+                type: {
+                    name: 'pdf'
+                },
+                status: {
+                    name: 'Unpublished'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 5'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }]
     }
 }
