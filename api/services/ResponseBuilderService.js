@@ -28,14 +28,14 @@ class ResponseBuilder {
         // this.status;
         // this.headers = {};
         this.meta = {
-            status: '',
+            code: '',
             message: ''
         };
         this.data = [];
         this.links = {};
         this.error = {};
 
-        this._model = _actionUtil.parseModel(req);
+        this._model = _actionUtil.parseModel(this.req);
         this._emptyMeta = _.cloneDeep(this.meta);
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
@@ -69,7 +69,7 @@ class ResponseBuilder {
         if (!_.isPlainObject(this.meta)) new Error('Meta is not an object.');
         if (!_.isPlainObject(this.links)) new Error('Links is not an object.');
         if (_.isEqual(this.meta, _emptyMeta)) new Error('Meta is empty.');
-        // if (_.isEmpty(this.links)) new Error('Links is empty.');
+        if (_.isEmpty(this.links)) new Error('Links is empty.');
 
         // this.res.set(this.headers);
 
@@ -84,7 +84,6 @@ class ResponseBuilder {
             if (!_.isPlainObject(this.error)) new Error('Error is not an object.');
             body = _.omit(elements, 'data');
         }
-        ;
 
         return body;
     }
@@ -155,23 +154,24 @@ class ResponseGET extends ResponseBuilder {
                 page: _page
             });
 
-            //If criteria was given, we added to the meta
+            // If criteria was given, we added to the meta
             if (JSON.stringify(_where) != '{}') {
                 this.meta = _.assign(this.meta, {
                     criteria: _where
                 });
             }
-            //Delete the skip query parameter
-            var requestQuery = req.query;
+            
+            // Delete the skip query parameter
+            var requestQuery = this.req.query;
             delete requestQuery.skip;
 
             this._model.count(requestQuery).exec(function count(err, cant) {
                     //    check if no parameters given
                     var params = (JSON.stringify(requestQuery) != '{}');
                     // If we have &skip or ?skip, we delete it from the url
-                    var url = req.url.replace(/.skip=\d+/g, "");
+                    var url = this.req.url.replace(/.skip=\d+/g, "");
 
-                    const _linkToModel = req.host + ':' + req.port + url + (params ? '&' : '?') + 'skip=';
+                    const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
                     const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
                     const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
                     const _first = (_page > 1 ? _linkToModel + 0 : undefined);
@@ -192,7 +192,7 @@ class ResponseGET extends ResponseBuilder {
 
             // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {
-                all: req.host + ':' + req.port + '/' + modelName
+                all: this.req.host + ':' + this.req.port + '/' + modelName
             };
         }
         this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
@@ -218,9 +218,8 @@ class ResponseGET extends ResponseBuilder {
 class ResponsePOST extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-
         
-        const _values = _actionUtil.parseValues(req);
+        const _values = _actionUtil.parseValues(this.req);
         this.create = this._model.create(_.omit(_values, 'id'));
     }
 }
@@ -229,8 +228,8 @@ class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _pk = _actionUtil.requirePk(req);
-        const _values = _actionUtil.parseValues(req);
+        const _pk = _actionUtil.requirePk(this.req);
+        const _values = _actionUtil.parseValues(this.req);
 
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
 
@@ -241,7 +240,7 @@ class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _pk = _actionUtil.requirePk(req);
+        const _pk = _actionUtil.requirePk(this.req);
         this.destroy = this._model.destroy(_pk)
     }
 }
@@ -253,22 +252,23 @@ class ResponseDELETE extends ResponseBuilder {
 // }
 
 class ResponseOPTIONS extends ResponseBuilder {
-    //Constructor get the methods to build the parameters response body
-    //Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
+    // Constructor get the methods to build the parameters response body
+    // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, methods, headers={}, count=false) {
         super(req, res);
 
-        //this will be the array containing all the HTTP verbs, ie. [ { GET : { id : { type:string } } } ]
+        // This will be the array containing all the HTTP verbs, ie. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
         _.forEach(methods, function (key, methodVerb) {
             //TODO: headers: {?}, we can set it on the model in the getAttributes and setAttributes.
             methodsArray.push({
                 "verb": methodVerb,
-                "url": req.path,
+                "url": this.req.path,
                 "parameters": key(this._model)
             });
         });
+        
         this.methods = methodsArray;
     }
 }
