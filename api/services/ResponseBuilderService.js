@@ -244,7 +244,7 @@ class ResponseDELETE extends ResponseBuilder {
 class ResponseOPTIONS extends ResponseBuilder {
     // Constructor get the methods to build the parameters response body
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
-    constructor(req, res, methods, headers = {}, count = false) {
+    constructor(req, res, methods, headers, count) { // It crashes if the constuctor has parameters with default values
         super(req, res);
 
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
