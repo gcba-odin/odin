@@ -24,10 +24,10 @@ class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
         this.res = res;
-        
+
         // this.status;
         // this.headers = {};
-        
+
         // TODO: Find a way to include the correct code & message (eg, CREATED, Resource has been created.)
         this.meta = {
             code: '',
@@ -42,7 +42,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function (value, target) {
+        this._addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -74,7 +74,7 @@ class ResponseBuilder {
         if (_.isEmpty(this.links)) new Error('Links is empty.');
 
         // this.res.set(this.headers);
-        
+
         /**
          * The actual body building
          */
@@ -142,7 +142,7 @@ class ResponseGET extends ResponseBuilder {
             const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
             const _sort = _actionUtil.parseSort(this.req);
             const _page = Math.floor(_skip / _limit) + 1;
-            
+
             _query = this._model.find(null, _fields.length > 0 ? {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
@@ -161,29 +161,28 @@ class ResponseGET extends ResponseBuilder {
                     criteria: _where
                 });
             }
-            
+
             // Delete the skip query parameter
             var requestQuery = this.req.query;
             delete requestQuery.skip;
 
             this._model.count(requestQuery).exec(function count(err, cant) {
-                    // check if no parameters given
-                    var params = (JSON.stringify(requestQuery) != '{}');
-                    // If we have &skip or ?skip, we delete it from the url
-                    var url = this.req.url.replace(/.skip=\d+/g, "");
+                // check if no parameters given
+                var params = (JSON.stringify(requestQuery) != '{}');
+                // If we have &skip or ?skip, we delete it from the url
+                var url = this.req.url.replace(/.skip=\d+/g, "");
 
-                    const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
-                    const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
-                    const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
-                    const _first = (_page > 1 ? _linkToModel + 0 : undefined);
-                    const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
-                    
-                    if (_previous) this.links.previous = _previous;
-                    if (_next) this.links.next = _next;
-                    if (_first) this.links.first = _first;
-                    if (_last) this.links.last = _last;
-                }.bind(this)
-            );
+                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
+                const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
+                const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
+                const _first = (_page > 1 ? _linkToModel + 0 : undefined);
+                const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
+
+                if (_previous) this.links.previous = _previous;
+                if (_next) this.links.next = _next;
+                if (_first) this.links.first = _first;
+                if (_last) this.links.last = _last;
+            }.bind(this));
         } else {
             const _pk = _actionUtil.requirePk(this.req);
             const modelName = pluralize(this._model.adapter.identity);
@@ -191,12 +190,11 @@ class ResponseGET extends ResponseBuilder {
                 select: _fields
             } : null);
 
-            // TODO: Add links (just like meta was added) ---> then uncomment the empty links check in ResponseBuilder
             this.links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
         }
-        
+
         this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
     }
 
@@ -218,7 +216,7 @@ class ResponseGET extends ResponseBuilder {
 class ResponsePOST extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-        
+
         const _values = _actionUtil.parseValues(this.req);
         this.create = this._model.create(_.omit(_values, 'id'));
     }
@@ -243,22 +241,16 @@ class ResponseDELETE extends ResponseBuilder {
     }
 }
 
-// class ResponseHEAD extends ResponseBuilder {
-//     constructor(req, res) {
-//         super(req, res);
-//     }
-// }
-
 class ResponseOPTIONS extends ResponseBuilder {
     // Constructor get the methods to build the parameters response body
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
-    constructor(req, res, methods, headers={}, count=false) {
+    constructor(req, res, methods, headers = {}, count = false) {
         super(req, res);
 
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function (key, methodVerb) {
+        _.forEach(methods, function(key, methodVerb) {
             //TODO: headers: {?}, we can set it on the model in the getAttributes and setAttributes.
             methodsArray.push({
                 "verb": methodVerb,
@@ -266,7 +258,7 @@ class ResponseOPTIONS extends ResponseBuilder {
                 "parameters": key(this._model)
             });
         });
-        
+
         this.methods = methodsArray;
     }
 }
@@ -276,6 +268,5 @@ module.exports = {
     ResponsePOST,
     ResponsePATCH,
     ResponseDELETE,
-    // ResponseHEAD,
     ResponseOPTIONS
 };
