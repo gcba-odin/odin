@@ -1,6 +1,5 @@
 "use strict";
 
-
 /**
  * This is a class that builds a response. It takes in the metadata and data that should go in the response and
  * outputs a properly structured response body (as an object).
@@ -16,6 +15,7 @@
  * See also lodash documentation: https://lodash.com/docs
  *
  */
+
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
@@ -74,7 +74,7 @@ class ResponseBuilder {
         if (_.isEmpty(this.links)) new Error('Links is empty.');
 
         // this.res.set(this.headers);
-
+        
         /**
          * The actual body building
          */
@@ -105,7 +105,7 @@ class ResponseBuilder {
      * Add one key/value pair to the meta object. To set the entire object at once, do it directly: builder.meta = meta
      */
     addMeta(value) {
-        _addValue(value, this.meta);
+        this._addValue(value, this.meta);
         return this; // Allows chaining
     }
 
@@ -113,7 +113,7 @@ class ResponseBuilder {
      * Add one key/value pair to the links object. To set the entire object at once, do it directly: builder.links = link
      */
     addLink(value) {
-        _addValue(value, this.links);
+        this._addValue(value, this.links);
         return this; // Allows chaining
     }
 }
@@ -167,7 +167,7 @@ class ResponseGET extends ResponseBuilder {
             delete requestQuery.skip;
 
             this._model.count(requestQuery).exec(function count(err, cant) {
-                    //    check if no parameters given
+                    // check if no parameters given
                     var params = (JSON.stringify(requestQuery) != '{}');
                     // If we have &skip or ?skip, we delete it from the url
                     var url = this.req.url.replace(/.skip=\d+/g, "");
@@ -196,8 +196,8 @@ class ResponseGET extends ResponseBuilder {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
         }
+        
         this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
-
     }
 
     addData(value) {
@@ -207,13 +207,12 @@ class ResponseGET extends ResponseBuilder {
             else new Error('Data is not an array. It should be, since many is true.');
         } else {
             if (_.isArray(this.data)) this.data = {};
-            else if (_.isPlainObject(this.data)) _addValue(value, this.data);
+            else if (_.isPlainObject(this.data)) this._addValue(value, this.data);
             else new Error('Data is not an object. It should be, since many is false.');
         }
 
         return this; // Allows chaining
     }
-
 }
 
 class ResponsePOST extends ResponseBuilder {
