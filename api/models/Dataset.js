@@ -108,7 +108,104 @@ module.exports = {
             return this.toObject();
         }
     },
-
+    baseAttributes: {
+        name: {
+            type: 'string'
+        },
+        description: {
+            type: 'email'
+        },
+        notes: {
+            type: 'string'
+        },
+        visible: {
+            type: 'boolean'
+        },
+        starred: {
+            type: 'boolean'
+        },
+        optional1: {
+            type: 'string',
+            size: 500
+        },
+        optional2: {
+            type: 'string',
+            size: 500
+        },
+        optional3: {
+            type: 'string',
+            size: 500
+        },
+        optional4: {
+            type: 'string',
+            size: 500
+        },
+        optional5: {
+            type: 'string',
+            size: 500
+        },
+        optional6: {
+            type: 'string',
+            size: 500
+        },
+        optional7: {
+            type: 'string',
+            size: 500
+        },
+        optional8: {
+            type: 'string',
+            size: 500
+        },
+        optional9: {
+            type: 'string',
+            size: 500
+        },
+        optional10: {
+            type: 'string',
+            size: 500
+        },
+        publishedAt: {
+            type: 'datetime'
+        },
+        category: {
+            model: 'category'
+        },
+        status: {
+            model: 'status'
+        },
+        files: {
+            collection: 'file',
+            via: 'dataset'
+        },
+        tags: {
+            collection: 'tag',
+            via: 'datasets',
+            dominant: true
+        },
+        owner: {
+            model: 'user',
+            required: true
+        },
+        createdBy: {
+            model: 'user'
+        },
+    },
+    setAttributes() {
+        return this.baseAttributes
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
+    },
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()
 };

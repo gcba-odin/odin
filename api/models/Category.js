@@ -46,6 +46,39 @@ module.exports = {
             return this.toObject();
         }
     },
+    baseAttributes: {
+        name: {
+            type: 'string'
+        },
+        description: {
+            type: 'email'
+        },
+        active: {
+            type: 'string'
+        },
+        createdBy: {
+            type: 'object'
+        },
+        datasets: {
+            type: 'object'
+        }
+    },
+    setAttributes() {
+        return this.baseAttributes
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
+    },
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()
