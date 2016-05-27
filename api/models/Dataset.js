@@ -17,8 +17,6 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15,
-            minLength: 14
         },
         name: {
             type: 'string',
@@ -28,13 +26,11 @@ module.exports = {
         },
         description: {
             type: 'string',
-            size: 350,
-            minLength: 3
+            size: 350
         },
         notes: {
             type: 'string',
-            size: 500,
-            minLength: 3
+            size: 500
         },
         visible: {
             type: 'boolean',
@@ -47,52 +43,42 @@ module.exports = {
         optional1: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional2: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional3: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional4: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional5: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional6: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional7: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional8: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional9: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         optional10: {
             type: 'string',
             size: 500,
-            minLength: 1
         },
         publishedAt: {
             type: 'datetime'
