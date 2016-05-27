@@ -3,7 +3,7 @@ custom:
   apiaryApiKey: 065280ba8b01fdbcbe986cd4602bb01f
   apiaryApiName: odin2
 dry-run: null
-hookfiles: null
+hookfiles: dredd.js
 language: nodejs
 sandbox: false
 server: ls
