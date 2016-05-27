@@ -54,14 +54,14 @@ module.exports = {
             'Authorization': 'JWT [token]',
             'Accepts': 'json'
         };
-        if (method == 'POST' || method == 'PATCH') {
-            return _.merge(
-                {
-                    'Content-Type': 'application/json'
-                },
-                headers
-            )
-        }
+        // if (method == 'POST' || method == 'PATCH') {
+        //     return _.merge(
+        //         {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         headers
+        //     )
+        // }
         return headers;
     }
 };

@@ -10,7 +10,6 @@ module.exports = {
     collection(req, res) {
         var methods = OptionsMethodsService.getMethods.collectionMethods();
         var headers = OptionsMethodsService.getHeaders(req.method);
-        console.log(headers);
         var builder = new Response.ResponseOPTIONS(req,res,methods);
         // return res.options(builder);
         return res.ok;
