@@ -13,8 +13,8 @@ module.exports = {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
         res.set({
-            'Content-Type': 'application/json',
-            'Accept-Charset': 'utf-8'
+            'Authorization': 'JWT [token]',
+            'Connection': 'keep-alive',
         });
         if (id) {
             model.findOne({
@@ -22,9 +22,9 @@ module.exports = {
             }).exec(function(err, record) {
                 if (err) return res.negotiate(err);
                 if (!record) return res.notFound;
-                else return res.ok;
+                else return res.send(200);
             });
         }
-        return res.ok;
+        return res.send(200);
     }
 };

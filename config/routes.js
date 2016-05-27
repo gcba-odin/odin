@@ -14,41 +14,17 @@ module.exports = {
         'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
 
-        'GET /users/first': {
-            blueprint: 'first',
-            model: 'user'
-        },
-        'HEAD /users/first': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'user'
-        },
+        'GET /users/first': {blueprint: 'first', model: 'user'},
+        'HEAD /users/first': {controller: 'Head', action: 'Head', model: 'user'},
 
-        'GET /users/last': {
-            blueprint: 'last',
-            model: 'user'
-        },
-        'HEAD /users/last': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'user'
-        },
+        'GET /users/last': {blueprint: 'last', model: 'user'},
+        'HEAD /users/last': {controller: 'Head', action: 'Head', model: 'user'},
 
-        'PATCH /users/:id': {
-            blueprint: 'update',
-            model: 'user'
-        },
-        'HEAD /users/:id': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'user'
-        },
-        'OPTIONS /users/:id': {
-            controller: 'user',
-            model: 'user',
-            action: 'foo'
-        },
+        'PATCH /users/:id': {blueprint: 'update', model: 'user'},
+        'HEAD /users/:id': {controller: 'Head', action: 'Head', model: 'user'},
+        // 'OPTIONS /users/:id': { controller : 'Option', model: 'user', action: 'collection' },
 
+        'OPTIONS /users': {controller: 'Options', model: 'user', action: 'collection'},
 
         // Organizations
 
@@ -186,8 +162,7 @@ module.exports = {
             action: 'Head',
             model: 'filetype'
         },
-
-        // 'OPTIONS /filetypes/:id': { blueprinst: 'update', model: 'filetype' },
+ // 'OPTIONS /filetypes/:id': { blueprinst: 'update', model: 'filetype' },
 
 
         // Files
@@ -260,7 +235,14 @@ module.exports = {
         // 'OPTIONS /databases/:id': { blueprinst: 'update', model: 'database' },
 
 
+        // Files
+
+        'POST /files/upload': 'File.upload',
+        'GET /files/download/:filename': 'File.download',
+
+
         // Datasets
+
 
         'GET /datasets/first': {
             blueprint: 'first',
@@ -292,7 +274,6 @@ module.exports = {
             model: 'dataset'
         },
         // 'OPTIONS /datasets/:id': { blueprinst: 'update', model: 'dataset' },
-
 
         // Tags
 
@@ -358,7 +339,6 @@ module.exports = {
             action: 'Head',
             model: 'updatefrequency'
         },
-
 
         // Configs
 

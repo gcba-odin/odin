@@ -5,7 +5,7 @@ module.exports = function (req, res) {
 
     model.find({limit: 1, sort: "createdAt ASC"}).exec(function (err, record) {
         if (err) return res.negotiate;
-        return res.ok(record);
+        return res.ok(record[0]);
     });
 
 };
