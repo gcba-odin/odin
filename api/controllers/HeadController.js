@@ -15,8 +15,6 @@ module.exports = {
         res.set({
             'Authorization': 'JWT [token]',
             'Connection': 'keep-alive',
-            'Content-Type': 'text/html',
-            'Content-Length': '0',
         });
         if (id) {
             model.findOne({
@@ -27,6 +25,7 @@ module.exports = {
                 else return res.send(200);
             });
         }
-        return res.send(200);
+        res.status = 200;
+        return res.end();
     }
 };
