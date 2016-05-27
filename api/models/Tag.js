@@ -31,6 +31,10 @@ module.exports = {
     createdBy: {
       model: 'user',
       required: true
+    },
+
+    toJSON() {
+      return this.toObject();
     }
   }
 };
