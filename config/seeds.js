@@ -169,7 +169,7 @@ module.exports = {
             id: 'iWRhpRV',
             name: 'Art',
             description: 'An example category.',
-            acttive: true,
+            active: true,
             models: {
                 createdBy: {
                     username: 'admin'
@@ -179,7 +179,7 @@ module.exports = {
             id: 'jWRhpRV',
             name: 'Science',
             description: 'An example category.',
-            acttive: true,
+            active: true,
             models: {
                 createdBy: {
                     username: 'admin'
@@ -189,7 +189,7 @@ module.exports = {
             id: 'kWRhpRV',
             name: 'Public Health',
             description: 'An example category.',
-            acttive: true,
+            active: true,
             models: {
                 createdBy: {
                     username: 'admin'
@@ -199,7 +199,7 @@ module.exports = {
             id: 'lWRhpRV',
             name: 'Technology',
             description: 'An example category.',
-            acttive: false,
+            active: false,
             models: {
                 createdBy: {
                     username: 'admin'
@@ -209,7 +209,7 @@ module.exports = {
             id: 'mWRhpRV',
             name: 'Other',
             description: 'An example category.',
-            acttive: false,
+            active: false,
             models: {
                 createdBy: {
                     username: 'admin'
