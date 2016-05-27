@@ -17,12 +17,14 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15
+            size: 15,
+            minLength: 14
         },
         name: {
             type: 'string',
             required: true,
-            size: 150
+            size: 150,
+            minLength: 1
         },
         files: {
             collection: 'file',

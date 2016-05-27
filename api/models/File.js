@@ -17,27 +17,34 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15
+            size: 15,
+            minLength: 14
         },
         name: {
             type: 'string',
             required: true,
-            size: 150
+            size: 150,
+            minLength: 1
         },
         description: {
             type: 'string',
-            size: 350
+            size: 350,
+            minLength: 3
         },
         notes: {
             type: 'string',
-            size: 500
+            size: 500,
+            minLength: 3
         },
         url: {
             type: 'string',
-            size: 500
+            url: true,
+            size: 500,
+            minLength: 3
         },
         visible: {
-            type: 'boolean'
+            type: 'boolean',
+            defaultsTo: false
         },
         publishedAt: {
             type: 'datetime'

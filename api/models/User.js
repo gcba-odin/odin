@@ -17,37 +17,47 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15
+            size: 15,
+            minLength: 14
         },
         username: {
             type: 'string',
             required: true,
             unique: true,
-            size: 25
+            alphanumericdashed: true,
+            size: 25,
+            minLength: 1
         },
         password: {
             type: 'string',
             required: true,
+            minLength: 3
         },
         email: {
             type: 'email',
             required: true,
             unique: true,
-            size: 250
+            email: true,
+            size: 250,
+            minLength: 5
         },
         firstName: {
             type: 'string',
             defaultsTo: '',
-            size: 50
+            size: 50,
+            minLength: 1
         },
         lastName: {
             type: 'string',
             defaultsTo: '',
-            size: 100
+            size: 100,
+            minLength: 1
         },
         avatar: {
             type: 'string',
-            size: 500
+            url: true,
+            size: 500,
+            minLength: 3
         },
         organization: {
             model: 'organization'

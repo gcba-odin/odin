@@ -17,12 +17,14 @@ module.exports = {
       index: true,
       defaultsTo: shortId.generate,
       primaryKey: true,
-      size: 15
+      size: 15,
+      minLength: 14
     },
     description: {
       type: 'string',
       required: true,
-      size: 250
+      size: 250,
+      minLength: 3
     },
     type: {
       type: 'string',
@@ -32,11 +34,13 @@ module.exports = {
     key: {
       type: 'string',
       required: true,
-      size: 100
+      size: 100,
+      minLength: 1
     },
     value: {
       type: 'string',
-      size: 250
+      size: 250,
+      minLength: 1
     },
     updatedBy: {
       model: 'user'

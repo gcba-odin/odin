@@ -17,20 +17,25 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15
+            size: 15,
+            minLength: 14
         },
         name: {
             type: 'string',
             required: true,
-            size: 150
+            size: 150,
+            minLength: 1
         },
         collection: {
             type: 'string',
-            size: 150
+            size: 150,
+            minLength: 3
         },
         url: {
             type: 'string',
-            size: 500
+            url: true,
+            size: 500,
+            minLength: 3
         },
 
         toJSON() {
