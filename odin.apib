@@ -11,16 +11,13 @@ malesuada ut congue fermentum, tincidunt a massa. Nunc accumsan nec urna quis fr
     + id: dogPzIz8 (string, required)
 
 + Attributes (User Base)
-    + id: dogPzIz8 (string, required)
-    + createdAt: 1415203908 (number) - datetime
-    + updatedAt: 1415203908 (number) - datetime
-    + createdBy: hwX6aOr7 (string, required)
+    + password: security123 (string, required)
+
 
 ### Retrieve a User [GET]
 Retrieves the user with the given ID.
 
 + Response 200 (application/json; charset=utf-8)
-
     + Attributes (Get User Response)
 
 + Response 403 (application/json; charset=utf-8)
@@ -321,7 +318,7 @@ Get the users options
 Get count user
 
 + Response 200 (application/json; charset=utf-8)
-    + Attributes (Get User Response)
+    + Attributes (Get Count Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -372,8 +369,8 @@ Get the users options
 
 + Attributes (Dataset Base)
     + id: dogPzIz8 (string, required)
-    + createdAt: 1415203908 (number) - datetime
-    + updatedAt: 1415203908 (number) - datetime
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
 
 ### Retrieve a Dataset [GET]
 Retrieves the Dataset with the given ID.
@@ -626,7 +623,7 @@ Get the Datasets options
 Get count Dataset
 
 + Response 200 (application/json; charset=utf-8)
-    + Attributes (Get Dataset Response)
+    + Attributes (Get Count Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -677,8 +674,8 @@ Get the Datasets options
 
 + Attributes (Category Base)
     + id: dogPzIz8 (string, required)
-    + createdAt: 1415203908 (number) - datetime
-    + updatedAt: 1415203908 (number) - datetime
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
 
 ### Retrieve a Category [GET]
 Retrieves the Category with the given ID.
@@ -931,7 +928,7 @@ Get the Categories options
 Get count Category
 
 + Response 200 (application/json; charset=utf-8)
-    + Attributes (Get Category Response)
+    + Attributes (Get Count Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -975,13 +972,28 @@ Get the Categories options
 
 ## User Base (object)
 + username: john_doe (string,required)
-+ password: security123 (string, required)
 + email: johndoe@example.com (string,required)
 + firstName: john (string)
 + lastName: doe (string)
 + avatar: http://site.com/avatar/dogPzIz8 (string)
 + organization: lpgB47a1 (string, required)
 + active: true (boolean)
++ deletedAt: 1231245 (string) - datetime
+
+## User Get (object)
++ username: john_doe (string,required)
++ email: johndoe@example.com (string,required)
++ firstName: john (string)
++ lastName: doe (string)
++ avatar: http://site.com/avatar/dogPzIz8 (string)
++ organization: lpgB47a1 (string, required)
++ active: true (boolean)
++ deletedAt: 1231245 (string) - datetime
++ id: dogPzIz8 (string, required)
++ createdAt: 1415203908 (string) - datetime
++ updatedAt: 1415203908 (string) - datetime
++ createdBy: hwX6aOr7 (string, required)
++ password: security123 (string, required)
 
 ## Dataset Base (object)
 + name: examplename (string,required)
@@ -999,7 +1011,7 @@ Get the Categories options
 + optional8: some optional data (string)
 + optional9: some optional data (string)
 + optional10: some optional data (string)
-+ publishedAt: 1415203908 (number) - datetime
++ publishedAt: 1415203908 (string) - datetime
 + category: PPBqWA9(string)
 + status: hwX6aOr7 (string)
 + organization: a4vhAoFG (string)
@@ -1010,7 +1022,6 @@ Get the Categories options
 + name: name of the category (string,required)
 + description: description the category (string)
 + createdBy: nYrnfYEv (string)
-
 
 ## General Response (object)
 + meta (Metadata Response)
@@ -1026,12 +1037,12 @@ Get the Categories options
 
 ## Get User Response (object)
 + meta (Metadata Response)
-+ data (User)
++ data (User Get)
 + links (object)
 
 ## Get User Collection Response (object)
 + meta (Metadata Response)
-+ data (array[User])
++ data (array[User Get])
 + links (object)
 
 ## Get Dataset Collection Response (object)
