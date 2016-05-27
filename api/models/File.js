@@ -17,8 +17,7 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15,
-            minLength: 14
+            size: 15
         },
         name: {
             type: 'string',
@@ -28,19 +27,16 @@ module.exports = {
         },
         description: {
             type: 'string',
-            size: 350,
-            minLength: 3
+            size: 350
         },
         notes: {
             type: 'string',
-            size: 500,
-            minLength: 3
+            size: 500
         },
         url: {
             type: 'string',
             url: true,
-            size: 500,
-            minLength: 3
+            size: 500
         },
         visible: {
             type: 'boolean',

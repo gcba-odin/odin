@@ -17,7 +17,7 @@ module.exports = {
             index: true,
             defaultsTo: shortId.generate,
             primaryKey: true,
-            size: 15,
+            size: 15
         },
         name: {
             type: 'string',
