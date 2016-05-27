@@ -15,6 +15,8 @@ module.exports = {
         res.set({
             'Authorization': 'JWT [token]',
             'Connection': 'keep-alive',
+            'Content-Type': 'text/html',
+            'Content-Length': '0',
         });
         if (id) {
             model.findOne({
