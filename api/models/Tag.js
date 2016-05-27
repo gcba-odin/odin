@@ -17,12 +17,14 @@ module.exports = {
       index: true,
       defaultsTo: shortId.generate,
       primaryKey: true,
-      size: 15
+      size: 15,
+      minLength: 14
     },
     name: {
       type: 'string',
       required: true,
-      size: 100
+      size: 100,
+      minLength: 1
     },
     datasets: {
       collection: 'dataset',
