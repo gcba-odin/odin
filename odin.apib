@@ -67,7 +67,7 @@ Delete the user with the given ID
 
 Get the user Head with the given ID
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -138,7 +138,7 @@ Creates a User
 
 Get the users Head
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -191,7 +191,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus, males
 
 Get the users Head
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -239,7 +239,7 @@ Get first user
 
 ### Get First User Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -285,7 +285,7 @@ Get last user
 
 ### Get last User Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -331,7 +331,7 @@ Get count user
 
 ### Get count User Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -425,7 +425,7 @@ Delete the Dataset with the given ID
 
 Get the Dataset Head with the given ID
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -496,7 +496,7 @@ Creates a Dataset
 
 Get the Datasets Head
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -544,7 +544,7 @@ Get first Dataset
 
 ### Get First Dataset Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -590,7 +590,7 @@ Get last Dataset
 
 ### Get last Dataset Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -636,7 +636,7 @@ Get count Dataset
 
 ### Get count Dataset Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -730,7 +730,7 @@ Delete the Category with the given ID
 
 Get the Category Head with the given ID
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -768,7 +768,7 @@ Nunc accumsan nec urna quis fringilla.
 Get all Categories
 
 + Response 200 (application/json; charset=utf-8)
-    + Attributes (array[Category])
+    + Attributes (Get Category Collection Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -801,7 +801,7 @@ Creates a Category
 
 Get the Categories Head
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -849,7 +849,7 @@ Get first Category
 
 ### Get First Category Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -895,7 +895,7 @@ Get last Category
 
 ### Get last Category Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -941,7 +941,7 @@ Get count Category
 
 ### Get count Category Head [HEAD]
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -978,7 +978,7 @@ Get the Categories options
 + avatar: http://site.com/avatar/dogPzIz8 (string)
 + organization: lpgB47a1 (string, required)
 + active: true (boolean)
-+ deletedAt: 1231245 (string) - datetime
++ deletedAt: 1231245 (string,nullable) - datetime
 
 ## User Get (object)
 + username: john_doe (string,required)
@@ -993,7 +993,6 @@ Get the Categories options
 + createdAt: 1415203908 (string) - datetime
 + updatedAt: 1415203908 (string) - datetime
 + createdBy: hwX6aOr7 (string, required)
-+ password: security123 (string, required)
 
 ## Dataset Base (object)
 + name: examplename (string,required)
