@@ -9,19 +9,18 @@
  * In a POST request the response will contain an entity describing or containing the result of the action.
  */
 
-module.exports = function(data, config) {
+module.exports = function (data, config) {
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {})
-            // statusCode: '200',
-            // statusMessage:'OK',
-            // code: _.get(config, 'code', 'UPDATED'),
-            // message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
+        // statusCode: '200',
+        // statusMessage:'OK',
+        // code: _.get(config, 'code', 'UPDATED'),
+        // message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
     });
 
     this.res.set({
         'Content-Type': 'application/json',
-        'Accept-Charset': 'utf-8'
     });
     this.res.status(200);
     this.res.send(response);

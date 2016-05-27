@@ -9,10 +9,13 @@ const Response = require('../services/ResponseBuilderService');
 module.exports = {
     collection(req, res) {
         var methods = OptionsMethodsService.getMethods.collectionMethods();
-        var headers = OptionsMethodsService.getHeaders(req.method);
         var builder = new Response.ResponseOPTIONS(req,res,methods);
-        // return res.options(builder);
-        return res.ok;
+        var meta = builder.meta;
+        var data = builder.data;
+        console.log(meta);
+        console.log(data);
+        return res.options(data,meta);
+        // return res.ok;
     },
     // instance(req, res) {
     //     var model = actionUtil.parseModel(req);
