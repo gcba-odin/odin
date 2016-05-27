@@ -19,7 +19,7 @@ module.exports = {
      * Available values is `safe`, `alter` or `drop`
      * @type {String}
      */
-    migrate: 'alter',
+    migrate: 'drop',
 
     // specialAttributes: {
     //   hidden: ['password'],

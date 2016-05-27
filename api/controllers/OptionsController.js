@@ -12,8 +12,6 @@ module.exports = {
         var builder = new Response.ResponseOPTIONS(req,res,methods);
         var meta = builder.meta;
         var data = builder.data;
-        console.log(meta);
-        console.log(data);
         return res.options(data,meta);
         // return res.ok;
     },

@@ -15,7 +15,6 @@ module.exports = function(data, config) {
     // Then run the Builder's build() method and save it to data. Put the data in the response
     // Ideally the Builder should let you put in headers and sed the response too
     // But for now it is just acting as a response body factory, rather than a response factory
-    console.log('Custom ok');
     const response = _.assign({
         // code: _.get(config, 'code', 'OK'),
         // message: _.get(config, 'message', 'Operation is successfully executed'),
