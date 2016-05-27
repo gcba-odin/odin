@@ -27,7 +27,6 @@ module.exports = function(data, config) {
     // Add headers to the res object as needed
     this.res.set({
         'Content-Type': 'application/json',
-        'Accept-Charset': 'utf-8'
     });
     this.res.status(200);
     this.res.send(response);

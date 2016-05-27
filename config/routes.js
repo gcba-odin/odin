@@ -22,7 +22,6 @@ module.exports = {
 
         'PATCH /users/:id': {blueprint: 'update', model: 'user'},
         'HEAD /users/:id': {controller: 'Head', action: 'Head', model: 'user'},
-        // 'OPTIONS /users/:id': { controller : 'Option', model: 'user', action: 'collection' },
 
         'OPTIONS /users': {controller: 'Options', model: 'user', action: 'collection'},
 

@@ -9,8 +9,6 @@
  */
 
 module.exports = function(data, config) {
-    console.log('Custom notfound.');
-
     const response = _.assign({
         code: _.get(config, 'code', 'E_NOT_FOUND'),
         message: _.get(config, 'message', 'The requested resource could not be found but may be available again in the future'),
@@ -19,7 +17,6 @@ module.exports = function(data, config) {
 
     this.res.set({
         'Content-Type': 'application/json',
-        'Accept-Charset': 'utf-8'
     });
     this.res.status(404);
     this.res.json(response);

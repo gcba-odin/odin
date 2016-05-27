@@ -16,7 +16,6 @@ module.exports = function(data, config) {
 
     this.res.set({
         'Content-Type': 'application/json',
-        'Accept-Charset': 'utf-8'
     });
     this.res.status(500);
     this.res.send(response);
