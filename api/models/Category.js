@@ -18,7 +18,6 @@ module.exports = {
             defaultsTo: shortId.generate,
             primaryKey: true,
             size: 15,
-            minLength: 14
         },
         name: {
             type: 'string',
@@ -29,7 +28,6 @@ module.exports = {
         description: {
             type: 'string',
             size: 350,
-            minLength: 3
         },
         active: {
             type: 'boolean',

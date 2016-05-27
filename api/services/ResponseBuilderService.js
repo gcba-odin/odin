@@ -42,7 +42,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function (value, target) {
+        this._addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -250,7 +250,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function (key, methodVerb) {
+        _.forEach(methods, function(key, methodVerb) {
             //TODO: headers: {?}, we can set it on the model in the getAttributes and setAttributes.
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 

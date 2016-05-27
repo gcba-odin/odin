@@ -18,7 +18,6 @@ module.exports = {
       defaultsTo: shortId.generate,
       primaryKey: true,
       size: 15,
-      minLength: 14
     },
     description: {
       type: 'string',
@@ -40,7 +39,6 @@ module.exports = {
     value: {
       type: 'string',
       size: 250,
-      minLength: 1
     },
     updatedBy: {
       model: 'user'
