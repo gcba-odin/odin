@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['User', 'Organization', 'Category', 'Status', 'Database', 'Filetype', 'File', 'UpdateFrequency', 'Tag', 'Dataset', 'Config'],
+        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Config'],
         User: [{
             id: 'dogPzIz9',
             username: 'admin',
@@ -10,14 +10,8 @@ module.exports = {
             lastName: 'Admin',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'ACME'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }, {
             id: 'dogPzIz8',
             username: 'henrywagner',
@@ -27,14 +21,8 @@ module.exports = {
             lastName: 'Wagner',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'Umbrella Corp'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }, {
             id: 'nYrnfYEv',
             username: 'howardfoster',
@@ -44,14 +32,8 @@ module.exports = {
             lastName: 'Foster',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'Oscorp'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }, {
             id: 'a4vhAoFG',
             username: 'ashleychavez',
@@ -61,14 +43,8 @@ module.exports = {
             lastName: 'Chavez',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'ACME'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }, {
             id: 'hwX6aOr7',
             username: 'melissafrazier',
@@ -78,14 +54,8 @@ module.exports = {
             lastName: 'Frazier',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'Umbrella Corp'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }, {
             id: 'eWRhpRV',
             username: 'petermorrison',
@@ -95,14 +65,8 @@ module.exports = {
             lastName: 'Morrison',
             avatar: 'http://i.imgur.com/cuKC0Us.jpg',
             active: true,
-            models: {
-                organization: {
-                    name: 'Aperture Labs'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
+            organization: 'eWRhpRV'
         }],
         Organization: [{
             id: 'eWRhpRV',
@@ -111,11 +75,7 @@ module.exports = {
             address: 'Example Ave. 254',
             active: true,
             parent: null,
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
         }, {
             id: 'dWRhpRV',
             name: 'Umbrella Corp',
@@ -123,11 +83,7 @@ module.exports = {
             address: 'Example Ave. 255',
             active: true,
             parent: null,
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
         }, {
             id: 'fWRhpRV',
             name: 'Star Labs',
@@ -135,11 +91,7 @@ module.exports = {
             address: 'Example Ave. 256',
             active: true,
             parent: null,
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
         }, {
             id: 'gWRhpRV',
             name: 'Aperture Labs',
@@ -147,11 +99,7 @@ module.exports = {
             address: 'Example Ave. 257',
             active: true,
             parent: null,
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
         }, {
             id: 'hWRhpRV',
             name: 'Oscorp',
@@ -159,11 +107,7 @@ module.exports = {
             address: 'Example Ave. 258',
             active: true,
             parent: null,
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            }
+            createdBy: 'dogPzIz9',
         }],
         Category: [{
             id: 'iWRhpRV',
@@ -285,132 +229,6 @@ module.exports = {
         }, {
             id: '0WRhpRV',
             name: 'zip'
-        }],
-        File: [{
-            id: 'sWRhpRa',
-            name: 'File 1',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:01+03',
-            models: {
-                type: {
-                    name: 'csv'
-                },
-                status: {
-                    name: 'Draft'
-                },
-                organization: {
-                    name: 'ACME'
-                },
-                dataset: {
-                    name: 'Dataset 1'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: 'tWRhpRb',
-            name: 'File 2',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:02+03',
-            models: {
-                type: {
-                    name: 'html'
-                },
-                status: {
-                    name: 'Under Review'
-                },
-                organization: {
-                    name: 'Umbrella Corp'
-                },
-                dataset: {
-                    name: 'Dataset 2'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: 'uWRhpRc',
-            name: 'File 3',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:03+03',
-            models: {
-                type: {
-                    name: 'ics'
-                },
-                status: {
-                    name: 'Rejected'
-                },
-                organization: {
-                    name: 'Oscorp'
-                },
-                dataset: {
-                    name: 'Dataset 3'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: 'vWRhpRd',
-            name: 'File 4',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:04+03',
-            models: {
-                type: {
-                    name: 'rar'
-                },
-                status: {
-                    name: 'Published'
-                },
-                organization: {
-                    name: 'Aperture Labs'
-                },
-                dataset: {
-                    name: 'Dataset 4'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: 'wWRhpRe',
-            name: 'File 5',
-            description: 'An example file.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            url: 'http://i.imgur.com/u7CUz6v.png',
-            visible: 1,
-            publishedAt: '2011-01-01 00:00:05+03',
-            models: {
-                type: {
-                    name: 'pdf'
-                },
-                status: {
-                    name: 'Unpublished'
-                },
-                organization: {
-                    name: 'ACME'
-                },
-                dataset: {
-                    name: 'Dataset 5'
-                },
-                createdBy: {
-                    username: 'admin'
-                }
-            }
         }],
         UpdateFrequency: [{
             id: 'tWRhpR2',
@@ -538,6 +356,9 @@ module.exports = {
                 status: {
                     name: 'Draft'
                 },
+                owner: {
+                    username: 'admin'
+                },
                 createdBy: {
                     username: 'admin'
                 }
@@ -568,6 +389,9 @@ module.exports = {
                 },
                 status: {
                     name: 'Under Review'
+                },
+                owner: {
+                    username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
@@ -600,6 +424,9 @@ module.exports = {
                 status: {
                     name: 'Rejected'
                 },
+                owner: {
+                    username: 'admin'
+                },
                 createdBy: {
                     username: 'admin'
                 }
@@ -630,6 +457,9 @@ module.exports = {
                 },
                 status: {
                     name: 'Published'
+                },
+                owner: {
+                    username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
@@ -662,6 +492,165 @@ module.exports = {
                 status: {
                     name: 'Unpublished'
                 },
+                owner: {
+                    username: 'admin'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }],
+        File: [{
+            id: 'sWRhpRa',
+            name: 'File 1',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:01+03',
+            models: {
+                type: {
+                    name: 'csv'
+                },
+                status: {
+                    name: 'Draft'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 1'
+                },
+                updateFrequency: {
+                    name: 'Eventual'
+                },
+                owner: {
+                    username: 'admin'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'tWRhpRb',
+            name: 'File 2',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:02+03',
+            models: {
+                type: {
+                    name: 'html'
+                },
+                status: {
+                    name: 'Under Review'
+                },
+                organization: {
+                    name: 'Umbrella Corp'
+                },
+                dataset: {
+                    name: 'Dataset 2'
+                },
+                updateFrequency: {
+                    name: 'Annual'
+                },
+                owner: {
+                    username: 'admin'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'uWRhpRc',
+            name: 'File 3',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:03+03',
+            models: {
+                type: {
+                    name: 'ics'
+                },
+                status: {
+                    name: 'Rejected'
+                },
+                organization: {
+                    name: 'Oscorp'
+                },
+                dataset: {
+                    name: 'Dataset 3'
+                },
+                updateFrequency: {
+                    name: 'Monthly'
+                },
+                owner: {
+                    username: 'admin'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'vWRhpRd',
+            name: 'File 4',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:04+03',
+            models: {
+                type: {
+                    name: 'rar'
+                },
+                status: {
+                    name: 'Published'
+                },
+                organization: {
+                    name: 'Aperture Labs'
+                },
+                dataset: {
+                    name: 'Dataset 4'
+                },
+                updateFrequency: {
+                    name: 'Weekly'
+                },
+                owner: {
+                    username: 'admin'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'wWRhpRe',
+            name: 'File 5',
+            description: 'An example file.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/u7CUz6v.png',
+            visible: 1,
+            publishedAt: '2011-01-01 00:00:05+03',
+            models: {
+                type: {
+                    name: 'pdf'
+                },
+                status: {
+                    name: 'Unpublished'
+                },
+                organization: {
+                    name: 'ACME'
+                },
+                dataset: {
+                    name: 'Dataset 5'
+                },
+                updateFrequency: {
+                    name: 'Quarterly'
+                },
+                owner: {
+                    username: 'admin'
+                },
                 createdBy: {
                     username: 'admin'
                 }
@@ -674,7 +663,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
@@ -685,7 +674,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
@@ -696,7 +685,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
@@ -707,7 +696,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
@@ -718,7 +707,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
@@ -729,7 +718,7 @@ module.exports = {
             key: 'key',
             value: 'value',
             models: {
-                createdBy: {
+                updatedBy: {
                     username: 'admin'
                 }
             }
