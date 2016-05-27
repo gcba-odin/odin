@@ -41,6 +41,7 @@ module.exports = {
             collection: 'dataset',
             via: 'category'
         },
+
         toJSON() {
             return this.toObject();
         }

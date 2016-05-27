@@ -40,6 +40,10 @@ module.exports = {
     },
     updatedBy: {
       model: 'user'
+    },
+
+    toJSON() {
+      return this.toObject();
     }
   }
 };

@@ -24,5 +24,9 @@ module.exports = {
       required: true,
       size: 100
     },
+
+    toJSON() {
+      return this.toObject();
+    }
   }
 };
