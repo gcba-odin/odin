@@ -21,9 +21,5 @@ module.exports = {
      */
     migrate: 'alter',
 
-    // specialAttributes: {
-    //   hidden: ['password'],
-    //   readOnly: ['createdBy', 'createdAt', 'updatedAt', 'deletedAt']
-    // }
   }
 };
