@@ -4,6 +4,8 @@
   "main": "app.js",
   "dependencies": {
     "bluebird": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2",
     "kerberos": "0.0.21",
     "lodash": "^4.12.0",
     "passport": "^0.3.2",
@@ -28,8 +30,9 @@
     "waterline": "^0.12.1"
   },
   "devDependencies": {
-    "esdoc": "0.4.3",
     "chai": "3.4.1",
+    "esdoc": "0.4.3",
+    "gulp-shell": "^0.5.2",
     "istanbul": "0.4.2",
     "mocha": "2.3.4",
     "sails-memory": "0.10.5",
