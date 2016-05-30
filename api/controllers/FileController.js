@@ -8,24 +8,22 @@
 module.exports = {
 
     upload: function (req, res) {
-        console.log(req.file('uploadFile'));
+        // console.log(req.file('uploadFile'));
         var uploadFile = req.file('uploadFile');
 
-        var origifile = uploadFile._files[0].stream.filename;
-
-        console.log('error');
-        console.log('error');
-        console.log('error');
-        console.log('error');
-
+        if (uploadFile._files[0]) {
+            var origifile = uploadFile._files[0].stream.filename;
+        }
         uploadFile.upload({
             saveAs: origifile,
             // dirname: require('path').resolve(sails.config.appPath + '/files')
             dirname: require('path').resolve('/home/Admin001/odin/files')
         }, function onUploadComplete(err, files) {
-            if (err) return res.serverError(err);
             //	IF ERROR Return and send 500 error with error
-
+            if (err) return res.serverError(err);
+            if (files.length === 0){
+                return res.badRequest('No file was uploaded');
+            }
             res.json({status: 200});
         });
     },
