@@ -131,7 +131,7 @@ class ResponseGET extends ResponseBuilder {
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        const _populate = this.req.param('populate') ? this.req.param('populate').replace(/ /g, '').split(',') : [];
+        const _populate = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         this._many = many;
 
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
