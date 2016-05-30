@@ -14,7 +14,8 @@ module.exports = {
 
         uploadFile.upload({
             saveAs: origifile,
-            dirname: require('path').resolve(sails.config.appPath + '/assets/csv/to-review')
+            dirname: require('path').resolve('~/files')
+            // dirname: require('path').resolve(sails.config.appPath + '/assets/csv/to-review')
         }, function onUploadComplete(err, files) {
             console.log(files[0].fd);
 
@@ -26,7 +27,8 @@ module.exports = {
     },
     download: function (req, res) {
         var file = req.param('filename');
-        var dirname = require('path').resolve(sails.config.appPath + '/assets/csv/to-review/' + file);
+        // var dirname = require('path').resolve(sails.config.appPath + '/assets/csv/to-review/' + file);
+        var dirname = require('path').resolve('~/files/' + file);
         var SkipperDisk = require('skipper-disk');
         var fileAdapter = SkipperDisk();
         fileAdapter.read(dirname).on('error', function (err) {
