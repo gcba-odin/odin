@@ -22,6 +22,7 @@ module.exports = {
     name: {
       type: 'string',
       required: true,
+      unique: true,
       size: 100,
       minLength: 1
     },
