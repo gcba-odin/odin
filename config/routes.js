@@ -131,6 +131,10 @@ module.exports = {
 
         // Files
 
+
+        'POST /files': 'File.upload',
+        'GET /files/:filename': 'File.download',
+
         'GET /files/first': {
             blueprint: 'first',
             model: 'file'
@@ -176,12 +180,6 @@ module.exports = {
         'OPTIONS /databases/first': {controller: 'Options', model: 'database', action: 'query'},
         'OPTIONS /databases/last': {controller: 'Options', model: 'database', action: 'query'},
         'OPTIONS /databases/count': {controller: 'Options', model: 'database', action: 'query'},
-
-
-        // Files
-
-        'POST /files/upload': 'File.upload',
-        'GET /files/download/:filename': 'File.download',
 
 
         // Datasets
