@@ -4,6 +4,7 @@
  * FileController
  * @description :: Server-side logic for ...
  */
+var mime = require('mime');
 
 module.exports = {
 
@@ -16,23 +17,17 @@ module.exports = {
             uploadFile.upload({
                 // saveAs: uploadFile._files[0].stream.filename,
                 saveAs: function (file, cb) {
-                    // var extension = file.filename.split('.').pop();
-                    // console.log(file.filename);
-                    // console.log(extension);
-                    // console.log(file.headers['content-type']);
-                    cb(null,file.filename);
-                    // var d = new Date();
-                    // // generating unique filename with extension
-                    // var uuid = md5(d.getMilliseconds()) + "." + extension;
-                    //
-                    // // seperate allowed and disallowed file types
-                    // if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-                    //     // save as disallowed files default upload path
-                    //     cb(null, uuid);
-                    // } else {
-                    //     // save as allowed files
-                    //     cb(null, allowedDir + "/" + uuid);
+                    var extension = file.filename.split('.').pop();
+                    console.log(mime.lookup(extension));
+                    // if (mime.lookup(extension) != file.headers['content-type']){
+                    //     return res.badRequest('mimetye no coincide con header content type')
                     // }
+                    if (sails.config.odin.allowedTypes.indexOf(mime.lookup(extension)) === -1) {
+                        return res.badRequest('filetype not allowed');
+                    }
+                    else {
+                        cb(null, file.filename);
+                    }
                 },
                 dirname: require('path').resolve(sails.config.odin.uploadFolder)
             }, function onUploadComplete(err, files) {
