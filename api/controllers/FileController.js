@@ -15,7 +15,6 @@ module.exports = {
         });
         if (!uploadFile.isNoop) {
             uploadFile.upload({
-                // saveAs: uploadFile._files[0].stream.filename,
                 saveAs: function (file, cb) {
                     var extension = file.filename.split('.').pop();
                     console.log(mime.lookup(extension));
@@ -44,7 +43,6 @@ module.exports = {
     },
     download: function (req, res) {
         var file = req.param('filename');
-        // var dirname = require('path').resolve('/home/Admin001/files/' + file);
         var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file);
         var SkipperDisk = require('skipper-disk');
         var fileAdapter = SkipperDisk();
@@ -55,8 +53,7 @@ module.exports = {
     ,
     index: function (req, res, next) {
         var fs = require('fs');
-        var dirname = require('path').resolve('/home/lothorien/files/');
-        var files = {};
+        var dirname = require('path').resolve(sails.config.odin.uploadFolder);
         fs.readdir(dirname, function (err, filenames) {
             if (err) {
                 next(err);
