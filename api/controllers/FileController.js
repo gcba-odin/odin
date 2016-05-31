@@ -13,7 +13,7 @@ module.exports = {
             console.log('Errror!!!!!!!!!!');
             return res.negotiate(err);
         });
-        
+
         uploadFile.upload({
             saveAs: uploadFile._files[0].stream.filename,
             dirname: require('path').resolve(sails.config.odin.uploadFolder)
@@ -60,5 +60,4 @@ module.exports = {
     }
     ,
 
-}
-;
+};
