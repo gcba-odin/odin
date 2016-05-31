@@ -8,25 +8,25 @@
 module.exports = {
 
     upload: function (req, res) {
-
         var uploadFile = req.file('uploadFile').on('error', function (err) {
             console.log('Errror!!!!!!!!!!');
             return res.negotiate(err);
         });
-
-        uploadFile.upload({
-            saveAs: uploadFile._files[0].stream.filename,
-            dirname: require('path').resolve(sails.config.odin.uploadFolder)
-        }, function onUploadComplete(err, files) {
-            //	IF ERROR Return and send 500 error with error
-            if (err) return res.serverError(err);
-            if (files.length === 0) {
-                return res.badRequest('No file was uploaded');
-            }
-            res.json({
-                status: 200
-            });
-        })
+        if (!uploadFile.isNoop) {
+            uploadFile.upload({
+                saveAs: uploadFile._files[0].stream.filename,
+                dirname: require('path').resolve(sails.config.odin.uploadFolder)
+            }, function onUploadComplete(err, files) {
+                //	IF ERROR Return and send 500 error with error
+                if (err) return res.serverError(err);
+                if (files.length === 0) {
+                    return res.badRequest('No file was uploaded');
+                }
+                res.json({
+                    status: 200
+                });
+            })
+        }
     },
     download: function (req, res) {
         var file = req.param('filename');
@@ -57,7 +57,6 @@ module.exports = {
             // });
             return res.ok({files: filenames})
         });
-    }
-    ,
+    },
 
 };
