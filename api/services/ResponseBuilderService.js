@@ -42,7 +42,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function (value, target) {
+        this._addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -132,10 +132,14 @@ class ResponseGET extends ResponseBuilder {
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         const _populate = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
-        this._many = many;
-
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
+
+        this._many = many;
+
+        if (_populate.length > 0) {
+            delete req.query.include;
+        }
 
         if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
@@ -200,7 +204,17 @@ class ResponseGET extends ResponseBuilder {
             };
         }
 
-        this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
+        _.forEach(_populate, function(element) {
+            _query.populate(element).exec(function afterwards(err, populatedRecords) {
+                console.log(err);
+                console.dir(_populate);
+                console.dir(req.query);
+                _query = populatedRecords;
+            });
+        }, this);
+
+        //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
+        this.findQuery = _query;
     }
 
     addData(value) {
@@ -254,7 +268,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function (key, methodVerb) {
+        _.forEach(methods, function(key, methodVerb) {
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -271,22 +285,23 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res);
-        {
+        super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
 
             this.links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
-            this.findQuery = this._model.find({limit: 1, sort: sort});
+            this.findQuery = this._model.find({
+                limit: 1,
+                sort: sort
+            });
         }
     }
 }
 
 class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
-        super(req, res);
-        {
+        super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
 
             this.links = {

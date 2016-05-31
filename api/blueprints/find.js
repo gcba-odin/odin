@@ -34,6 +34,7 @@ module.exports = (req, res) => {
     // Then save the instance in the config object (the one with the 'root' key)
     // And move over to the response file to finish the response off
     var builder = new Response.ResponseGET(req, res, true);
+
     builder.findQuery
         .then(records => [records, {
             // root: {
