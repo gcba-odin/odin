@@ -135,6 +135,7 @@ class ResponseGET extends ResponseBuilder {
         this._many = many;
 
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
+        const modelName = pluralize(this._model.adapter.identity);
 
         if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
@@ -183,9 +184,13 @@ class ResponseGET extends ResponseBuilder {
                 if (_first) this.links.first = _first;
                 if (_last) this.links.last = _last;
             }.bind(this));
+            this.links = {
+                first: this.req.host + ':' + this.req.port + '/' + modelName + '/first',
+                last: this.req.host + ':' + this.req.port + '/' + modelName + '/last',
+                count: this.req.host + ':' + this.req.port + '/' + modelName + '/count'
+            }
         } else {
             const _pk = _actionUtil.requirePk(this.req);
-            const modelName = pluralize(this._model.adapter.identity);
             _query = this._model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
