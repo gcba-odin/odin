@@ -356,14 +356,20 @@ module.exports = {
                 status: {
                     name: 'Draft'
                 },
-                tags: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
                 }
             }
         }, {
@@ -393,14 +399,20 @@ module.exports = {
                 status: {
                     name: 'Under Review'
                 },
-                tags: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }, {
@@ -430,14 +442,20 @@ module.exports = {
                 status: {
                     name: 'Rejected'
                 },
-                tags: {
-                    name: ['Tag 7', 'Tag 8', 'Tag 9']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 7', 'Tag 8', 'Tag 9']
                 }
             }
         }, {
@@ -467,14 +485,20 @@ module.exports = {
                 status: {
                     name: 'Published'
                 },
-                tags: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
                 }
             }
         }, {
@@ -504,14 +528,20 @@ module.exports = {
                 status: {
                     name: 'Unpublished'
                 },
-                tags: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }],
@@ -539,14 +569,20 @@ module.exports = {
                 updateFrequency: {
                     name: 'Eventual'
                 },
-                tags: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
                 }
             }
         }, {
@@ -573,14 +609,20 @@ module.exports = {
                 updateFrequency: {
                     name: 'Annual'
                 },
-                tags: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }, {
@@ -607,14 +649,20 @@ module.exports = {
                 updateFrequency: {
                     name: 'Monthly'
                 },
-                tags: {
-                    name: ['Tag 7', 'Tag 8', 'Tag 9']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 7', 'Tag 8', 'Tag 9']
                 }
             }
         }, {
@@ -641,14 +689,20 @@ module.exports = {
                 updateFrequency: {
                     name: 'Weekly'
                 },
-                tags: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
                 }
             }
         }, {
@@ -675,14 +729,20 @@ module.exports = {
                 updateFrequency: {
                     name: 'Quarterly'
                 },
-                tags: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                },
                 owner: {
                     username: 'admin'
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }],
