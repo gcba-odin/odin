@@ -14,7 +14,26 @@ module.exports = {
         });
         if (!uploadFile.isNoop) {
             uploadFile.upload({
-                saveAs: uploadFile._files[0].stream.filename,
+                // saveAs: uploadFile._files[0].stream.filename,
+                saveAs: function (file, cb) {
+                    // var extension = file.filename.split('.').pop();
+                    // console.log(file.filename);
+                    // console.log(extension);
+                    // console.log(file.headers['content-type']);
+                    cb(null,file.filename);
+                    // var d = new Date();
+                    // // generating unique filename with extension
+                    // var uuid = md5(d.getMilliseconds()) + "." + extension;
+                    //
+                    // // seperate allowed and disallowed file types
+                    // if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
+                    //     // save as disallowed files default upload path
+                    //     cb(null, uuid);
+                    // } else {
+                    //     // save as allowed files
+                    //     cb(null, allowedDir + "/" + uuid);
+                    // }
+                },
                 dirname: require('path').resolve(sails.config.odin.uploadFolder)
             }, function onUploadComplete(err, files) {
                 //	IF ERROR Return and send 500 error with error
