@@ -4,12 +4,12 @@
   "main": "app.js",
   "dependencies": {
     "bluebird": "^3.4.0",
+    "csvtojson": "^0.5.12",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
     "kerberos": "0.0.21",
     "lodash": "^4.12.0",
     "node-mime": "^1.0.0",
-    "papaparse": "^4.1.2",
     "passport": "^0.3.2",
     "passport-jwt": "^2.0.0",
     "passport-local": "^1.0.0",

@@ -251,12 +251,10 @@ class ResponseOPTIONS extends ResponseBuilder {
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, methods, headers, count) {
         super(req, res);
-
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
         _.forEach(methods, function (key, methodVerb) {
-            //TODO: headers: {?}, we can set it on the model in the getAttributes and setAttributes.
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 
             methodsArray.push({

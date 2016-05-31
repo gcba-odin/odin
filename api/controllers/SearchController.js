@@ -16,7 +16,6 @@ module.exports = {
         const q = req.param('query');
         if (!q) return res.badRequest(null, {message: 'You should specify a "query" parameter!'});
         const models = parseModels(req.param('models')) || _.keys(sails.models);
-        console.log(models);
 
         Promise.reduce(models, (res, modelName) => {
                 const model = sails.models[modelName];

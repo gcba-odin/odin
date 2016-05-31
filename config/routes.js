@@ -388,7 +388,7 @@ module.exports = {
 
 
         // Datasets
-
+        'GET /datastes/:id/download' : 'Dataset.download',
 
         'GET /datasets/first': {
             blueprint: 'first',

@@ -5,9 +5,11 @@
  * @description :: Server-side logic for ...
  */
 var mime = require('mime');
+var Converter = require("csvtojson").Converter;
+var converter = new Converter({});
+var extension = '';
 
 module.exports = {
-
     upload: function (req, res) {
         var uploadFile = req.file('uploadFile').on('error', function (err) {
             console.log('Errror!!!!!!!!!!');
@@ -16,8 +18,8 @@ module.exports = {
         if (!uploadFile.isNoop) {
             uploadFile.upload({
                 saveAs: function (file, cb) {
-                    var extension = file.filename.split('.').pop();
-                    console.log(mime.lookup(extension));
+                    extension = mime.lookup(file.filename.split('.').pop());
+
                     // if (mime.lookup(extension) != file.headers['content-type']){
                     //     return res.badRequest('mimetye no coincide con header content type')
                     // }
@@ -35,6 +37,19 @@ module.exports = {
                 if (files.length === 0) {
                     return res.badRequest('No file was uploaded');
                 }
+                if (extension == 'text/csv') {
+                    converter.fromFile(sails.config.odin.uploadFolder + "/" + files[0].filename, function (err, result) {
+                        if (err) {
+                            res.negotiate(err);
+                        }
+                        console.log(result);
+                    });
+                }
+                // converter.on("end_parsed", function (jsonArray) {
+                //     console.log('!!!!!!!!!!!');
+                //     console.log(jsonArray); //here is your result jsonarray
+                //     console.log('!!!!!!!!!!!');
+                // });
                 res.json({
                     status: 200
                 });
