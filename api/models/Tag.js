@@ -26,6 +26,10 @@ module.exports = {
       size: 100,
       minLength: 1
     },
+    files: {
+      collection: 'file',
+      via: 'tags'
+    },
     datasets: {
       collection: 'dataset',
       via: 'tags'

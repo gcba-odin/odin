@@ -65,6 +65,11 @@ module.exports = {
             model: 'dataset',
             required: true
         },
+        tags: {
+            collection: 'tag',
+            via: 'files',
+            dominant: true
+        },
         owner: {
             model: 'user',
             required: true

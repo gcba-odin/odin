@@ -7,15 +7,18 @@
 
 module.exports = {
 
-    upload: function (req, res) {
-        var uploadFile = req.file('uploadFile');
-        if (uploadFile.isNoop) {
-            return res.badRequest('Uploaded File is Noop. No file was uploaded');
-        }
+    upload: function(req, res) {
 
-        var origifile = uploadFile._files[0].stream.filename;
+        var uploadFile = req.file('uploadFile').on('error', function(err) {
+            console.log('Errror!!!!!!!!!!');
+        });
+
+        //if (uploadFile.isNoop) {
+        //    return res.badRequest('Uploaded File is Noop. No file was uploaded');
+        //}
+
         uploadFile.upload({
-            saveAs: origifile,
+            saveAs: uploadFile._files[0].stream.filename,
             dirname: require('path').resolve('/home/Admin001/files')
         }, function onUploadComplete(err, files) {
             //	IF ERROR Return and send 500 error with error
@@ -23,15 +26,17 @@ module.exports = {
             if (files.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
-            res.json({status: 200});
+            res.json({
+                status: 200
+            });
         });
     },
-    download: function (req, res) {
+    download: function(req, res) {
         var file = req.param('filename');
         var dirname = require('path').resolve('/home/Admin001/files/' + file);
         var SkipperDisk = require('skipper-disk');
         var fileAdapter = SkipperDisk();
-        fileAdapter.read(dirname).on('error', function (err) {
+        fileAdapter.read(dirname).on('error', function(err) {
             return res.serverError(err);
         }).pipe(res);
     }
