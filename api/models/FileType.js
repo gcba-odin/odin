@@ -19,6 +19,10 @@ module.exports = {
             primaryKey: true,
             size: 15
         },
+        api: {
+            type: 'boolean',
+            defaultsTo: false
+        },
         name: {
             type: 'string',
             required: true,

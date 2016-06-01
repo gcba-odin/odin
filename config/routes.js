@@ -280,9 +280,8 @@ module.exports = {
 
         // Files
 
-
         'POST /files': 'File.upload',
-        'GET /files/:filename': 'File.download',
+        // 'GET /files/:filename/': 'File.download',
 
         'GET /files/first': {
             blueprint: 'first',
@@ -388,7 +387,7 @@ module.exports = {
 
 
         // Datasets
-        'GET /datastes/:id/download' : 'Dataset.download',
+        'GET /datastes/:id/download': 'Dataset.download',
 
         'GET /datasets/first': {
             blueprint: 'first',
