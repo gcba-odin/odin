@@ -206,9 +206,6 @@ class ResponseGET extends ResponseBuilder {
 
         _.forEach(_populate, function(element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
-                console.log(err);
-                console.dir(_populate);
-                console.dir(req.query);
                 _query = populatedRecords;
             });
         }, this);
