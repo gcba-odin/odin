@@ -5,6 +5,7 @@
  * @description :: Server-side logic for ...
  */
 var mime = require('mime');
+var shortid = require('shortid');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({});
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
@@ -14,11 +15,10 @@ module.exports = {
         var extension = '';
         var filename = ''
         var uploadFile = req.file('uploadFile').on('error', function(err) {
-            console.log('Errror!!!!!!!!!!');
-            return res.negotiate(err);
+            if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
-        if (!/^[A-Za-z0-9]*$/.test(dataset)) return res.badRequest('Dataset can contain only numbers and letters')
+        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters')
         if (!uploadFile.isNoop) {
             uploadFile.upload({
                     saveAs: function(file, cb) {
@@ -43,11 +43,25 @@ module.exports = {
                         return res.badRequest('No file was uploaded');
                     }
                     if (extension == 'text/csv') {
-                        converter.fromFile(sails.config.odin.uploadFolder + "/" + files[0].filename, function(err, result) {
+                        converter.fromFile(sails.config.odin.uploadFolder + "/" + dataset + '/' + files[0].filename, function(err, result) {
                             if (err) {
                                 res.negotiate(err);
                             }
-                            console.log(result);
+                            // Retrieve
+                            var MongoClient = require('mongodb').MongoClient;
+
+                            // Connect to the db
+                            MongoClient.connect("mongodb://localhost:27017/" + dataset, function(err, db) {
+                                if (err) return res.negotiate(err)
+
+                                var collection = db.collection(files[0].filename);
+
+                                collection.insert(result, {
+                                    w: 1
+                                }, function(err, res) {
+                                    if (err) return res.negotiate(err)
+                                });
+                            });
                         });
                     }
                     // converter.on("end_parsed", function (jsonArray) {

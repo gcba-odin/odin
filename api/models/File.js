@@ -38,6 +38,10 @@ module.exports = {
             url: true,
             size: 500
         },
+        collection: {
+            type: 'string',
+            size: 500
+        },
         visible: {
             type: 'boolean',
             defaultsTo: false
