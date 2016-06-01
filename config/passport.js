@@ -96,7 +96,8 @@ module.exports = {
                 token: CipherService.jwt.encodeSync({
                     id: user.id
                 }),
-                user: user.id
+                user: user.id,
+                username: user.username
                     // We dont need user data returned
                     // user: user
             });
