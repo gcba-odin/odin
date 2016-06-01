@@ -47,3 +47,6 @@ nbproject
 
 # Optional REPL history
 .node_repl_history
+
+# Editor
+.vscode
