@@ -132,13 +132,15 @@ class ResponseGET extends ResponseBuilder {
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        const _populate = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        const _include = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        const _populate = [];
+
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
 
         this._many = many;
 
-        if (_populate.length > 0) {
+        if (_include.length > 0) {
             delete req.query.include;
         }
 
@@ -205,14 +207,30 @@ class ResponseGET extends ResponseBuilder {
             };
         }
 
+        console.dir(this._model.definition);
+
+        _.forEach(this._model.definition, function(value, key) {
+            console.dir(key);
+            console.dir(value);
+            if (value.foreignKey) _populate.push(key);
+        });
+
+        console.dir(_populate);
+
         _.forEach(_populate, function(element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
-                _query = populatedRecords;
+                if (!err) _query = populatedRecords;
+                else console.log(err);
             });
         }, this);
 
-        console.dir(this._model);
-        console.dir(_query);
+        _.forEach(_include, function(element) {
+            _query.populate(element).exec(function afterwards(err, populatedRecords) {
+                if (!err) _query = populatedRecords;
+                else console.log(err);
+            });
+        }, this);
+
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
         this.findQuery = _query;
     }
