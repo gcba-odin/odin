@@ -7,7 +7,9 @@
 var mime = require('mime');
 var shortid = require('shortid');
 var Converter = require("csvtojson").Converter;
-var converter = new Converter({});
+var converter = new Converter({
+    delimiter: 'auto'
+});
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
@@ -34,7 +36,8 @@ module.exports = {
                             cb(null, filename);
                         }
                     },
-                    dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset)
+                    dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset),
+                    maxBytes: 2000 * 1000 * 1000
                 },
                 function onUploadComplete(err, files) {
                     //	IF ERROR Return and send 500 error with error

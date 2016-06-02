@@ -8,6 +8,7 @@
     "csvtojson": "^0.5.12",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
+    "iconv": "^2.2.0",
     "kerberos": "0.0.21",
     "lodash": "^4.12.0",
     "node-mime": "^1.0.0",
