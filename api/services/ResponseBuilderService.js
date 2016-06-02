@@ -207,15 +207,12 @@ class ResponseGET extends ResponseBuilder {
             };
         }
 
-        console.dir(this._model.definition);
-
+        // Populate one-to-one
         _.forEach(this._model.definition, function(value, key) {
             console.dir(key);
             console.dir(value);
             if (value.foreignKey) _populate.push(key);
         });
-
-        console.dir(_populate);
 
         _.forEach(_populate, function(element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
@@ -224,6 +221,7 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
+        // Populate one-to-many and many-to-many
         _.forEach(_include, function(element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
                 if (!err) _query = populatedRecords;
