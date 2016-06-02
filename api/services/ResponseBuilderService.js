@@ -16,6 +16,7 @@
  *
  */
 
+const shortid = require('shortid');
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
@@ -176,10 +177,10 @@ class ResponseGET extends ResponseBuilder {
                 var params = (JSON.stringify(requestQuery) != '{}');
                 // If we have &skip or ?skip, we delete it from the url
                 var url = this.req.url.replace(/.skip=\d+/g, "");
-
+                console.log(cant);
                 const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
                 const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
-                const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
+                const _next = ((_skip - _limit <= cant) ? ((_skip - _limit < cant) ? _linkToModel + (_skip + _limit) : _linkToModel + (_skip + 1)) : undefined);
                 const _first = (_page > 1 ? _linkToModel + 0 : undefined);
                 const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
 
@@ -210,6 +211,8 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
+        console.dir(this._model);
+        console.dir(_query);
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
         this.findQuery = _query;
     }
