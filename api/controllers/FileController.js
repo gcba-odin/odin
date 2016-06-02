@@ -24,11 +24,9 @@ module.exports = {
         if (!uploadFile.isNoop) {
             uploadFile.upload({
                     saveAs: function(file, cb) {
+                        //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
-
-                        // if (mime.lookup(extension) != file.headers['content-type']){
-                        //     return res.badRequest('mimetye no coincide con header content type')
-                        // }
+                        // If the extension is present on the array of allowed types we can save it
                         if (sails.config.odin.allowedTypes.indexOf(mime.lookup(extension)) === -1) {
                             return res.badRequest('filetype not allowed');
                         } else {
@@ -67,11 +65,8 @@ module.exports = {
                             });
                         });
                     }
-                    // converter.on("end_parsed", function (jsonArray) {
-                    //     console.log(jsonArray); //here is your result jsonarray
-                    // });
                     var data = actionUtil.parseValues(req)
-                    data.url = req.host + ':' + req.port + sails.config.odin.uploadFolder + '/' + dataset + '/' + filename;
+                    data.url = sails.config.appUrl + sails.config.odin.uploadFolder + '/' + dataset + '/' + filename;
                     console.log(data);
                     File.create(data).exec(function created(err, newInstance) {
 
@@ -107,23 +102,4 @@ module.exports = {
             return res.serverError(err);
         }).pipe(res);
     },
-    // index: function (req, res, next) {
-    //     var fs = require('fs');
-    //     var dirname = require('path').resolve(sails.config.odin.uploadFolder);
-    //     fs.readdir(dirname, function (err, filenames) {
-    //         if (err) {
-    //             next(err);
-    //         }
-    //         // filenames.forEach(function (filename) {
-    //         //   fs.readFile(dirname + '/' + filename, 'utf-8', function (err, content) {
-    //         //     if (err) {
-    //         //       return next(err);
-    //         //     }
-    //         //     // onFileContent(filename, content);
-    //         //   });
-    //         // });
-    //         return res.ok({files: filenames})
-    //     });
-    // },
-
 };

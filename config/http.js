@@ -28,6 +28,9 @@ module.exports = {
   },
 
   http: {
+    customMiddleware: function(app) {
+      app.use('/var', require('../node_modules/sails/node_modules/express')['static'](path.normalize(__dirname + '/../var')));
+    },
     /**
      * This is the options object for the `createServer` method, as discussed here:
      * http://nodejs.org/api/https.html#https_class_https_server
@@ -40,9 +43,9 @@ module.exports = {
      * You can define own custom middleware here
      * @param app Express application
      */
-    customMiddleware: app => {
+    // customMiddleware: app => {
 
-    },
+    // },
 
     /**
      * Configures the middleware function used for parsing the HTTP request body
