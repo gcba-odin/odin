@@ -1,5 +1,7 @@
 "use strict";
 
+var path = require( "path" );
+
 /**
  * HTTP Server Settings
  * Configuration for the underlying HTTP server in Sails
