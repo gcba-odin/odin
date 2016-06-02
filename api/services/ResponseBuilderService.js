@@ -16,6 +16,7 @@
  *
  */
 
+const shortid = require('shortid');
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
@@ -131,13 +132,15 @@ class ResponseGET extends ResponseBuilder {
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        const _populate = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        const _include = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        const _populate = [];
+
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
 
         this._many = many;
 
-        if (_populate.length > 0) {
+        if (_include.length > 0) {
             delete req.query.include;
         }
 
@@ -176,10 +179,10 @@ class ResponseGET extends ResponseBuilder {
                 var params = (JSON.stringify(requestQuery) != '{}');
                 // If we have &skip or ?skip, we delete it from the url
                 var url = this.req.url.replace(/.skip=\d+/g, "");
-
+                console.log(cant);
                 const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
                 const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
-                const _next = (_skip + _limit < cant ? _linkToModel + (_skip + _limit) : undefined);
+                const _next = ((_skip - _limit <= cant) ? ((_skip - _limit < cant) ? _linkToModel + (_skip + _limit) : _linkToModel + (_skip + 1)) : undefined);
                 const _first = (_page > 1 ? _linkToModel + 0 : undefined);
                 const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
 
@@ -204,9 +207,25 @@ class ResponseGET extends ResponseBuilder {
             };
         }
 
+        // Populate one-to-one
+        _.forEach(this._model.definition, function(value, key) {
+            console.dir(key);
+            console.dir(value);
+            if (value.foreignKey) _populate.push(key);
+        });
+
         _.forEach(_populate, function(element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
-                _query = populatedRecords;
+                if (!err) _query = populatedRecords;
+                else console.log(err);
+            });
+        }, this);
+
+        // Populate one-to-many and many-to-many
+        _.forEach(_include, function(element) {
+            _query.populate(element).exec(function afterwards(err, populatedRecords) {
+                if (!err) _query = populatedRecords;
+                else console.log(err);
             });
         }, this);
 
