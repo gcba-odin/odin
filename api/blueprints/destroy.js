@@ -13,8 +13,8 @@ module.exports = (req, res) => {
 
     builder.destroy
         .then(record => record[0] = [{
-            meta: builder.meta,
-            links: builder.links
+            meta: builder.meta(),
+            links: builder.links()
         }])
         .spread(res.deleted)
         .catch(res.negotiate);

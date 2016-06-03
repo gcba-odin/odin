@@ -30,16 +30,16 @@ class ResponseBuilder {
         // this.headers = {};
 
         // TODO: Find a way to include the correct code & message (eg, CREATED, Resource has been created.)
-        this.meta = {
+        this._meta = {
             code: '',
             message: ''
         };
         this.data = [];
-        this.links = {};
         this.error = {};
 
+        this._links = {};
         this._model = _actionUtil.parseModel(this.req);
-        this._emptyMeta = _.cloneDeep(this.meta);
+        this._emptyMeta = _.cloneDeep(this._meta);
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
@@ -52,15 +52,15 @@ class ResponseBuilder {
     }
 
     /**
-     * Builds the response body. The subclasses must provide the custom building blocks (meta, error/data, links).
+     * Builds the response body. The subclasses must provide the custom building blocks (meta, error/data, _links).
      */
     build() {
         let body;
         let elements = {
-            meta: this.meta,
+            meta: this._meta,
             error: this.error,
             data: this.data,
-            links: this.links
+            links: this._links
         };
 
         /**
@@ -69,10 +69,10 @@ class ResponseBuilder {
 
         // if (!_.isInteger(this.status)) new Error('Status must be an integer.');
         // if (!_.isPlainObject(this.headers)) new Error('Headers is not an object.');
-        if (!_.isPlainObject(this.meta)) new Error('Meta is not an object.');
-        if (!_.isPlainObject(this.links)) new Error('Links is not an object.');
-        if (_.isEqual(this.meta, _emptyMeta)) new Error('Meta is empty.');
-        if (_.isEmpty(this.links)) new Error('Links is empty.');
+        if (!_.isPlainObject(this._meta)) new Error('Meta is not an object.');
+        if (!_.isPlainObject(this._links)) new Error('Links is not an object.');
+        if (_.isEqual(this._meta, _emptyMeta)) new Error('Meta is empty.');
+        if (_.isEmpty(this._links)) new Error('Links is empty.');
 
         // this.res.set(this.headers);
 
@@ -103,25 +103,33 @@ class ResponseBuilder {
      */
 
     /**
-     * Add one key/value pair to the meta object. To set the entire object at once, do it directly: builder.meta = meta
+     * Add one key/value pair to the meta object. To set the entire object at once, do it directly: builder._meta = meta
      */
     addMeta(value) {
-        this._addValue(value, this.meta);
+        this._addValue(value, this._meta);
         return this; // Allows chaining
     }
 
     /**
-     * Add one key/value pair to the links object. To set the entire object at once, do it directly: builder.links = link
+     * Add one key/value pair to the _links object. To set the entire object at once, do it directly: builder._links = link
      */
     addLink(value) {
-        this._addValue(value, this.links);
+        this._addValue(value, this._links);
         return this; // Allows chaining
+    }
+
+    links() {
+        return this._links;
+    }
+
+    meta() {
+        return this._meta;
     }
 }
 
 
 /**
- * A class that builds a response to a GET request. Subclasses ResponseBuilder, providing its own meta and links objects.
+ * A class that builds a response to a GET request. Subclasses ResponseBuilder, providing its own meta and _links objects.
  * Data will be set externally (eg, builder.data = data) in the corresponding response file (eg, responses/ok.js).
  */
 
@@ -154,7 +162,7 @@ class ResponseGET extends ResponseBuilder {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
 
-            this.meta = _.assign(this.meta, {
+            this._meta = _.assign(this._meta, {
                 // criteria: _where,
                 limit: _limit,
                 start: _skip,
@@ -164,7 +172,7 @@ class ResponseGET extends ResponseBuilder {
 
             // If a criteria was given, add it to meta
             if (JSON.stringify(_where) != '{}') {
-                this.meta = _.assign(this.meta, {
+                this._meta = _.assign(this._meta, {
                     criteria: _where
                 });
             }
@@ -185,12 +193,12 @@ class ResponseGET extends ResponseBuilder {
                 const _first = (_page > 1 ? _linkToModel + 0 : undefined);
                 const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
 
-                if (_previous) this.links.previous = _previous;
-                if (_next) this.links.next = _next;
-                if (_first) this.links.first = _first;
-                if (_last) this.links.last = _last;
+                if (_previous) this._links.previous = _previous;
+                if (_next) this._links.next = _next;
+                if (_first) this._links.first = _first;
+                if (_last) this._links.last = _last;
             }.bind(this));
-            this.links = {
+            this._links = {
                 first: this.req.host + ':' + this.req.port + '/' + modelName + '/first',
                 last: this.req.host + ':' + this.req.port + '/' + modelName + '/last',
                 count: this.req.host + ':' + this.req.port + '/' + modelName + '/count'
@@ -201,7 +209,7 @@ class ResponseGET extends ResponseBuilder {
                 select: _fields
             } : null);
 
-            this.links = {
+            this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
         }
@@ -210,9 +218,9 @@ class ResponseGET extends ResponseBuilder {
         _.forEach(this._model.definition, function(value, key) {
             if (value.foreignKey) {
                 _query.populate(key).exec(function afterwards(err, populatedRecords) {
-                if (!err) _query = populatedRecords;
-                else console.log(err);
-            });
+                    if (!err) _query = populatedRecords;
+                    else console.log(err);
+                });
             }
         });
 
@@ -240,6 +248,19 @@ class ResponseGET extends ResponseBuilder {
         }
 
         return this; // Allows chaining
+    }
+
+    links(records) {
+        if (records.length > 0) {
+            return this._links;
+        } else {
+            delete this._links.first;
+            delete this._links.last;
+            delete this._links.previous;
+            delete this._links.next;
+
+            return this._links;
+        }
     }
 }
 
@@ -299,7 +320,7 @@ class ResponseQuery extends ResponseBuilder {
         super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
 
-            this.links = {
+            this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
             this.findQuery = this._model.find({
@@ -315,7 +336,7 @@ class ResponseCount extends ResponseBuilder {
         super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
 
-            this.links = {
+            this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
             this.countQuery = this._model.count();

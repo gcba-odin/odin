@@ -13,8 +13,8 @@ module.exports = (req, res) => {
 
     builder.create
         .then(records => [records, {
-            meta: builder.meta,
-            links: builder.links
+            meta: builder.meta(),
+            links: builder.links()
         }])
         .spread(res.created)
         .catch(res.negotiate);

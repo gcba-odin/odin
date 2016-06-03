@@ -44,8 +44,8 @@ module.exports = (req, res) => {
             //     end: builder.skip + builder.limit,
             //     page: Math.floor(builder.skip / builder.limit)
             // },
-            meta: builder.meta,
-            links: builder.links
+            meta: builder.meta(),
+            links: builder.links(records)
         }])
         .spread(res.ok)
         .catch(res.negotiate);

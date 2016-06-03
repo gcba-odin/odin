@@ -8,8 +8,8 @@ module.exports = function(req, res) {
         if (err) return res.negotiate;
 
         return res.ok(record[0], {
-            meta: builder.meta,
-            links: builder.links
+            meta: builder.meta(),
+            links: builder.links(record[0])
         });
     });
 };

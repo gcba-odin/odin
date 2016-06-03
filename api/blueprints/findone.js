@@ -32,8 +32,8 @@ module.exports = (req, res) => {
     builder.findQuery
         .then(record => record[0] = [
             record[0], {
-                meta: builder.meta,
-                links: builder.links
+                meta: builder.meta(),
+                links: builder.links(record[0])
             }
         ])
         .spread(res.ok)
