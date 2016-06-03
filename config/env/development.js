@@ -5,6 +5,8 @@
  * @description :: This section overrides all other config values ONLY in development environment
  */
 
+const sails = require( 'sails' );
+
 module.exports = {
   port: 3000,
   log: {

@@ -133,7 +133,6 @@ class ResponseGET extends ResponseBuilder {
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         const _include = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
-        const _populate = [];
 
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
@@ -207,19 +206,15 @@ class ResponseGET extends ResponseBuilder {
             };
         }
 
-        // Populate one-to-one
+        // Populate one-to-many
         _.forEach(this._model.definition, function(value, key) {
-            console.dir(key);
-            console.dir(value);
-            if (value.foreignKey) _populate.push(key);
-        });
-
-        _.forEach(_populate, function(element) {
-            _query.populate(element).exec(function afterwards(err, populatedRecords) {
+            if (value.foreignKey) {
+                _query.populate(key).exec(function afterwards(err, populatedRecords) {
                 if (!err) _query = populatedRecords;
                 else console.log(err);
             });
-        }, this);
+            }
+        });
 
         // Populate one-to-many and many-to-many
         _.forEach(_include, function(element) {

@@ -6,6 +6,7 @@
     "archiver": "^1.0.0",
     "bluebird": "^3.4.0",
     "csvtojson": "^0.5.12",
+    "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
     "iconv": "^2.2.0",
