@@ -17,7 +17,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
  * @private
  */
 const LOCAL_STRATEGY_CONFIG = {
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     session: false,
     passReqToCallback: true
