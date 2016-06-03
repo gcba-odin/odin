@@ -33,11 +33,6 @@ module.exports = {
             type: 'string',
             size: 500
         },
-        url: {
-            type: 'string',
-            url: true,
-            size: 500
-        },
         collection: {
             type: 'string',
             size: 500
