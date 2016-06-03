@@ -186,7 +186,7 @@ class ResponseGET extends ResponseBuilder {
                 var params = (JSON.stringify(requestQuery) != '{}');
                 // If we have &skip or ?skip, we delete it from the url
                 var url = this.req.url.replace(/.skip=\d+/g, "");
-                console.log(cant);
+
                 const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
                 const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
                 const _next = ((_skip - _limit <= cant) ? ((_skip - _limit < cant) ? _linkToModel + (_skip + _limit) : _linkToModel + (_skip + 1)) : undefined);
