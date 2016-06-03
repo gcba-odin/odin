@@ -9,52 +9,106 @@
 
 module.exports = {
   errors: {
-    BAD_REQUEST: {
-      code: 'E_BAD_REQUEST',
-      message: 'The request cannot be fulfilled due to bad syntax',
-      status: 400
+    OK: {
+      code: 'OK',
+      message: 'The operation was executed successfully.',
+      status: 200
     },
 
     CREATED: {
       code: 'CREATED',
-      message: 'The request has been fulfilled and resulted in a new resource being created',
+      message: 'A new resource was created succesfully.',
       status: 201
     },
 
-    FORBIDDEN: {
-      code: 'E_FORBIDDEN',
-      message: 'User not authorized to perform the operation',
-      status: 403
+    ACCEPTED: {
+      code: 'ACCEPTED',
+      message: 'The request was accepted but is not processed yet.',
+      status: 202
     },
 
-    NOT_FOUND: {
-      code: 'E_NOT_FOUND',
-      message: 'The requested resource could not be found but may be available again in the future',
-      status: 404
+    NO_CONTENT: {
+      code: 'NO_CONTENT',
+      message: 'The operation was executed successfully.',
+      status: 204
     },
 
-    OK: {
-      code: 'OK',
-      message: 'Operation is successfully executed',
-      status: 200
+    PARTIAL_CONTENT: {
+      code: 'PARTIAL_CONTENT',
+      message: 'The requested resource was delivered partially.',
+      status: 206
     },
 
-    SERVER_ERROR: {
-      code: 'E_INTERNAL_SERVER_ERROR',
-      message: 'Something bad happened on the server',
-      status: 500
+
+    // Client Errors
+
+    BAD_REQUEST: {
+      code: 'E_BAD_REQUEST',
+      message: 'The request cannot be fulfilled due to bad syntax.',
+      status: 400
     },
 
     UNAUTHORIZED: {
       code: 'E_UNAUTHORIZED',
-      message: 'Missing or invalid authentication token',
+      message: 'The authentication token is missing or invalid.',
       status: 401
     },
 
     USER_NOT_FOUND: {
       code: 'E_USER_NOT_FOUND',
-      message: 'User with specified credentials is not found',
+      message: 'An user with specified credentials was not found.',
       status: 401
+    },
+
+    FORBIDDEN: {
+      code: 'E_FORBIDDEN',
+      message: 'The user is not authorized to access the requested resource.',
+      status: 403
+    },
+
+    NOT_FOUND: {
+      code: 'E_NOT_FOUND',
+      message: 'The requested resource could not be found.',
+      status: 404
+    },
+
+    NOT_ALLOWED: {
+      code: 'E_NOT_ALLOWED',
+      message: 'The user is not allowed to perform the attempted operation.',
+      status: 405
+    },
+
+    NOT_ACCEPTABLE: {
+      code: 'E_NOT_ACCEPTABLE',
+      message: 'The requested resource is not available in the specified format.',
+      status: 406
+    },
+
+    GONE: {
+      code: 'E_GONE',
+      message: 'The requested resource is not available anymore.',
+      status: 410
+    },
+
+    UNSUPPORTED_MEDIA_TYPE: {
+      code: 'E_UNSUPPORTED_MEDIA_TYPE',
+      message: 'The format provided is not supported.',
+      status: 415
+    },
+
+
+    // Server Errors
+
+    SERVER_ERROR: {
+      code: 'E_INTERNAL_SERVER_ERROR',
+      message: 'Something bad happened on the server.',
+      status: 500
+    },
+
+    NOT_IMPLEMENTED: {
+      code: 'E_NOT_IMPLEMENTED',
+      message: 'The attempted operation is not supported.',
+      status: 501
     }
   }
 };
