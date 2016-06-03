@@ -41,6 +41,11 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        url: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
         publishedAt: {
             type: 'datetime'
         },
