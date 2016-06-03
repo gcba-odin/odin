@@ -111,7 +111,7 @@ module.exports = {
         }],
         Category: [{
             id: 'iWRhpRV',
-            name: 'Art',
+            name: 'Cultura, Recreación y Turismo',
             description: 'An example category.',
             active: true,
             models: {
@@ -121,7 +121,7 @@ module.exports = {
             }
         }, {
             id: 'jWRhpRV',
-            name: 'Science',
+            name: 'Economía, Negocio y Comercio',
             description: 'An example category.',
             active: true,
             models: {
@@ -131,7 +131,7 @@ module.exports = {
             }
         }, {
             id: 'kWRhpRV',
-            name: 'Public Health',
+            name: 'Educación',
             description: 'An example category.',
             active: true,
             models: {
@@ -141,7 +141,7 @@ module.exports = {
             }
         }, {
             id: 'lWRhpRV',
-            name: 'Technology',
+            name: 'Gobierno y Administración pública',
             description: 'An example category.',
             active: false,
             models: {
@@ -151,7 +151,47 @@ module.exports = {
             }
         }, {
             id: 'mWRhpRV',
-            name: 'Other',
+            name: 'Medio Ambiente',
+            description: 'An example category.',
+            active: false,
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'mWRhpR1',
+            name: 'Salud',
+            description: 'An example category.',
+            active: false,
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'mWRhpR2',
+            name: 'Seguridad',
+            description: 'An example category.',
+            active: false,
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'mWRhpR3',
+            name: 'Transporte',
+            description: 'An example category.',
+            active: false,
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'mWRhpR4',
+            name: 'Urbanismo e Infraestructura',
             description: 'An example category.',
             active: false,
             models: {
@@ -253,7 +293,7 @@ module.exports = {
             name: 'Semestral'
         }, {
             id: 'vWRhpR4',
-            name: 'Quarterly'
+            name: 'QuCultura, Recreación y Turismoerly'
         }, {
             id: '0WRhpR9',
             name: 'Bimonthly'
@@ -360,7 +400,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 category: {
-                    name: 'Art'
+                    name: 'Cultura, Recreación y Turismo'
                 },
                 status: {
                     name: 'Draft'
@@ -403,7 +443,7 @@ module.exports = {
             status: 'oWRhpRV',
             models: {
                 category: {
-                    name: 'Science'
+                    name: 'Economía, negocio y comercio'
                 },
                 status: {
                     name: 'Under Review'
@@ -446,7 +486,7 @@ module.exports = {
             status: 'pWRhpRV',
             models: {
                 category: {
-                    name: 'Public Health'
+                    name: 'Educación'
                 },
                 status: {
                     name: 'Rejected'
@@ -489,7 +529,7 @@ module.exports = {
             status: 'qWRhpRV',
             models: {
                 category: {
-                    name: 'Technology'
+                    name: 'Gobierno y administración pública'
                 },
                 status: {
                     name: 'Published'
@@ -532,7 +572,7 @@ module.exports = {
             status: 'rWRhpRV',
             models: {
                 category: {
-                    name: 'Other'
+                    name: 'Medio ambiente'
                 },
                 status: {
                     name: 'Unpublished'
@@ -736,7 +776,7 @@ module.exports = {
                     name: 'Dataset 5'
                 },
                 updateFrequency: {
-                    name: 'Quarterly'
+                    name: 'QuCultura, Recreación y Turismoerly'
                 },
                 owner: {
                     username: 'admin'
