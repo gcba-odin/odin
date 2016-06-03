@@ -4,7 +4,8 @@ module.exports.autoreload = {
     dirs: [
         "api/models",
         "api/controllers",
-        "api/services",
-        "config/locales"
+        "api/services"
     ],
+    overrideMigrateSetting: true,
+    ignored: ['i18n']
 };
