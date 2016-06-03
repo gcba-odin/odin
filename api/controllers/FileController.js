@@ -52,6 +52,7 @@ module.exports = {
                             var MongoClient = require('mongodb').MongoClient;
 
                             // Connect to the db
+                            // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
                             MongoClient.connect("mongodb://localhost:27017/" + dataset, function(err, db) {
                                 if (err) return res.negotiate(err)
 
