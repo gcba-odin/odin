@@ -5,13 +5,14 @@
   "dependencies": {
     "archiver": "^1.0.0",
     "bluebird": "^3.4.0",
-    "csvtojson": "^0.5.12",
+    "csvtojson": "^0.5.14",
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
     "iconv": "^2.2.0",
     "kerberos": "0.0.21",
-    "lodash": "^4.12.0",
+    "lodash": "^4.13.1",
+    "mongodb": "^2.1.21",
     "node-mime": "^1.0.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.0.0",
@@ -21,7 +22,7 @@
     "sails": "^0.12.3",
     "sails-disk": "^0.10.9",
     "sails-hook-autoreload": "^0.13.1",
-    "sails-hook-fixtures": "^0.11.9",
+    "sails-hook-fixtures": "^0.12.0",
     "sails-hook-model-extra": "^0.3.1",
     "sails-hook-sockets": "^0.13.7",
     "sails-memory": "^0.10.5",
@@ -35,13 +36,13 @@
     "waterline": "^0.12.1"
   },
   "devDependencies": {
-    "chai": "3.4.1",
-    "esdoc": "0.4.3",
+    "chai": "^3.5.0",
+    "esdoc": "^0.4.7",
     "gulp-shell": "^0.5.2",
-    "istanbul": "0.4.2",
-    "mocha": "2.3.4",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
     "sails-memory": "0.10.5",
-    "sinon": "1.17.2"
+    "sinon": "^1.17.4"
   },
   "scripts": {
     "clean": "rm -rf ./.tmp",
