@@ -281,7 +281,7 @@ module.exports = {
         // Files
 
         'POST /files': 'File.upload',
-        // 'GET /files/:filename/': 'File.download',
+        'GET /files/:id': 'File.download',
 
         'GET /files/first': {
             blueprint: 'first',

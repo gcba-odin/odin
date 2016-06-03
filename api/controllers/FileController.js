@@ -4,13 +4,13 @@
  * FileController
  * @description :: Server-side logic for ...
  */
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 var mime = require('mime');
 var shortid = require('shortid');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({
     delimiter: 'auto'
 });
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
     upload: function(req, res) {
@@ -94,12 +94,20 @@ module.exports = {
         }
     },
     download: function(req, res) {
-        var file = req.param('filename');
-        var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file);
-        var SkipperDisk = require('skipper-disk');
-        var fileAdapter = SkipperDisk();
-        fileAdapter.read(dirname).on('error', function(err) {
-            return res.serverError(err);
-        }).pipe(res);
+        const pk = actionUtil.requirePk(req);
+
+        File.findOne(pk).exec(function(err, file) {
+            if (err) return res.negotiate(err)
+            console.log('file found')
+            console.log(file);
+            console.log('file found')
+            var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file);
+            console.log(dirname);
+            var SkipperDisk = require('skipper-disk');
+            var fileAdapter = SkipperDisk();
+            fileAdapter.read(dirname).on('error', function(err) {
+                return res.serverError(err);
+            }).pipe(res);
+        });
     },
 };
