@@ -204,31 +204,40 @@ module.exports = {
         }],
         Filetype: [{
             id: 'sWRhpRV',
-            name: 'csv'
+            name: 'csv',
+            api: true
         }, {
             id: 'tWRhpRV',
-            name: 'html'
+            name: 'html',
+            api: false
         }, {
             id: 'uWRhpRV',
-            name: 'ics'
+            name: 'ics',
+            api: false
         }, {
             id: 'vWRhpRV',
-            name: 'pdf'
+            name: 'pdf',
+            api: false
         }, {
             id: 'wWRhpRV',
-            name: 'rar'
+            name: 'rar',
+            api: false
         }, {
             id: 'xWRhpRV',
-            name: 'shp'
+            name: 'shp',
+            api: false
         }, {
             id: 'yWRhpRV',
-            name: 'xls'
+            name: 'xls',
+            api: false
         }, {
             id: 'zWRhpRV',
-            name: 'xml'
+            name: 'xml',
+            api: false
         }, {
             id: '0WRhpRV',
-            name: 'zip'
+            name: 'zip',
+            api: false
         }],
         UpdateFrequency: [{
             id: 'tWRhpR2',
