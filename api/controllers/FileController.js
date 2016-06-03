@@ -67,8 +67,6 @@ module.exports = {
                         });
                     }
                     var data = actionUtil.parseValues(req)
-                    data.url = sails.config.appUrl + sails.config.odin.uploadFolder + '/' + dataset + '/' + filename;
-                    console.log(data);
                     File.create(data).exec(function created(err, newInstance) {
 
                         if (err) return res.negotiate(err);
@@ -99,10 +97,10 @@ module.exports = {
 
         File.findOne(pk).exec(function(err, file) {
             if (err) return res.negotiate(err)
-            console.log('file found')
-            console.log(file);
-            console.log('file found')
-            var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file);
+
+            res.set('Content-Type', mime.lookup(file.name.split('.').pop()));
+            res.set('Content-Disposition', 'attachment; filename=' + file.name);
+            var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name);
             console.log(dirname);
             var SkipperDisk = require('skipper-disk');
             var fileAdapter = SkipperDisk();
