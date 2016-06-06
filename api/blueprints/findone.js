@@ -30,12 +30,16 @@ module.exports = (req, res) => {
     var builder = new Response.ResponseGET(req, res, false);
 
     builder.findQuery
-        .then(record => record[0] = [
-            record[0], {
-                meta: builder.meta(),
-                links: builder.links(record[0])
+        .then(record => {
+            if (_.isUndefined(record[0])) return res.notFound();
+            else {
+                return res.ok([
+                    record[0], {
+                        meta: builder.meta(),
+                        links: builder.links(record[0])
+                    }
+                ]);
             }
-        ])
-        .spread(res.ok)
+        })
         .catch(res.negotiate);
 };

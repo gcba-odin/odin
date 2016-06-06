@@ -160,7 +160,6 @@ class ResponseGET extends ResponseBuilder {
         if (_include.length > 0) {
             delete req.query.include;
         }
-
         if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
@@ -262,7 +261,10 @@ class ResponseGET extends ResponseBuilder {
     }
 
     links(records) {
-        if (records.length > 0) {
+        console.log('records');
+        console.log(records);
+        if (!_.isUndefined(records) && records.length > 0) {
+            console.log( 'if');
             return this._links;
         } else {
             delete this._links.first;
