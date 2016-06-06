@@ -15,7 +15,9 @@ const parseModels = _.flow(toLowerCase, _.method('split', ','));
 module.exports = (req, res) => {
 
     const q = req.param('query');
+    const pageParam = req.param('page') || 1;
     const model = actionUtil.parseModel(req);
+
     if (!q) return res.badRequest(null, {message: 'You should specify a "query" parameter!'});
 
 
@@ -24,7 +26,7 @@ module.exports = (req, res) => {
             result.or.push(_.set({}, key, {contains: q}))
         }
     }, {or: []});
-    model.find().where(where)
+    model.find().where(where).paginate({page:pageParam})
         .then(records => [records, {
             // meta: builder.meta(),
             // links: builder.links(records)
