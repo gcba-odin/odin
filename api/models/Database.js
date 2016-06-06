@@ -35,34 +35,6 @@ module.exports = {
             size: 500
         },
 
-        baseAttributes: {
-            name: {
-                type: 'string'
-            },
-            collection: {
-                type: 'string'
-            },
-            url: {
-                type: 'string'
-            }
-        },
-        setAttributes() {
-            return this.baseAttributes
-        },
-        getAttributes() {
-            return _.merge({
-                id: {
-                    type: 'string'
-                },
-                createdAt: {
-                    type: 'datetime'
-                },
-                updatedAt: {
-                    type: 'datetime'
-                }
-            }, this.baseAttributes)
-        },
-
         toJSON() {
             return this.toObject();
         }

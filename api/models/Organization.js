@@ -55,56 +55,6 @@ module.exports = {
             collection: 'file',
             via: 'organization'
         },
-
-        baseAttributes: {
-            name: {
-                type: 'string'
-            },
-            description: {
-                type: 'string'
-            },
-            address: {
-                type: 'string'
-            },
-            active: {
-                type: 'boolean'
-            },
-            createdBy: {
-                model: 'user'
-            },
-            users: {
-                collection: 'user',
-                via: 'organization'
-            },
-            parent: {
-                model: 'organization'
-            },
-            childs: {
-                collection: 'organization',
-                via: 'parent'
-            },
-            files: {
-                collection: 'file',
-                via: 'organization'
-            }
-        },
-        setAttributes() {
-            return this.baseAttributes
-        },
-        getAttributes() {
-            return _.merge({
-                id: {
-                    type: 'string'
-                },
-                createdAt: {
-                    type: 'datetime'
-                },
-                updatedAt: {
-                    type: 'datetime'
-                }
-            }, this.baseAttributes)
-        },
-
         toJSON() {
             return this.toObject();
         }
