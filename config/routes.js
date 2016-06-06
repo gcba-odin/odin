@@ -14,6 +14,10 @@ module.exports = {
         'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
 
+        'GET /users/search': {
+            blueprint: 'search',
+            model: 'user'
+        },
         'GET /users/first': {
             blueprint: 'first',
             model: 'user'
@@ -78,6 +82,11 @@ module.exports = {
             model: 'organization'
         },
 
+        'GET /organizations/search': {
+            blueprint: 'search',
+            model: 'organization'
+        },
+
         'PATCH /organizations/:id': {
             blueprint: 'update',
             model: 'organization'
@@ -130,6 +139,10 @@ module.exports = {
             blueprint: 'last',
             model: 'category'
         },
+        'GET /categories/search': {
+            blueprint: 'search',
+            model: 'category'
+        },
         'PATCH /categories/:id': {
             blueprint: 'update',
             model: 'category'
@@ -180,6 +193,10 @@ module.exports = {
         },
         'GET /statuses/last': {
             blueprint: 'last',
+            model: 'status'
+        },
+        'GET /statuses/search': {
+            blueprint: 'search',
             model: 'status'
         },
         'PATCH /statuses/:id': {
@@ -236,6 +253,10 @@ module.exports = {
             blueprint: 'last',
             model: 'filetype'
         },
+        'GET /filetypes/search': {
+            blueprint: 'search',
+            model: 'filetype'
+        },
         'PATCH /filetypes/:id': {
             blueprint: 'update',
             model: 'filetype'
@@ -287,7 +308,10 @@ module.exports = {
             blueprint: 'first',
             model: 'file'
         },
-
+        'GET /files/search': {
+            blueprint: 'search',
+            model: 'file'
+        },
         'GET /files/last': {
             blueprint: 'last',
             model: 'file'
@@ -344,6 +368,10 @@ module.exports = {
             blueprint: 'last',
             model: 'database'
         },
+        'GET /databases/search': {
+            blueprint: 'search',
+            model: 'database'
+        },
         'PATCH /databases/:id': {
             blueprint: 'update',
             model: 'database'
@@ -395,6 +423,10 @@ module.exports = {
         },
         'GET /datasets/last': {
             blueprint: 'last',
+            model: 'dataset'
+        },
+        'GET /datasets/search': {
+            blueprint: 'search',
             model: 'dataset'
         },
         'PATCH /datasets/:id': {
@@ -450,6 +482,10 @@ module.exports = {
             blueprint: 'last',
             model: 'tag'
         },
+        'GET /tags/search': {
+            blueprint: 'search',
+            model: 'tag'
+        },
 
         'PATCH /tags/:id': {
             blueprint: 'update',
@@ -498,7 +534,10 @@ module.exports = {
             blueprint: 'first',
             model: 'updatefrequency'
         },
-
+        'GET /updatefrequencies/search': {
+            blueprint: 'search',
+            model: 'updatefrequency'
+        },
         'GET /updatefrequencies/last': {
             blueprint: 'last',
             model: 'updatefrequency'
@@ -554,6 +593,10 @@ module.exports = {
 
         'GET /configs/last': {
             blueprint: 'last',
+            model: 'config'
+        },
+        'GET /configs/search': {
+            blueprint: 'search',
             model: 'config'
         },
 

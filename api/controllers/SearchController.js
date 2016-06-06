@@ -22,8 +22,12 @@ module.exports = {
 
                 if (!model) return res;
 
-                const where = _.transform(model.definition, (result, val, key) => result.or.push(_.set({}, key, {contains: q})), {or: []});
-
+                const where = _.transform(model.definition, function (result, val, key) {
+                    if (val.type == 'string') {
+                        result.or.push(_.set({}, key, {contains: q}))
+                    }
+                }, {or: []});
+            
                 return Promise.join(modelName, model.find(where), _.partial(_.set, res));
             }, {})
             .then(res.ok)
