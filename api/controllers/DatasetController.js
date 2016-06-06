@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-    download: function(req, res) {
+    download: function (req, res) {
         const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
         const pk = actionUtil.requirePk(req);
         var file_system = require('fs');
@@ -22,19 +22,22 @@ module.exports = {
         //     console.log('archiver has been finalized and the output file descriptor has closed.');
         // });
 
-        archive.on('error', function(err) {
-            throw err;
+        archive.on('error', function (err) {
+            return res.negotiate(err);
         });
 
-        var path = sails.config.odin.uploadFolder + '/' + pk
+        var path = sails.config.odin.uploadFolder + '/' + pk;
 
         archive.pipe(res);
-        archive.bulk([{
-            expand: true,
-            cwd: path,
-            src: ['**'],
-            // dest: pk
-        }]);
+        // archive.bulk([{
+        //     expand: true,
+        //     cwd: path,
+        //     src: ['**'],
+        //     // dest: pk
+        // }]);
+        archive.directory(
+            path
+        );
         archive.finalize();
 
     }
