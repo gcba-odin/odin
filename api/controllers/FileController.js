@@ -11,27 +11,44 @@ var Converter = require("csvtojson").Converter;
 var converter = new Converter({
     delimiter: 'auto'
 });
+var Iconv = require('iconv').Iconv;
+var Buffer = require('buffer').Buffer;
 
 module.exports = {
-    upload: function(req, res) {
+    upload: function (req, res) {
         var extension = '';
-        var filename = ''
-        var uploadFile = req.file('uploadFile').on('error', function(err) {
+        var filename = '';
+        var uploadFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
-        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters')
+        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
+
+        console.log(uploadFile.isNoop);
+
         if (!uploadFile.isNoop) {
+
             uploadFile.upload({
-                    saveAs: function(file, cb) {
+                    saveAs: function (file, cb) {
+
+                        console.log("Before new");
+
+                        var iconv = new Iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE');
+
+                        console.log("Before convert");
+
+                        //works?
+                        file._readableState.buffer[0] = iconv.convert(file._readableState.buffer[0]);
+
+                        console.log("After convert");
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
                         // If the extension is present on the array of allowed types we can save it
                         if (sails.config.odin.allowedTypes.indexOf(mime.lookup(extension)) === -1) {
                             return res.badRequest('filetype not allowed');
                         } else {
-                            filename = file.filename
-                            cb(null, filename);
+                            filename = file.filename;
+                            cb(null, file.filename);
                         }
                     },
                     dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset),
@@ -44,7 +61,7 @@ module.exports = {
                         return res.badRequest('No file was uploaded');
                     }
                     if (extension == 'text/csv') {
-                        converter.fromFile(sails.config.odin.uploadFolder + "/" + dataset + '/' + files[0].filename, function(err, result) {
+                        converter.fromFile(sails.config.odin.uploadFolder + "/" + dataset + '/' + filename, function (err, result) {
                             if (err) {
                                 res.negotiate(err);
                             }
@@ -53,14 +70,14 @@ module.exports = {
 
                             // Connect to the db
                             // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
-                            MongoClient.connect("mongodb://localhost:27017/" + dataset, function(err, db) {
-                                if (err) return res.negotiate(err)
+                            MongoClient.connect("mongodb://localhost:27017/" + dataset, function (err, db) {
+                                if (err) return res.negotiate(err);
 
                                 var collection = db.collection(files[0].filename);
 
                                 collection.insert(result, {
                                     w: 1
-                                }, function(err, res) {
+                                }, function (err, res) {
                                     if (err) return res.negotiate(err)
                                 });
                             });
@@ -78,7 +95,7 @@ module.exports = {
                             }
                             // Make sure data is JSON-serializable before publishing
                             var publishData = _.isArray(newInstance) ?
-                                _.map(newInstance, function(instance) {
+                                _.map(newInstance, function (instance) {
                                     return instance.toJSON();
                                 }) :
                                 newInstance.toJSON();
@@ -92,12 +109,12 @@ module.exports = {
             )
         }
     },
-    download: function(req, res) {
+    download: function (req, res) {
         const pk = actionUtil.requirePk(req);
         console.log(pk)
-        File.findOne(pk).then(function(file) {
+        File.findOne(pk).then(function (file) {
             if (!file) return res.notFound()
-            FileType.findOne(file.type).then(function(filetype) {
+            FileType.findOne(file.type).then(function (filetype) {
                 if (!filetype) return res.notFound()
                 console.log('before filetype.api')
                 console.log(filetype.api);
@@ -108,21 +125,20 @@ module.exports = {
                     console.log(dirname);
                     var SkipperDisk = require('skipper-disk');
                     var fileAdapter = SkipperDisk();
-                    fileAdapter.read(dirname).on('error', function(err) {
+                    fileAdapter.read(dirname).on('error', function (err) {
                         return res.serverError(err);
                     }).pipe(res);
                 } else {
                     return res.forbidden();
                 }
-            }).fail(function(err) {
+            }).fail(function (err) {
                 console.log(err)
                 res.negotiate()
             })
-        }).fail(function(err) {
+        }).fail(function (err) {
             console.log(err)
             res.negotiate()
         })
-
 
 
         // File.findOne(pk).exec(function(err, file) {

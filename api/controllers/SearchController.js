@@ -31,7 +31,10 @@ module.exports = {
             return Promise.join(modelName, model.find(where), _.partial(_.set, res));
         }, {}).then(records => {
             records = _.omitBy(records, _.isEmpty);
-            return [records, {}]
+            return [records, {
+                // records is an array of models, within each one, the result of the search
+                // meta: {count: _.size(records)}
+            }]
         }).spread(res.ok)
             .catch(res.negotiate);
     }
