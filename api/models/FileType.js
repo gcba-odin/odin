@@ -34,6 +34,35 @@ module.exports = {
             via: 'type'
         },
 
+        baseAttributes: {
+            api: {
+                type: 'boolean'
+            },
+            name: {
+                type: 'string'
+            },
+            files: {
+                collection: 'file',
+                via: 'type'
+            }
+        },
+        setAttributes() {
+            return this.baseAttributes
+        },
+        getAttributes() {
+            return _.merge({
+                id: {
+                    type: 'string'
+                },
+                createdAt: {
+                    type: 'datetime'
+                },
+                updatedAt: {
+                    type: 'datetime'
+                }
+            }, this.baseAttributes)
+        },
+
         toJSON() {
             return this.toObject();
         }

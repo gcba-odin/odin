@@ -39,6 +39,39 @@ module.exports = {
       required: true
     },
 
+    baseAttributes: {
+      name: {
+        type: 'string'
+      },
+      files: {
+        collection: 'file',
+        via: 'tags'
+      },
+      datasets: {
+        collection: 'dataset',
+        via: 'tags'
+      },
+      createdBy: {
+        model: 'user'
+      },
+    },
+    setAttributes() {
+      return this.baseAttributes
+    },
+    getAttributes() {
+      return _.merge({
+        id: {
+          type: 'string'
+        },
+        createdAt: {
+          type: 'datetime'
+        },
+        updatedAt: {
+          type: 'datetime'
+        }
+      }, this.baseAttributes)
+    },
+
     toJSON() {
       return this.toObject();
     }

@@ -44,6 +44,40 @@ module.exports = {
       model: 'user'
     },
 
+    baseAttributes: {
+      description: {
+        type: 'string'
+      },
+      type: {
+        type: 'string'
+      },
+      key: {
+        type: 'string'
+      },
+      value: {
+        type: 'string'
+      },
+      updatedBy: {
+        model: 'user'
+      }
+    },
+    setAttributes() {
+      return this.baseAttributes
+    },
+    getAttributes() {
+      return _.merge({
+        id: {
+          type: 'string'
+        },
+        createdAt: {
+          type: 'datetime'
+        },
+        updatedAt: {
+          type: 'datetime'
+        }
+      }, this.baseAttributes)
+    },
+
     toJSON() {
       return this.toObject();
     }
