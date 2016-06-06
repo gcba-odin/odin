@@ -25,7 +25,8 @@ class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
         this.res = res;
-
+        req.options.criteria = req.options.criteria || {};
+        this.req.options.criteria.blacklist = ['limit', 'skip', 'sort', 'populate', 'orderBy'];
         // this.status;
         // this.headers = {};
 
@@ -43,7 +44,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function(value, target) {
+        this._addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -89,6 +90,15 @@ class ResponseBuilder {
         }
 
         return body;
+    }
+
+    parseSort(req) {
+        var sort = req.param('sort') || req.options.sort;
+        var orderBy = req.param('orderBy') || req.options.orderBy;
+        if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
+            return undefined;
+        }
+        return {[orderBy]: sort}
     }
 
     /**
@@ -155,7 +165,8 @@ class ResponseGET extends ResponseBuilder {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
             const _skip = this.req.param('page') * _limit || _actionUtil.parseSkip(this.req);
-            const _sort = _actionUtil.parseSort(this.req);
+            // const _sort = _actionUtil.parseSort(this.req);
+            const _sort = this.parseSort(this.req);
             const _page = Math.floor(_skip / _limit) + 1;
 
             _query = this._model.find(null, _fields.length > 0 ? {
@@ -215,7 +226,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         // Populate one-to-many
-        _.forEach(this._model.definition, function(value, key) {
+        _.forEach(this._model.definition, function (value, key) {
             if (value.foreignKey) {
                 _query.populate(key).exec(function afterwards(err, populatedRecords) {
                     if (!err) _query = populatedRecords;
@@ -225,7 +236,7 @@ class ResponseGET extends ResponseBuilder {
         });
 
         // Populate one-to-many and many-to-many
-        _.forEach(_include, function(element) {
+        _.forEach(_include, function (element) {
             _query.populate(element).exec(function afterwards(err, populatedRecords) {
                 if (!err) _query = populatedRecords;
                 else console.log(err);
@@ -300,7 +311,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function(key, methodVerb) {
+        _.forEach(methods, function (key, methodVerb) {
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -317,7 +328,8 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._links = {
@@ -333,7 +345,8 @@ class ResponseQuery extends ResponseBuilder {
 
 class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._links = {
