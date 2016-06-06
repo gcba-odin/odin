@@ -26,9 +26,9 @@ module.exports = (req, res) => {
             result.or.push(_.set({}, key, {contains: q}))
         }
     }, {or: []});
-    model.find().where(where).paginate({page:pageParam})
+    model.find().where(where).paginate({page: pageParam})
         .then(records => [records, {
-            // meta: builder.meta(),
+            meta: {count: _.size(records)}
             // links: builder.links(records)
         }]).spread(res.ok)
         .catch(res.negotiate);
