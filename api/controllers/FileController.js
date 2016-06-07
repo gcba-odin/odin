@@ -13,6 +13,7 @@ var converter = new Converter({
 });
 var Iconv = require('iconv').Iconv;
 var Buffer = require('buffer').Buffer;
+var toArray = require('stream-to-array')
 
 module.exports = {
     upload: function(req, res) {
@@ -33,7 +34,31 @@ module.exports = {
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
                         // If the extension is present on the array of allowed types we can save it
-                        console.log('after set extension : ' + extension);
+                        var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
+
+                        console.log('inside onProgress');
+                        toArray(file, function(err, arr) {
+                            if (err) console.log(err);
+                            console.log('1');
+                            console.log(arr);
+                        })
+                        toArray(file.file._readableState.buffer[0], function(err, arr) {
+                            if (err) console.log(err);
+                            console.log(arr);
+                        })
+                        toArray(file.file._readableState.buffer, function(err, arr) {
+                            if (err) console.log(err);
+                            console.log(arr);
+                        })
+                        console.log('outside streamtobuffer')
+
+
+                        console.log('before convert: ' + file._readableState.buffer[0])
+
+                        // file._readableState.buffer[0] = iconv.convert(file._readableState.buffer[0]);
+
+                        console.log('after convert: ' + file._readableState.buffer[0])
+
                         if (sails.config.odin.allowedTypes.indexOf(mime.lookup(extension)) === -1) {
                             console.log('filetype not allowed')
                             return res.badRequest('filetype not allowed');
@@ -44,7 +69,8 @@ module.exports = {
                         }
                     },
                     dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset),
-                    maxBytes: 2000 * 1000 * 1000
+                    maxBytes: 2000 * 1000 * 1000,
+
                 },
                 function onUploadComplete(err, files) {
                     console.log('on upload complete');
@@ -55,15 +81,15 @@ module.exports = {
                     }
 
                     var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename
-                    var fs = require("fs");
-                    var input = fs.readFileSync(filePath, {
-                        encoding: "binary"
-                    });
-                    var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
-                    // var iconv = require('iconv-lite');
-                    var output = iconv.convert(input);
-                    fs.writeFileSync(filePath, output);
-                    // TODO: Should be inside a promise!!!
+                        // var fs = require("fs");
+                        // var input = fs.readFileSync(filePath, {
+                        // encoding: "binary"
+                        // });
+                        // var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
+                        // var iconv = require('iconv-lite');
+                        // var output = iconv.convert(input);
+                        // fs.writeFileSync(filePath, output);
+                        // TODO: Should be inside a promise!!!
                     if (extension == 'text/csv') {
                         converter.fromFile(filePath, function(err, result) {
                             if (err) {
