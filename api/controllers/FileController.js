@@ -34,40 +34,16 @@ module.exports = {
                     saveAs: function (file, cb) {
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
+
+                        if (/^text\/\w+$/.test(extension)) {
+                            var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
+
+                            file._readableState.buffer[0] = iconv.convert(file._readableState.buffer[0]);
+                            file.byteCount = file._readableState.buffer[0].length;
+                            file._readableState.length = file._readableState.buffer[0].length;
+                        }
                         // If the extension is present on the array of allowed types we can save it
-                        var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
-
-                        console.log('inside onProgress');
-                        // toBuffer(file, function (err, arr) {
-                        //     if (err) console.log(err);
-                        //     console.log('1');
-                        //     console.log(arr.toString());
-                        //     arr = iconv.convert(arr).toString();
-                        //
-                        // });
-                        // toArray(file._readableState.buffer[0], function (err, arr) {
-                        //     if (err) console.log(err);
-                        //     console.log('2');
-                        //     console.log(arr);
-                        // });
-                        // toArray(file._readableState.buffer, function (err, arr) {
-                        //     if (err) console.log(err);
-                        //     console.log('3');
-                        //     console.log(arr);
-                        // });
-                        // console.log('outside streamtobuffer');
-
-
-                        console.log('before convert: ' + file._readableState.buffer[0]);
-
-                        // var a  = iconv.convert(file._readableState.buffer[0]);
-                        file._readableState.buffer[0] = iconv.convert(file._readableState.buffer[0]);
-                        file.byteCount=file._readableState.buffer[0].length;
-                        file._readableState.length=file._readableState.buffer[0].length;
-                        
-                        console.log('after convert: ' + file._readableState.buffer[0]);
-
-                        if (sails.config.odin.allowedTypes.indexOf(mime.lookup(extension)) === -1) {
+                        if (sails.config.odin.allowedTypes.indexOf(extension) === -1) {
                             console.log('filetype not allowed');
                             return res.badRequest('filetype not allowed');
                         } else {
