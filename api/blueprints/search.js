@@ -18,17 +18,27 @@ module.exports = (req, res) => {
     const pageParam = req.param('page') || 1;
     const model = actionUtil.parseModel(req);
 
-    if (!q) return res.badRequest(null, {message: 'You should specify a "query" parameter!'});
+    if (!q) return res.badRequest(null, {
+        message: 'You should specify a "query" parameter!'
+    });
 
 
-    const where = _.transform(model.definition, function (result, val, key) {
-        if (val.type == 'string') {
-            result.or.push(_.set({}, key, {contains: q}))
+    const where = _.transform(model.definition, function(result, val, key) {
+        if (val.type == 'string' && model.serchables.indexOf(key) != -1) {
+            result.or.push(_.set({}, key, {
+                contains: q
+            }))
         }
-    }, {or: []});
-    model.find().where(where).paginate({page: pageParam})
+    }, {
+        or: []
+    });
+    model.find().where(where).paginate({
+            page: pageParam
+        })
         .then(records => [records, {
-            meta: {count: _.size(records)}
+            meta: {
+                count: _.size(records)
+            }
             // links: builder.links(records)
         }]).spread(res.ok)
         .catch(res.negotiate);
