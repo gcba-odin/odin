@@ -237,7 +237,7 @@ class ResponseGET extends ResponseBuilder {
         console.log('records');
         console.log(records);
         if (!_.isUndefined(records) && records.length > 0) {
-            console.log( 'if');
+            console.log('if');
             return this._links;
         } else {
             delete this._links.first;
