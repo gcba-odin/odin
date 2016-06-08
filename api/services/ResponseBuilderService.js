@@ -137,7 +137,6 @@ class ResponseBuilder {
 class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
-
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
@@ -210,9 +209,16 @@ class ResponseGET extends ResponseBuilder {
                 select: _fields
             } : null);
 
+            var relations = {};
+            _.forEach(this._model.associations, function(association) {
+                if (association.type == 'collection') {
+                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
+                }
+            }.bind(this))
             this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + modelName
+                all: this.req.host + ':' + this.req.port + '/' + modelName,
             };
+            !_.isEmpty(relations) ? this._links['collections'] = relations : ''
         }
 
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
@@ -234,10 +240,7 @@ class ResponseGET extends ResponseBuilder {
     }
 
     links(records) {
-        console.log('records');
-        console.log(records);
         if (!_.isUndefined(records) && records.length > 0) {
-            console.log('if');
             return this._links;
         } else {
             delete this._links.first;
