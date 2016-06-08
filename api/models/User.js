@@ -120,6 +120,9 @@ module.exports = {
             id: {
                 type: 'string'
             },
+            fullName: {
+                type: 'string'
+            },
             createdAt: {
                 type: 'datetime'
             },
