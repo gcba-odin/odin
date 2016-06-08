@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * OrganizationController
+ * UpdateFrequencyController
  * @description :: Server-side logic for ...
  */
 
