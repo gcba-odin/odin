@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Config'],
+        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Config', 'Log'],
         User: [{
             id: 'dogPzIz9',
             username: 'admin',
@@ -858,6 +858,61 @@ module.exports = {
             value: 'value',
             models: {
                 updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }],
+        Log: [{
+            id: '6ogPaIz9',
+            action: 'create',
+            target: 'organization',
+            models: {
+                user: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '2ogPbIz9',
+            action: 'update',
+            target: 'user',
+            models: {
+                user: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '3ogPcIz9',
+            action: 'delete',
+            target: 'category',
+            models: {
+                user: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '4ogPdIz9',
+            action: 'create',
+            target: 'status',
+            models: {
+                user: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '5ogPfIz9',
+            action: 'update',
+            target: 'dataset',
+            models: {
+                user: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '6ogPgIz9',
+            action: 'delete',
+            target: 'file',
+            models: {
+                user: {
                     username: 'admin'
                 }
             }
