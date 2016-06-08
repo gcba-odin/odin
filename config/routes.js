@@ -590,7 +590,6 @@ module.exports = {
             blueprint: 'first',
             model: 'config'
         },
-
         'GET /configs/last': {
             blueprint: 'last',
             model: 'config'
@@ -648,7 +647,6 @@ module.exports = {
             blueprint: 'first',
             model: 'log'
         },
-
         'GET /logs/last': {
             blueprint: 'last',
             model: 'log'
@@ -695,7 +693,7 @@ module.exports = {
         },
         'OPTIONS /logs/count': {
             controller: 'Options',
-            model: 'config',
+            model: 'log',
             action: 'query'
         },
     }
