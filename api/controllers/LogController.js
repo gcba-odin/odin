@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * ConfigController
+ * LogController
  * @description :: Server-side logic for ...
  */
 

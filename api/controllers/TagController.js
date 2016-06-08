@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * OrganizationController
+ * TagController
  * @description :: Server-side logic for ...
  */
 

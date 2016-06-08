@@ -33,12 +33,12 @@ module.exports = (req, res) => {
         .then(record => {
             if (_.isUndefined(record[0])) return res.notFound();
             else {
-                return res.ok([
+                return res.ok(
                     record[0], {
                         meta: builder.meta(),
                         links: builder.links(record[0])
                     }
-                ]);
+                );
             }
         })
         .catch(res.negotiate);
