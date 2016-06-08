@@ -7,9 +7,10 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-    delete(req, res) {
+    delete: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
+
         model.update({
             id: id
         }, {
@@ -19,9 +20,10 @@ module.exports = {
             return res.deleted();
         });
     },
-    restore(req, res) {
+    restore: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
+
         model.update({
             id: id
         }, {
