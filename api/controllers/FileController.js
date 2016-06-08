@@ -17,10 +17,10 @@ var toArray = require('stream-to-array');
 var toBuffer = require('stream-to-buffer')
 
 module.exports = {
-    upload: function (req, res) {
+    upload: function(req, res) {
         var extension = '';
         var filename = '';
-        var uploadFile = req.file('uploadFile').on('error', function (err) {
+        var uploadFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
@@ -31,7 +31,7 @@ module.exports = {
         if (!uploadFile.isNoop) {
 
             uploadFile.upload({
-                    saveAs: function (file, cb) {
+                    saveAs: function(file, cb) {
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
 
@@ -65,72 +65,78 @@ module.exports = {
                     if (files.length === 0) {
                         return res.badRequest('No file was uploaded');
                     }
+                    if (/^text\/\w+$/.test(extension)) {
 
-                    var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
-                    // var fs = require("fs");
-                    // var input = fs.readFileSync(filePath, {
-                    // encoding: "binary"
-                    // });
-                    // var iconv = new Iconv('UTF-8', 'ASCII//IGNORE');
-                    // var iconv = require('iconv-lite');
-                    // var output = iconv.convert(input);
-                    // fs.writeFileSync(filePath, output);
-                    // TODO: Should be inside a promise!!!
-                    if (extension == 'text/csv') {
-                        converter.fromFile(filePath, function (err, result) {
-                            if (err) {
-                                res.negotiate(err);
-                            }
-                            // Retrieve
-                            var MongoClient = require('mongodb').MongoClient;
+                        var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
 
-                            // Connect to the db
-                            // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
-                            MongoClient.connect("mongodb://localhost:27017/" + dataset, function (err, db) {
+                        fs.createReadStream(filePath)
+                            .pipe(iconv.decodeStream('utf8')).collect(function(err, result) {
                                 if (err) return res.negotiate(err);
 
-                                var collection = db.collection(files[0].filename);
+                                var withBOM = '\ufeff' + result;
 
-                                collection.insert(result, {
-                                    w: 1
-                                }, function (err, res) {
-                                    if (err) return res.negotiate(err)
+                                if (extension == 'text/csv') {
+                                    converter.fromString(result, function(err, json) {
+                                        if (err) {
+                                            res.negotiate(err);
+                                        }
+                                        // Retrieve
+                                        var MongoClient = require('mongodb').MongoClient;
+
+                                        // Connect to the db
+                                        // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
+                                        MongoClient.connect("mongodb://localhost:27017/" + dataset, function(err, db) {
+                                            if (err) return res.negotiate(err);
+
+                                            var collection = db.collection(files[0].filename);
+
+                                            collection.insert(json, {
+                                                w: 1
+                                            }, function(err, res) {
+                                                if (err) return res.negotiate(err)
+                                            });
+                                        });
+                                    });
+                                }
+
+                                fs.writeFile(filePath, withBOM, function() {
+                                    console.log("Done!!");
                                 });
                             });
+
+                        var data = actionUtil.parseValues(req)
+                        File.create(data).exec(function created(err, newInstance) {
+
+                            if (err) return res.negotiate(err);
+
+                            if (req._sails.hooks.pubsub) {
+                                if (req.isSocket) {
+                                    Model.subscribe(req, newInstance);
+                                    Model.introduce(newInstance);
+                                }
+                                // Make sure data is JSON-serializable before publishing
+                                var publishData = _.isArray(newInstance) ?
+                                    _.map(newInstance, function(instance) {
+                                        return instance.toJSON();
+                                    }) :
+                                    newInstance.toJSON();
+                                Model.publishCreate(publishData, !req.options.mirror && req);
+                            }
+
+                            // Send JSONP-friendly response if it's supported
+                            res.created(newInstance);
                         });
                     }
-                    var data = actionUtil.parseValues(req)
-                    File.create(data).exec(function created(err, newInstance) {
-
-                        if (err) return res.negotiate(err);
-
-                        if (req._sails.hooks.pubsub) {
-                            if (req.isSocket) {
-                                Model.subscribe(req, newInstance);
-                                Model.introduce(newInstance);
-                            }
-                            // Make sure data is JSON-serializable before publishing
-                            var publishData = _.isArray(newInstance) ?
-                                _.map(newInstance, function (instance) {
-                                    return instance.toJSON();
-                                }) :
-                                newInstance.toJSON();
-                            Model.publishCreate(publishData, !req.options.mirror && req);
-                        }
-
-                        // Send JSONP-friendly response if it's supported
-                        res.created(newInstance);
-                    });
                 }
             )
         }
     },
-    download: function (req, res) {
+    download: function(req, res) {
         const pk = actionUtil.requirePk(req);
         console.log(pk)
-        File.findOne(pk).then(function (file) {
+        File.findOne(pk).then(function(file) {
             if (!file) return res.notFound()
-            FileType.findOne(file.type).then(function (filetype) {
+            FileType.findOne(file.type).then(function(filetype) {
                 if (!filetype) return res.notFound()
                 console.log('before filetype.api')
                 console.log(filetype.api);
@@ -141,17 +147,17 @@ module.exports = {
                     console.log(dirname);
                     var SkipperDisk = require('skipper-disk');
                     var fileAdapter = SkipperDisk();
-                    fileAdapter.read(dirname).on('error', function (err) {
+                    fileAdapter.read(dirname).on('error', function(err) {
                         return res.serverError(err);
                     }).pipe(res);
                 } else {
                     return res.forbidden();
                 }
-            }).fail(function (err) {
+            }).fail(function(err) {
                 console.log(err)
                 res.negotiate()
             })
-        }).fail(function (err) {
+        }).fail(function(err) {
             console.log(err)
             res.negotiate()
         })
