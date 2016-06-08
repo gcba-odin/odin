@@ -87,6 +87,70 @@ module.exports = {
             return this.toObject();
         }
     },
+    baseAttributes: {
+        name: {
+            type: 'string'
+        },
+        description: {
+            type: 'string'
+        },
+        notes: {
+            type: 'string'
+        },
+        collection: {
+            type: 'string'
+        },
+        visible: {
+            type: 'boolean'
+        },
+        url: {
+            type: 'string'
+        },
+        publishedAt: {
+            type: 'string'
+        },
+        type: {
+            type: 'object'
+        },
+        updateFrequency: {
+            type: 'object'
+        },
+        status: {
+            type: 'object'
+        },
+        organization: {
+            type: 'object'
+        },
+        dataset: {
+            type: 'object'
+        },
+        tags: {
+            type: 'object'
+        },
+        owner: {
+            type: 'object'
+        },
+        createdBy: {
+            type: 'object'
+        },
+    },
+    setAttributes() {
+        return this.baseAttributes
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
+    },
+    serchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),

@@ -38,6 +38,34 @@ module.exports = {
             return this.toObject();
         }
     },
+    baseAttributes: {
+        action: {
+            type: 'string'
+        },
+        target: {
+            type: 'string'
+        },
+        user: {
+            type: 'object'
+        },
+    },
+    setAttributes() {
+        return this.baseAttributes
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
+    },
+    serchables: [],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()

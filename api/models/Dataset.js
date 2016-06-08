@@ -209,6 +209,8 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
+    serchables: ['name', 'description'],
+
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()
 };

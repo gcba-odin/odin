@@ -30,11 +30,6 @@ module.exports = {
             type: 'string',
             size: 350,
         },
-        active: {
-            type: 'boolean',
-            required: true,
-            defaultsTo: false
-        },
         createdBy: {
             model: 'user',
             required: true
@@ -54,9 +49,6 @@ module.exports = {
         },
         description: {
             type: 'email'
-        },
-        active: {
-            type: 'string'
         },
         createdBy: {
             type: 'object'
@@ -81,6 +73,7 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
+    serchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()

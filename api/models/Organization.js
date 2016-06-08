@@ -33,10 +33,6 @@ module.exports = {
             type: 'string',
             size: 150
         },
-        active: {
-            type: 'boolean',
-            defaultsTo: false
-        },
         createdBy: {
             model: 'user'
         },
@@ -59,6 +55,49 @@ module.exports = {
             return this.toObject();
         }
     },
+    baseAttributes: {
+        name: {
+            type: 'string'
+        },
+        description: {
+            type: 'string'
+        },
+        adress: {
+            type: 'string'
+        },
+        createdBy: {
+            type: 'object'
+        },
+        users: {
+            type: 'object'
+        },
+        parent: {
+            type: 'object'
+        },
+        childs: {
+            type: 'object'
+        },
+        files: {
+            type: 'object'
+        }
+    },
+    setAttributes() {
+        return this.baseAttributes
+    },
+    getAttributes() {
+        return _.merge({
+            id: {
+                type: 'string'
+            },
+            createdAt: {
+                type: 'datetime'
+            },
+            updatedAt: {
+                type: 'datetime'
+            }
+        }, this.baseAttributes)
+    },
+    serchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()
