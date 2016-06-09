@@ -238,6 +238,28 @@ class ResponseGET extends ResponseBuilder {
 
         return this; // Allows chaining
     }
+    meta(records) {
+        if (!_.isUndefined(records)) {
+            //if link to next page is not defined, the content is not paginated
+            if (_.isUndefined(this._links.next)) {
+                this._meta = {
+                    code: sails.config.success.OK.code,
+                    message: sails.config.success.OK.message
+                }
+            } else {
+                this._meta = {
+                    code: sails.config.success.PARTIAL_CONTENT.code,
+                    message: sails.config.success.PARTIAL_CONTENT.message
+                }
+            }
+        } else {
+            this._meta = {
+                code: sails.config.errors.NOT_FOUND.code,
+                message: sails.config.errors.NOT_FOUND.message
+            }
+        }
+        return this._meta
+    }
 
     links(records) {
         if (!_.isUndefined(records) && records.length > 0) {
@@ -247,6 +269,7 @@ class ResponseGET extends ResponseBuilder {
             delete this._links.last;
             delete this._links.previous;
             delete this._links.next;
+            delete this._links.collections;
 
             return this._links;
         }

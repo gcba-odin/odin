@@ -31,7 +31,10 @@ module.exports = (req, res) => {
 
     builder.findQuery
         .then(record => {
-            if (_.isUndefined(record[0])) return res.notFound();
+            if (_.isUndefined(record[0])) return res.notFound(null, {
+                meta: builder.meta(undefined),
+                links: builder.links(undefined)
+            });
             else {
                 return res.ok(
                     record[0], {

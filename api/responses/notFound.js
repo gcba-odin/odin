@@ -9,11 +9,13 @@
  */
 
 module.exports = function(data, config) {
+    console.log(config);
+    console.log(sails.config.errors.NOT_FOUND);
     const response = _.assign({
-        code: _.get(config, 'code', 'E_NOT_FOUND'),
-        message: _.get(config, 'message', 'The requested resource could not be found but may be available again in the future'),
-        data: data || {}
+        meta: _.get(config, 'meta', {}),
+        links: _.get(config, 'links', {}),
     }, _.get(config, 'root', {}));
+
 
     this.res.set({
         'Content-Type': 'application/json',
