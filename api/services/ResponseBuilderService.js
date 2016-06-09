@@ -291,19 +291,25 @@ class ResponseGET extends ResponseBuilder {
 
     parseInclude(req) {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        var splits = [];
+        var results = [];
 
         if (includes.length > 0) {
             _.forEach(includes, function(element, i) {
-                if (!_.isArray(element)) var split = element.split('.');
+                var testee = String(element);
 
-                if (_.isArray(split) && split.length > 1) {
-                    includes.push(split);
-                    _.pullAt(includes, [i]);
-                };
+                if (testee.indexOf('.') !== -1) {
+                    var split = testee.split('.', 2);
+
+                    if (_.isArray(split) && split.length > 1) {
+                        splits.push(split);
+                    };
+                } else splits.push(testee);
             });
         }
 
-        return includes;
+        console.dir(splits);
+        return splits;
     }
 
     /*
@@ -354,10 +360,8 @@ class ResponseGET extends ResponseBuilder {
         });
         */
 
-        var instanceIncludes = this.includes;
-
         if (includes.length === 0) return query;
-        console.log('beginning');
+        var instanceIncludes = this.includes;
 
         // Populate one-to-many and many-to-many
         _.forEach(includes, function(element) {
@@ -367,26 +371,31 @@ class ResponseGET extends ResponseBuilder {
             if (_.isArray(element)) {
                 model = element[0];
                 modifiers.select = [element[1]];
-
-                // Initialize the include array for this model if it's not already
-                if (!this.includes[model]) this.includes[model] = [];
             } else model = element;
 
+            // Initialize the include array for this model if it's not already
+            if (!instanceIncludes[model]) instanceIncludes[model] = [];
+            // instanceIncludes = this.includes;
 
             if (!_.isEmpty(instanceIncludes)) {
-                query.populate(element).exec(function afterwards(err, populatedRecords) {
-                    if (!err) query = populatedRecords;
-                    else console.log(err);
+                query.populate(model).exec(function afterwards(err, populatedRecords) {
+                    if (err) console.log(err);
 
                     _.forEach(populatedRecords[0][model], function(element, i) {
-                        console.dir(instanceIncludes);
-                        instanceIncludes[model].push(_.pick(element, modifiers.select));
+                        if (!modifiers.select) instanceIncludes[model].push(element);
+                        else instanceIncludes[model].push(_.pick(element, modifiers.select));
                     });
+
+                    populatedRecords[0][model] = instanceIncludes[model];
+                    console.log("model records: ");
+                    console.dir(populatedRecords[0][model]);
+                    query = populatedRecords;
                 });
             } else {
-                query.populate(element).exec(function afterwards(err, populatedRecords) {
+                query.populate(model).exec(function afterwards(err, populatedRecords) {
                     if (!err) query = populatedRecords;
                     else console.log(err);
+                    console.log("HI");
                 });
             }
 
