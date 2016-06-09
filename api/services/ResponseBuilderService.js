@@ -182,7 +182,6 @@ class ResponseGET extends ResponseBuilder {
             delete requestQuery.skip;
 
             this._model.count(requestQuery).exec(function count(err, cant) {
-                console.log(cant);
                 // check if no parameters given
                 var params = (JSON.stringify(requestQuery) != '{}');
                 // If we have &skip or ?skip, we delete it from the url
@@ -299,13 +298,32 @@ class ResponseGET extends ResponseBuilder {
                 model = element[0];
             }
 
-            console.dir(modifiers);
-
             query.populate(model, modifiers).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
 
-                console.dir(populatedRecords);
+                // TODO: Check if the modifier actually worked (since it's adapter dependant)
+                console.log("++++++++++++++++++++++++++++++++++++++++++++");
+                console.log(populatedRecords[0].toJSON());
+                console.log("\n++++++++++++++++++++++++++++++++++++++++++++\n");
+                console.log("model: " + model);
+                console.dir(populatedRecords[0][model]);
+                console.log("++++++++++++++++++++++++++++++++++++++++++++\n\n");
+
+                _.forEach(populatedRecords[0][model], function(element, i) {
+
+                    console.log("--------------------------------------------");
+                    console.log("element: " + console.dir(element));
+                    console.log("asd: " + console.dir(asd));
+                    console.log("i: " + i);
+                    console.log("populatedRecords: " + console.dir(populatedRecords));
+                    console.log('\n (before) populatedRecords[0][model]: ' + console.dir(populatedRecords[0][model]) + '\n');
+                    populatedRecords[0][model][i] = _.pick(populatedRecords[0][model][i], modifiers.select[0]);
+                    console.log('\n (after) populatedRecords[0][model][i]: ' + console.dir(populatedRecords[0][model][i]) + '\n');
+                    console.log("--------------------------------------------");
+                });
+
+                //console.log(populatedRecords[0].toJSON());
             });
         }, this);
 
