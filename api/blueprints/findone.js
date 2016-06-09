@@ -38,7 +38,7 @@ module.exports = (req, res) => {
             else {
                 return res.ok(
                     record[0], {
-                        meta: builder.meta(),
+                        meta: builder.meta(record[0]),
                         links: builder.links(record[0])
                     }
                 );

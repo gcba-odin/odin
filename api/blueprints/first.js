@@ -7,8 +7,8 @@ module.exports = function(req, res) {
     builder.findQuery
         .then(record => record[0] = [
             record[0], {
-                meta: builder.meta(),
-                links: builder.links(record[0])
+                meta: builder._meta,
+                links: builder._links
             }
         ])
         .spread(res.ok)

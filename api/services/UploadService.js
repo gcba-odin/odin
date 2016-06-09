@@ -78,17 +78,19 @@ module.exports = {
 
                                         // Connect to the db
                                         // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
-                                        MongoClient.connect("mongodb://localhost:27017/" + dataset, function(err, db) {
-                                            if (err) return res.negotiate(err);
+                                        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
+                                            sails.config.odin.filesDb.port + "/" + dataset,
+                                            function(err, db) {
+                                                if (err) return res.negotiate(err);
 
-                                            var collection = db.collection(files[0].filename);
+                                                var collection = db.collection(files[0].filename);
 
-                                            collection.insert(json, {
-                                                w: 1
-                                            }, function(err, res) {
-                                                if (err) return res.negotiate(err)
+                                                collection.insert(json, {
+                                                    w: 1
+                                                }, function(err, res) {
+                                                    if (err) return res.negotiate(err)
+                                                });
                                             });
-                                        });
                                     });
                                 }
 
