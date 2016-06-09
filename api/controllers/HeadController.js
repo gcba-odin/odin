@@ -22,10 +22,10 @@ module.exports = {
             }).exec(function(err, record) {
                 if (err) return res.negotiate(err);
                 if (!record) return res.notFound;
-                else return res.send(200);
+                else return res.send(204);
             });
         }
-        res.status = 200;
+        res.status = 204;
         return res.end();
     }
 };
