@@ -140,14 +140,14 @@ class ResponseGET extends ResponseBuilder {
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        const _include = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
 
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
 
+        this.includes = this.parseInclude(this.req);
         this._many = many;
 
-        if (_include.length > 0) {
+        if (this.includes.length > 0) {
             delete req.query.include;
         }
         if (this._many) {
@@ -182,6 +182,7 @@ class ResponseGET extends ResponseBuilder {
             delete requestQuery.skip;
 
             this._model.count(requestQuery).exec(function count(err, cant) {
+                console.log(cant);
                 // check if no parameters given
                 var params = (JSON.stringify(requestQuery) != '{}');
                 // If we have &skip or ?skip, we delete it from the url
@@ -189,7 +190,7 @@ class ResponseGET extends ResponseBuilder {
 
                 const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
                 const _previous = (_page > 1 ? _linkToModel + (_skip - _limit) : undefined);
-                const _next = ((_skip - _limit <= cant) ? ((_skip - _limit < cant) ? _linkToModel + (_skip + _limit) : _linkToModel + (_skip + 1)) : undefined);
+                const _next = ((Math.abs(_skip - _limit) <= cant) ? ((Math.abs(_skip - _limit) < cant) ? _linkToModel + (_skip + _limit) : _linkToModel + (_skip + 1)) : undefined);
                 const _first = (_page > 1 ? _linkToModel + 0 : undefined);
                 const _last = ((_skip + _limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(_limit) * _limit) - 1) : undefined);
 
@@ -222,7 +223,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
-        this.findQuery = this.populate(_query, this._model, _include);
+        this.findQuery = this.populate(_query, this._model, this.includes);
     }
 
     addData(value) {
@@ -286,6 +287,20 @@ class ResponseGET extends ResponseBuilder {
         }
     }
 
+    parseInclude(req) {
+        var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+
+        if (includes.length > 0) {
+            _.forEach(includes, function(element, i) {
+                var split = element.split('.');
+                if (split.length > 1)
+                    includes[i] = split;
+            });
+        }
+
+        return includes;
+    }
+
     populate(query, model, includes) {
         // Populate one-to-many
         _.forEach(model.definition, function(value, key) {
@@ -299,9 +314,21 @@ class ResponseGET extends ResponseBuilder {
 
         // Populate one-to-many and many-to-many
         _.forEach(includes, function(element) {
-            query.populate(element).exec(function afterwards(err, populatedRecords) {
+            var modifiers = {};
+            var model = element;
+
+            if (_.isArray(element)) {
+                modifiers.select = [element[1]];
+                model = element[0];
+            }
+
+            console.dir(modifiers);
+
+            query.populate(model, modifiers).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
+
+                console.dir(populatedRecords);
             });
         }, this);
 
