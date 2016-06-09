@@ -390,7 +390,6 @@ Retrieves the Dataset with the given ID.
 ### Update a Dataset [PATCH]
 Updates the Dataset with the given ID.
 
-
 + Request
     + Attributes (Dataset Base)
 
@@ -442,6 +441,27 @@ Get the Dataset options with the given ID
 
 + Response 200 (application/json; charset=utf-8)
     + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+===========================================================================
+## Dataset download [/datasets/:id/download]
+
++ Parameters
+    + id: dogPzIz8 (string, required)
+
+### Retrieve a Dataset [GET]
+Download the Dataset with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -681,7 +701,7 @@ Get the Datasets options
 Retrieves the Category with the given ID.
 
 + Response 200 (application/json; charset=utf-8)
-    + Attributes (Get Category Collection Response)
+    + Attributes (Get Category Response)
 
 + Response 403 (application/json; charset=utf-8)
     + Attributes (Response Error)
@@ -968,6 +988,342 @@ Get the Categories options
 + Response 500 (application/json; charset=utf-8)
     + Attributes (Response Error)
 
+===========================================================
+===========================================================
+
+# Group Logs
+
+## Log [/logs/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Log Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Log [GET]
+
+Retrieves the Log entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Log [PATCH]
+
+Updates the Log entry with the given ID.
+
++ Request
+    + Attributes (Log Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Log [DELETE]
+
+Deletes the Log entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Log Head [HEAD]
+
+Gets the Log Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Log Options [OPTIONS]
+
+Gets the Log options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+===========================================================================
+
+## Logs  [/logs]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Logs [GET]
+
+Gets all Logs
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Log [POST]
+
+Creates a Log
+
++ Request
+    + Attributes (Log Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Logs Head [HEAD]
+
+Gets the Logs Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Logs Options [OPTIONS]
+
+Get the Logs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+======================================================================================
+
+## Log first  [/logs/first]
+
+
+### Get first Log [GET]
+
+Gets the first Log entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Log Options [OPTIONS]
+
+Gets the first Log options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Log last  [/categories/last]
+
+
+### Get last Log [GET]
+
+Gets the last Log entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Log Options [OPTIONS]
+
+Gets the last Log options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Log count  [/logs/count]
+
+
+### Get count Log [GET]
+
+Gets the Log entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Log Options [OPTIONS]
+
+Gets the Logs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
 # Data Structure
 
 ## User Base (object)
@@ -994,6 +1350,12 @@ Get the Categories options
 + updatedAt: 1415203908 (string) - datetime
 + createdBy: hwX6aOr7 (string, required)
 
+## Get User Response (object)
++ meta (Metadata Response)
++ data (User Get)
++ links (object)
+
+
 ## Dataset Base (object)
 + name: examplename (string,required)
 + description: description of dataset (string)
@@ -1017,27 +1379,29 @@ Get the Categories options
 + createdBy: nYrnfYEv (string)
 + owner: nYrnFyEv (string, required)
 
+
 ## Category Base (object)
-+ name: name of the category (string,required)
++ name: name of the category (string, required)
 + description: description the category (string)
 + createdBy: nYrnfYEv (string)
 
-## General Response (object)
+## Get Category Response (object)
 + meta (Metadata Response)
++ data (Category)
 + links (object)
 
-## General Response Error (object)
+
+## Log Base (object)
++ action: the action that was performed (string, required)
++ target: the model the action was performed upon (string, required)
++ user: the user who performed the action (string, required)
+
+## Get Log Response (object)
 + meta (Metadata Response)
++ data (Category)
 + links (object)
 
-## Options Response (object)
-+ meta (Metadata Response)
-+ methods (array[Methods Response])
 
-## Get User Response (object)
-+ meta (Metadata Response)
-+ data (User Get)
-+ links (object)
 
 ## Get User Collection Response (object)
 + meta (Metadata Response)
@@ -1059,10 +1423,26 @@ Get the Categories options
 + data (array[Category])
 + links (object)
 
-## Get Category Response (object)
+## Get Log Collection Response (object)
 + meta (Metadata Response)
-+ data (Category)
++ data (array[Category])
 + links (object)
+
+
+
+## General Response (object)
++ meta (Metadata Response)
++ links (object)
+
+## General Response Error (object)
++ meta (Metadata Response)
++ links (object)
+
+## Options Response (object)
++ meta (Metadata Response)
++ methods (array[Methods Response])
+
+
 
 ## Response Error (object)
 + meta (Metadata Response)
