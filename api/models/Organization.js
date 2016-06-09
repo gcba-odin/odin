@@ -43,7 +43,7 @@ module.exports = {
         parent: {
             model: 'organization'
         },
-        childs: {
+        children: {
             collection: 'organization',
             via: 'parent'
         },
