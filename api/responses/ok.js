@@ -16,8 +16,6 @@ module.exports = function(data, config) {
     // Ideally the Builder should let you put in headers and sed the response too
     // But for now it is just acting as a response body factory, rather than a response factory
     const response = _.assign({
-        // code: _.get(config, 'code', 'OK'),
-        // message: _.get(config, 'message', 'Operation is successfully executed'),
         meta: _.get(config, 'meta', {}),
         data: data || {},
         links: _.get(config, 'links', {}),
@@ -27,6 +25,7 @@ module.exports = function(data, config) {
     this.res.set({
         'Content-Type': 'application/json',
     });
-    this.res.status(200);
+
+    this.res.status(sails.config.success[response.meta.code].status);
     this.res.send(response);
 };

@@ -13,6 +13,6 @@ module.exports = function(data, config) {
     //     data: data || {}
     // }, _.get(config, 'root', {}));
 
-    this.res.status(206);
+    this.res.status(204);
     this.res.end();
 };
