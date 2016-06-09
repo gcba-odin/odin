@@ -10,7 +10,6 @@ module.exports = {
     delete: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
-
         model.update({
             id: id
         }, {
@@ -27,8 +26,9 @@ module.exports = {
         model.update({
             id: id
         }, {
-            deletedAt: NULL
+            deletedAt: null
         }).exec(function(err, record) {
+            console.log(record)
             if (err) return res.negotiate(err);
             return res.ok();
         });

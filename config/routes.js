@@ -14,6 +14,17 @@ module.exports = {
         'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
 
+        'DELETE /users/:id': {
+            controller: 'Delete',
+            model: 'user',
+            action: 'delete'
+        },
+        'POST /users/:id/restore': {
+            controller: 'Delete',
+            model: 'user',
+            action: 'restore'
+        },
+
         'GET /users/search': {
             blueprint: 'search',
             model: 'user'
@@ -71,6 +82,16 @@ module.exports = {
         },
 
         // Organizations
+        'DELETE /organizations/:id': {
+            controller: 'Delete',
+            model: 'organization',
+            action: 'delete'
+        },
+        'POST /organizations/:id/restore': {
+            controller: 'Delete',
+            model: 'organization',
+            action: 'restore'
+        },
 
         'GET /organizations/first': {
             blueprint: 'first',
@@ -130,7 +151,16 @@ module.exports = {
 
 
         // Categories
-
+        'DELETE /categories/:id': {
+            controller: 'Delete',
+            model: 'category',
+            action: 'delete'
+        },
+        'POST /categories/:id/restore': {
+            controller: 'Delete',
+            model: 'category',
+            action: 'restore'
+        },
         'GET /categories/first': {
             blueprint: 'first',
             model: 'category'
@@ -244,7 +274,16 @@ module.exports = {
 
 
         // Filetypes
-
+        'DELETE /filetypes/:id': {
+            controller: 'Delete',
+            model: 'filetype',
+            action: 'delete'
+        },
+        'POST /filetypes/:id/restore': {
+            controller: 'Delete',
+            model: 'filetype',
+            action: 'restore'
+        },
         'GET /filetypes/first': {
             blueprint: 'first',
             model: 'filetype'
@@ -472,7 +511,16 @@ module.exports = {
 
 
         // Tags
-
+        'DELETE /tags/:id': {
+            controller: 'Delete',
+            model: 'tag',
+            action: 'delete'
+        },
+        'POST /tags/:id/restore': {
+            controller: 'Delete',
+            model: 'tag',
+            action: 'restore'
+        },
         'GET /tags/first': {
             blueprint: 'first',
             model: 'tag'
