@@ -371,6 +371,7 @@ class ResponsePATCH extends ResponseBuilder {
 
         const _pk = _actionUtil.requirePk(this.req);
         const _values = _actionUtil.parseValues(this.req);
+        console.log(_values);
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 }
@@ -411,6 +412,11 @@ class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
         super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
+
+            this._meta = {
+                code: sails.config.success.OK.code,
+                message: sails.config.success.OK.message
+            };
 
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
