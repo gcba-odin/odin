@@ -242,6 +242,8 @@ class ResponseGET extends ResponseBuilder {
         return this; // Allows chaining
     }
     meta(records) {
+        console.log('records')
+        console.log(records)
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
             if (_.isUndefined(this._links.next)) {
@@ -435,7 +437,12 @@ class ResponsePATCH extends ResponseBuilder {
 
         const _pk = _actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
-        console.log(_values);
+
+        // WORKS: On responsePATCH _values is equal to :{"tags":["aWRhpz1","tWRhpz2"],"id":"sWRhpRk"}
+
+        // TBD: On responsePATCH _values is equal to :{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
+
+        console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values))
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 
@@ -443,7 +450,7 @@ class ResponsePATCH extends ResponseBuilder {
         var mergeDefaults = require('merge-defaults');
         var JSONP_CALLBACK_PARAM = 'callback';
 
-        console.log('ak')
+        console.log('Inside custom parse values')
             // Allow customizable blacklist for params NOT to include as values.
         req.options.values = req.options.values || {};
         req.options.values.blacklist = req.options.values.blacklist;
@@ -462,6 +469,7 @@ class ResponsePATCH extends ResponseBuilder {
         // that we process singular entities.
         var bodyData = _.isArray(req.body) ? req.body : [req.allParams()];
 
+
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
         var valuesArray = _.map(bodyData, function(element) {
             var values;
@@ -476,8 +484,24 @@ class ResponsePATCH extends ResponseBuilder {
                 }
             });
 
+            // WORKS: values is{"tags":["aWRhpz1","tWRhpz2"],"id":"sWRhpRk"}
+            // if key is a model collectio, should transform comma separated to array.
+            // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
+
+            _.forEach(values, function(value, key) {
+                var collection = _.find(this._model.associations, [
+                    'alias', key
+                ])
+                if (!_.isUndefined(collection)) {
+                    value = _.split(value, ',')
+                    values[key] = value
+                }
+            }.bind(this));
+
+            // console.log('values.tags is = ' + values.tags);
+            // console.log('values is' + JSON.stringify(values));
             return values;
-        });
+        }.bind(this));
 
         // If req.body is an array, simply return our array of processed values
         if (_.isArray(req.body)) {
