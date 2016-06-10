@@ -162,6 +162,7 @@ class ResponseGET extends ResponseBuilder {
             _query = this._model.find(null, _fields.length > 0 ? {
                 select: _fields
             } : null).where(_where).limit(_limit).skip(_skip).sort(_sort);
+            _query = this.populate(_query, this._model, _includes);
 
             this._meta = _.assign(this._meta, {
                 // criteria: _where,
@@ -172,8 +173,6 @@ class ResponseGET extends ResponseBuilder {
             });
 
             // If a criteria was given, add it to meta
-            console.log(_where);
-            console.log(!_.isEmpty(_where))
             if (!_.isEmpty(_where)) {
                 this._meta = _.assign(this._meta, {
                     criteria: _where
@@ -208,11 +207,13 @@ class ResponseGET extends ResponseBuilder {
             }
         } else {
             const _pk = _actionUtil.requirePk(this.req);
+            var relations = {};
+
             _query = this._model.find(_pk, _fields.length > 0 ? {
                 select: _fields
             } : null);
+            _query = this.populate(_query, this._model, _includes);
 
-            var relations = {};
             _.forEach(this._model.associations, function(association) {
                 if (association.type == 'collection') {
                     relations[association.alias] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
@@ -225,7 +226,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
-        this.findQuery = this.populate(_query, this._model, _includes);
+        this.findQuery = _query;
     }
 
     addData(value) {
@@ -242,8 +243,6 @@ class ResponseGET extends ResponseBuilder {
         return this; // Allows chaining
     }
     meta(records) {
-        console.log('records')
-        console.log(records)
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
             if (_.isUndefined(this._links.next)) {
@@ -389,8 +388,7 @@ class ResponseGET extends ResponseBuilder {
                     });
 
                     populatedRecords[0][model] = instanceIncludes[model];
-                    console.log("model records: ");
-                    console.dir(populatedRecords[0][model]);
+
                     query = populatedRecords;
                 });
             } else {
