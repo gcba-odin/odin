@@ -29,6 +29,11 @@ module.exports = {
             required: true,
             enum: ['category', 'dataset', 'fileType', 'file', 'organization', 'status', 'tag', 'updateFrequency', 'user']
         },
+        resource: {
+            type: 'string',
+            required: true,
+            size: 15
+        },
         user: {
             model: 'user',
             required: true

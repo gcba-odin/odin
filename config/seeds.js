@@ -866,6 +866,7 @@ module.exports = {
             id: '6ogPaIz9',
             action: 'create',
             target: 'organization',
+            resource: 'eWRhpRV',
             models: {
                 user: {
                     username: 'admin'
@@ -875,6 +876,7 @@ module.exports = {
             id: '2ogPbIz9',
             action: 'update',
             target: 'user',
+            resource: 'nYrnfYEv',
             models: {
                 user: {
                     username: 'admin'
@@ -884,6 +886,7 @@ module.exports = {
             id: '3ogPcIz9',
             action: 'delete',
             target: 'category',
+            resource: 'iWRhpRV',
             models: {
                 user: {
                     username: 'admin'
@@ -893,6 +896,7 @@ module.exports = {
             id: '4ogPdIz9',
             action: 'create',
             target: 'status',
+            resource: 'pWRhpRV',
             models: {
                 user: {
                     username: 'admin'
@@ -902,6 +906,7 @@ module.exports = {
             id: '5ogPfIz9',
             action: 'update',
             target: 'dataset',
+            resource: 'sWRhpRl',
             models: {
                 user: {
                     username: 'admin'
@@ -911,6 +916,7 @@ module.exports = {
             id: '6ogPgIz9',
             action: 'delete',
             target: 'file',
+            resource: 'tWRhpRb',
             models: {
                 user: {
                     username: 'admin'
