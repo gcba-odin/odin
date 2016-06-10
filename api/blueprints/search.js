@@ -37,6 +37,8 @@ module.exports = (req, res) => {
         })
         .then(records => [records, {
             meta: {
+                code: 'OK',
+                message: 'The operation was executed successfully.',
                 count: _.size(records)
             }
             // links: builder.links(records)
