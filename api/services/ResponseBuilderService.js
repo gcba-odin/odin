@@ -434,10 +434,71 @@ class ResponsePATCH extends ResponseBuilder {
         super(req, res);
 
         const _pk = _actionUtil.requirePk(this.req);
-        const _values = _actionUtil.parseValues(this.req);
+        const _values = this.parseValues(this.req);
         console.log(_values);
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
+
+    parseValues(req) {
+        var mergeDefaults = require('merge-defaults');
+        var JSONP_CALLBACK_PARAM = 'callback';
+
+        console.log('ak')
+            // Allow customizable blacklist for params NOT to include as values.
+        req.options.values = req.options.values || {};
+        req.options.values.blacklist = req.options.values.blacklist;
+
+        // Validate blacklist to provide a more helpful error msg.
+        var blacklist = req.options.values.blacklist;
+        if (blacklist && !_.isArray(blacklist)) {
+            throw new Error('Invalid `req.options.values.blacklist`. Should be an array of strings (parameter names.)');
+        }
+
+        // Start an array to hold values
+        var values;
+
+        // Make an array out of the request body data if it wasn't one already;
+        // this allows us to process multiple entities (e.g. for use with a "create" blueprint) the same way
+        // that we process singular entities.
+        var bodyData = _.isArray(req.body) ? req.body : [req.allParams()];
+
+        // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
+        var valuesArray = _.map(bodyData, function(element) {
+            var values;
+            // Merge properties of the element into req.options.value, omitting the blacklist
+            values = mergeDefaults(element, _.omit(req.options.values, 'blacklist'));
+            // Omit properties that are in the blacklist (like query modifiers)
+            values = _.omit(values, blacklist || []);
+            // Omit any properties w/ undefined values
+            values = _.omit(values, function(p) {
+                if (_.isUndefined(p)) {
+                    return true;
+                }
+            });
+
+            return values;
+        });
+
+        // If req.body is an array, simply return our array of processed values
+        if (_.isArray(req.body)) {
+            return valuesArray;
+        }
+
+        // Otherwaise grab the first (and only) value from valuesArray
+        values = valuesArray[0];
+
+        // Omit jsonp callback param (but only if jsonp is enabled)
+        var jsonpOpts = req.options.jsonp && !req.isSocket;
+        jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
+            callback: JSONP_CALLBACK_PARAM
+        };
+        if (jsonpOpts) {
+            values = _.omit(values, [jsonpOpts.callback]);
+        }
+
+        return values;
+    }
+
 }
 
 class ResponseDELETE extends ResponseBuilder {
