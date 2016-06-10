@@ -704,10 +704,6 @@ module.exports = {
             model: 'log'
         },
 
-        'PATCH /logs/:id': {
-            blueprint: 'update',
-            model: 'log'
-        },
         'HEAD /logs/*': {
             controller: 'Head',
             action: 'Head',
