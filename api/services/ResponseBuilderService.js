@@ -582,6 +582,10 @@ class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
         super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
+            this._meta = {
+                code: 'OK',
+                message: 'The operation was executed successfully.',
+            }
 
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName

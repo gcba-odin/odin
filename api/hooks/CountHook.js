@@ -10,10 +10,11 @@ const pluralize = require('pluralize');
 
 const defaultCountBlueprint = (req, res) => {
     var builder = new Response.ResponseCount(req, res);
-
-    builder.countQuery.then(count => res.ok({count}, {
-        meta: builder.meta,
-        links: builder.links
+    builder.countQuery.then(count => res.ok({
+        count
+    }, {
+        meta: builder._meta,
+        links: builder._links
     }));
 };
 
@@ -37,7 +38,9 @@ module.exports = sails => {
 
                     const route = baseRoute + '/count';
 
-                    sails.router.bind(route, countFn, null, {controller: model.identity});
+                    sails.router.bind(route, countFn, null, {
+                        controller: model.identity
+                    });
                 });
 
             });
