@@ -140,14 +140,15 @@ class ResponseGET extends ResponseBuilder {
         var _query = '';
 
         const _fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+        const _includes = this.parseInclude(this.req);
 
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         const modelName = pluralize(this._model.adapter.identity);
 
-        this.includes = this.parseInclude(this.req);
         this._many = many;
+        this.includes = {};
 
-        if (this.includes.length > 0) {
+        if (_includes.length > 0) {
             delete req.query.include;
         }
         if (this._many) {
@@ -224,7 +225,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
-        this.findQuery = this.populate(_query, this._model, this.includes);
+        this.findQuery = this.populate(_query, this._model, _includes);
     }
 
     addData(value) {
@@ -290,17 +291,50 @@ class ResponseGET extends ResponseBuilder {
 
     parseInclude(req) {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
+        var splits = [];
+        var results = [];
 
         if (includes.length > 0) {
             _.forEach(includes, function(element, i) {
-                var split = element.split('.');
-                if (split.length > 1)
-                    includes[i] = split;
+                var testee = String(element);
+
+                if (testee.indexOf('.') !== -1) {
+                    var split = testee.split('.', 2);
+
+                    if (_.isArray(split) && split.length > 1) {
+                        splits.push(split);
+                    };
+                } else splits.push(testee);
             });
         }
 
-        return includes;
+        console.dir(splits);
+        return splits;
     }
+
+    /*
+        populate(query, model, includes) {
+            // Populate one-to-many
+            _.forEach(model.definition, function(value, key) {
+                if (value.foreignKey) {
+                    query.populate(key).exec(function afterwards(err, query) {
+                        if (!err) query = query;
+                        else console.log(err);
+                    });
+                }
+            });
+
+            // Populate one-to-many and many-to-many
+            _.forEach(includes, function(element) {
+                query.populate(element).exec(function afterwards(err, query) {
+                    if (!err) query = query;
+                    else console.log(err);
+                });
+            }, this);
+
+            return query;
+        }
+        */
 
     populate(query, model, includes) {
         // Populate one-to-many
@@ -313,47 +347,77 @@ class ResponseGET extends ResponseBuilder {
             }
         });
 
+
+        /*
+        // Populate one-to-many
+        _.forEach(model.definition, function(value, key) {
+            if (value.foreignKey) {
+                query.populate(key).exec(function afterwards(err, populatedResults) {
+                    //if (!err) query = populatedResults;
+                    //else console.log(err);
+                });
+            }
+        });
+        */
+
+        if (includes.length === 0) return query;
+        var instanceIncludes = this.includes;
+
         // Populate one-to-many and many-to-many
         _.forEach(includes, function(element) {
             var modifiers = {};
-            var model = element;
+            var model;
 
             if (_.isArray(element)) {
-                modifiers.select = [element[1]];
                 model = element[0];
+                modifiers.select = [element[1]];
+            } else model = element;
+
+            // Initialize the include array for this model if it's not already
+            if (!instanceIncludes[model]) instanceIncludes[model] = [];
+            // instanceIncludes = this.includes;
+
+            if (!_.isEmpty(instanceIncludes)) {
+                query.populate(model).exec(function afterwards(err, populatedRecords) {
+                    if (err) console.log(err);
+
+                    _.forEach(populatedRecords[0][model], function(element, i) {
+                        if (!modifiers.select) instanceIncludes[model].push(element);
+                        else instanceIncludes[model].push(_.pick(element, modifiers.select));
+                    });
+
+                    populatedRecords[0][model] = instanceIncludes[model];
+                    console.log("model records: ");
+                    console.dir(populatedRecords[0][model]);
+                    query = populatedRecords;
+                });
+            } else {
+                query.populate(model).exec(function afterwards(err, populatedRecords) {
+                    if (!err) query = populatedRecords;
+                    else console.log(err);
+                    console.log("HI");
+                });
             }
 
-            query.populate(model, modifiers).exec(function afterwards(err, populatedRecords) {
+        }, this);
+
+        return query;
+
+        /*
+        // Populate one-to-many and many-to-many
+        _.forEach(includes, function(element) {
+            query.populate(element).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
-
-                // TODO: Check if the modifier actually worked (since it's adapter dependant)
-                console.log("++++++++++++++++++++++++++++++++++++++++++++");
-                console.log(populatedRecords[0].toJSON());
-                console.log("\n++++++++++++++++++++++++++++++++++++++++++++\n");
-                console.log("model: " + model);
-                console.dir(populatedRecords[0][model]);
-                console.log("++++++++++++++++++++++++++++++++++++++++++++\n\n");
-
-                _.forEach(populatedRecords[0][model], function(element, i) {
-
-                    console.log("--------------------------------------------");
-                    console.log("element: " + console.dir(element));
-                    console.log("asd: " + console.dir(asd));
-                    console.log("i: " + i);
-                    console.log("populatedRecords: " + console.dir(populatedRecords));
-                    console.log('\n (before) populatedRecords[0][model]: ' + console.dir(populatedRecords[0][model]) + '\n');
-                    populatedRecords[0][model][i] = _.pick(populatedRecords[0][model][i], modifiers.select[0]);
-                    console.log('\n (after) populatedRecords[0][model][i]: ' + console.dir(populatedRecords[0][model][i]) + '\n');
-                    console.log("--------------------------------------------");
-                });
-
-                //console.log(populatedRecords[0].toJSON());
             });
         }, this);
 
         return query;
+
+        */
     }
+
+
 }
 
 class ResponsePOST extends ResponseBuilder {
