@@ -8,6 +8,7 @@
 
 const util = require('util')
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const pluralize = require('pluralize');
 
 /**
  * Populate (or "expand") an association
@@ -59,6 +60,7 @@ module.exports = function expand(req, res) {
         limit: actionUtil.parseLimit(req),
         sort: actionUtil.parseSort(req)
     });
+    const modelName = pluralize(Model.adapter.identity);
 
     Model
         .findOne(parentPk)
@@ -75,6 +77,14 @@ module.exports = function expand(req, res) {
                 actionUtil.subscribeDeep(req, matchingRecord);
             }
 
-            return res.ok(matchingRecord[relation]);
+            return res.ok(matchingRecord[relation], {
+                meta: {
+                    code: 'OK',
+                    message: 'The operation was executed successfully.',
+                },
+                links: {
+                    parent: req.host + ':' + req.port + '/' + modelName
+                }
+            });
         });
 };
