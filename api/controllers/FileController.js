@@ -23,18 +23,14 @@ module.exports = {
     },
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        console.log(pk)
         File.findOne(pk).then(function(file) {
             if (!file) return res.notFound()
             FileType.findOne(file.type).then(function(filetype) {
                 if (!filetype) return res.notFound()
-                console.log('before filetype.api')
-                console.log(filetype.api);
                 if (filetype.api) {
                     res.set('Content-Type', mime.lookup(file.name.split('.').pop()));
                     res.set('Content-Disposition', 'attachment; filename=' + file.name);
                     var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name);
-                    console.log(dirname);
                     var SkipperDisk = require('skipper-disk');
                     var fileAdapter = SkipperDisk();
                     fileAdapter.read(dirname).on('error', function(err) {
@@ -44,13 +40,13 @@ module.exports = {
                     return res.forbidden();
                 }
             }).fail(function(err) {
-                console.log(err)
+                console.log(err);
                 return res.negotiate()
             })
         }).fail(function(err) {
-            console.log(err)
+            console.log(err);
             return res.negotiate()
-        })
+        });
 
 
         // File.findOne(pk).exec(function(err, file) {
