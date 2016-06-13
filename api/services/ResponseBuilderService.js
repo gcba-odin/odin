@@ -35,7 +35,7 @@ class ResponseBuilder {
             code: '',
             message: ''
         };
-        this.data = [];
+        this._data = [];
         this.error = {};
 
         this._links = {};
@@ -60,7 +60,7 @@ class ResponseBuilder {
         let elements = {
             meta: this._meta,
             error: this.error,
-            data: this.data,
+            data: this._data,
             links: this._links
         };
 
@@ -82,7 +82,7 @@ class ResponseBuilder {
          */
 
         if (_.isEmpty(error)) {
-            if (!_.isPlainObject(this.data) && !_.isArray(this.data)) new Error('Data is not an object or an array.');
+            if (!_.isPlainObject(this._data) && !_.isArray(this._data)) new Error('Data is not an object or an array.');
             body = _.omit(elements, 'error');
         } else {
             if (!_.isPlainObject(this.error)) new Error('Error is not an object.');
@@ -119,12 +119,16 @@ class ResponseBuilder {
         return this; // Allows chaining
     }
 
-    links() {
-        return this._links;
-    }
-
     meta() {
         return this._meta;
+    }
+
+    data(records) {
+        return this._data;
+    }
+
+    links() {
+        return this._links;
     }
 }
 
@@ -146,11 +150,11 @@ class ResponseGET extends ResponseBuilder {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._many = many;
-        this.includes = {};
 
-        if (_includes.length > 0) {
+        if (req.query.include) {
             delete req.query.include;
         }
+
         if (this._many) {
             const _where = _actionUtil.parseCriteria(this.req);
             const _limit = _actionUtil.parseLimit(this.req);
@@ -198,13 +202,16 @@ class ResponseGET extends ResponseBuilder {
                 if (_previous) this._links.previous = _previous;
                 if (_next) this._links.next = _next;
                 if (_first) this._links.first = _first;
-                if (_last) this._links.last = _last;
-            }.bind(this));
+                if ( _last ) this._links.last = _last;
+
+            }.bind( this ) );
+
             this._links = {
                 first: this.req.host + ':' + this.req.port + '/' + modelName + '/first',
                 last: this.req.host + ':' + this.req.port + '/' + modelName + '/last',
                 count: this.req.host + ':' + this.req.port + '/' + modelName + '/count'
             }
+
         } else {
             const _pk = _actionUtil.requirePk(this.req);
             var relations = {};
@@ -214,11 +221,13 @@ class ResponseGET extends ResponseBuilder {
             } : null);
             _query = this.populate(_query, this._model, _includes);
 
-            _.forEach(this._model.associations, function(association) {
-                if (association.type == 'collection') {
-                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
+            _.forEach( this._model.associations, function ( association ) {
+                if ( association.type == 'collection' ) {
+                    relations[ association.alias ] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
                 }
-            }.bind(this))
+            }.bind( this ) );
+
+
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName,
             };
@@ -227,21 +236,56 @@ class ResponseGET extends ResponseBuilder {
 
         //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
         this.findQuery = _query;
+
+        this.findQuery.then( function ( records ) {
+            //var result = this.populatePartials(records);
+            var objects = {};
+            var props = {};
+            var mixables = [];
+            var result = [];
+            var i = 0;
+
+            _.forEach( records, function ( record ) {
+                mixables.push([]);
+
+                _.forOwn( record, function ( value, key ) {
+
+                    if ( value === null || value === undefined || !_.isEmpty( value ) ) {
+                        if ( _.isObject( value ) ) objects[ key ] = value;
+                        else props[ key ] = value;
+                    }
+
+                    if (_includes.partials[key]) mixables[i].push(_.pick( record[key], _includes.partials[key] ) || {});
+                });
+
+                //result.push(_.assign(objects, props));
+                i++;
+                //result.push(objects);
+            });
+
+            return records;
+        });
+
+        this.data = function ( records ) {
+            //this._data = this.populatePartials(records);
+            return this._data;
+        }
     }
 
     addData(value) {
         if (this._many) {
-            if (_.isPlainObject(this.data)) this.data = [];
-            else if (_.isArray(this.data)) this.data = _.concat(this.data, value);
+            if (_.isPlainObject(this._data)) this._data = [];
+            else if (_.isArray(this._data)) this._data = _.concat(this._data, value);
             else new Error('Data is not an array. It should be, since many is true.');
         } else {
-            if (_.isArray(this.data)) this.data = {};
-            else if (_.isPlainObject(this.data)) this._addValue(value, this.data);
+            if (_.isArray(this._data)) this._data = {};
+            else if (_.isPlainObject(this._data)) this._addValue(value, this._data);
             else new Error('Data is not an object. It should be, since many is false.');
         }
 
         return this; // Allows chaining
     }
+
     meta(records) {
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
@@ -262,8 +306,9 @@ class ResponseGET extends ResponseBuilder {
                 message: sails.config.errors.NOT_FOUND.message
             });
         }
-        return this._meta
+        return this._meta;
     }
+
 
     links(records) {
         if (!_.isUndefined(records) && records.length > 0) {
@@ -286,14 +331,17 @@ class ResponseGET extends ResponseBuilder {
             return undefined;
         }
         return {
-            [orderBy]: sort
-        }
+            [ orderBy ]: sort
+        };
     }
 
     parseInclude(req) {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var splits = [];
-        var results = [];
+        var results = {
+            full: [],
+            partials: {}
+        };
 
         if (includes.length > 0) {
             _.forEach(includes, function(element, i) {
@@ -302,43 +350,20 @@ class ResponseGET extends ResponseBuilder {
                 if (testee.indexOf('.') !== -1) {
                     var split = testee.split('.', 2);
 
-                    if (_.isArray(split) && split.length > 1) {
-                        splits.push(split);
+                    if ( _.isArray( split ) && split.length > 1 ) {
+                        if ( _.isArray( results.partials[ split[ 0 ] ] ) ) results.partials[ split[ 0 ] ].push( split[ 1 ] );
+                        else results.partials[ split[ 0 ]] = [split[1]];
                     };
-                } else splits.push(testee);
+                } else results.full.push(testee);
             });
         }
 
-        console.dir(splits);
-        return splits;
+        this.partials = results.partials;
+        return results;
     }
 
-    /*
-        populate(query, model, includes) {
-            // Populate one-to-many
-            _.forEach(model.definition, function(value, key) {
-                if (value.foreignKey) {
-                    query.populate(key).exec(function afterwards(err, query) {
-                        if (!err) query = query;
-                        else console.log(err);
-                    });
-                }
-            });
-
-            // Populate one-to-many and many-to-many
-            _.forEach(includes, function(element) {
-                query.populate(element).exec(function afterwards(err, query) {
-                    if (!err) query = query;
-                    else console.log(err);
-                });
-            }, this);
-
-            return query;
-        }
-        */
-
     populate(query, model, includes) {
-        // Populate one-to-many
+        // Fully populate non collection items
         _.forEach(model.definition, function(value, key) {
             if (value.foreignKey) {
                 query.populate(key).exec(function afterwards(err, populatedRecords) {
@@ -348,76 +373,54 @@ class ResponseGET extends ResponseBuilder {
             }
         });
 
-
-        /*
-        // Populate one-to-many
-        _.forEach(model.definition, function(value, key) {
-            if (value.foreignKey) {
-                query.populate(key).exec(function afterwards(err, populatedResults) {
-                    //if (!err) query = populatedResults;
-                    //else console.log(err);
-                });
-            }
-        });
-        */
-
-        if (includes.length === 0) return query;
-        var instanceIncludes = this.includes;
-
-        // Populate one-to-many and many-to-many
-        _.forEach(includes, function(element) {
-            var modifiers = {};
-            var model;
-
-            if (_.isArray(element)) {
-                model = element[0];
-                modifiers.select = [element[1]];
-            } else model = element;
-
-            // Initialize the include array for this model if it's not already
-            if (!instanceIncludes[model]) instanceIncludes[model] = [];
-            // instanceIncludes = this.includes;
-
-            if (!_.isEmpty(instanceIncludes)) {
-                query.populate(model).exec(function afterwards(err, populatedRecords) {
-                    if (err) console.log(err);
-
-                    _.forEach(populatedRecords[0][model], function(element, i) {
-                        if (!modifiers.select) instanceIncludes[model].push(element);
-                        else instanceIncludes[model].push(_.pick(element, modifiers.select));
-                    });
-
-                    populatedRecords[0][model] = instanceIncludes[model];
-
-                    query = populatedRecords;
-                });
-            } else {
-                query.populate(model).exec(function afterwards(err, populatedRecords) {
-                    if (!err) query = populatedRecords;
-                    else console.log(err);
-                    console.log("HI");
-                });
-            }
-
-        }, this);
-
-        return query;
-
-        /*
-        // Populate one-to-many and many-to-many
-        _.forEach(includes, function(element) {
+        // Fully populate collections
+        _.forEach(includes.full, function(element) {
             query.populate(element).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
             });
         }, this);
 
-        return query;
+        // Fully populate included partials (will be filtered out later)
+        _.forEach(includes.partials, function(value, key) {
+            query.populate(key).exec(function afterwards(err, populatedRecords) {
+                if (!err) query = populatedRecords;
+                else console.log(err);
+            });
+        }, this);
 
-        */
+        return query.then( function ( records ) {
+
+            // Filter out the partials
+            // Each result item
+            records.forEach( function ( element, j ) {
+                records[ j ] = _.transform( element, function ( result, value, key ) {
+                    // Each granular include, gruped by model
+                    _.forEach(includes.partials, function (partialValue, partialKey) {
+                        if ( key === partialKey && _.isArray( element[ partialKey ] ) ) {
+                            // Each collection of included objects
+                            element[ partialKey ].forEach( function ( item, k ) {
+                                // Each included object in the collection
+                                _.forEach( item, function ( resultValue, resultKey ) {
+                                    partialValue = partialValue.toString();
+
+                                    // If it's not listed on the granular includes, delete it
+                                    if ( partialValue.indexOf(resultKey) === -1 ) {
+                                        delete element[ partialKey ][ k ][ resultKey ];
+                                    }
+                                    else result[ partialKey ][ k ] = element[ partialKey ][ k ];
+                                });
+                            });
+                        }
+                        else result[key] = element[key];
+                    });
+                }, element);
+
+            });
+
+            return records;
+        });
     }
-
-
 }
 
 class ResponsePOST extends ResponseBuilder {
@@ -550,7 +553,7 @@ class ResponseOPTIONS extends ResponseBuilder {
                 "parameters": key(this._model)
             });
         }.bind(this));
-        this.data = methodsArray;
+        this._data = methodsArray;
     }
 
 }

@@ -5,7 +5,8 @@
 // const takeAlias = _.partial(_.map, _, item => item.alias);
 // const populateAlias = (model, alias) => model.populate(alias);
 
-const Response = require('../services/ResponseBuilderService');
+const Response = require( '../services/ResponseBuilderService' );
+const Promise = require('bluebird');
 
 /**
  * Find Records
@@ -37,26 +38,18 @@ module.exports = (req, res) => {
 
     builder.findQuery
         .then(records => {
-            console.dir(builder.includes);
             if (_.isUndefined(records)) return res.notFound(null, {
                 meta: builder.meta(undefined),
                 links: builder.links(undefined)
             });
             else {
-                //if (!_.isEmpty(builder.includes)) {
-                //    console.log("adentro");
-                //    records[0] = _.assign(records[0], builder.includes);
-                //}
-                console.log('results: ');
-                console.dir(records[0]);
                 return res.ok(
                     records, {
-                        meta: builder.meta(records),
-                        links: builder.links(records)
+                        meta: builder.meta( records ),
+                        links: builder.links( records )
                     }
                 );
             }
         })
         .catch(res.negotiate);
-
 };
