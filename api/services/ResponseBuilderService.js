@@ -163,44 +163,16 @@ class ResponseGET extends ResponseBuilder {
             this._page = Math.floor(this._skip / this._limit) + 1;
 
             // Delete the skip query parameter
-            var requestQuery = this.req.query;
-            delete requestQuery.skip;
+            this.requestQuery = this.req.query;
+            delete this.requestQuery.skip;
 
             this._query = this._model.find(null, this._fields.length > 0 ? {
                 select: this._fields
             } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
             this._query = this.populate(this._query, this._model, this._includes);
-
-            this._model.count(requestQuery).exec(function count(err, cant) {
-                // check if no parameters given
-                var params = (!_.isEmpty(requestQuery));
-                // If we have &skip or ?skip, we delete it from the url
-                var url = this.req.url.replace(/.skip=\d+/g, "");
-
-                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
-                const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
-                const _next = ((Math.abs(this._skip - this._limit) <= cant) ? ((Math.abs(this._skip - this._limit) < cant) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
-                const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-                const _last = ((this._skip + this._limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(this._limit) * this._limit) - 1) : undefined);
-
-                if (_previous) this._links.previous = _previous;
-                if (_next) this._links.next = _next;
-                if (_first) this._links.first = _first;
-                if (_last) this._links.last = _last;
-
-            }.bind(this));
-
-            this._links = {
-                first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
-                last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
-                count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
-            }
-
         } else {
-            const _pk = _actionUtil.requirePk(this.req);
-            var relations = {};
-
-            this._query = this._model.find(_pk, this._fields.length > 0 ? {
+            this._pk = _actionUtil.requirePk(this.req);
+            this._query = this._model.find(this._pk, this._fields.length > 0 ? {
                 select: this._fields
             } : null);
             this._query = this.populate(this._query, this._model, this._includes);
@@ -234,9 +206,12 @@ class ResponseGET extends ResponseBuilder {
         return this; // Allows chaining
     }
 
+    /*
+     * Builds and returns the 'meta' object (part of the response body)
+     */
     meta(records) {
+        // If the client is requesting a collection, we'll include the criteria plus pagination data
         if (this._many) {
-
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 limit: this._limit,
@@ -272,20 +247,67 @@ class ResponseGET extends ResponseBuilder {
                 message: sails.config.errors.NOT_FOUND.message
             });
         }
+
         return this._meta;
     }
 
+    /*
+     * Builds and returns the 'links' object (part of the response body)
+     */
     links(records) {
-        if (!_.isUndefined(records) && records.length > 0) {
-            return this._links;
-        } else {
-            delete this._links.first;
-            delete this._links.last;
-            delete this._links.previous;
-            delete this._links.next;
-            delete this._links.collections;
+        // If the client is requesting a collection, we'll show certain links plus pagination
+        if (this._many) {
+            this._model.count(this.requestQuery).exec(function count(err, cant) {
+                // check if no parameters given
+                var params = (!_.isEmpty(this.requestQuery));
+                // If we have &skip or ?skip, we delete it from the url
+                var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            return this._links;
+                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
+                const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
+                const _next = ((Math.abs(this._skip - this._limit) <= cant) ? ((Math.abs(this._skip - this._limit) < cant) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
+                const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
+                const _last = ((this._skip + this._limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(this._limit) * this._limit) - 1) : undefined);
+
+                if (_previous) this._links.previous = _previous;
+                if (_next) this._links.next = _next;
+                if (_first) this._links.first = _first;
+                if (_last) this._links.last = _last;
+
+            }.bind(this));
+
+            this._links = {
+                first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
+                last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
+                count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
+            }
+
+            if (!_.isUndefined(records) && records.length > 0) {
+                return this._links;
+            } else {
+                delete this._links.first;
+                delete this._links.last;
+                delete this._links.previous;
+                delete this._links.next;
+                delete this._links.collections;
+
+                return this._links;
+            }
+        }
+        // If the client is requesting a single item, we'll show other links
+        else {
+            var relations = {};
+
+            _.forEach(this._model.associations, function (association) {
+                if (association.type == 'collection') {
+                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias
+                }
+            }.bind(this));
+
+            this._links = {
+                all: this.req.host + ':' + this.req.port + '/' + this.modelName,
+            };
+            !_.isEmpty(relations) ? this._links['collections'] = relations : ''
         }
     }
 
@@ -406,10 +428,6 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = _actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        // WORKS: On responsePATCH _values is equal to :{"tags":["aWRhpz1","tWRhpz2"],"id":"sWRhpRk"}
-
-        // TBD: On responsePATCH _values is equal to :{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
-
         console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values))
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
@@ -490,7 +508,6 @@ class ResponsePATCH extends ResponseBuilder {
 
         return values;
     }
-
 }
 
 class ResponseDELETE extends ResponseBuilder {
