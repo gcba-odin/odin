@@ -44,7 +44,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function(value, target) {
+        this._addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -205,7 +205,7 @@ class ResponseGET extends ResponseBuilder {
             } : null);
             this._query = this.populate(this._query, this._model, this._includes);
 
-            _.forEach(this._model.associations, function(association) {
+            _.forEach(this._model.associations, function (association) {
                 if (association.type == 'collection') {
                     relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + _pk + '/' + association.alias
                 }
@@ -309,7 +309,7 @@ class ResponseGET extends ResponseBuilder {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element, i) {
+            _.forEach(includes, function (element, i) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -318,7 +318,8 @@ class ResponseGET extends ResponseBuilder {
                     if (_.isArray(split) && split.length > 1) {
                         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
                         else results.partials[split[0]] = [split[1]];
-                    };
+                    }
+                    ;
                 } else results.full.push(testee);
             });
         }
@@ -329,7 +330,7 @@ class ResponseGET extends ResponseBuilder {
 
     populate(query, model, includes) {
         // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
+        _.forEach(model.definition, function (value, key) {
             if (value.foreignKey) {
                 query.populate(key).exec(function afterwards(err, populatedRecords) {
                     if (!err) query = populatedRecords;
@@ -339,7 +340,7 @@ class ResponseGET extends ResponseBuilder {
         });
 
         // Fully populate collections
-        _.forEach(includes.full, function(element) {
+        _.forEach(includes.full, function (element) {
             query.populate(element).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
@@ -350,26 +351,26 @@ class ResponseGET extends ResponseBuilder {
         // Since not many adapters implement them we're doing it by hand
         // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
         // Fully populate included partials (will be filtered out later)
-        _.forEach(includes.partials, function(value, key) {
+        _.forEach(includes.partials, function (value, key) {
             query.populate(key).exec(function afterwards(err, populatedRecords) {
                 if (!err) query = populatedRecords;
                 else console.log(err);
             });
         }, this);
 
-        return query.then(function(records) {
+        return query.then(function (records) {
 
             // Filter out the partials
             // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
+            records.forEach(function (element, j) {
+                records[j] = _.transform(element, function (result, value, key) {
                     // Each granular include, gruped by model
-                    _.forEach(includes.partials, function(partialValue, partialKey) {
+                    _.forEach(includes.partials, function (partialValue, partialKey) {
                         if (key === partialKey && _.isArray(element[partialKey])) {
                             // Each collection of included objects
-                            element[partialKey].forEach(function(item, k) {
+                            element[partialKey].forEach(function (item, k) {
                                 // Each included object in the collection
-                                _.forEach(item, function(resultValue, resultKey) {
+                                _.forEach(item, function (resultValue, resultKey) {
                                     partialValue = partialValue.toString();
 
                                     // If it's not listed on the granular includes, delete it
@@ -418,7 +419,7 @@ class ResponsePATCH extends ResponseBuilder {
         var JSONP_CALLBACK_PARAM = 'callback';
 
         console.log('Inside custom parse values')
-            // Allow customizable blacklist for params NOT to include as values.
+        // Allow customizable blacklist for params NOT to include as values.
         req.options.values = req.options.values || {};
         req.options.values.blacklist = req.options.values.blacklist;
 
@@ -438,14 +439,14 @@ class ResponsePATCH extends ResponseBuilder {
 
 
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
-        var valuesArray = _.map(bodyData, function(element) {
+        var valuesArray = _.map(bodyData, function (element) {
             var values;
             // Merge properties of the element into req.options.value, omitting the blacklist
             values = mergeDefaults(element, _.omit(req.options.values, 'blacklist'));
             // Omit properties that are in the blacklist (like query modifiers)
             values = _.omit(values, blacklist || []);
             // Omit any properties w/ undefined values
-            values = _.omit(values, function(p) {
+            values = _.omit(values, function (p) {
                 if (_.isUndefined(p)) {
                     return true;
                 }
@@ -455,7 +456,7 @@ class ResponsePATCH extends ResponseBuilder {
             // if key is a model collectio, should transform comma separated to array.
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
-            _.forEach(values, function(value, key) {
+            _.forEach(values, function (value, key) {
                 var collection = _.find(this._model.associations, [
                     'alias', key
                 ])
@@ -495,10 +496,32 @@ class ResponsePATCH extends ResponseBuilder {
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-
         const _pk = _actionUtil.requirePk(this.req);
         this.destroy = this._model.destroy(_pk)
     }
+
+    meta(record) {
+        if (_.isUndefined(record)) {
+            _.assign(this._meta, {
+                code: sails.config.errors.NOT_FOUND.code,
+                message: sails.config.errors.NOT_FOUND.message
+            });
+            return this._meta
+        }
+    }
+
+    links(record) {
+        if (_.isUndefined(record)) {
+            const modelName = pluralize(this._model.adapter.identity);
+
+            this._links = {
+                all: this.req.host + ':' + this.req.port + '/' + modelName
+            };
+            return this._links
+
+        }
+    }
+
 }
 
 class ResponseOPTIONS extends ResponseBuilder {
@@ -509,7 +532,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function(key, methodVerb) {
+        _.forEach(methods, function (key, methodVerb) {
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -526,7 +549,8 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._meta = {
@@ -547,7 +571,8 @@ class ResponseQuery extends ResponseBuilder {
 
 class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
             this._meta = {
                 code: 'OK',

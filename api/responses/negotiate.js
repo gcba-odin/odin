@@ -7,7 +7,6 @@
  */
 
 module.exports = function (error) {
-    console.log('\n negotiate!!');
     const res = this.res;
     const code = _.get(error, 'code');
     const message = _.get(error, 'reason') || _.get(error, 'message');

@@ -10,7 +10,7 @@
 
 module.exports = function(data, config) {
     console.log(config);
-    console.log(sails.config.errors.NOT_FOUND);
+
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {}),
