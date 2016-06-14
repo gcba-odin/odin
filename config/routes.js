@@ -537,7 +537,8 @@ module.exports = {
 
         'PATCH /tags/:id': {
             blueprint: 'update',
-            model: 'tag'
+            model: 'tag',
+            policy: 'isAuthenticated'
         },
         'HEAD /tags/*': {
             controller: 'Head',

@@ -5,7 +5,7 @@
 // const takeAlias = _.partial(_.map, _, item => item.alias);
 // const populateAlias = (model, alias) => model.populate(alias);
 
-const Response = require( '../services/ResponseBuilderService' );
+const Response = require('../services/ResponseBuilderService');
 const Promise = require('bluebird');
 
 /**
@@ -43,10 +43,14 @@ module.exports = (req, res) => {
                 links: builder.links(undefined)
             });
             else {
+                //if (!_.isEmpty(builder.includes)) {
+                //    console.log("adentro");
+                //    records[0] = _.assign(records[0], builder.includes);
+                //}
                 return res.ok(
                     records, {
-                        meta: builder.meta( records ),
-                        links: builder.links( records )
+                        meta: builder.meta(records),
+                        links: builder.links(records)
                     }
                 );
             }

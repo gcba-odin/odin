@@ -9,7 +9,7 @@
  * In a POST request the response will contain an entity describing or containing the result of the action.
  */
 
-module.exports = function(data, config) {
+module.exports = function (data, config) {
     // Save Builder instance in config (in blueprint), retrieve it here with _.get()
     // Then fill in the Builder's fields (meta.code, meta.message, data, etc)
     // Then run the Builder's build() method and save it to data. Put the data in the response
@@ -25,7 +25,11 @@ module.exports = function(data, config) {
     this.res.set({
         'Content-Type': 'application/json',
     });
-
-    this.res.status(sails.config.success[response.meta.code].status);
+    var status = "";
+    try{
+        status = sails.config.success[response.meta.code].status
+    }
+    catch(err) {status = 200}
+    this.res.status(status);
     this.res.send(response);
 };

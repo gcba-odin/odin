@@ -12,10 +12,12 @@ module.exports = (req, res) => {
     var builder = new Response.ResponseDELETE(req, res);
 
     builder.destroy
-        .then(record => record[0] = [{
-            meta: builder.meta(),
-            links: builder.links()
-        }])
-        .spread(res.deleted)
+        .then(record => {
+            LogService.log(req, record[0].id);
+            res.deleted(record[0], {
+                meta: builder.meta(),
+                links: builder.links()
+            })
+        })
         .catch(res.negotiate);
 };
