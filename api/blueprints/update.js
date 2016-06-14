@@ -10,13 +10,16 @@ const Response = require('../services/ResponseBuilderService');
  */
 module.exports = (req, res) => {
     var builder = new Response.ResponsePATCH(req, res);
-
     builder.update
         .then(record => {
+            if (_.isUndefined(record[0])) return res.notFound(null, {
+                meta: builder.meta(undefined),
+                links: builder.links(undefined)
+            });
             LogService.log(req, record[0].id);
             res.updated(record[0], {
-                meta: builder.meta(),
-                links: builder.links()
+                meta: builder.meta(record[0]),
+                links: builder.links(record[0])
             })
         })
         // .spread(function () {

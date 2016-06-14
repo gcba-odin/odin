@@ -517,6 +517,33 @@ class ResponsePATCH extends ResponseBuilder {
 
         return values;
     }
+
+    meta(record) {
+        if (_.isUndefined(record)) {
+            _.assign(this._meta, {
+                code: sails.config.errors.NOT_FOUND.code,
+                message: sails.config.errors.NOT_FOUND.message
+            });
+        }
+        else {
+            _.assign(this._meta = {
+                code: sails.config.success.OK.code,
+                message: sails.config.success.OK.message
+            });
+        }
+        return this._meta
+
+    }
+
+    links(record) {
+        const modelName = pluralize(this._model.adapter.identity);
+
+        this._links = {
+            all: this.req.host + ':' + this.req.port + '/' + modelName
+        };
+        return this._links
+
+    }
 }
 
 class ResponseDELETE extends ResponseBuilder {

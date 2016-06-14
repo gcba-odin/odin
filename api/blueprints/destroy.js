@@ -13,7 +13,6 @@ module.exports = (req, res) => {
 
     builder.destroy
         .then(record => {
-            console.log('en el then con record = ' + record)
             if (_.isUndefined(record[0])) return res.notFound(null, {
                 meta: builder.meta(undefined),
                 links: builder.links(undefined)
