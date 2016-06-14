@@ -10,7 +10,7 @@ const sails = require( 'sails' );
 module.exports = {
   port: 3000,
   log: {
-    level: 'silly'
+    level: 'info'
   },
   models: {
     connection: 'postgres'

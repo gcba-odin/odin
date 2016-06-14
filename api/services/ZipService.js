@@ -9,11 +9,9 @@ module.exports = {
 
         //check if the folder of the datasets exist, otherwise create it
         fs.lstat(sails.config.odin.uploadFolder + '/' + pk, function (err, stats) {
-            console.log('\nis directory? ' + stats.isDirectory());
-            console.log('\n eerror: ' + err);
 
             if (err || !stats.isDirectory()) {
-                fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);
+                fs.mkdirSync(sails.config.odin.uploadFolder + '/' + pk);
             }
             var output = file_system.createWriteStream(sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip');
 
