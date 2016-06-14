@@ -235,7 +235,11 @@ class ResponseGET extends ResponseBuilder {
         return this._meta;
     }
 
+    /*
+     * Builds and returns the 'links' object (part of the response body)
+     */
     links(records) {
+        // If the client is requesting a collection, we'll show certain links plus pagination
         if (this._many) {
             this._model.count(this.requestQuery).exec(function count(err, cant) {
                 // check if no parameters given
@@ -262,7 +266,20 @@ class ResponseGET extends ResponseBuilder {
                 count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
             }
 
-        } else {
+            if (!_.isUndefined(records) && records.length > 0) {
+                return this._links;
+            } else {
+                delete this._links.first;
+                delete this._links.last;
+                delete this._links.previous;
+                delete this._links.next;
+                delete this._links.collections;
+
+                return this._links;
+            }
+        }
+        // If the client is requesting a single item, we'll show other links
+        else {
             var relations = {};
 
             _.forEach(this._model.associations, function(association) {
@@ -275,18 +292,6 @@ class ResponseGET extends ResponseBuilder {
                 all: this.req.host + ':' + this.req.port + '/' + this.modelName,
             };
             !_.isEmpty(relations) ? this._links['collections'] = relations : ''
-        }
-
-        if (!_.isUndefined(records) && records.length > 0) {
-            return this._links;
-        } else {
-            delete this._links.first;
-            delete this._links.last;
-            delete this._links.previous;
-            delete this._links.next;
-            delete this._links.collections;
-
-            return this._links;
         }
     }
 
