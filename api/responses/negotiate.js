@@ -18,10 +18,12 @@ module.exports = function (error) {
         message,
         root
     };
+    console.log(error);
 
     if (statusCode === 401) return res.unauthorized(data, config);
     if (statusCode === 403) return res.forbidden(data, config);
     if (statusCode === 404) return res.notFound(data, config);
+    if (statusCode === 415) return res.unsupportedMediaType(data, config);
     if (statusCode >= 400 && statusCode < 500) return res.badRequest(data, config);
 
     return res.serverError(data, config);
