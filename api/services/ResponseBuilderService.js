@@ -163,58 +163,19 @@ class ResponseGET extends ResponseBuilder {
             this._page = Math.floor(this._skip / this._limit) + 1;
 
             // Delete the skip query parameter
-            var requestQuery = this.req.query;
-            delete requestQuery.skip;
+            this.requestQuery = this.req.query;
+            delete this.requestQuery.skip;
 
             this._query = this._model.find(null, this._fields.length > 0 ? {
                 select: this._fields
             } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
             this._query = this.populate(this._query, this._model, this._includes);
-
-            this._model.count(requestQuery).exec(function count(err, cant) {
-                // check if no parameters given
-                var params = (!_.isEmpty(requestQuery));
-                // If we have &skip or ?skip, we delete it from the url
-                var url = this.req.url.replace(/.skip=\d+/g, "");
-
-                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
-                const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
-                const _next = ((Math.abs(this._skip - this._limit) <= cant) ? ((Math.abs(this._skip - this._limit) < cant) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
-                const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-                const _last = ((this._skip + this._limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(this._limit) * this._limit) - 1) : undefined);
-
-                if (_previous) this._links.previous = _previous;
-                if (_next) this._links.next = _next;
-                if (_first) this._links.first = _first;
-                if (_last) this._links.last = _last;
-
-            }.bind(this));
-
-            this._links = {
-                first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
-                last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
-                count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
-            }
-
         } else {
-            const _pk = _actionUtil.requirePk(this.req);
-            var relations = {};
-
-            this._query = this._model.find(_pk, this._fields.length > 0 ? {
+            this._pk = _actionUtil.requirePk(this.req);
+            this._query = this._model.find(this._pk, this._fields.length > 0 ? {
                 select: this._fields
             } : null);
             this._query = this.populate(this._query, this._model, this._includes);
-
-            _.forEach(this._model.associations, function(association) {
-                if (association.type == 'collection') {
-                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + _pk + '/' + association.alias
-                }
-            }.bind(this));
-
-            this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + this.modelName,
-            };
-            !_.isEmpty(relations) ? this._links['collections'] = relations : ''
         }
 
         this.findQuery = this._query;
@@ -236,7 +197,6 @@ class ResponseGET extends ResponseBuilder {
 
     meta(records) {
         if (this._many) {
-
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 limit: this._limit,
@@ -276,6 +236,47 @@ class ResponseGET extends ResponseBuilder {
     }
 
     links(records) {
+        if (this._many) {
+            this._model.count(this.requestQuery).exec(function count(err, cant) {
+                // check if no parameters given
+                var params = (!_.isEmpty(this.requestQuery));
+                // If we have &skip or ?skip, we delete it from the url
+                var url = this.req.url.replace(/.skip=\d+/g, "");
+
+                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
+                const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
+                const _next = ((Math.abs(this._skip - this._limit) <= cant) ? ((Math.abs(this._skip - this._limit) < cant) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
+                const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
+                const _last = ((this._skip + this._limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(this._limit) * this._limit) - 1) : undefined);
+
+                if (_previous) this._links.previous = _previous;
+                if (_next) this._links.next = _next;
+                if (_first) this._links.first = _first;
+                if (_last) this._links.last = _last;
+
+            }.bind(this));
+
+            this._links = {
+                first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
+                last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
+                count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
+            }
+
+        } else {
+            var relations = {};
+
+            _.forEach(this._model.associations, function(association) {
+                if (association.type == 'collection') {
+                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias
+                }
+            }.bind(this));
+
+            this._links = {
+                all: this.req.host + ':' + this.req.port + '/' + this.modelName,
+            };
+            !_.isEmpty(relations) ? this._links['collections'] = relations : ''
+        }
+
         if (!_.isUndefined(records) && records.length > 0) {
             return this._links;
         } else {
@@ -489,7 +490,6 @@ class ResponsePATCH extends ResponseBuilder {
 
         return values;
     }
-
 }
 
 class ResponseDELETE extends ResponseBuilder {
