@@ -428,6 +428,23 @@ class ResponsePOST extends ResponseBuilder {
         const _values = _actionUtil.parseValues(this.req);
         this.create = this._model.create(_.omit(_values, 'id'));
     }
+    meta(record) {
+            _.assign(this._meta = {
+                code: sails.config.success.CREATED.code,
+                message: sails.config.success.CREATED.message
+            });
+        return this._meta
+    }
+
+    links(record) {
+        const modelName = pluralize(this._model.adapter.identity);
+
+        this._links = {
+            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
+        };
+        return this._links
+
+    }
 }
 
 class ResponsePATCH extends ResponseBuilder {
