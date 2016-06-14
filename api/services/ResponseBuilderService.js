@@ -170,6 +170,10 @@ class ResponseGET extends ResponseBuilder {
                 select: this._fields
             } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
             this._query = this.populate(this._query, this._model, this._includes);
+
+            this._model.count(this.requestQuery).then(function(cant) {
+                this._count = cant;
+            }.bind(this));
         } else {
             this._pk = _actionUtil.requirePk(this.req);
             this._query = this._model.find(this._pk, this._fields.length > 0 ? {
@@ -246,30 +250,27 @@ class ResponseGET extends ResponseBuilder {
     links(records) {
         // If the client is requesting a collection, we'll show certain links plus pagination
         if (this._many) {
-            this._model.count(this.requestQuery).exec(function count(err, cant) {
-                // check if no parameters given
-                var params = (!_.isEmpty(this.requestQuery));
-                // If we have &skip or ?skip, we delete it from the url
-                var url = this.req.url.replace(/.skip=\d+/g, "");
+            // check if no parameters given
+            var params = (!_.isEmpty(this.requestQuery));
+            // If we have &skip or ?skip, we delete it from the url
+            var url = this.req.url.replace(/.skip=\d+/g, "");
 
-                const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
-                const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
-                const _next = ((Math.abs(this._skip - this._limit) <= cant) ? ((Math.abs(this._skip - this._limit) < cant) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
-                const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-                const _last = ((this._skip + this._limit < cant) ? _linkToModel + parseInt((parseFloat(cant) / parseFloat(this._limit) * this._limit) - 1) : undefined);
+            const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
+            const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
+            const _next = ((Math.abs(this._skip - this._limit) <= this._count) ? ((this._skip === 0 ||  Math.abs(this._skip - this._limit) < this._count) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
+            const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
+            const _last = ((this._skip + this._limit < this._count) ? _linkToModel + parseInt((parseFloat(this._count) / parseFloat(this._limit) * this._limit) - 1) : undefined);
 
-                if (_previous) this._links.previous = _previous;
-                if (_next) this._links.next = _next;
-                if (_first) this._links.first = _first;
-                if (_last) this._links.last = _last;
+            if (_previous) this._links.previous = _previous;
+            if (_next) this._links.next = _next;
+            if (_first) this._links.first = _first;
+            if (_last) this._links.last = _last;
 
-            }.bind(this));
-
-            this._links = {
+            this._links = _.assign(this._links, {
                 first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
                 last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
                 count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
-            }
+            });
 
             if (!_.isUndefined(records) && records.length > 0) {
                 return this._links;
@@ -280,6 +281,7 @@ class ResponseGET extends ResponseBuilder {
                 delete this._links.next;
                 delete this._links.collections;
             }
+            return this._links;
         }
         // If the client is requesting a single item, we'll show other links
         else {
@@ -291,11 +293,11 @@ class ResponseGET extends ResponseBuilder {
                 }
             }.bind(this));
 
-            this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + this.modelName
-            };
-
             !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+
+            this._links = _.assign(this._links, {
+                all: this.req.host + ':' + this.req.port + '/' + this.modelName
+            });
         }
 
         return this._links;
