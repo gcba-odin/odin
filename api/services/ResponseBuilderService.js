@@ -30,7 +30,6 @@ class ResponseBuilder {
         // this.status;
         // this.headers = {};
 
-        // TODO: Find a way to include the correct code & message (eg, CREATED, Resource has been created.)
         this._meta = {
             code: '',
             message: ''

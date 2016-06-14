@@ -16,10 +16,10 @@ const converter = new Converter({
 const iconv = require('iconv-lite');
 
 module.exports = {
-    uploadFile: function(req, res) {
+    uploadFile: function (req, res) {
         var extension = '';
         var filename = '';
-        var uploadFile = req.file('uploadFile').on('error', function(err) {
+        var uploadFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
@@ -29,13 +29,13 @@ module.exports = {
         // If there is a file
         if (!uploadFile.isNoop) {
             uploadFile.upload({
-                    saveAs: function(file, cb) {
+                    saveAs: function (file, cb) {
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
 
                         // If the extension is present on the array of allowed types we can save it
                         if (sails.config.odin.allowedTypes.indexOf(extension) === -1) {
-                            return res.badRequest('filetype not allowed');
+                            return res.negotiate({status:415,code: 415, message: 'filetype not allowed'});
                         } else {
                             filename = file.filename;
                             cb(null, file.filename);
@@ -59,42 +59,42 @@ module.exports = {
                         // Read the file
                         fs.createReadStream(filePath)
                             // Encode it
-                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
-                                if (err) return res.negotiate(err);
-                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                            if (err) return res.negotiate(err);
+                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                // If the file is consumable via the API
-                                if (extension == 'text/csv') {
-                                    // Convert to JSON
-                                    converter.fromString(result, function(err, json) {
-                                        if (err) {
-                                            return res.negotiate(err);
-                                        }
-                                        if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+                            // If the file is consumable via the API
+                            if (extension == 'text/csv') {
+                                // Convert to JSON
+                                converter.fromString(result, function (err, json) {
+                                    if (err) {
+                                        return res.negotiate(err);
+                                    }
+                                    if (json.length === 0) return res.badRequest("Invalid or empty csv.");
 
-                                        var MongoClient = require('mongodb').MongoClient;
+                                    var MongoClient = require('mongodb').MongoClient;
 
-                                        // Connect to the db
-                                        // TODO: Put the mongo URL in config/odin.js, separated (host and port, host NOT including the mongodb:// bit)
-                                        // TODO: Put the connection and insert logic in a service (DataStorageService), and just call it from here
-                                        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-                                            sails.config.odin.filesDb.port + "/" + dataset,
-                                            function(err, db) {
-                                                if (err) return res.negotiate(err);
+                                    // Connect to the db
+                                    // TODO: Put the connection and insert logic in a service (DataStorageService), and just call it from here
+                                    MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
+                                        sails.config.odin.filesDb.port + "/" + dataset,
+                                        function (err, db) {
+                                            if (err) return res.negotiate(err);
 
-                                                var collection = db.collection(files[0].filename);
+                                            var collection = db.collection(files[0].filename);
 
-                                                collection.insert(json, {
-                                                    w: 1
-                                                }, function(err, res) {
-                                                    if (err) return res.negotiate(err)
-                                                });
+                                            collection.insert(json, {
+                                                w: 1
+                                            }, function (err, res) {
+                                                if (err) return res.negotiate(err)
                                             });
-                                    });
-                                }
+                                        });
+                                });
+                            }
 
-                                fs.writeFile(filePath, result, function() {});
+                            fs.writeFile(filePath, result, function () {
                             });
+                        });
                     }
 
                     var data = actionUtil.parseValues(req);
@@ -110,7 +110,7 @@ module.exports = {
                             }
                             // Make sure data is JSON-serializable before publishing
                             var publishData = _.isArray(newInstance) ?
-                                _.map(newInstance, function(instance) {
+                                _.map(newInstance, function (instance) {
                                     return instance.toJSON();
                                 }) :
                                 newInstance.toJSON();
