@@ -25,7 +25,7 @@ class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
         this.res = res;
-        req.options.criteria = req.options.criteria || {};
+        this.req.options.criteria = req.options.criteria || {};
         this.req.options.criteria.blacklist = ['limit', 'skip', 'sort', 'populate', 'orderBy'];
         // this.status;
         // this.headers = {};
@@ -368,9 +368,10 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
-        // Partial includes are supported in Waterline, but are adapter-dependant
+        // Partial includes are supported in Waterline, but are adapter dependant
         // Since not many adapters implement them we're doing it by hand
         // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
+
         // Fully populate included partials (will be filtered out later)
         _.forEach(includes.partials, function(value, key) {
             query.populate(key).exec(function afterwards(err, populatedRecords) {
@@ -380,7 +381,6 @@ class ResponseGET extends ResponseBuilder {
         }, this);
 
         return query.then(function(records) {
-
             // Filter out the partials
             // Each result item
             records.forEach(function(element, j) {
@@ -403,7 +403,6 @@ class ResponseGET extends ResponseBuilder {
                         } else result[key] = element[key];
                     });
                 }, element);
-
             });
 
             return records;
@@ -423,7 +422,7 @@ class ResponsePOST extends ResponseBuilder {
             code: sails.config.success.CREATED.code,
             message: sails.config.success.CREATED.message
         });
-        return this._meta
+        return this._meta;
     }
 
     links(record) {
@@ -432,8 +431,7 @@ class ResponsePOST extends ResponseBuilder {
         this._links = {
             record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
         };
-        return this._links
-
+        return this._links;
     }
 }
 
@@ -452,8 +450,8 @@ class ResponsePATCH extends ResponseBuilder {
         var mergeDefaults = require('merge-defaults');
         var JSONP_CALLBACK_PARAM = 'callback';
 
-        console.log('Inside custom parse values')
-            // Allow customizable blacklist for params NOT to include as values.
+        console.log('Inside custom parse values');
+        // Allow customizable blacklist for params NOT to include as values.
         req.options.values = req.options.values || {};
         req.options.values.blacklist = req.options.values.blacklist;
 
@@ -537,7 +535,7 @@ class ResponsePATCH extends ResponseBuilder {
                 message: sails.config.success.OK.message
             });
         }
-        return this._meta
+        return this._meta;
 
     }
 
@@ -547,8 +545,8 @@ class ResponsePATCH extends ResponseBuilder {
         this._links = {
             all: this.req.host + ':' + this.req.port + '/' + modelName
         };
-        return this._links
 
+        return this._links;
     }
 }
 
@@ -565,7 +563,8 @@ class ResponseDELETE extends ResponseBuilder {
                 code: sails.config.errors.NOT_FOUND.code,
                 message: sails.config.errors.NOT_FOUND.message
             });
-            return this._meta
+
+            return this._meta;
         }
     }
 
@@ -576,11 +575,10 @@ class ResponseDELETE extends ResponseBuilder {
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
-            return this._links
 
+            return this._links;
         }
     }
-
 }
 
 class ResponseOPTIONS extends ResponseBuilder {
@@ -601,9 +599,9 @@ class ResponseOPTIONS extends ResponseBuilder {
                 "parameters": key(this._model)
             });
         }.bind(this));
+
         this._data = methodsArray;
     }
-
 }
 
 class ResponseQuery extends ResponseBuilder {
