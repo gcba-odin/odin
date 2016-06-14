@@ -195,7 +195,11 @@ class ResponseGET extends ResponseBuilder {
         return this; // Allows chaining
     }
 
+    /*
+     * Builds and returns the 'meta' object (part of the response body)
+     */
     meta(records) {
+        // If the client is requesting a collection, we'll include the criteria plus pagination data
         if (this._many) {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
@@ -232,6 +236,7 @@ class ResponseGET extends ResponseBuilder {
                 message: sails.config.errors.NOT_FOUND.message
             });
         }
+
         return this._meta;
     }
 
