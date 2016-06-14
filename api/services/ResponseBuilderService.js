@@ -202,9 +202,9 @@ class ResponseGET extends ResponseBuilder {
                 if (_previous) this._links.previous = _previous;
                 if (_next) this._links.next = _next;
                 if (_first) this._links.first = _first;
-                if ( _last ) this._links.last = _last;
+                if (_last) this._links.last = _last;
 
-            }.bind( this ) );
+            }.bind(this));
 
             this._links = {
                 first: this.req.host + ':' + this.req.port + '/' + modelName + '/first',
@@ -221,12 +221,11 @@ class ResponseGET extends ResponseBuilder {
             } : null);
             _query = this.populate(_query, this._model, _includes);
 
-            _.forEach( this._model.associations, function ( association ) {
-                if ( association.type == 'collection' ) {
-                    relations[ association.alias ] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
+            _.forEach(this._model.associations, function(association) {
+                if (association.type == 'collection') {
+                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + modelName + '/' + _pk + '/' + association.alias
                 }
-            }.bind( this ) );
-
+            }.bind(this));
 
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName,
@@ -234,42 +233,7 @@ class ResponseGET extends ResponseBuilder {
             !_.isEmpty(relations) ? this._links['collections'] = relations : ''
         }
 
-        //this.findQuery = _.reduce(_.intersection(_populate, this._takeAlias(this._model.associations)), this._populateAlias, _query);
         this.findQuery = _query;
-
-        this.findQuery.then( function ( records ) {
-            //var result = this.populatePartials(records);
-            var objects = {};
-            var props = {};
-            var mixables = [];
-            var result = [];
-            var i = 0;
-
-            _.forEach( records, function ( record ) {
-                mixables.push([]);
-
-                _.forOwn( record, function ( value, key ) {
-
-                    if ( value === null || value === undefined || !_.isEmpty( value ) ) {
-                        if ( _.isObject( value ) ) objects[ key ] = value;
-                        else props[ key ] = value;
-                    }
-
-                    if (_includes.partials[key]) mixables[i].push(_.pick( record[key], _includes.partials[key] ) || {});
-                });
-
-                //result.push(_.assign(objects, props));
-                i++;
-                //result.push(objects);
-            });
-
-            return records;
-        });
-
-        this.data = function ( records ) {
-            //this._data = this.populatePartials(records);
-            return this._data;
-        }
     }
 
     addData(value) {
@@ -331,7 +295,7 @@ class ResponseGET extends ResponseBuilder {
             return undefined;
         }
         return {
-            [ orderBy ]: sort
+            [orderBy]: sort
         };
     }
 
@@ -350,9 +314,9 @@ class ResponseGET extends ResponseBuilder {
                 if (testee.indexOf('.') !== -1) {
                     var split = testee.split('.', 2);
 
-                    if ( _.isArray( split ) && split.length > 1 ) {
-                        if ( _.isArray( results.partials[ split[ 0 ] ] ) ) results.partials[ split[ 0 ] ].push( split[ 1 ] );
-                        else results.partials[ split[ 0 ]] = [split[1]];
+                    if (_.isArray(split) && split.length > 1) {
+                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
+                        else results.partials[split[0]] = [split[1]];
                     };
                 } else results.full.push(testee);
             });
@@ -381,6 +345,9 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
+        // Currently partial includes are supported in Waterline, but are adapter-dependant
+        // Since not many adapters implement them we're doing it by hand
+        // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
         // Fully populate included partials (will be filtered out later)
         _.forEach(includes.partials, function(value, key) {
             query.populate(key).exec(function afterwards(err, populatedRecords) {
@@ -389,30 +356,28 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
-        return query.then( function ( records ) {
+        return query.then(function(records) {
 
             // Filter out the partials
             // Each result item
-            records.forEach( function ( element, j ) {
-                records[ j ] = _.transform( element, function ( result, value, key ) {
+            records.forEach(function(element, j) {
+                records[j] = _.transform(element, function(result, value, key) {
                     // Each granular include, gruped by model
-                    _.forEach(includes.partials, function (partialValue, partialKey) {
-                        if ( key === partialKey && _.isArray( element[ partialKey ] ) ) {
+                    _.forEach(includes.partials, function(partialValue, partialKey) {
+                        if (key === partialKey && _.isArray(element[partialKey])) {
                             // Each collection of included objects
-                            element[ partialKey ].forEach( function ( item, k ) {
+                            element[partialKey].forEach(function(item, k) {
                                 // Each included object in the collection
-                                _.forEach( item, function ( resultValue, resultKey ) {
+                                _.forEach(item, function(resultValue, resultKey) {
                                     partialValue = partialValue.toString();
 
                                     // If it's not listed on the granular includes, delete it
-                                    if ( partialValue.indexOf(resultKey) === -1 ) {
-                                        delete element[ partialKey ][ k ][ resultKey ];
-                                    }
-                                    else result[ partialKey ][ k ] = element[ partialKey ][ k ];
+                                    if (partialValue.indexOf(resultKey) === -1) {
+                                        delete element[partialKey][k][resultKey];
+                                    } else result[partialKey][k] = element[partialKey][k];
                                 });
                             });
-                        }
-                        else result[key] = element[key];
+                        } else result[key] = element[key];
                     });
                 }, element);
 
