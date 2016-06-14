@@ -279,8 +279,6 @@ class ResponseGET extends ResponseBuilder {
                 delete this._links.previous;
                 delete this._links.next;
                 delete this._links.collections;
-
-                return this._links;
             }
         }
         // If the client is requesting a single item, we'll show other links
@@ -289,15 +287,18 @@ class ResponseGET extends ResponseBuilder {
 
             _.forEach(this._model.associations, function(association) {
                 if (association.type == 'collection') {
-                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias
+                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
                 }
             }.bind(this));
 
             this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + this.modelName,
+                all: this.req.host + ':' + this.req.port + '/' + this.modelName
             };
-            !_.isEmpty(relations) ? this._links['collections'] = relations : ''
+
+            !_.isEmpty(relations) ? this._links['collections'] = relations : '';
         }
+
+        return this._links;
     }
 
     /*
@@ -306,6 +307,7 @@ class ResponseGET extends ResponseBuilder {
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
         var orderBy = req.param('orderBy') || req.options.orderBy;
+
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
             return undefined;
         }
