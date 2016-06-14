@@ -311,6 +311,9 @@ class ResponseGET extends ResponseBuilder {
         }
     }
 
+    /*
+     * Parses the 'sort' query param and builds an object with it
+     */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
         var orderBy = req.param('orderBy') || req.options.orderBy;
@@ -322,12 +325,15 @@ class ResponseGET extends ResponseBuilder {
         };
     }
 
+    /*
+     * Parses the 'include' query param and builds an object with it, to be consumed by populate()
+     */
     parseInclude(req) {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var splits = [];
         var results = {
-            full: [],
-            partials: {}
+            full: [], // Here go the models that will be included with all their attributes
+            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
         };
 
         if (includes.length > 0) {
@@ -350,6 +356,9 @@ class ResponseGET extends ResponseBuilder {
         return results;
     }
 
+    /*
+     * Handles the population of related items and collections
+     */
     populate(query, model, includes) {
         // Fully populate non collection items
         _.forEach(model.definition, function (value, key) {
@@ -369,7 +378,7 @@ class ResponseGET extends ResponseBuilder {
             });
         }, this);
 
-        // Currently partial includes are supported in Waterline, but are adapter-dependant
+        // Partial includes are supported in Waterline, but are adapter-dependant
         // Since not many adapters implement them we're doing it by hand
         // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
         // Fully populate included partials (will be filtered out later)
