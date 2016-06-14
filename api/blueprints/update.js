@@ -13,7 +13,7 @@ module.exports = (req, res) => {
 
     builder.update
         .then(record => {
-            LogService.log(req, record[0].id);
+            LogService.log(req,res, record[0].id);
             res.updated(record[0], {
                 meta: builder.meta(),
                 links: builder.links()
