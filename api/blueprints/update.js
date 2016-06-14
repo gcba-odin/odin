@@ -12,12 +12,15 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePATCH(req, res);
 
     builder.update
-        .then(record => record[0] = [
-            record[0], {
+        .then(record => {
+            LogService.log(req, record[0].id);
+            res.updated(record[0], {
                 meta: builder.meta(),
                 links: builder.links()
-            }
-        ])
-        .spread(res.updated)
+            })
+        })
+        // .spread(function () {
+        // LogService.log(req);
+        // res.updated()
         .catch(res.negotiate);
 };
