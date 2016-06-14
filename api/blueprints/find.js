@@ -6,6 +6,7 @@
 // const populateAlias = (model, alias) => model.populate(alias);
 
 const Response = require('../services/ResponseBuilderService');
+const Promise = require('bluebird');
 
 /**
  * Find Records
@@ -55,5 +56,4 @@ module.exports = (req, res) => {
             }
         })
         .catch(res.negotiate);
-
 };
