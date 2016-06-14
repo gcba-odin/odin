@@ -392,8 +392,6 @@ class ResponseGET extends ResponseBuilder {
                             element[partialKey].forEach(function(item, k) {
                                 // Each included object in the collection
                                 _.forEach(item, function(resultValue, resultKey) {
-                                    partialValue = partialValue.toString();
-
                                     // If it's not listed on the granular includes, delete it
                                     if (partialValue.indexOf(resultKey) === -1) {
                                         delete element[partialKey][k][resultKey];
@@ -422,6 +420,7 @@ class ResponsePOST extends ResponseBuilder {
             code: sails.config.success.CREATED.code,
             message: sails.config.success.CREATED.message
         });
+
         return this._meta;
     }
 
@@ -431,6 +430,7 @@ class ResponsePOST extends ResponseBuilder {
         this._links = {
             record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
         };
+
         return this._links;
     }
 }
@@ -442,7 +442,7 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = _actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values))
+        console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values));
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 
@@ -535,8 +535,8 @@ class ResponsePATCH extends ResponseBuilder {
                 message: sails.config.success.OK.message
             });
         }
-        return this._meta;
 
+        return this._meta;
     }
 
     links(record) {
@@ -553,8 +553,9 @@ class ResponsePATCH extends ResponseBuilder {
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
+
         const _pk = _actionUtil.requirePk(this.req);
-        this.destroy = this._model.destroy(_pk)
+        this.destroy = this._model.destroy(_pk);
     }
 
     meta(record) {
@@ -613,7 +614,6 @@ class ResponseQuery extends ResponseBuilder {
                 code: sails.config.success.OK.code,
                 message: sails.config.success.OK.message
             };
-
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
@@ -632,8 +632,7 @@ class ResponseCount extends ResponseBuilder {
             this._meta = {
                 code: 'OK',
                 message: 'The operation was executed successfully.',
-            }
-
+            };
             this._links = {
                 all: this.req.host + ':' + this.req.port + '/' + modelName
             };
