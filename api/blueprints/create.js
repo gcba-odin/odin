@@ -13,7 +13,7 @@ module.exports = (req, res) => {
 
     builder.create
         .then(record => {
-            LogService.log(req,res, record.id);
+            LogService.log(req, record.id);
             res.created(record, {
                 meta: builder.meta(),
                 links: builder.links()

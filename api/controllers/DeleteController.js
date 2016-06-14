@@ -23,18 +23,8 @@ module.exports = {
             if (err) return res.negotiate(err);
 
             //Create the log record
-            var target = model.adapter.identity;
+            LogService.log(req, undefined, 'delete');
 
-            if (sails.config.odin.logWhitelist.indexOf(target) != -1) {
-                Log.create({
-                    action: 'delete',
-                    target: target,
-                    resource: record[0].id,
-                    user: user
-                }).exec(function created(err, created) {
-                    if (err) return res.negotiate(err);
-                });
-            }
             return res.deleted();
         });
     },

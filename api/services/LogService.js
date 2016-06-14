@@ -14,23 +14,24 @@ module.exports = {
 
             if (_.isUndefined(id)) id = actionUtil.requirePk(req);
             var httpMethod = req.method;
-            var action = '';
+
             // on soft delete, must send method = delete.
             if (_.isUndefined(method)) {
                 switch (httpMethod) {
                     case 'POST':
-                        action = "create";
+                        method = "create";
                         break;
                     case 'PATCH':
-                        action = "update";
+                        method = "update";
                         break;
                     case 'DELETE':
-                        action = "delete";
+                        method = "delete";
                         break;
                 }
             }
+
             Log.create({
-                action: action,
+                action: method,
                 target: target,
                 resource: id,
                 user: user
