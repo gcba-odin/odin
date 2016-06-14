@@ -13,9 +13,9 @@
 
 module.exports = {
     policies: {
-        '*': 'isAuthenticated',
-        UserController: {
-           'login': true
-        }
+        // '*': 'isAuthenticated',
+        // UserController: {
+        //    'login': true
+        // }
     }
 };
