@@ -156,7 +156,7 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             this._where = _actionUtil.parseCriteria(this.req);
             this._limit = _actionUtil.parseLimit(this.req);
-            this._skip = _actionUtil.parseSkip(this.req) || this.req.param('page') * this._limit;
+            this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req);
             // const this._sort = _actionUtil.parseSort(this.req);
             this._sort = this.parseSort(this.req);
             this._page = Math.floor(this._skip / this._limit) + 1;
@@ -348,7 +348,40 @@ class ResponseGET extends ResponseBuilder {
         }
 
         this.partials = results.partials;
+
         return results;
+    }
+
+    parseFields(req) {
+        var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+
+        return fields;
+
+        /*
+        var splits = [];
+        var results = {
+            full: [], // Here go the models that will be included with all their attributes
+            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+        };
+
+        if (fields.length > 0) {
+            _.forEach(fields, function(element, i) {
+                var testee = String(element);
+
+                if (testee.indexOf('.') !== -1) {
+                    var split = testee.split('.', 2);
+
+                    if (_.isArray(split) && split.length > 1) {
+                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
+                        else results.partials[split[0]] = [split[1]];
+                    };
+                } else results.full.push(testee);
+            });
+        }
+
+        this.partials = results.partials;
+        return results;
+        */
     }
 
     /*
