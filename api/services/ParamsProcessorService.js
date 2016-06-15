@@ -6,6 +6,18 @@ class ParamsProcessor {
     }
 
     parse() {
+        // Should return the final object
+    }
+
+    parseCriteria() {
+
+    }
+
+    parseSort() {
+
+    }
+
+    parseInclude() {
 
     }
 
