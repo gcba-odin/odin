@@ -3,6 +3,7 @@
 class ParamsProcessor {
     constructor(req) {
         this.req = req;
+        this.result = {};
     }
 
     parse() {
