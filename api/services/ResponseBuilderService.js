@@ -156,7 +156,7 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             this._where = _actionUtil.parseCriteria(this.req);
             this._limit = _actionUtil.parseLimit(this.req);
-            this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req);
+            this._skip = _actionUtil.parseSkip(this.req) || this.req.param('page') * this._limit;
             // const this._sort = _actionUtil.parseSort(this.req);
             this._sort = this.parseSort(this.req);
             this._page = Math.floor(this._skip / this._limit) + 1;
@@ -170,8 +170,12 @@ class ResponseGET extends ResponseBuilder {
             } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
             this._query = this.populate(this._query, this._model, this._includes);
 
-            this._model.count(this.requestQuery).then(function(cant) {
+            this.countQuery = _.cloneDeep(this.req.query);
+            delete this.countQuery.limit;
+
+            this._model.count(this.countQuery).then(function(cant) {
                 this._count = cant;
+                this._pages = Math.ceil(parseFloat(this._count) / parseFloat(this._limit));
             }.bind(this));
         } else {
             this._pk = _actionUtil.requirePk(this.req);
@@ -206,10 +210,12 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
+                count: this._count,
                 limit: this._limit,
-                start: this._skip,
+                start: this._skip + 1,
                 end: this._skip + this._limit,
-                page: this._page
+                page: this._page,
+                pages: this._pages
             });
 
             // If a criteria was given, add it to meta
@@ -254,22 +260,20 @@ class ResponseGET extends ResponseBuilder {
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _linkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?') + 'skip=';
-            const _previous = (this._page > 1 ? _linkToModel + (this._skip - this._limit) : undefined);
-            const _next = ((Math.abs(this._skip - this._limit) <= this._count) ? ((this._skip === 0 ||  Math.abs(this._skip - this._limit) < this._count) ? _linkToModel + (this._skip + this._limit) : _linkToModel + (this._skip + 1)) : undefined);
+            const _skipPlusLimit = this._skip + this._limit;
+            const _skipMinusLimit = this._skip - this._limit;
+            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
+            const _linkToModel = _baseLinkToModel + 'skip=';
+
+            const _previous = (this._page > 1 ? _linkToModel + (this._limit * (this._page - 2)) : undefined);
+            const _next = (this._page < this._pages ? _linkToModel + (this._limit * this._page) : undefined);
             const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-            const _last = ((this._skip + this._limit < this._count) ? _linkToModel + parseInt((parseFloat(this._count) / parseFloat(this._limit) * this._limit) - 1) : undefined);
+            const _last = (this._page < this._pages ? _linkToModel + (this._limit * (this._pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
             if (_first) this._links.first = _first;
             if (_last) this._links.last = _last;
-
-            this._links = _.assign(this._links, {
-                first: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
-                last: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
-                count: this.req.host + ':' + this.req.port + '/' + this.modelName + '/count'
-            });
 
             if (!_.isUndefined(records) && records.length > 0) {
                 return this._links;
