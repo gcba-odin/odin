@@ -155,11 +155,11 @@ class ResponseGET extends ResponseBuilder {
 
         if (this._many) {
             this._where = _actionUtil.parseCriteria(this.req);
-            this._limit = _actionUtil.parseLimit(this.req);
-            this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req);
+            this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+            this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
             // const this._sort = _actionUtil.parseSort(this.req);
             this._sort = this.parseSort(this.req);
-            this._page = Math.floor(this._skip / this._limit) + 1;
+            this._page = this._skip !== 0 ? Math.floor(this._skip / this._limit) + 1 : 1;
 
             // Delete the skip query parameter
             this.requestQuery = this.req.query;
@@ -260,13 +260,11 @@ class ResponseGET extends ResponseBuilder {
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _skipPlusLimit = this._skip + this._limit;
-            const _skipMinusLimit = this._skip - this._limit;
             const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
             const _linkToModel = _baseLinkToModel + 'skip=';
 
             const _previous = (this._page > 1 ? _linkToModel + (this._limit * (this._page - 2)) : undefined);
-            const _next = (this._page < this._pages ? _linkToModel + (this._limit * this._page) : undefined);
+            const _next = ((this._pages === 1 && this._count > this._limit) || this._page < this._pages ? _linkToModel + (this._limit * this._page) : undefined);
             const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
             const _last = (this._page < this._pages ? _linkToModel + (this._limit * (this._pages - 1)) : undefined);
 
@@ -274,6 +272,11 @@ class ResponseGET extends ResponseBuilder {
             if (_next) this._links.next = _next;
             if (_first) this._links.first = _first;
             if (_last) this._links.last = _last;
+
+            this._links = _.assign(this._links, {
+                firstItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
+                lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last'
+            });
 
             if (!_.isUndefined(records) && records.length > 0) {
                 return this._links;
