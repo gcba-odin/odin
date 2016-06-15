@@ -149,7 +149,7 @@ class ResponseGET extends ResponseBuilder {
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
 
-        // For every custom param, once parsed and handled it must be deletd from req
+        // For every custom param, once parsed and handled it must be deleted from req
         if (req.query.include) {
             delete req.query.include;
         }
