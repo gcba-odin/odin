@@ -76,5 +76,7 @@ module.exports = {
     serchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next()
+    beforeCreate: (values, next) => {
+        next()
+    }
 };
