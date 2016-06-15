@@ -154,7 +154,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         if (this._many) {
-            this._where = _actionUtil.parseCriteria(this.req);
+            this._where = this.parseCriteria(this.req, this._model);
             this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
             this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
             // const this._sort = _actionUtil.parseSort(this.req);
@@ -165,10 +165,9 @@ class ResponseGET extends ResponseBuilder {
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
 
-            this._query = this._model.find(null, this._fields.length > 0 ? {
+            this._query = this._model.find(this._fields.length > 0 ? {
                 select: this._fields
             } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
-            this._query = this.populate(this._query, this._model, this._includes);
 
             this.countQuery = _.cloneDeep(this.req.query);
             delete this.countQuery.limit;
@@ -182,8 +181,10 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find(this._pk, this._fields.length > 0 ? {
                 select: this._fields
             } : null);
-            this._query = this.populate(this._query, this._model, this._includes);
         }
+
+        //this._query = this.select(this._query, this._fields);
+        this._query = this.populate(this._query, this._model, this._includes);
 
         this.findQuery = this._query;
     }
@@ -309,6 +310,16 @@ class ResponseGET extends ResponseBuilder {
         return this._links;
     }
 
+    parseCriteria(req, model) {
+        var criteria = _actionUtil.parseCriteria(req);
+
+        _.forEach(criteria, function(value, key) {
+            if (!model.schema[key]) delete criteria[key];
+        });
+
+        return criteria;
+    }
+
     /*
      * Parses the 'sort' query param and builds an object with it
      */
@@ -385,6 +396,24 @@ class ResponseGET extends ResponseBuilder {
         this.partials = results.partials;
         return results;
         */
+    }
+
+    select(query, fields) {
+        return query.then(function(records) {
+            // Filter out the partials
+            // Each result item
+            records.forEach(function(element, j) {
+                records[j] = _.transform(element, function(result, value, key) {
+                    _.forEach(fields.full, function(field) {
+                        if (fields.full.indexOf(field) === -1) {
+                            delete element[field];
+                        } else result[key] = element[key];
+                    });
+                }, element);
+            });
+
+            return records;
+        });
     }
 
     /*
