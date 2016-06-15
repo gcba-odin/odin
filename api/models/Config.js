@@ -82,4 +82,15 @@ module.exports = {
     }, this.baseAttributes)
   },
   serchables: ['description'],
+
+  beforeCreate(values, next) {
+    values.updatedBy = values.createdBy
+    delete values.createdBy
+    next()
+  },
+  beforeUpdate(values, next) {
+    values.updatedBy = values.createdBy
+    delete values.createdBy
+    next()
+  }
 };

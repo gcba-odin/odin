@@ -17,5 +17,23 @@ module.exports = {
         // UserController: {
         //    'login': true
         // }
+        CategoryController: {
+            create: ['addCreatedBy']
+        },
+        FileController: {
+            create: ['addCreatedBy']
+        },
+        OrganizationController: {
+            create: ['addCreatedBy']
+        },
+        TagController: {
+            create: ['addCreatedBy']
+        },
+        UserController: {
+            create: ['addCreatedBy']
+        },
+        ConfigController: {
+            create: ['addCreatedBy']
+        },
     }
 };
