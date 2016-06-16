@@ -18,7 +18,7 @@
 
 const shortid = require('shortid');
 const pluralize = require('pluralize');
-const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
 
 //TODO: Extract common variables on parent class ResponseBuilder, eg. model?
@@ -39,7 +39,7 @@ class ResponseBuilder {
         this.error = {};
 
         this._links = {};
-        this._model = _actionUtil.parseModel(this.req);
+        this._model = actionUtil.parseModel(this.req);
         this._emptyMeta = _.cloneDeep(this._meta);
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
@@ -161,7 +161,7 @@ class ResponseGET extends ResponseBuilder {
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this));
         } else {
-            this._pk = _actionUtil.requirePk(this.req);
+            this._pk = actionUtil.requirePk(this.req);
             this._query = this._model.find(this._pk, this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null);
@@ -378,7 +378,7 @@ class ResponsePOST extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _values = _actionUtil.parseValues(this.req);
+        const _values = actionUtil.parseValues(this.req);
         this.create = this._model.create(_.omit(_values, 'id'));
     }
     meta(record) {
@@ -405,7 +405,7 @@ class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _pk = _actionUtil.requirePk(this.req);
+        const _pk = actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
@@ -516,7 +516,7 @@ class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
 
-        const _pk = _actionUtil.requirePk(this.req);
+        const _pk = actionUtil.requirePk(this.req);
         this.destroy = this._model.destroy(_pk);
     }
 
