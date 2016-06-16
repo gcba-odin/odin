@@ -123,7 +123,7 @@ class ResponseBuilder {
         return this._meta;
     }
 
-    data(records) {
+    data() {
         return this._data;
     }
 
@@ -239,7 +239,7 @@ class ResponseGET extends ResponseBuilder {
     links(records) {
         // If the client is requesting a collection, we'll show certain links plus pagination
         if (this._many) {
-            // check if no parameters given
+            // Check if no parameters given
             var params = (!_.isEmpty(this.requestQuery));
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
@@ -449,7 +449,7 @@ class ResponsePATCH extends ResponseBuilder {
             });
 
             // WORKS: values is{"tags":["aWRhpz1","tWRhpz2"],"id":"sWRhpRk"}
-            // if key is a model collectio, should transform comma separated to array.
+            // If key is a model collection, should transform comma separated to array.
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
             _.forEach(values, function(value, key) {
@@ -591,6 +591,7 @@ class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
         super(req, res); {
             const modelName = pluralize(this._model.adapter.identity);
+
             this._meta = {
                 code: 'OK',
                 message: 'The operation was executed successfully.',
@@ -602,6 +603,8 @@ class ResponseCount extends ResponseBuilder {
         }
     }
 }
+
+// TODO: Add ResponseSearch extending ResponseGET
 
 module.exports = {
     ResponseGET,
