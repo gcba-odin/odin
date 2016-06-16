@@ -19,6 +19,8 @@
 const shortid = require('shortid');
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const Processor = require('../services/ParamsProcessorService');
+
 
 //TODO: Extract common variables on parent class ResponseBuilder, eg. model?
 class ResponseBuilder {
@@ -140,55 +142,58 @@ class ResponseBuilder {
 class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
+        this.params = new Processor.ParamsProcessor(req, many).parse(this._model);
+        console.log('\nThis.params already created!\n')
+        console.log(JSON.stringify(this.params))
 
         this._query = '';
-        this._fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        this._includes = this.parseInclude(this.req);
-        this.modelName = pluralize(this._model.adapter.identity);
+        // this._fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+        // this._includes = this.parseInclude(this.req);
+        // this.modelName = pluralize(this._model.adapter.identity);
 
-        // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
+        // // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
 
-        // For every custom param, once parsed and handled it must be deleted from req
-        if (req.query.include) {
-            delete req.query.include;
-        }
-        if (req.query.fields) {
-            delete req.query.fields;
-        }
-
+        // // For every custom param, once parsed and handled it must be deleted from req
+        // if (req.query.include) {
+        //     delete req.query.include;
+        // }
+        // if (req.query.fields) {
+        //     delete req.query.fields;
+        // }
+        console.log('\nmany = ' + this._many);
         if (this._many) {
-            this._where = this.parseCriteria(this.req, this._model);
-            this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
-            this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
-            // const this._sort = _actionUtil.parseSort(this.req);
-            this._sort = this.parseSort(this.req);
-            this._page = this._skip !== 0 ? Math.floor(this._skip / this._limit) + 1 : 1;
+            //     this._where = this.parseCriteria(this.req, this._model);
+            //     this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+            //     this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
+            //     // const this._sort = _actionUtil.parseSort(this.req);
+            //     this._sort = this.parseSort(this.req);
+            //     this._page = this._skip !== 0 ? Math.floor(this._skip / this._limit) + 1 : 1;
 
-            // Delete the skip query parameter
-            this.requestQuery = this.req.query;
-            delete this.requestQuery.skip;
+            //     // Delete the skip query parameter
+            //     this.requestQuery = this.req.query;
+            //     delete this.requestQuery.skip;
+            console.log('\nfields = ' + this.params.fields);
 
-            this._query = this._model.find(this._fields.length > 0 ? {
-                select: this._fields
-            } : null).where(this._where).limit(this._limit).skip(this._skip).sort(this._sort);
+            this._query = this._model.find(this.params.fields.length > 0 ? {
+                select: this.params.fields
+            } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
 
             this.countQuery = _.cloneDeep(this.req.query);
             delete this.countQuery.limit;
 
             this._model.count(this.countQuery).then(function(cant) {
                 this._count = cant;
-                this._pages = Math.ceil(parseFloat(this._count) / parseFloat(this._limit));
+                this._pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this));
         } else {
             this._pk = _actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk, this._fields.length > 0 ? {
-                select: this._fields
+            this._query = this._model.find(this._pk, this.params.fields.length > 0 ? {
+                select: this.params.fields
             } : null);
         }
-
-        //this._query = this.select(this._query, this._fields);
-        this._query = this.populate(this._query, this._model, this._includes);
+        this._query = this.select(this._query, this.params.fields);
+        this._query = this.populate(this._query, this._model, this.params.includes);
 
         this.findQuery = this._query;
     }
