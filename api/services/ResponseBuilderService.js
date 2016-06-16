@@ -301,15 +301,18 @@ class ResponseGET extends ResponseBuilder {
         }
         // If the client is requesting a single item, we'll show other links
         else {
-            var relations = {};
+            if (!_.isUndefined(records)) {
 
-            _.forEach(this._model.associations, function(association) {
-                if (association.type == 'collection') {
-                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
-                }
-            }.bind(this));
+                var relations = {};
 
-            !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+                _.forEach(this._model.associations, function(association) {
+                    if (association.type == 'collection') {
+                        relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
+                    }
+                }.bind(this));
+
+                !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+            }
 
             this._links = _.assign(this._links, {
                 all: this.req.host + ':' + this.req.port + '/' + this.modelName
