@@ -101,7 +101,6 @@ class ParamsProcessor {
             delete this.req.query.include;
         }
 
-        //this.partials = results.partials;
         return results;
     }
 

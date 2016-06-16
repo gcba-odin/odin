@@ -3,5 +3,6 @@ module.exports = function(req, res, next) {
     if (!req.params.id) {
         return res.forbidden('error.noPermission');
     }
+
     return next();
 };

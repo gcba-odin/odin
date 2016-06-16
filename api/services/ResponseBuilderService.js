@@ -149,17 +149,6 @@ class ResponseGET extends ResponseBuilder {
         this._many = many;
 
         if (this._many) {
-            //     this._where = this.parseCriteria(this.req, this._model);
-            //     this.params.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
-            //     this._skip = this.req.param('page') * this.params.limit || _actionUtil.parseSkip(this.req) || 0;
-            //     // const this._sort = _actionUtil.parseSort(this.req);
-            //     this._sort = this.parseSort(this.req);
-            //     this.params.page = this._skip !== 0 ? Math.floor(this._skip / this.params.limit) + 1 : 1;
-
-            //     // Delete the skip query parameter
-            //     this.requestQuery = this.req.query;
-            //     delete this.requestQuery.skip;
-
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);

@@ -2,10 +2,9 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
 
-    log: function (req, id, method) {
+    log: function(req, id, method) {
         //whiteliste check
         var model = actionUtil.parseModel(req);
-
         var target = model.adapter.identity;
 
         if (sails.config.odin.logWhitelist.indexOf(target) != -1) {
@@ -35,8 +34,7 @@ module.exports = {
                 target: target,
                 resource: id,
                 user: user
-            }).then(function created(created) {
-            }).catch(function (err) {
+            }).then(function created(created) {}).catch(function(err) {
                 console.log('catch');
                 throw new Error(err)
             });

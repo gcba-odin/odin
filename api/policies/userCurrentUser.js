@@ -3,5 +3,6 @@ module.exports = function(req, res, next) {
     if (req.query) {
         req.query.user = req.user.id;
     }
+
     return next();
 };
