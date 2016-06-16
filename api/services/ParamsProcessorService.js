@@ -20,6 +20,7 @@ class ParamsProcessor {
         if (this._many) {
             this.where = this.parseCriteria(this.req, this._model);
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
             // const this.sort = _actionUtil.parseSort(this.req);
             this.sort = this.parseSort(this.req);

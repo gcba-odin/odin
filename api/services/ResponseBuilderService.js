@@ -145,11 +145,21 @@ class ResponseGET extends ResponseBuilder {
         this.params = new Processor.ParamsProcessor(req, many).parse();
         this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
-
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
 
         if (this._many) {
+            //     this._where = this.parseCriteria(this.req, this._model);
+            //     this.params.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+            //     this._skip = this.req.param('page') * this.params.limit || _actionUtil.parseSkip(this.req) || 0;
+            //     // const this._sort = _actionUtil.parseSort(this.req);
+            //     this._sort = this.parseSort(this.req);
+            //     this.params.page = this._skip !== 0 ? Math.floor(this._skip / this.params.limit) + 1 : 1;
+
+            //     // Delete the skip query parameter
+            //     this.requestQuery = this.req.query;
+            //     delete this.requestQuery.skip;
+
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
@@ -159,7 +169,7 @@ class ResponseGET extends ResponseBuilder {
 
             this._model.count(this.countQuery).then(function(cant) {
                 this._count = cant;
-                this._pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this));
         } else {
             this._pk = _actionUtil.requirePk(this.req);
@@ -247,11 +257,10 @@ class ResponseGET extends ResponseBuilder {
 
             const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
             const _linkToModel = _baseLinkToModel + 'skip=';
-
-            const _previous = (this._page > 1 ? _linkToModel + (this._limit * (this._page - 2)) : undefined);
-            const _next = ((this._pages === 1 && this._count > this._limit) || this._page < this._pages ? _linkToModel + (this._limit * this._page) : undefined);
-            const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-            const _last = (this._page < this._pages ? _linkToModel + (this._limit * (this._pages - 1)) : undefined);
+            const _previous = (this.params.page > 1 ? _linkToModel + (this.params.limit * (this.params.page - 2)) : undefined);
+            const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
+            const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
+            const _last = (this.params.page < this.params.pages ? _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
@@ -472,7 +481,7 @@ class ResponsePATCH extends ResponseBuilder {
             return valuesArray;
         }
 
-        // Otherwaise grab the first (and only) value from valuesArray
+        // Otherwise grab the first (and only) value from valuesArray
         values = valuesArray[0];
 
         // Omit jsonp callback param (but only if jsonp is enabled)
