@@ -143,9 +143,6 @@ class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
         this.params = new Processor.ParamsProcessor(req, many).parse(this._model);
-        console.log('\nThis.params already created!\n')
-        console.log(JSON.stringify(this.params))
-
         this._query = '';
         // this._fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         // this._includes = this.parseInclude(this.req);
@@ -161,21 +158,18 @@ class ResponseGET extends ResponseBuilder {
         // if (req.query.fields) {
         //     delete req.query.fields;
         // }
-        console.log('\nmany = ' + this._many);
+
         if (this._many) {
             //     this._where = this.parseCriteria(this.req, this._model);
-            //     this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
-            //     this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
+            //     this.params.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+            //     this._skip = this.req.param('page') * this.params.limit || _actionUtil.parseSkip(this.req) || 0;
             //     // const this._sort = _actionUtil.parseSort(this.req);
             //     this._sort = this.parseSort(this.req);
-            //     this._page = this._skip !== 0 ? Math.floor(this._skip / this._limit) + 1 : 1;
+            //     this.params.page = this._skip !== 0 ? Math.floor(this._skip / this.params.limit) + 1 : 1;
 
             //     // Delete the skip query parameter
             //     this.requestQuery = this.req.query;
             //     delete this.requestQuery.skip;
-            console.log('\nincludes = ' + this.params.includes);
-            console.dir(this.params.includes);
-
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
@@ -185,7 +179,7 @@ class ResponseGET extends ResponseBuilder {
 
             this._model.count(this.countQuery).then(function(cant) {
                 this._count = cant;
-                this._pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this));
         } else {
             this._pk = _actionUtil.requirePk(this.req);
@@ -222,17 +216,17 @@ class ResponseGET extends ResponseBuilder {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
-                limit: this.param.limit,
-                start: this.param.skip + 1,
-                end: this.param.skip + this.param.limit,
-                page: this.param.page,
-                pages: this.param.pages
+                limit: this.params.limit,
+                start: this.params.skip + 1,
+                end: this.params.skip + this.params.limit,
+                page: this.params.page,
+                pages: this.params.pages
             });
 
             // If a criteria was given, add it to meta
             if (!_.isEmpty(this._where)) {
                 this._meta = _.assign(this._meta, {
-                    criteria: this.param.where
+                    criteria: this.params.where
                 });
             }
         }
@@ -273,11 +267,10 @@ class ResponseGET extends ResponseBuilder {
 
             const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
             const _linkToModel = _baseLinkToModel + 'skip=';
-
-            const _previous = (this._page > 1 ? _linkToModel + (this._limit * (this._page - 2)) : undefined);
-            const _next = ((this._pages === 1 && this._count > this._limit) || this._page < this._pages ? _linkToModel + (this._limit * this._page) : undefined);
-            const _first = (this._page > 1 ? _linkToModel + 0 : undefined);
-            const _last = (this._page < this._pages ? _linkToModel + (this._limit * (this._pages - 1)) : undefined);
+            const _previous = (this.params.page > 1 ? _linkToModel + (this.params.limit * (this.params.page - 2)) : undefined);
+            const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
+            const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
+            const _last = (this.params.page < this.params.pages ? _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
@@ -442,7 +435,6 @@ class ResponseGET extends ResponseBuilder {
 
         if (includes) {
             // Fully populate collections
-            console.log(includes.full);
             if (includes.full) {
                 _.forEach(includes.full, function(element) {
                     query.populate(element);
@@ -525,7 +517,6 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = _actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values));
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 
@@ -533,7 +524,6 @@ class ResponsePATCH extends ResponseBuilder {
         var mergeDefaults = require('merge-defaults');
         var JSONP_CALLBACK_PARAM = 'callback';
 
-        console.log('Inside custom parse values');
         // Allow customizable blacklist for params NOT to include as values.
         req.options.values = req.options.values || {};
         req.options.values.blacklist = req.options.values.blacklist;
@@ -591,7 +581,7 @@ class ResponsePATCH extends ResponseBuilder {
             return valuesArray;
         }
 
-        // Otherwaise grab the first (and only) value from valuesArray
+        // Otherwise grab the first (and only) value from valuesArray
         values = valuesArray[0];
 
         // Omit jsonp callback param (but only if jsonp is enabled)

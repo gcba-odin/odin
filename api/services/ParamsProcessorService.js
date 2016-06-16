@@ -19,12 +19,13 @@ class ParamsProcessor {
         if (this.many) {
             this.where = this.parseCriteria(this.req, model);
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
+
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
             // const this.sort = _actionUtil.parseSort(this.req);
             this.sort = this.parseSort(this.req);
             this.page = this.skip !== 0 ? Math.floor(this.skip / this.limit) + 1 : 1;
-            console.log('pepe')
-                // Delete the skip query parameter
+
+            // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
 
@@ -57,7 +58,6 @@ class ParamsProcessor {
                 // select: this.fields
                 // } : null);
         }
-        console.log('breakpoint')
         return this.result;
     }
 
@@ -172,66 +172,6 @@ class ParamsProcessor {
         });
     }
 
-    /*
-     * Handles the population of related items and collections
-     */
-    populate(query, model, includes) {
-        // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
-            if (value.foreignKey) {
-                query.populate(key).exec(function afterwards(err, populatedRecords) {
-                    if (!err) query = populatedRecords;
-                    else console.log(err);
-                });
-            }
-        });
-
-        // Fully populate collections
-        _.forEach(includes.full, function(element) {
-            query.populate(element).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
-
-        // Partial includes are supported in Waterline, but are adapter dependant
-        // Since not many adapters implement them we're doing it by hand
-        // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
-
-        // Fully populate included partials (will be filtered out later)
-        _.forEach(includes.partials, function(value, key) {
-            query.populate(key).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
-
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    // Each granular include, gruped by model
-                    _.forEach(includes.partials, function(partialValue, partialKey) {
-                        if (key === partialKey && _.isArray(element[partialKey])) {
-                            // Each collection of included objects
-                            element[partialKey].forEach(function(item, k) {
-                                // Each included object in the collection
-                                _.forEach(item, function(resultValue, resultKey) {
-                                    // If it's not listed on the granular includes, delete it
-                                    if (partialValue.indexOf(resultKey) === -1) {
-                                        delete element[partialKey][k][resultKey];
-                                    } else result[partialKey][k] = element[partialKey][k];
-                                });
-                            });
-                        } else result[key] = element[key];
-                    });
-                }, element);
-            });
-
-            return records;
-        });
-    }
     toString() {
         return this.req.query;
     }
