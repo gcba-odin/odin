@@ -221,17 +221,17 @@ class ResponseGET extends ResponseBuilder {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
-                limit: this._limit,
-                start: this._skip + 1,
-                end: this._skip + this._limit,
-                page: this._page,
-                pages: this._pages
+                limit: this.param.limit,
+                start: this.param.skip + 1,
+                end: this.param.skip + this.param.limit,
+                page: this.param.page,
+                pages: this.param.pages
             });
 
             // If a criteria was given, add it to meta
             if (!_.isEmpty(this._where)) {
                 this._meta = _.assign(this._meta, {
-                    criteria: this._where
+                    criteria: this.param.where
                 });
             }
         }
