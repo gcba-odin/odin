@@ -150,7 +150,7 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
-    serchables: ['name', 'description'],
+    searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),

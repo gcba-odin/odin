@@ -209,14 +209,14 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
-    serchables: ['name', 'description'],
+    searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),
     afterCreate: (values, next) => {
 
         const fs = require('fs');
-        fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function (err, stats) {
+        fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function(err, stats) {
             console.log(stats)
             if (err || !stats.isDirectory()) {
                 fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);

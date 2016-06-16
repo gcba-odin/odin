@@ -14,22 +14,25 @@ const parseModels = _.flow(toLowerCase, _.method('split', ','));
 module.exports = {
     index(req, res) {
         const q = req.param('query');
-
         const pageParam = req.param('page') || 1;
+        const models = parseModels(req.param('models')) || _.keys(sails.models);
+
+        console.log('Beginning of search handler');
 
         if (!q) return res.badRequest(null, {
             message: 'You should specify a "query" parameter!'
         });
-        const models = parseModels(req.param('models')) || _.keys(sails.models);
 
+        console.log('Before promise reduce');
         Promise.reduce(models, (res, modelName) => {
                 const model = sails.models[modelName];
-
                 const where = _.transform(model.definition, function(result, val, key) {
-                    // console.log(result);
-                    console.log(key)
-                    console.log(model)
-                    if (val.type == 'string' && model.serchables.indexOf(key) != -1) {
+                    console.log('Inside where transform');
+                    console.log(model.searchables);
+                    console.log(model.getSearchables);
+                    console.log(key);
+                    console.dir(val);
+                    if (val.type == 'string' && model.searchables && model.searchables.indexOf(key) != -1) {
                         result.or.push(_.set({}, key, {
                             contains: q
                         }))
