@@ -66,11 +66,9 @@ module.exports = {
                                 if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
                                 // If the file is consumable via the API
-                                console.log(data.type);
                                 FileType.findOne(data.type).exec(function(err, record) {
                                     if (record.api) {
-                                        console.log('api= true ' + JSON.stringify(record.api))
-                                            // Convert to JSON
+                                        // Convert to JSON
                                         var converter = new Converter({
                                             delimiter: 'auto'
                                         })
@@ -81,8 +79,7 @@ module.exports = {
                                             if (json.length === 0) return res.badRequest("Invalid or empty csv.");
 
                                             // Connect to the db
-                                            DataStorageService.mongoSave(dataset, files[0].filename, json, res)
-
+                                            DataStorageService.mongoSave(dataset, files[0].filename, json, res);
                                         });
                                     }
                                 });

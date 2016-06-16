@@ -1,4 +1,5 @@
 "use strict";
+
 const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
@@ -6,58 +7,43 @@ class ParamsProcessor {
     constructor(req, many) {
         this.req = req;
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
-        this.many = many
+        this._many = many
+        this._model = _actionUtil.parseModel(this.req);
         this.result = {};
     }
 
-    parse(model) {
+    parse() {
         // this.query = '';
         this.fields = this.parseFields(this.req);
-        this.includes = this.parseInclude(this.req);
-        this.modelName = pluralize(model.adapter.identity);
+        this.include = this.parseInclude(this.req);
 
-        if (this.many) {
-            this.where = this.parseCriteria(this.req, model);
+        if (this._many) {
+            this.where = this.parseCriteria(this.req, this._model);
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
             // const this.sort = _actionUtil.parseSort(this.req);
             this.sort = this.parseSort(this.req);
             this.page = this.skip !== 0 ? Math.floor(this.skip / this.limit) + 1 : 1;
-            console.log('pepe')
-                // Delete the skip query parameter
+
+            // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
 
             this.result = {
-                includes: this.includes,
+                include: this.include,
                 fields: this.fields,
                 where: this.where,
                 limit: this.limit,
                 skip: this.skip,
                 sort: this.sort
             }
-
-            // this.query = this.model.find(this.fields.length > 0 ? {
-            //     select: this.fields
-            // } : null).where(this.where).limit(this.limit).skip(this.skip).sort(this.sort);
-
-            // this.countQuery = _.cloneDeep(this.req.query);
-            // delete this.countQuery.limit;
-
-            // this.model.count(this.countQuery).then(function(cant) {
-            //     this.count = cant;
-            //     this.pages = Math.ceil(parseFloat(this.count) / parseFloat(this.limit));
-            // }.bind(this));
         } else {
             this.result = {
-                    select: this.fields,
-                }
-                // this.pk = _actionUtil.requirePk(this.req);
-                // this.query = this.model.find(this.pk, this.fields.length > 0 ? {
-                // select: this.fields
-                // } : null);
+                include: this.include,
+                fields: this.fields
+            }
         }
-        console.log('breakpoint')
+
         return this.result;
     }
 
@@ -172,66 +158,6 @@ class ParamsProcessor {
         });
     }
 
-    /*
-     * Handles the population of related items and collections
-     */
-    populate(query, model, includes) {
-        // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
-            if (value.foreignKey) {
-                query.populate(key).exec(function afterwards(err, populatedRecords) {
-                    if (!err) query = populatedRecords;
-                    else console.log(err);
-                });
-            }
-        });
-
-        // Fully populate collections
-        _.forEach(includes.full, function(element) {
-            query.populate(element).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
-
-        // Partial includes are supported in Waterline, but are adapter dependant
-        // Since not many adapters implement them we're doing it by hand
-        // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
-
-        // Fully populate included partials (will be filtered out later)
-        _.forEach(includes.partials, function(value, key) {
-            query.populate(key).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
-
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    // Each granular include, gruped by model
-                    _.forEach(includes.partials, function(partialValue, partialKey) {
-                        if (key === partialKey && _.isArray(element[partialKey])) {
-                            // Each collection of included objects
-                            element[partialKey].forEach(function(item, k) {
-                                // Each included object in the collection
-                                _.forEach(item, function(resultValue, resultKey) {
-                                    // If it's not listed on the granular includes, delete it
-                                    if (partialValue.indexOf(resultKey) === -1) {
-                                        delete element[partialKey][k][resultKey];
-                                    } else result[partialKey][k] = element[partialKey][k];
-                                });
-                            });
-                        } else result[key] = element[key];
-                    });
-                }, element);
-            });
-
-            return records;
-        });
-    }
     toString() {
         return this.req.query;
     }

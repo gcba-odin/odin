@@ -21,7 +21,6 @@ const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
 
-
 //TODO: Extract common variables on parent class ResponseBuilder, eg. model?
 class ResponseBuilder {
     constructor(req, res) {
@@ -142,40 +141,15 @@ class ResponseBuilder {
 class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
-        this.params = new Processor.ParamsProcessor(req, many).parse(this._model);
-        console.log('\nThis.params already created!\n')
-        console.log(JSON.stringify(this.params))
 
+        this.params = new Processor.ParamsProcessor(req, many).parse();
+        this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
-        // this._fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        // this._includes = this.parseInclude(this.req);
-        // this.modelName = pluralize(this._model.adapter.identity);
 
-        // // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
+        // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
 
-        // // For every custom param, once parsed and handled it must be deleted from req
-        // if (req.query.include) {
-        //     delete req.query.include;
-        // }
-        // if (req.query.fields) {
-        //     delete req.query.fields;
-        // }
-        console.log('\nmany = ' + this._many);
         if (this._many) {
-            //     this._where = this.parseCriteria(this.req, this._model);
-            //     this._limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
-            //     this._skip = this.req.param('page') * this._limit || _actionUtil.parseSkip(this.req) || 0;
-            //     // const this._sort = _actionUtil.parseSort(this.req);
-            //     this._sort = this.parseSort(this.req);
-            //     this._page = this._skip !== 0 ? Math.floor(this._skip / this._limit) + 1 : 1;
-
-            //     // Delete the skip query parameter
-            //     this.requestQuery = this.req.query;
-            //     delete this.requestQuery.skip;
-            console.log('\nincludes = ' + this.params.includes);
-            console.dir(this.params.includes);
-
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
@@ -194,7 +168,7 @@ class ResponseGET extends ResponseBuilder {
             } : null);
         }
         // this._query = this.select(this._query, this.params.fields);
-        this._query = this.populate(this._query, this._model, this.params.includes);
+        this._query = this.populate(this._query, this._model, this.params.include);
 
         this.findQuery = this._query;
     }
@@ -222,17 +196,17 @@ class ResponseGET extends ResponseBuilder {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
-                limit: this.param.limit,
-                start: this.param.skip + 1,
-                end: this.param.skip + this.param.limit,
-                page: this.param.page,
-                pages: this.param.pages
+                limit: this.params.limit,
+                start: this.params.skip + 1,
+                end: this.params.skip + this.params.limit,
+                page: this.params.page,
+                pages: this.params.pages
             });
 
             // If a criteria was given, add it to meta
             if (!_.isEmpty(this._where)) {
                 this._meta = _.assign(this._meta, {
-                    criteria: this.param.where
+                    criteria: this.params.where
                 });
             }
         }
@@ -298,12 +272,12 @@ class ResponseGET extends ResponseBuilder {
                 delete this._links.next;
                 delete this._links.collections;
             }
+
             return this._links;
         }
         // If the client is requesting a single item, we'll show other links
         else {
             if (!_.isUndefined(records)) {
-
                 var relations = {};
 
                 _.forEach(this._model.associations, function(association) {
@@ -321,94 +295,6 @@ class ResponseGET extends ResponseBuilder {
         }
 
         return this._links;
-    }
-
-    parseCriteria(req, model) {
-        var criteria = _actionUtil.parseCriteria(req);
-
-        _.forEach(criteria, function(value, key) {
-            if (!model.schema[key]) delete criteria[key];
-        });
-
-        return criteria;
-    }
-
-    /*
-     * Parses the 'sort' query param and builds an object with it
-     */
-    parseSort(req) {
-        var sort = req.param('sort') || req.options.sort;
-        var orderBy = req.param('orderBy') || req.options.orderBy;
-
-        if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
-            return undefined;
-        }
-        return {
-            [orderBy]: sort
-        };
-    }
-
-    /*
-     * Parses the 'include' query param and builds an object with it, to be consumed by populate()
-     */
-    parseInclude(req) {
-        var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
-        var splits = [];
-        var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
-        };
-
-        if (includes.length > 0) {
-            _.forEach(includes, function(element, i) {
-                var testee = String(element);
-
-                if (testee.indexOf('.') !== -1) {
-                    var split = testee.split('.', 2);
-
-                    if (_.isArray(split) && split.length > 1) {
-                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
-                        else results.partials[split[0]] = [split[1]];
-                    };
-                } else results.full.push(testee);
-            });
-        }
-
-        this.partials = results.partials;
-
-        return results;
-    }
-
-    parseFields(req) {
-        var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-
-        return fields;
-
-        /*
-        var splits = [];
-        var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
-        };
-
-        if (fields.length > 0) {
-            _.forEach(fields, function(element, i) {
-                var testee = String(element);
-
-                if (testee.indexOf('.') !== -1) {
-                    var split = testee.split('.', 2);
-
-                    if (_.isArray(split) && split.length > 1) {
-                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
-                        else results.partials[split[0]] = [split[1]];
-                    };
-                } else results.full.push(testee);
-            });
-        }
-
-        this.partials = results.partials;
-        return results;
-        */
     }
 
     select(query, fields) {
@@ -442,7 +328,6 @@ class ResponseGET extends ResponseBuilder {
 
         if (includes) {
             // Fully populate collections
-            console.log(includes.full);
             if (includes.full) {
                 _.forEach(includes.full, function(element) {
                     query.populate(element);
@@ -525,7 +410,6 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = _actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        console.log('On responsePATCH _values is equal to :' + JSON.stringify(_values));
         this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 
@@ -533,7 +417,6 @@ class ResponsePATCH extends ResponseBuilder {
         var mergeDefaults = require('merge-defaults');
         var JSONP_CALLBACK_PARAM = 'callback';
 
-        console.log('Inside custom parse values');
         // Allow customizable blacklist for params NOT to include as values.
         req.options.values = req.options.values || {};
         req.options.values.blacklist = req.options.values.blacklist;
@@ -581,8 +464,6 @@ class ResponsePATCH extends ResponseBuilder {
                 }
             }.bind(this));
 
-            // console.log('values.tags is = ' + values.tags);
-            // console.log('values is' + JSON.stringify(values));
             return values;
         }.bind(this));
 
