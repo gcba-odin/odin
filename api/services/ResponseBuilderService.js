@@ -222,17 +222,17 @@ class ResponseGET extends ResponseBuilder {
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
-                limit: this._limit,
-                start: this._skip + 1,
-                end: this._skip + this._limit,
-                page: this._page,
-                pages: this._pages
+                limit: this.param.limit,
+                start: this.param.skip + 1,
+                end: this.param.skip + this.param.limit,
+                page: this.param.page,
+                pages: this.param.pages
             });
 
             // If a criteria was given, add it to meta
             if (!_.isEmpty(this._where)) {
                 this._meta = _.assign(this._meta, {
-                    criteria: this._where
+                    criteria: this.param.where
                 });
             }
         }
@@ -302,15 +302,18 @@ class ResponseGET extends ResponseBuilder {
         }
         // If the client is requesting a single item, we'll show other links
         else {
-            var relations = {};
+            if (!_.isUndefined(records)) {
 
-            _.forEach(this._model.associations, function(association) {
-                if (association.type == 'collection') {
-                    relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
-                }
-            }.bind(this));
+                var relations = {};
 
-            !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+                _.forEach(this._model.associations, function(association) {
+                    if (association.type == 'collection') {
+                        relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
+                    }
+                }.bind(this));
+
+                !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+            }
 
             this._links = _.assign(this._links, {
                 all: this.req.host + ':' + this.req.port + '/' + this.modelName
