@@ -11,19 +11,10 @@ class ParamsProcessor {
     }
 
     parse(model) {
-        this.query = '';
-        this.fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+        // this.query = '';
+        this.fields = this.parseFields(this.req);
         this.includes = this.parseInclude(this.req);
         this.modelName = pluralize(model.adapter.identity);
-
-
-        // For every custom param, once parsed and handled it must be deleted from req
-        if (this.req.query.include) {
-            delete this.req.query.include;
-        }
-        if (this.req.query.fields) {
-            delete this.req.query.fields;
-        }
 
         if (this.many) {
             this.where = this.parseCriteria(this.req, model);
@@ -38,6 +29,7 @@ class ParamsProcessor {
             delete this.requestQuery.skip;
 
             this.result = {
+                includes: this.includes,
                 fields: this.fields,
                 where: this.where,
                 limit: this.limit,
@@ -118,15 +110,20 @@ class ParamsProcessor {
                     };
                 } else results.full.push(testee);
             });
+
+            delete this.req.query.include;
         }
 
-        this.partials = results.partials;
-
+        //this.partials = results.partials;
         return results;
     }
 
     parseFields(req) {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+
+        if (this.req.query.fields) {
+            delete this.req.query.fields;
+        }
 
         return fields;
 

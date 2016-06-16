@@ -173,7 +173,8 @@ class ResponseGET extends ResponseBuilder {
             //     // Delete the skip query parameter
             //     this.requestQuery = this.req.query;
             //     delete this.requestQuery.skip;
-            console.log('\nfields = ' + this.params.fields);
+            console.log('\nincludes = ' + this.params.includes);
+            console.dir(this.params.includes);
 
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
@@ -192,7 +193,7 @@ class ResponseGET extends ResponseBuilder {
                 select: this.params.fields
             } : null);
         }
-        this._query = this.select(this._query, this.params.fields);
+        // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.includes);
 
         this.findQuery = this._query;
@@ -432,58 +433,58 @@ class ResponseGET extends ResponseBuilder {
         // Fully populate non collection items
         _.forEach(model.definition, function(value, key) {
             if (value.foreignKey) {
-                query.populate(key).exec(function afterwards(err, populatedRecords) {
-                    if (!err) query = populatedRecords;
-                    else console.log(err);
-                });
+                query.populate(key);
             }
         });
 
-        // Fully populate collections
-        _.forEach(includes.full, function(element) {
-            query.populate(element).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
+        if (includes) {
+            // Fully populate collections
+            console.log(includes.full);
+            if (includes.full) {
+                _.forEach(includes.full, function(element) {
+                    query.populate(element);
+                }, this);
+            }
 
-        // Partial includes are supported in Waterline, but are adapter dependant
-        // Since not many adapters implement them we're doing it by hand
-        // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
+            // Partial includes are supported in Waterline, but are adapter dependant
+            // Since not many adapters implement them we're doing it by hand
+            // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
 
-        // Fully populate included partials (will be filtered out later)
-        _.forEach(includes.partials, function(value, key) {
-            query.populate(key).exec(function afterwards(err, populatedRecords) {
-                if (!err) query = populatedRecords;
-                else console.log(err);
-            });
-        }, this);
+            // Fully populate included partials (will be filtered out later)
+            if (includes.partials) {
+                _.forEach(includes.partials, function(value, key) {
+                    query.populate(key);
+                }, this);
 
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    // Each granular include, gruped by model
-                    _.forEach(includes.partials, function(partialValue, partialKey) {
-                        if (key === partialKey && _.isArray(element[partialKey])) {
-                            // Each collection of included objects
-                            element[partialKey].forEach(function(item, k) {
-                                // Each included object in the collection
-                                _.forEach(item, function(resultValue, resultKey) {
-                                    // If it's not listed on the granular includes, delete it
-                                    if (partialValue.indexOf(resultKey) === -1) {
-                                        delete element[partialKey][k][resultKey];
-                                    } else result[partialKey][k] = element[partialKey][k];
-                                });
+                return query.then(function(records) {
+                    // Filter out the partials
+                    // Each result item
+                    records.forEach(function(element, j) {
+                        records[j] = _.transform(element, function(result, value, key) {
+                            // Each granular include, gruped by model
+                            _.forEach(includes.partials, function(partialValue, partialKey) {
+                                if (key === partialKey && _.isArray(element[partialKey])) {
+                                    // Each collection of included objects
+                                    element[partialKey].forEach(function(item, k) {
+                                        // Each included object in the collection
+                                        _.forEach(item, function(resultValue, resultKey) {
+                                            // If it's not listed on the granular includes, delete it
+                                            if (partialValue.indexOf(resultKey) === -1) {
+                                                delete element[partialKey][k][resultKey];
+                                            } else result[partialKey][k] = element[partialKey][k];
+                                        });
+                                    });
+                                } else result[key] = element[key];
                             });
-                        } else result[key] = element[key];
+                        }, element);
                     });
-                }, element);
-            });
 
-            return records;
-        });
+                    return records;
+                });
+            } else return query;
+        }
+
+        return query;
     }
 }
 
