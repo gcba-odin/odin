@@ -66,7 +66,7 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
-    serchables: [],
+    searchables: [],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()

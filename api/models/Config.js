@@ -81,7 +81,7 @@ module.exports = {
       }
     }, this.baseAttributes)
   },
-  serchables: ['description'],
+  searchables: ['description'],
 
   beforeCreate(values, next) {
     values.updatedBy = values.createdBy

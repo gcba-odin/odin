@@ -131,8 +131,7 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
-    serchables: ['username', 'email', 'firstName', 'lastName'],
-
+    searchables: ['username', 'email', 'firstName', 'lastName'],
 
     beforeUpdate(values, next) {
         if (false === values.hasOwnProperty('password')) return next();

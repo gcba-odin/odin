@@ -73,5 +73,5 @@ module.exports = {
       }
     }, this.baseAttributes)
   },
-  serchables: ['name'],
+  searchables: ['name']
 };
