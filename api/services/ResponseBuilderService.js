@@ -167,7 +167,7 @@ class ResponseGET extends ResponseBuilder {
             } : null);
         }
         // this._query = this.select(this._query, this.params.fields);
-        //this._query = this.populate(this._query, this._model, this.params.include);
+        this._query = this.populate(this._query, this._model, this.params.include);
 
         this.findQuery = this._query;
     }
@@ -295,6 +295,66 @@ class ResponseGET extends ResponseBuilder {
 
         return this._links;
     }
+
+     /*
+     * Handles the population of related items and collections
+     */
+    populate(query, model, includes) {
+        // Fully populate non collection items
+        _.forEach(model.definition, function(value, key) {
+            if (value.foreignKey) {
+                query.populate(key);
+            }
+        });
+
+        if (includes) {
+            // Fully populate collections
+            if (includes.full) {
+                _.forEach(includes.full, function(element) {
+                    query.populate(element);
+                }, this);
+            }
+
+            // Partial includes are supported in Waterline, but are adapter dependant
+            // Since not many adapters implement them we're doing it by hand
+            // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
+
+            // Fully populate included partials (will be filtered out later)
+            if (includes.partials) {
+                _.forEach(includes.partials, function(value, key) {
+                    query.populate(key);
+                }, this);
+
+                return query.then(function(records) {
+                    // Filter out the partials
+                    // Each result item
+                    records.forEach(function(element, j) {
+                        records[j] = _.transform(element, function(result, value, key) {
+                            // Each granular include, gruped by model
+                            _.forEach(includes.partials, function(partialValue, partialKey) {
+                                if (key === partialKey && _.isArray(element[partialKey])) {
+                                    // Each collection of included objects
+                                    element[partialKey].forEach(function(item, k) {
+                                        // Each included object in the collection
+                                        _.forEach(item, function(resultValue, resultKey) {
+                                            // If it's not listed on the granular includes, delete it
+                                            if (partialValue.indexOf(resultKey) === -1) {
+                                                delete element[partialKey][k][resultKey];
+                                            } else result[partialKey][k] = element[partialKey][k];
+                                        });
+                                    });
+                                } else result[key] = element[key];
+                            });
+                        }, element);
+                    });
+
+                    return records;
+                });
+            } else return query;
+        }
+
+        return query;
+}
 }
 
 class ResponsePOST extends ResponseBuilder {
