@@ -354,7 +354,7 @@ class ResponseGET extends ResponseBuilder {
         }
 
         return query;
-}
+    }
 }
 
 class ResponsePOST extends ResponseBuilder {

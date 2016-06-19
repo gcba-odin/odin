@@ -67,7 +67,7 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 FileType.findOne(data.type).exec(function(err, record) {
-                                    if (record.api) {
+                                    if (extension === 'text/csv') {
                                         // Convert to JSON
                                         var converter = new Converter({
                                             delimiter: 'auto'
