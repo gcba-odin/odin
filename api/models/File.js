@@ -21,7 +21,7 @@ module.exports = {
         },
         name: {
             type: 'string',
-            required: true,
+            // required: true,
             size: 150,
             minLength: 1
         },
@@ -51,23 +51,23 @@ module.exports = {
         },
         type: {
             model: 'filetype',
-            required: true
+            // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
-            required: true
+            // required: true
         },
         status: {
             model: 'status',
-            required: true
+            // required: true
         },
         organization: {
             model: 'organization',
-            required: true
+            // required: true
         },
         dataset: {
             model: 'dataset',
-            required: true
+            // required: true
         },
         tags: {
             collection: 'tag',
@@ -76,11 +76,11 @@ module.exports = {
         },
         owner: {
             model: 'user',
-            required: true
+            // required: true
         },
         createdBy: {
             model: 'user',
-            required: true
+            // required: true
         },
 
         toJSON() {
