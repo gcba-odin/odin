@@ -167,7 +167,7 @@ class ResponseGET extends ResponseBuilder {
             } : null);
         }
         // this._query = this.select(this._query, this.params.fields);
-        this._query = this.populate(this._query, this._model, this.params.include);
+        //this._query = this.populate(this._query, this._model, this.params.include);
 
         this.findQuery = this._query;
     }
@@ -238,13 +238,14 @@ class ResponseGET extends ResponseBuilder {
      */
     links(records) {
         // If the client is requesting a collection, we'll show certain links plus pagination
+
         if (this._many) {
             // Check if no parameters given
             var params = (!_.isEmpty(this.requestQuery));
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
+            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '?' : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
             const _previous = (this.params.page > 1 ? _linkToModel + (this.params.limit * (this.params.page - 2)) : undefined);
             const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
@@ -261,7 +262,7 @@ class ResponseGET extends ResponseBuilder {
                 lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last'
             });
 
-            if (!_.isUndefined(records) && records.length > 0) {
+            if (!_.isUndefined( records ) && records.length > 0 ) {
                 return this._links;
             } else {
                 delete this._links.first;
@@ -293,84 +294,6 @@ class ResponseGET extends ResponseBuilder {
         }
 
         return this._links;
-    }
-
-    select(query, fields) {
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    _.forEach(fields.full, function(field) {
-                        if (fields.full.indexOf(field) === -1) {
-                            delete element[field];
-                        } else result[key] = element[key];
-                    });
-                }, element);
-            });
-
-            return records;
-        });
-    }
-
-    /*
-     * Handles the population of related items and collections
-     */
-    populate(query, model, includes) {
-        // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
-            if (value.foreignKey) {
-                query.populate(key);
-            }
-        });
-
-        if (includes) {
-            // Fully populate collections
-            if (includes.full) {
-                _.forEach(includes.full, function(element) {
-                    query.populate(element);
-                }, this);
-            }
-
-            // Partial includes are supported in Waterline, but are adapter dependant
-            // Since not many adapters implement them we're doing it by hand
-            // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
-
-            // Fully populate included partials (will be filtered out later)
-            if (includes.partials) {
-                _.forEach(includes.partials, function(value, key) {
-                    query.populate(key);
-                }, this);
-
-                return query.then(function(records) {
-                    // Filter out the partials
-                    // Each result item
-                    records.forEach(function(element, j) {
-                        records[j] = _.transform(element, function(result, value, key) {
-                            // Each granular include, gruped by model
-                            _.forEach(includes.partials, function(partialValue, partialKey) {
-                                if (key === partialKey && _.isArray(element[partialKey])) {
-                                    // Each collection of included objects
-                                    element[partialKey].forEach(function(item, k) {
-                                        // Each included object in the collection
-                                        _.forEach(item, function(resultValue, resultKey) {
-                                            // If it's not listed on the granular includes, delete it
-                                            if (partialValue.indexOf(resultKey) === -1) {
-                                                delete element[partialKey][k][resultKey];
-                                            } else result[partialKey][k] = element[partialKey][k];
-                                        });
-                                    });
-                                } else result[key] = element[key];
-                            });
-                        }, element);
-                    });
-
-                    return records;
-                });
-            } else return query;
-        }
-
-        return query;
     }
 }
 

@@ -36,7 +36,8 @@ class ParamsProcessor {
                 where: this.where,
                 limit: this.limit,
                 skip: this.skip,
-                sort: this.sort
+                sort: this.sort,
+                page: this.page
             }
         } else {
             this.result = {
