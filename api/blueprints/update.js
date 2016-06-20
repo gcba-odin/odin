@@ -9,7 +9,8 @@ const Response = require('../services/ResponseBuilderService');
  * An API call to update a model instance with the specified `id`, treating the other unbound parameters as attributes.
  */
 module.exports = (req, res) => {
-    var builder = new Response.ResponsePATCH(req, res);
+    var builder = new Response.ResponsePATCH( req, res );
+
     builder.update
         .then(record => {
             if (_.isUndefined(record[0])) return res.notFound(null, {

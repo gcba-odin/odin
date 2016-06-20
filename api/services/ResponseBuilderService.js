@@ -391,7 +391,8 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        this.update = this._model.update(_pk, _.omit(_values, 'id'));
+        this.update = this._model.update( _pk, _.omit( _values, 'id' ) );
+        console.log( _values );
     }
 
     parseValues(req) {
@@ -436,12 +437,15 @@ class ResponsePATCH extends ResponseBuilder {
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
             _.forEach(values, function(value, key) {
-                var collection = _.find(this._model.associations, [
+                var collection = _.find( this._model.associations, [
                     'alias', key
-                ])
-                if (!_.isUndefined(collection)) {
-                    value = _.split(value, ',')
-                    values[key] = value
+                ] );
+
+                if ( !_.isUndefined( collection ) ) {
+                    if ( value.indexOf( ',' ) !== -1 ) {
+                        value = _.split( value, ',' );
+                        values[ key ] = value;
+                    }
                 }
             }.bind(this));
 
