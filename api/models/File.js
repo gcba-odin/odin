@@ -154,12 +154,12 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),
-    afterUpdate: (values, next) => {
-        ZipService.createZip(values.dataset)
+    afterUpdate: ( values, next ) => {
+        if (values.dataset) ZipService.createZip(values.dataset)
         next()
     },
     afterCreate: (values, next) => {
-        ZipService.createZip(values.dataset)
+        if (values.dataset) ZipService.createZip(values.dataset)
         next();
     },
 };

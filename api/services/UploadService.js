@@ -88,6 +88,9 @@ module.exports = {
                             });
                     }
 
+
+                    console.dir(data);
+
                     // Save the file metadata to the relational DB
                     File.create(data).exec(function created(err, newInstance) {
                         if (err) return res.negotiate(err);
