@@ -218,7 +218,6 @@ module.exports = {
 
         const fs = require('fs');
         fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function(err, stats) {
-            console.log(stats)
             if (err || !stats.isDirectory()) {
                 fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);
             }
