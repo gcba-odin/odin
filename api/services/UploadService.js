@@ -20,6 +20,7 @@ module.exports = {
             if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
+
         var data = actionUtil.parseValues(req);
 
         // Check if the dataset ID is valid
@@ -54,72 +55,82 @@ module.exports = {
                         return res.badRequest('No file was uploaded');
                     }
 
-                    // Check if the upload is a textfile (via mimetype)
-                    if (/^text\/\w+$/.test(extension)) {
-                        console.log('Inside if, with extension: ' + extension);
-                        var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
+                    // Get the id of the filetype based on extension of the file
+                    var filetypeName = extension.split('/').pop();
+                    console.log('filetypename is = ' + filetypeName);
+                    FileType.findOne({
+                        name: filetypeName
+                    }).exec(function (err, record) {
+                            console.log('record filetype is = ' + JSON.stringify(record));
+                            data.type = record.id;
 
-                        // Read the file
-                        fs.createReadStream(filePath)
-                            // Encode it
-                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
-                            if (err) return res.negotiate(err);
-                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                            // Check if the upload is a textfile (via mimetype)
+                            if (/^text\/\w+$/.test(extension)) {
+                                console.log('Inside if, with extension: ' + extension);
+                                var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
 
-                            // If the file is consumable via the API
-                            console.log('DataType: ' + data.type);
-                            FileType.findOne(data.type).exec(function (err, record) {
+                                // Read the file
+                                fs.createReadStream(filePath)
+                                    // Encode it
+                                    .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                                    if (err) return res.negotiate(err);
+                                    if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                console.log('record.api :' + record.api);
-                                if (record.api) {
-                                    // if (extension === 'text/csv') {
-                                    // Convert to JSON
-                                    var converter = new Converter({
-                                        delimiter: 'auto'
-                                    });
-                                    converter.fromString(result, function (err, json) {
-                                        if (err) {
-                                            return res.negotiate(err);
+                                    // If the file is consumable via the API
+                                    console.log('DataType: ' + data.type);
+                                    FileType.findOne(data.type).exec(function (err, record) {
+
+                                        console.log('record.api :' + record.api);
+                                        if (record.api) {
+                                            // if (extension === 'text/csv') {
+                                            // Convert to JSON
+                                            var converter = new Converter({
+                                                delimiter: 'auto'
+                                            });
+                                            converter.fromString(result, function (err, json) {
+                                                if (err) {
+                                                    return res.negotiate(err);
+                                                }
+                                                if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+
+                                                // Connect to the db
+                                                DataStorageService.mongoSave(dataset, files[0].filename, json, res);
+                                            });
                                         }
-                                        if (json.length === 0) return res.badRequest("Invalid or empty csv.");
-
-                                        // Connect to the db
-                                        DataStorageService.mongoSave(dataset, files[0].filename, json, res);
                                     });
-                                }
-                            });
 
-                            fs.writeFile(filePath, result, function () {
-                            });
-                        });
-                    }
-
-
-                    console.dir(data);
-
-                    // Save the file metadata to the relational DB
-                    File.create(data).exec(function created(err, newInstance) {
-                        if (err) return res.negotiate(err);
-
-                        if (req._sails.hooks.pubsub) {
-                            if (req.isSocket) {
-                                Model.subscribe(req, newInstance);
-                                Model.introduce(newInstance);
+                                    fs.writeFile(filePath, result, function () {
+                                    });
+                                });
                             }
-                            // Make sure data is JSON-serializable before publishing
-                            var publishData = _.isArray(newInstance) ?
-                                _.map(newInstance, function (instance) {
-                                    return instance.toJSON();
-                                }) :
-                                newInstance.toJSON();
-                            Model.publishCreate(publishData, !req.options.mirror && req);
-                        }
 
-                        // Send JSONP-friendly response if it's supported
-                        res.created(newInstance);
-                    });
-                }
-            )
+
+                            console.dir(data);
+
+                            // Save the file metadata to the relational DB
+                            File.create(data).exec(function created(err, newInstance) {
+                                if (err) return res.negotiate(err);
+
+                                if (req._sails.hooks.pubsub) {
+                                    if (req.isSocket) {
+                                        Model.subscribe(req, newInstance);
+                                        Model.introduce(newInstance);
+                                    }
+                                    // Make sure data is JSON-serializable before publishing
+                                    var publishData = _.isArray(newInstance) ?
+                                        _.map(newInstance, function (instance) {
+                                            return instance.toJSON();
+                                        }) :
+                                        newInstance.toJSON();
+                                    Model.publishCreate(publishData, !req.options.mirror && req);
+                                }
+
+                                // Send JSONP-friendly response if it's supported
+                                res.created(newInstance);
+                            });
+                        }
+                    )
+                })
         } else {
             return res.badRequest('No file was uploaded.');
         }
