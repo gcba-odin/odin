@@ -23,8 +23,5 @@ module.exports = (req, res) => {
                 links: builder.links(record[0])
             })
         })
-        // .spread(function () {
-        // LogService.log(req);
-        // res.updated()
         .catch(res.negotiate);
 };

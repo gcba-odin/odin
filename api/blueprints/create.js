@@ -19,9 +19,5 @@ module.exports = (req, res) => {
                 links: builder.links( record )
             });
         })
-        // .spread(function () {
-        //     LogService.log(req);
-        //     res.created
-        // })
         .catch(res.negotiate);
 };

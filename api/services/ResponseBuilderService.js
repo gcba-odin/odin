@@ -608,6 +608,7 @@ class ResponseSearch extends ResponseGET {
 
         this.model = model;
         this.params.where = _.transform(model.definition, function(result, val, key) {
+            // Check if the field is a string, and if is set to be searchable on the model
             if ( val.type == 'string' && model.searchables.indexOf( key ) !== -1 ) {
                 result.or.push( _.set( {}, key, {
                     contains: query

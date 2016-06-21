@@ -10,7 +10,6 @@ const path = require('path');
 const shortid = require('shortid');
 const mime = require('mime');
 const Converter = require("csvtojson").Converter;
-;
 const iconv = require('iconv-lite');
 
 module.exports = {

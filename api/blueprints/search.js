@@ -21,7 +21,6 @@ module.exports = (req, res) => {
             });
             else {
                 //if (!_.isEmpty(builder.includes)) {
-                //    console.log("adentro");
                 //    records[0] = _.assign(records[0], builder.includes);
                 //}
                 return res.ok(
