@@ -143,7 +143,6 @@ class ResponseGET extends ResponseBuilder {
         super(req, res);
 
         this.params = new Processor.ParamsProcessor(req, many).parse();
-
         this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
@@ -164,7 +163,9 @@ class ResponseGET extends ResponseBuilder {
         return this; // Allows chaining
     }
 
-
+    /*
+     * Builds and returns the query promise
+     */
     findQuery() {
         if ( this._many ) {
             this._query = this._model.find(this.params.fields.length > 0 ? {
@@ -394,7 +395,6 @@ class ResponsePATCH extends ResponseBuilder {
         const _values = this.parseValues(this.req);
 
         this.update = this._model.update( _pk, _.omit( _values, 'id' ) );
-        console.log( _values );
     }
 
     parseValues(req) {
@@ -618,6 +618,9 @@ class ResponseSearch extends ResponseGET {
         });
     }
 
+    /*
+     * Builds and returns the query promise
+     */
     searchQuery() {
         this._query = this.model.find(this.params.fields.length > 0 ? {
             select: this.params.fields
