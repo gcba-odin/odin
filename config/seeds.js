@@ -439,8 +439,6 @@ module.exports = {
             optional9: null,
             optional10: null,
             publishedAt: '2011-01-01 00:00:02+03',
-            category: 'jWRhpRV',
-            status: 'oWRhpRV',
             models: {
                 category: {
                     name: 'Economía, negocio y comercio'
@@ -482,8 +480,6 @@ module.exports = {
             optional9: null,
             optional10: null,
             publishedAt: '2011-01-01 00:00:03+03',
-            category: 'kWRhpRV',
-            status: 'pWRhpRV',
             models: {
                 category: {
                     name: 'Educación'
@@ -525,8 +521,6 @@ module.exports = {
             optional9: null,
             optional10: null,
             publishedAt: '2011-01-01 00:00:04+03',
-            category: 'lWRhpRV',
-            status: 'qWRhpRV',
             models: {
                 category: {
                     name: 'Gobierno y administración pública'
@@ -568,8 +562,6 @@ module.exports = {
             optional9: null,
             optional10: null,
             publishedAt: '2011-01-01 00:00:05+03',
-            category: 'mWRhpRV',
-            status: 'rWRhpRV',
             models: {
                 category: {
                     name: 'Medio ambiente'
