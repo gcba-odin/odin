@@ -9,14 +9,15 @@ const fs = require('fs');
 const path = require('path');
 const shortid = require('shortid');
 const mime = require('mime');
-const Converter = require("csvtojson").Converter;;
+const Converter = require("csvtojson").Converter;
+;
 const iconv = require('iconv-lite');
 
 module.exports = {
-    uploadFile: function(req, res) {
+    uploadFile: function (req, res) {
         var extension = '';
         var filename = '';
-        var uploadFile = req.file('uploadFile').on('error', function(err) {
+        var uploadFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         var dataset = req.param('dataset');
@@ -27,7 +28,7 @@ module.exports = {
         // If there is a file
         if (!uploadFile.isNoop) {
             uploadFile.upload({
-                    saveAs: function(file, cb) {
+                    saveAs: function (file, cb) {
                         //Get the extension of the file
                         extension = mime.lookup(file.filename.split('.').pop());
 
@@ -56,37 +57,46 @@ module.exports = {
 
                     // Check if the upload is a textfile (via mimetype)
                     if (/^text\/\w+$/.test(extension)) {
+                        console.log('Inside if, with extension: ' + extension);
                         var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
 
                         // Read the file
                         fs.createReadStream(filePath)
                             // Encode it
-                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
-                                if (err) return res.negotiate(err);
-                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                            if (err) return res.negotiate(err);
+                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                // If the file is consumable via the API
-                                FileType.findOne(data.type).exec(function(err, record) {
-                                    if (record.api) {
-                                        // Convert to JSON
-                                        var converter = new Converter({
-                                            delimiter: 'auto'
-                                        })
-                                        converter.fromString(result, function(err, json) {
-                                            if (err) {
-                                                return res.negotiate(err);
-                                            }
-                                            if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+                            // If the file is consumable via the API
+                            console.log('DataType: ' + data.type);
+                            FileType.findOne(data.type).exec(function (err, record) {
 
-                                            // Connect to the db
-                                            DataStorageService.mongoSave(dataset, files[0].filename, json, res);
-                                        });
-                                    }
-                                });
+                                console.log('record.api :' + record.api);
+                                if (record.api) {
+                                    // if (extension === 'text/csv') {
+                                    // Convert to JSON
+                                    var converter = new Converter({
+                                        delimiter: 'auto'
+                                    });
+                                    converter.fromString(result, function (err, json) {
+                                        if (err) {
+                                            return res.negotiate(err);
+                                        }
+                                        if (json.length === 0) return res.badRequest("Invalid or empty csv.");
 
-                                fs.writeFile(filePath, result, function() {});
+                                        // Connect to the db
+                                        DataStorageService.mongoSave(dataset, files[0].filename, json, res);
+                                    });
+                                }
                             });
+
+                            fs.writeFile(filePath, result, function () {
+                            });
+                        });
                     }
+
+
+                    console.dir(data);
 
                     // Save the file metadata to the relational DB
                     File.create(data).exec(function created(err, newInstance) {
@@ -99,7 +109,7 @@ module.exports = {
                             }
                             // Make sure data is JSON-serializable before publishing
                             var publishData = _.isArray(newInstance) ?
-                                _.map(newInstance, function(instance) {
+                                _.map(newInstance, function (instance) {
                                     return instance.toJSON();
                                 }) :
                                 newInstance.toJSON();

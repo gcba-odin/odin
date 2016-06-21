@@ -12,12 +12,12 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePOST(req, res);
 
     builder.create
-        .then(record => {
+        .then( record => {
             LogService.log(req, record.id);
-            res.created(record, {
-                meta: builder.meta(record),
-                links: builder.links(record)
-            })
+            res.created( record, {
+                meta: builder.meta( record ),
+                links: builder.links( record )
+            });
         })
         // .spread(function () {
         //     LogService.log(req);

@@ -15,7 +15,7 @@ module.exports = {
     index(req, res) {
         const q = req.param('query');
         const pageParam = req.param('page') || 1;
-        const models = parseModels(req.param('models')) || _.keys(sails.models);
+        const models = parseModels(req.param('resources')) || _.keys(sails.models);
 
         if (!q) return res.badRequest(null, {
             message: 'You should specify a "query" parameter!'

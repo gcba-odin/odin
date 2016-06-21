@@ -36,7 +36,7 @@ module.exports = (req, res) => {
     // And move over to the response file to finish the response off
     var builder = new Response.ResponseGET(req, res, true);
 
-    builder.findQuery
+    builder.findQuery()
         .then(records => {
             if (_.isUndefined(records)) return res.notFound(null, {
                 meta: builder.meta(undefined),

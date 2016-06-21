@@ -147,29 +147,6 @@ class ResponseGET extends ResponseBuilder {
         this._query = '';
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
-
-        if (this._many) {
-            this._query = this._model.find(this.params.fields.length > 0 ? {
-                select: this.params.fields
-            } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
-
-            this.countQuery = _.cloneDeep(this.req.query);
-            delete this.countQuery.limit;
-
-            this._model.count(this.countQuery).then(function(cant) {
-                this._count = cant;
-                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-            }.bind(this));
-        } else {
-            this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk, this.params.fields.length > 0 ? {
-                select: this.params.fields
-            } : null);
-        }
-        // this._query = this.select(this._query, this.params.fields);
-        this._query = this.populate(this._query, this._model, this.params.include);
-
-        this.findQuery = this._query;
     }
 
     addData(value) {
@@ -184,6 +161,32 @@ class ResponseGET extends ResponseBuilder {
         }
 
         return this; // Allows chaining
+    }
+
+    /*
+     * Builds and returns the query promise
+     */
+    findQuery() {
+        if ( this._many ) {
+            this._query = this._model.find(this.params.fields.length > 0 ? {
+                select: this.params.fields
+            } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+
+            this._model.count().where( this.params.where )
+                .then( function ( cant ) {
+                    this._count = cant;
+                    this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+                }.bind(this));
+        } else {
+            this._pk = actionUtil.requirePk(this.req);
+            this._query = this._model.find(this._pk, this.params.fields.length > 0 ? {
+                select: this.params.fields
+            } : null);
+        }
+        // this._query = this.select(this._query, this.params.fields);
+        this._query = this.populate( this._query, this._model, this.params.include );
+
+        return this._query;
     }
 
     /*
@@ -238,13 +241,14 @@ class ResponseGET extends ResponseBuilder {
      */
     links(records) {
         // If the client is requesting a collection, we'll show certain links plus pagination
+
         if (this._many) {
             // Check if no parameters given
             var params = (!_.isEmpty(this.requestQuery));
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '&' : '?');
+            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '?' : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
             const _previous = (this.params.page > 1 ? _linkToModel + (this.params.limit * (this.params.page - 2)) : undefined);
             const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
@@ -261,7 +265,7 @@ class ResponseGET extends ResponseBuilder {
                 lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last'
             });
 
-            if (!_.isUndefined(records) && records.length > 0) {
+            if (!_.isUndefined( records ) && records.length > 0 ) {
                 return this._links;
             } else {
                 delete this._links.first;
@@ -295,25 +299,7 @@ class ResponseGET extends ResponseBuilder {
         return this._links;
     }
 
-    select(query, fields) {
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    _.forEach(fields.full, function(field) {
-                        if (fields.full.indexOf(field) === -1) {
-                            delete element[field];
-                        } else result[key] = element[key];
-                    });
-                }, element);
-            });
-
-            return records;
-        });
-    }
-
-    /*
+     /*
      * Handles the population of related items and collections
      */
     populate(query, model, includes) {
@@ -408,7 +394,7 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        this.update = this._model.update(_pk, _.omit(_values, 'id'));
+        this.update = this._model.update( _pk, _.omit( _values, 'id' ) );
     }
 
     parseValues(req) {
@@ -453,12 +439,15 @@ class ResponsePATCH extends ResponseBuilder {
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
             _.forEach(values, function(value, key) {
-                var collection = _.find(this._model.associations, [
+                var collection = _.find( this._model.associations, [
                     'alias', key
-                ])
-                if (!_.isUndefined(collection)) {
-                    value = _.split(value, ',')
-                    values[key] = value
+                ] );
+
+                if ( !_.isUndefined( collection ) ) {
+                    if ( value.indexOf( ',' ) !== -1 ) {
+                        value = _.split( value, ',' );
+                        values[ key ] = value;
+                    }
                 }
             }.bind(this));
 
@@ -589,22 +578,66 @@ class ResponseQuery extends ResponseBuilder {
 
 class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
-        super(req, res); {
-            const modelName = pluralize(this._model.adapter.identity);
+        super( req, res );
 
-            this._meta = {
-                code: 'OK',
-                message: 'The operation was executed successfully.',
-            };
-            this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + modelName
-            };
-            this.countQuery = this._model.count();
-        }
+        const modelName = pluralize(this._model.adapter.identity);
+
+        this._meta = {
+            code: 'OK',
+            message: 'The operation was executed successfully.',
+        };
+        this._links = {
+            all: this.req.host + ':' + this.req.port + '/' + modelName
+        };
+        this.countQuery = this._model.count();
     }
 }
 
 // TODO: Add ResponseSearch extending ResponseGET
+
+class ResponseSearch extends ResponseGET {
+    constructor( req, res, many ) {
+        super( req, res, many );
+
+        var model = sails.models[ req.options[ 'model' ] ];
+        var query = req.param( 'query' );
+
+        if (!query) return res.badRequest(null, {
+            message: 'You should specify a "query" parameter!'
+        });
+
+        this.model = model;
+        this.params.where = _.transform(model.definition, function(result, val, key) {
+            if ( val.type == 'string' && model.searchables.indexOf( key ) !== -1 ) {
+                result.or.push( _.set( {}, key, {
+                    contains: query
+                }) );
+            }
+        }, {
+            or: []
+        });
+    }
+
+    /*
+     * Builds and returns the query promise
+     */
+    searchQuery() {
+        this._query = this.model.find(this.params.fields.length > 0 ? {
+            select: this.params.fields
+        } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+
+        this.model.count().where(this.params.where)
+            .then( function ( cant ) {
+                this._count = cant;
+                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+                }.bind( this ) )
+            .catch( function ( err ) { console.log(err); });
+
+        this._query = this.populate(this._query, this.model, this.params.include);
+
+        return this._query;
+    }
+}
 
 module.exports = {
     ResponseGET,
@@ -613,5 +646,6 @@ module.exports = {
     ResponseDELETE,
     ResponseOPTIONS,
     ResponseQuery,
-    ResponseCount
+    ResponseCount,
+    ResponseSearch
 };

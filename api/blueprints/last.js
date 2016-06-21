@@ -4,7 +4,7 @@ module.exports = function(req, res) {
 
     var builder = new Response.ResponseQuery(req, res, 'createdAt DESC');
 
-    builder.findQuery
+    builder.findQuery()
         .then(record => record[0] = [
             record[0], {
                 meta: builder.meta(undefined),
