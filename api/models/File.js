@@ -21,7 +21,7 @@ module.exports = {
         },
         name: {
             type: 'string',
-            // required: true,
+            required: true,
             size: 150,
             minLength: 1
         },
@@ -55,15 +55,15 @@ module.exports = {
         },
         updateFrequency: {
             model: 'updatefrequency',
-            // required: true
+            required: true
         },
         status: {
             model: 'status',
-            // required: true
+            required: true
         },
         organization: {
             model: 'organization',
-            // required: true
+            required: true
         },
         dataset: {
             model: 'dataset',
@@ -76,7 +76,7 @@ module.exports = {
         },
         owner: {
             model: 'user',
-            // required: true
+            required: true
         },
         createdBy: {
             model: 'user',
@@ -154,7 +154,7 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),
-    afterUpdate: ( values, next ) => {
+    afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset)
         next()
     },
