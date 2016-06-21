@@ -7,7 +7,7 @@ class ParamsProcessor {
     constructor(req, many) {
         this.req = req;
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
-        this._many = many
+        this._many = many;
         this._model = _actionUtil.parseModel(this.req);
         this.result = {};
     }
@@ -18,6 +18,8 @@ class ParamsProcessor {
         this.include = this.parseInclude(this.req);
 
         if (this._many) {
+            this.match = this.parseMatch(this.req);
+            this.condition = this.parseCondition(this.req);
             this.where = this.parseCriteria(this.req, this._model);
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
 
@@ -37,7 +39,9 @@ class ParamsProcessor {
                 limit: this.limit,
                 skip: this.skip,
                 sort: this.sort,
-                page: this.page
+                page: this.page,
+                match: this.match,
+                condition: this.condition
             }
         } else {
             this.result = {
@@ -49,10 +53,34 @@ class ParamsProcessor {
         return this.result;
     }
 
+    //parse match and parse condition should return error if different condition is given, or just return default value ?
+    parseMatch(req) {
+        var match = req.param('match');
+
+        switch (_.lowerCase(match)) {
+            case 'begins':
+                return 'startsWith';
+                break;
+            case 'ends':
+                return 'endsWith';
+                break;
+            default:
+                return 'contains'
+        }
+    }
+
+    parseCondition(req) {
+        var condition = req.param('condition');
+        if (condition == 'AND') {
+            return 'and';
+        }
+        return 'or';
+    }
+
     parseCriteria(req, model) {
         var criteria = _actionUtil.parseCriteria(req);
 
-        _.forEach(criteria, function(value, key) {
+        _.forEach(criteria, function (value, key) {
             if (!model.schema[key]) delete criteria[key];
         });
 
@@ -86,7 +114,7 @@ class ParamsProcessor {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element, i) {
+            _.forEach(includes, function (element, i) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -95,7 +123,8 @@ class ParamsProcessor {
                     if (_.isArray(split) && split.length > 1) {
                         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
                         else results.partials[split[0]] = [split[1]];
-                    };
+                    }
+                    ;
                 } else results.full.push(testee);
             });
 
@@ -115,39 +144,39 @@ class ParamsProcessor {
         return fields;
 
         /*
-        var splits = [];
-        var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
-        };
+         var splits = [];
+         var results = {
+         full: [], // Here go the models that will be included with all their attributes
+         partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+         };
 
-        if (fields.length > 0) {
-            _.forEach(fields, function(element, i) {
-                var testee = String(element);
+         if (fields.length > 0) {
+         _.forEach(fields, function(element, i) {
+         var testee = String(element);
 
-                if (testee.indexOf('.') !== -1) {
-                    var split = testee.split('.', 2);
+         if (testee.indexOf('.') !== -1) {
+         var split = testee.split('.', 2);
 
-                    if (_.isArray(split) && split.length > 1) {
-                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
-                        else results.partials[split[0]] = [split[1]];
-                    };
-                } else results.full.push(testee);
-            });
-        }
+         if (_.isArray(split) && split.length > 1) {
+         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
+         else results.partials[split[0]] = [split[1]];
+         };
+         } else results.full.push(testee);
+         });
+         }
 
-        this.partials = results.partials;
-        return results;
-        */
+         this.partials = results.partials;
+         return results;
+         */
     }
 
     select(query, fields) {
-        return query.then(function(records) {
+        return query.then(function (records) {
             // Filter out the partials
             // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    _.forEach(fields.full, function(field) {
+            records.forEach(function (element, j) {
+                records[j] = _.transform(element, function (result, value, key) {
+                    _.forEach(fields.full, function (field) {
                         if (fields.full.indexOf(field) === -1) {
                             delete element[field];
                         } else result[key] = element[key];

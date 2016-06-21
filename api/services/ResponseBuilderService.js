@@ -44,7 +44,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function(value, target) {
+        this._addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -167,13 +167,13 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        if ( this._many ) {
+        if (this._many) {
             this._query = this._model.find(this.params.fields.length > 0 ? {
                 select: this.params.fields
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
 
-            this._model.count().where( this.params.where )
-                .then( function ( cant ) {
+            this._model.count().where(this.params.where)
+                .then(function (cant) {
                     this._count = cant;
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
@@ -184,7 +184,7 @@ class ResponseGET extends ResponseBuilder {
             } : null);
         }
         // this._query = this.select(this._query, this.params.fields);
-        this._query = this.populate( this._query, this._model, this.params.include );
+        this._query = this.populate(this._query, this._model, this.params.include);
 
         return this._query;
     }
@@ -265,7 +265,7 @@ class ResponseGET extends ResponseBuilder {
                 lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last'
             });
 
-            if (!_.isUndefined( records ) && records.length > 0 ) {
+            if (!_.isUndefined(records) && records.length > 0) {
                 return this._links;
             } else {
                 delete this._links.first;
@@ -282,7 +282,7 @@ class ResponseGET extends ResponseBuilder {
             if (!_.isUndefined(records)) {
                 var relations = {};
 
-                _.forEach(this._model.associations, function(association) {
+                _.forEach(this._model.associations, function (association) {
                     if (association.type == 'collection') {
                         relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
                     }
@@ -299,12 +299,12 @@ class ResponseGET extends ResponseBuilder {
         return this._links;
     }
 
-     /*
+    /*
      * Handles the population of related items and collections
      */
     populate(query, model, includes) {
         // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
+        _.forEach(model.definition, function (value, key) {
             if (value.foreignKey) {
                 query.populate(key);
             }
@@ -313,7 +313,7 @@ class ResponseGET extends ResponseBuilder {
         if (includes) {
             // Fully populate collections
             if (includes.full) {
-                _.forEach(includes.full, function(element) {
+                _.forEach(includes.full, function (element) {
                     query.populate(element);
                 }, this);
             }
@@ -324,22 +324,22 @@ class ResponseGET extends ResponseBuilder {
 
             // Fully populate included partials (will be filtered out later)
             if (includes.partials) {
-                _.forEach(includes.partials, function(value, key) {
+                _.forEach(includes.partials, function (value, key) {
                     query.populate(key);
                 }, this);
 
-                return query.then(function(records) {
+                return query.then(function (records) {
                     // Filter out the partials
                     // Each result item
-                    records.forEach(function(element, j) {
-                        records[j] = _.transform(element, function(result, value, key) {
+                    records.forEach(function (element, j) {
+                        records[j] = _.transform(element, function (result, value, key) {
                             // Each granular include, gruped by model
-                            _.forEach(includes.partials, function(partialValue, partialKey) {
+                            _.forEach(includes.partials, function (partialValue, partialKey) {
                                 if (key === partialKey && _.isArray(element[partialKey])) {
                                     // Each collection of included objects
-                                    element[partialKey].forEach(function(item, k) {
+                                    element[partialKey].forEach(function (item, k) {
                                         // Each included object in the collection
-                                        _.forEach(item, function(resultValue, resultKey) {
+                                        _.forEach(item, function (resultValue, resultKey) {
                                             // If it's not listed on the granular includes, delete it
                                             if (partialValue.indexOf(resultKey) === -1) {
                                                 delete element[partialKey][k][resultKey];
@@ -367,6 +367,7 @@ class ResponsePOST extends ResponseBuilder {
         const _values = actionUtil.parseValues(this.req);
         this.create = this._model.create(_.omit(_values, 'id'));
     }
+
     meta(record) {
         _.assign(this._meta = {
             code: sails.config.success.CREATED.code,
@@ -394,7 +395,7 @@ class ResponsePATCH extends ResponseBuilder {
         const _pk = actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
 
-        this.update = this._model.update( _pk, _.omit( _values, 'id' ) );
+        this.update = this._model.update(_pk, _.omit(_values, 'id'));
     }
 
     parseValues(req) {
@@ -421,14 +422,14 @@ class ResponsePATCH extends ResponseBuilder {
 
 
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
-        var valuesArray = _.map(bodyData, function(element) {
+        var valuesArray = _.map(bodyData, function (element) {
             var values;
             // Merge properties of the element into req.options.value, omitting the blacklist
             values = mergeDefaults(element, _.omit(req.options.values, 'blacklist'));
             // Omit properties that are in the blacklist (like query modifiers)
             values = _.omit(values, blacklist || []);
             // Omit any properties w/ undefined values
-            values = _.omit(values, function(p) {
+            values = _.omit(values, function (p) {
                 if (_.isUndefined(p)) {
                     return true;
                 }
@@ -438,15 +439,15 @@ class ResponsePATCH extends ResponseBuilder {
             // If key is a model collection, should transform comma separated to array.
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
-            _.forEach(values, function(value, key) {
-                var collection = _.find( this._model.associations, [
+            _.forEach(values, function (value, key) {
+                var collection = _.find(this._model.associations, [
                     'alias', key
-                ] );
+                ]);
 
-                if ( !_.isUndefined( collection ) ) {
-                    if ( value.indexOf( ',' ) !== -1 ) {
-                        value = _.split( value, ',' );
-                        values[ key ] = value;
+                if (!_.isUndefined(collection)) {
+                    if (value.indexOf(',') !== -1) {
+                        value = _.split(value, ',');
+                        values[key] = value;
                     }
                 }
             }.bind(this));
@@ -541,7 +542,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
-        _.forEach(methods, function(key, methodVerb) {
+        _.forEach(methods, function (key, methodVerb) {
             var headers = OptionsMethodsService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -558,7 +559,8 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._meta = {
@@ -578,7 +580,7 @@ class ResponseQuery extends ResponseBuilder {
 
 class ResponseCount extends ResponseBuilder {
     constructor(req, res) {
-        super( req, res );
+        super(req, res);
 
         const modelName = pluralize(this._model.adapter.identity);
 
@@ -596,27 +598,38 @@ class ResponseCount extends ResponseBuilder {
 // TODO: Add ResponseSearch extending ResponseGET
 
 class ResponseSearch extends ResponseGET {
-    constructor( req, res, many ) {
-        super( req, res, many );
+    constructor(req, res, many) {
+        super(req, res, many);
 
-        var model = sails.models[ req.options[ 'model' ] ];
-        var query = req.param( 'query' );
+        var model = sails.models[req.options['model']];
+        var query = req.param('query');
 
         if (!query) return res.badRequest(null, {
             message: 'You should specify a "query" parameter!'
         });
 
+        // console.log('Params is equal to = ' + JSON.stringify(this.params));
+
         this.model = model;
-        this.params.where = _.transform(model.definition, function(result, val, key) {
+
+        this.params.where = _.transform(model.definition, function (result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
-            if ( val.type == 'string' && model.searchables.indexOf( key ) !== -1 ) {
-                result.or.push( _.set( {}, key, {
-                    contains: query
-                }) );
+            if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
+
+                console.log('\nresult is = ' + JSON.stringify(result));
+
+                console.log('\nmatch param = ' + this.params.match);
+                console.log('\ncondition param = ' + this.params.condition);
+
+                result.or.push(_.set({}, key, {
+                    [this.params.match]: query
+                }));
             }
-        }, {
-            or: []
+        }.bind(this), {
+            or: [],
         });
+        console.log(JSON.stringify(this.params.where));
+
     }
 
     /*
@@ -628,11 +641,13 @@ class ResponseSearch extends ResponseGET {
         } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
 
         this.model.count().where(this.params.where)
-            .then( function ( cant ) {
+            .then(function (cant) {
                 this._count = cant;
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-                }.bind( this ) )
-            .catch( function ( err ) { console.log(err); });
+            }.bind(this))
+            .catch(function (err) {
+                console.log(err);
+            });
 
         this._query = this.populate(this._query, this.model, this.params.include);
 
