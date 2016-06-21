@@ -595,8 +595,6 @@ class ResponseCount extends ResponseBuilder {
     }
 }
 
-// TODO: Add ResponseSearch extending ResponseGET
-
 class ResponseSearch extends ResponseGET {
     constructor(req, res, many) {
         super(req, res, many);
@@ -608,6 +606,8 @@ class ResponseSearch extends ResponseGET {
             message: 'You should specify a "query" parameter!'
         });
 
+        query = _.split(query, ',');
+
         // console.log('Params is equal to = ' + JSON.stringify(this.params));
 
         this.model = model;
@@ -616,20 +616,30 @@ class ResponseSearch extends ResponseGET {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
 
-                console.log('\nresult is = ' + JSON.stringify(result));
+                // console.log('\nresult is = ' + JSON.stringify(result));
+                //
+                // console.log('\nmatch param = ' + this.params.match);
+                //
+                // console.log('\ncondition param = ' + this.params.condition);
 
-                console.log('\nmatch param = ' + this.params.match);
-                console.log('\ncondition param = ' + this.params.condition);
+                if (_.isArray(query)) {
 
-                result.or.push(_.set({}, key, {
-                    [this.params.match]: query
-                }));
+                    _.forEach(query, function (value) {
+                        result.or.push(_.set({}, key, {
+                            [this.params.match]: value
+                        }));
+                    }.bind(this))
+                }
+
+                else {
+                    result.or.push(_.set({}, key, {
+                        [this.params.match]: query
+                    }))
+                }
             }
         }.bind(this), {
-            or: [],
+            or: []
         });
-        console.log(JSON.stringify(this.params.where));
-
     }
 
     /*
