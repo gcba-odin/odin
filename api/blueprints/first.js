@@ -2,13 +2,13 @@ const Response = require('../services/ResponseBuilderService');
 
 module.exports = function(req, res) {
 
-    var builder = new Response.ResponseQuery(req, res, 'createdAt ASC');
+    var builder = new Response.ResponseGET(req, res, false);
 
-    builder.findQuery()
+    builder.firstQuery()
         .then(record => record[0] = [
             record[0], {
-                meta: builder.meta(undefined),
-                links: builder.links(undefined)
+                meta: builder.meta(record[0]),
+                links: builder.links(record[0])
             }
         ])
         .spread(res.ok)
