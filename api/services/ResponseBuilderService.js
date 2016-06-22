@@ -648,12 +648,17 @@ class ResponseSearch extends ResponseGET {
                 if (this.params.condition == 'and') {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
                         }));
                     }.bind(this))
                 } else {
+=======
+                    query = _.replace(query, ',', ' ');
+
+>>>>>>> 25c9cd9a9b72c4238128babb91ea770707661668
 =======
                     query = _.replace(query, ',', ' ');
 
