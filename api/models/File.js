@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+const fs = require('fs');
 
 module.exports = {
     schema: true,
@@ -155,11 +156,24 @@ module.exports = {
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),
     afterUpdate: (values, next) => {
-        if (values.dataset) ZipService.createZip(values.dataset)
+        if (values.dataset) ZipService.createZip(values.dataset);
         next()
     },
     afterCreate: (values, next) => {
-        if (values.dataset) ZipService.createZip(values.dataset)
+        if (values.dataset) ZipService.createZip(values.dataset);
         next();
     },
+    afterDestroy: (destroyedRecords, next) => {
+        if (!_.isEmpty(destroyedRecords)) {
+            destroyedRecords = destroyedRecords[0];
+            console.dir('destroyed records eq to : ' + destroyedRecords);
+            var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
+            console.log(path)
+            fs.unlink(path, function() {
+                DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
+                ZipService.createZip(destroyedRecords.dataset);
+            }.bind(destroyedRecords));
+        }
+        next();
+    }
 };

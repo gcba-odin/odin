@@ -220,10 +220,10 @@ class ResponseGET extends ResponseBuilder {
     }
 
     contentsQuery(dataset, file, cb) {
-        DataStorageService.mongoCount(dataset, file, function(count) {
+        DataStorageService.mongoCount(dataset, file, this.res, function(count) {
             this._count = count;
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-            FileContentsService.mongoContents(dataset, file, this.params.limit, this.params.skip, cb);
+            FileContentsService.mongoContents(dataset, file, this.params.limit, this.params.skip, this.res, cb);
         }.bind(this));
     }
 

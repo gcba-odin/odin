@@ -1,5 +1,5 @@
 module.exports = {
-    mongoContents: function(dataset, filename, limit, skip, cb) {
+    mongoContents: function(dataset, filename, limit, skip, res, cb) {
         var MongoClient = require('mongodb').MongoClient;
 
         // Connect to the db

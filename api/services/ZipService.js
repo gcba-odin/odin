@@ -12,15 +12,7 @@ module.exports = {
             var archive = archiver('zip');
 
             if (err || !stats.isDirectory()) {
-                fs.mkdir( sails.config.odin.uploadFolder + '/' + pk, function (err) {
-                    if ( err ) console.log( err );
-
-                    archive.pipe(output);
-                    archive.directory(
-                        path, pk
-                    );
-                    archive.finalize();
-                });
+                fs.mkdirSync(sails.config.odin.uploadFolder + '/' + pk);
             }
 
             output.on('close', function() {
@@ -32,6 +24,12 @@ module.exports = {
                 console.log('\nerror archive.on ' + err)
                     // if (!res.headersSent) return res.negotiate(err);
             });
+
+            archive.pipe(output);
+            archive.directory(
+                path, pk
+            );
+            archive.finalize();
         });
     }
 };
