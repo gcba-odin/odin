@@ -635,7 +635,6 @@ class ResponseSearch extends ResponseGET {
             message: 'You should specify a "query" parameter!'
         });
 
-        query = _.split(query, ',');
 
         // console.log('Params is equal to = ' + JSON.stringify(this.params));
 
@@ -645,28 +644,51 @@ class ResponseSearch extends ResponseGET {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
 
-                // console.log('\nresult is = ' + JSON.stringify(result));
-                //
-                // console.log('\nmatch param = ' + this.params.match);
-                //
-                // console.log('\ncondition param = ' + this.params.condition);
 
-                if (_.isArray(query)) {
+                if (this.params.condition == 'and') {
 
+<<<<<<< HEAD
                     _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
                         }));
                     }.bind(this))
                 } else {
+=======
+                    query = _.replace(query, ',', ' ');
+
+>>>>>>> 25c9cd9a9b72c4238128babb91ea770707661668
                     result.or.push(_.set({}, key, {
-                        [this.params.match]: query
+                        'contains': query
                     }))
+
+                }
+                // The condition is OR
+                else {
+
+                    query = _.split(query, ',');
+
+                    if (_.isArray(query)) {
+
+                        _.forEach(query, function (value) {
+                            result.or.push(_.set({}, key, {
+                                [this.params.match]: value
+                            }));
+                        }.bind(this))
+                    }
+
+                    else {
+                        result.or.push(_.set({}, key, {
+                            [this.params.match]: query
+                        }))
+                    }
                 }
             }
         }.bind(this), {
             or: []
         });
+        console.log(JSON.stringify(this.params.where));
+
     }
 
     /*
