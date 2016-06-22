@@ -15,5 +15,18 @@ module.exports = {
                     if (err && !res.headersSent) return res.negotiate(err)
                 });
             });
+    },
+    mongoCount: function(dataset, filename, cb) {
+        var MongoClient = require('mongodb').MongoClient;
+        // Connect to the db
+        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
+            sails.config.odin.filesDb.port + "/" + dataset,
+            function(err, db) {
+                if (err && !res.headersSent) return res.negotiate(err);
+                var collection = db.collection(filename);
+                collection.count({}, function(err, count) {
+                    cb(count);
+                });
+            });
     }
 }

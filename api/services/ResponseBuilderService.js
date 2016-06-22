@@ -219,6 +219,14 @@ class ResponseGET extends ResponseBuilder {
         return this._query;
     }
 
+    contentsQuery(dataset, file, cb) {
+        DataStorageService.mongoCount(dataset, file, function(count) {
+            this._count = count;
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+            FileContentsService.mongoContents(dataset, file, this.params.limit, this.params.skip, cb);
+        }.bind(this));
+    }
+
     /*
      * Builds and returns the 'meta' object (part of the response body)
      */
@@ -682,8 +690,6 @@ class ResponseSearch extends ResponseGET {
         }.bind(this), {
             or: []
         });
-        console.log(JSON.stringify(this.params.where));
-
     }
 
     /*
