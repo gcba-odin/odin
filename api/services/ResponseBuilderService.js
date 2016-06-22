@@ -646,47 +646,37 @@ class ResponseSearch extends ResponseGET {
 
 
                 if (this.params.condition == 'and') {
-
-<<<<<<< HEAD
-<<<<<<< HEAD
                     _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
                         }));
                     }.bind(this))
                 } else {
-=======
+
                     query = _.replace(query, ',', ' ');
 
->>>>>>> 25c9cd9a9b72c4238128babb91ea770707661668
-=======
-                    query = _.replace(query, ',', ' ');
-
->>>>>>> 25c9cd9a9b72c4238128babb91ea770707661668
                     result.or.push(_.set({}, key, {
                         'contains': query
                     }))
 
                 }
-                // The condition is OR
-                else {
+            }
+            // The condition is OR
+            else {
 
-                    query = _.split(query, ',');
+                query = _.split(query, ',');
 
-                    if (_.isArray(query)) {
+                if (_.isArray(query)) {
 
-                        _.forEach(query, function (value) {
-                            result.or.push(_.set({}, key, {
-                                [this.params.match]: value
-                            }));
-                        }.bind(this))
-                    }
-
-                    else {
+                    _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
-                            [this.params.match]: query
-                        }))
-                    }
+                            [this.params.match]: value
+                        }));
+                    }.bind(this))
+                } else {
+                    result.or.push(_.set({}, key, {
+                        [this.params.match]: query
+                    }))
                 }
             }
         }.bind(this), {
