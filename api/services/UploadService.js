@@ -40,8 +40,16 @@ module.exports = {
                                 message: 'filetype not allowed'
                             });
                         } else {
-                            filename = file.filename;
-                            cb(null, file.filename);
+                            //if name param is not defined, we put the file name as filename.
+                            if (_.isUndefined(data.name)) {
+                                filename = file.filename;
+                                cb(null, file.filename);
+                                //else, we use name param
+                            } else {
+                                filename = data.name;
+                                cb(null, data.name);
+
+                            }
                         }
                     },
                     dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset),
@@ -97,28 +105,28 @@ module.exports = {
                                     fs.writeFile(filePath, result, function() {});
                                 });
                         }
+                        data.url = req.host + ':' + req.port + '/files' + '/' + data.id,
+                            // Save the file metadata to the relational DB
+                            File.create(data).exec(function created(err, newInstance) {
+                                if (err) return res.negotiate(err);
 
-                        // Save the file metadata to the relational DB
-                        File.create(data).exec(function created(err, newInstance) {
-                            if (err) return res.negotiate(err);
-
-                            if (req._sails.hooks.pubsub) {
-                                if (req.isSocket) {
-                                    Model.subscribe(req, newInstance);
-                                    Model.introduce(newInstance);
+                                if (req._sails.hooks.pubsub) {
+                                    if (req.isSocket) {
+                                        Model.subscribe(req, newInstance);
+                                        Model.introduce(newInstance);
+                                    }
+                                    // Make sure data is JSON-serializable before publishing
+                                    var publishData = _.isArray(newInstance) ?
+                                        _.map(newInstance, function(instance) {
+                                            return instance.toJSON();
+                                        }) :
+                                        newInstance.toJSON();
+                                    Model.publishCreate(publishData, !req.options.mirror && req);
                                 }
-                                // Make sure data is JSON-serializable before publishing
-                                var publishData = _.isArray(newInstance) ?
-                                    _.map(newInstance, function(instance) {
-                                        return instance.toJSON();
-                                    }) :
-                                    newInstance.toJSON();
-                                Model.publishCreate(publishData, !req.options.mirror && req);
-                            }
 
-                            // Send JSONP-friendly response if it's supported
-                            res.created(newInstance);
-                        });
+                                // Send JSONP-friendly response if it's supported
+                                res.created(newInstance);
+                            });
                     })
                 })
         } else {

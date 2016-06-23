@@ -154,7 +154,10 @@ module.exports = {
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next(),
+    beforeCreate: (values, next) => {
+        values.url = _.replace(values.url, 'undefined', values.id);
+        next();
+    },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
         next()
