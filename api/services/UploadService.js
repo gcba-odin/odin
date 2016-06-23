@@ -105,28 +105,27 @@ module.exports = {
                                     fs.writeFile(filePath, result, function() {});
                                 });
                         }
-                        data.url = req.host + ':' + req.port + '/files' + '/' + data.id,
-                            // Save the file metadata to the relational DB
-                            File.create(data).exec(function created(err, newInstance) {
-                                if (err) return res.negotiate(err);
+                        // Save the file metadata to the relational DB
+                        File.create(data).exec(function created(err, newInstance) {
+                            if (err) return res.negotiate(err);
 
-                                if (req._sails.hooks.pubsub) {
-                                    if (req.isSocket) {
-                                        Model.subscribe(req, newInstance);
-                                        Model.introduce(newInstance);
-                                    }
-                                    // Make sure data is JSON-serializable before publishing
-                                    var publishData = _.isArray(newInstance) ?
-                                        _.map(newInstance, function(instance) {
-                                            return instance.toJSON();
-                                        }) :
-                                        newInstance.toJSON();
-                                    Model.publishCreate(publishData, !req.options.mirror && req);
+                            if (req._sails.hooks.pubsub) {
+                                if (req.isSocket) {
+                                    Model.subscribe(req, newInstance);
+                                    Model.introduce(newInstance);
                                 }
+                                // Make sure data is JSON-serializable before publishing
+                                var publishData = _.isArray(newInstance) ?
+                                    _.map(newInstance, function(instance) {
+                                        return instance.toJSON();
+                                    }) :
+                                    newInstance.toJSON();
+                                Model.publishCreate(publishData, !req.options.mirror && req);
+                            }
 
-                                // Send JSONP-friendly response if it's supported
-                                res.created(newInstance);
-                            });
+                            // Send JSONP-friendly response if it's supported
+                            res.created(newInstance);
+                        });
                     })
                 })
         } else {

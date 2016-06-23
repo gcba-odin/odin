@@ -21,7 +21,7 @@ module.exports = {
             create: ['addCreatedBy']
         },
         FileController: {
-            create: ['addCreatedBy']
+            create: ['addCreatedBy', 'addUrl']
         },
         OrganizationController: {
             create: ['addCreatedBy']
@@ -35,5 +35,12 @@ module.exports = {
         ConfigController: {
             create: ['addCreatedBy']
         },
+        MapController: {
+            create: ['addCreatedBy', 'addUrl']
+        },
+        ChartController: {
+            create: ['addCreatedBy', 'addUrl']
+        },
+
     }
 };

@@ -155,7 +155,8 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'undefined', values.id);
+        values.url = _.replace(values.url, 'model', 'files');
+        values.url = _.replace(values.url, 'id', values.id);
         next();
     },
     afterUpdate: (values, next) => {
@@ -169,7 +170,6 @@ module.exports = {
     afterDestroy: (destroyedRecords, next) => {
         if (!_.isEmpty(destroyedRecords)) {
             destroyedRecords = destroyedRecords[0];
-            console.dir('destroyed records eq to : ' + destroyedRecords);
             var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
             console.log(path)
             fs.unlink(path, function() {

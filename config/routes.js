@@ -789,5 +789,115 @@ module.exports = {
             model: 'log',
             action: 'query'
         },
+
+        // Maps
+
+        'GET /maps/first': {
+            blueprint: 'first',
+            model: 'map',
+            // policy: 'isAuthenticated'
+        },
+        'GET /maps/last': {
+            blueprint: 'last',
+            model: 'map',
+            // policy: 'isAuthenticated'
+        },
+        'GET /maps/search': {
+            blueprint: 'search',
+            model: 'map',
+            // policy: 'isAuthenticated'
+        },
+
+        'HEAD /maps/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'map'
+        },
+        'HEAD /maps': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'map'
+        },
+
+        'OPTIONS /maps': {
+            controller: 'Options',
+            model: 'map',
+            action: 'collection'
+        },
+        'OPTIONS /maps/:id': {
+            controller: 'Options',
+            model: 'map',
+            action: 'instance'
+        },
+        'OPTIONS /maps/first': {
+            controller: 'Options',
+            model: 'map',
+            action: 'query'
+        },
+        'OPTIONS /maps/last': {
+            controller: 'Options',
+            model: 'map',
+            action: 'query'
+        },
+        'OPTIONS /maps/count': {
+            controller: 'Options',
+            model: 'map',
+            action: 'query'
+        },
+
+        // Charts
+
+        'GET /charts/first': {
+            blueprint: 'first',
+            model: 'chart',
+            // policy: 'isAuthenticated'
+        },
+        'GET /charts/last': {
+            blueprint: 'last',
+            model: 'chart',
+            // policy: 'isAuthenticated'
+        },
+        'GET /charts/search': {
+            blueprint: 'search',
+            model: 'chart',
+            // policy: 'isAuthenticated'
+        },
+
+        'HEAD /charts/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'chart'
+        },
+        'HEAD /charts': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'chart'
+        },
+
+        'OPTIONS /charts': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'collection'
+        },
+        'OPTIONS /charts/:id': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'instance'
+        },
+        'OPTIONS /charts/first': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'query'
+        },
+        'OPTIONS /charts/last': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'query'
+        },
+        'OPTIONS /charts/count': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'query'
+        },
     }
 };
