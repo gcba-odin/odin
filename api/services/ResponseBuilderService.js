@@ -218,6 +218,12 @@ class ResponseGET extends ResponseBuilder {
 
         return this._query;
     }
+    getDataForFeedQuery() {
+        this._query = this._model.find({
+            sort: 'updatedAt DESC'
+        });
+        return this._query
+    }
 
     contentsQuery(dataset, file, cb) {
         DataStorageService.mongoCount(dataset, file, this.res, function(count) {
@@ -252,8 +258,10 @@ class ResponseGET extends ResponseBuilder {
         }
 
         if (!_.isUndefined(records)) {
+            console.dir(this.params.pages);
+
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this.params.pages > 1) {
+            if (_.isUndefined(this.params.pages) || this.params.pages == this.params.page) {
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
