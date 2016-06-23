@@ -485,7 +485,7 @@ module.exports = {
 
         // Datasets
         'GET /datasets/:id/download': 'Dataset.download',
-
+        'GET /datasets/:id/feed/rss': 'Dataset.feedRss',
         'GET /datasets/first': {
             blueprint: 'first',
             model: 'dataset',

@@ -4,10 +4,12 @@
  * DatasetController
  * @description :: Server-side logic for ...
  */
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const Response = require('../services/ResponseBuilderService');
+const pluralize = require('pluralize');
 
 module.exports = {
     download: function(req, res) {
-        const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
         const pk = actionUtil.requirePk(req);
 
         var path = sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip';
@@ -20,5 +22,58 @@ module.exports = {
         fileAdapter.read(path).on('error', function(err) {
             return res.serverError(err);
         }).pipe(res);
+    },
+    feedRss: function(req, res) {
+        var RSS = require('rss');
+
+        var feedOptions = {
+            title: '',
+            description: '',
+            generator: '',
+            feed_url: '',
+            site_url: '',
+            image_url: '',
+            docs: '',
+            managingEditor: '',
+            webMaster: '',
+            copyright: '',
+            categories: '',
+            pubDate: '',
+            ttl: '',
+            hub: '',
+            custom_namespaces: '',
+            custom_elements: '',
+        }
+        var feed = new RSS(feedOptions);
+
+        var builder = new Response.ResponseGET(req, res, false);
+
+        // const modelName = pluralize(buiilder._model.adapter.identity);
+
+        builder.getDataForFeedQuery().then(function(records) {
+            // console.dir(records[0]);
+            _.forEach(records, function(record) {
+
+                var itemOption = {
+                    title: record.name,
+                    description: record.description,
+                    url: req.host + ':' + req.port + '/' + builder.modelName + '/' + record.id,
+                    // guid: '',
+                    // categories: '',
+                    // author: '',
+                    date: record.createdAt,
+                    // lat: '',
+                    // long: '',
+                    // custom_elements: '',
+                    // enclosure: '',
+                }
+                feed.item(itemOption);
+            });
+            var xml = feed.xml();
+            res.set({
+                'Content-Type': 'application/xml',
+            });
+            return res.send(xml);
+        })
     }
 };
