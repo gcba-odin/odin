@@ -71,7 +71,7 @@ class ParamsProcessor {
 
     parseCondition(req) {
         var condition = req.param('condition');
-        if (condition == 'AND') {
+        if (condition === 'AND') {
             return 'and';
         }
         return 'or';
@@ -80,7 +80,7 @@ class ParamsProcessor {
     parseCriteria(req, model) {
         var criteria = _actionUtil.parseCriteria(req);
 
-        _.forEach(criteria, function (value, key) {
+        _.forEach(criteria, function(value, key) {
             if (!model.schema[key]) delete criteria[key];
         });
 
@@ -114,7 +114,7 @@ class ParamsProcessor {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function (element, i) {
+            _.forEach(includes, function(element, i) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -123,8 +123,7 @@ class ParamsProcessor {
                     if (_.isArray(split) && split.length > 1) {
                         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
                         else results.partials[split[0]] = [split[1]];
-                    }
-                    ;
+                    };
                 } else results.full.push(testee);
             });
 
@@ -171,12 +170,12 @@ class ParamsProcessor {
     }
 
     select(query, fields) {
-        return query.then(function (records) {
+        return query.then(function(records) {
             // Filter out the partials
             // Each result item
-            records.forEach(function (element, j) {
-                records[j] = _.transform(element, function (result, value, key) {
-                    _.forEach(fields.full, function (field) {
+            records.forEach(function(element, j) {
+                records[j] = _.transform(element, function(result, value, key) {
+                    _.forEach(fields.full, function(field) {
                         if (fields.full.indexOf(field) === -1) {
                             delete element[field];
                         } else result[key] = element[key];

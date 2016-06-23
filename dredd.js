@@ -3,7 +3,7 @@ var hooks = require('hooks');
 // Recursively add null as acceptable type if there is string
 // "#nullable" present in the property description
 var patchPropertiesWithNullable = function(schema) {
-    if (typeof(schema['properties']) == 'object' && !Array.isArray(schema['properties'])) {
+    if (typeof(schema['properties']) === 'object' && !Array.isArray(schema['properties'])) {
         for (property in schema['properties']) {
             var partialSchemaToPatch = schema['properties'][property];
             schema['properties'][property] = patchPropertiesWithNullable(partialSchemaToPatch);
@@ -15,7 +15,7 @@ var patchPropertiesWithNullable = function(schema) {
             if (schema['type'] === undefined) {
                 schema['type'] = 'null';
 
-            } else if (typeof(schema['type']) == 'string') {
+            } else if (typeof(schema['type']) === 'string') {
                 schema['type'] = [schema['type'], 'null'];
 
             } else if (Array.isArray(schema['type'])) {

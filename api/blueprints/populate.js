@@ -45,7 +45,7 @@ module.exports = function expand(req, res) {
 
     // Coerce the child PK to an integer if necessary
     if (childPk) {
-        if (Model.attributes[Model.primaryKey].type == 'integer') {
+        if (Model.attributes[Model.primaryKey].type === 'integer') {
             childPk = +childPk || 0;
         }
     }
