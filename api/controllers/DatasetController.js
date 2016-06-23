@@ -27,22 +27,22 @@ module.exports = {
         var RSS = require('rss');
 
         var feedOptions = {
-            title: '',
-            description: '',
-            generator: '',
-            feed_url: '',
-            site_url: '',
-            image_url: '',
-            docs: '',
-            managingEditor: '',
-            webMaster: '',
-            copyright: '',
-            categories: '',
-            pubDate: '',
-            ttl: '',
-            hub: '',
-            custom_namespaces: '',
-            custom_elements: '',
+            title: 'Datasets',
+            description: 'Feed de datasets',
+            generator: 'ODIN',
+            feed_url: req.host + ':' + req.port + '/datasets',
+            // site_url: '',
+            // image_url: '',
+            // docs: '',
+            // managingEditor: '',
+            // webMaster: '',
+            // copyright: '',
+            // categories: '',
+            // pubDate: '',
+            // ttl: '',
+            // hub: '',
+            // custom_namespaces: '',
+            // custom_elements: '',
         }
         var feed = new RSS(feedOptions);
 
@@ -71,7 +71,7 @@ module.exports = {
             });
             var xml = feed.xml();
             res.set({
-                'Content-Type': 'application/xml',
+                'Content-Type': 'application/rss+xml',
             });
             return res.send(xml);
         })
