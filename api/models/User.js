@@ -24,33 +24,33 @@ module.exports = {
             required: true,
             unique: true,
             alphanumericdashed: true,
-            size: 25,
+            size: 25
         },
         password: {
             type: 'string',
-            required: true,
+            required: true
         },
         email: {
             type: 'email',
             required: true,
             unique: true,
             email: true,
-            size: 250,
+            size: 250
         },
         firstName: {
             type: 'string',
             defaultsTo: '',
-            size: 50,
+            size: 50
         },
         lastName: {
             type: 'string',
             defaultsTo: '',
-            size: 100,
+            size: 100
         },
         avatar: {
             type: 'string',
             url: true,
-            size: 500,
+            size: 500
         },
         organization: {
             model: 'organization'
@@ -70,7 +70,6 @@ module.exports = {
         fullName() {
             return this.firstName + ' ' + this.lastName;
         },
-
 
         toJSON() {
             let obj = this.toObject();
