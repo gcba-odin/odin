@@ -70,7 +70,7 @@ module.exports = {
         },
         createdBy: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes
