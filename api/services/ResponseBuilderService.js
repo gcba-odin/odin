@@ -22,7 +22,6 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
 const mergeDefaults = require('merge-defaults');
 
-//TODO: Extract common variables on parent class ResponseBuilder, eg. model?
 class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
