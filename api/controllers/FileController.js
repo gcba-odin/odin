@@ -29,7 +29,8 @@ module.exports = {
                 return res.serverError(err);
             }).pipe(res);
         }).fail(function(err) {
-            console.log(err);
+            if (err) console.error(err);
+
             return res.negotiate();
         });
     },

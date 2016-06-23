@@ -14,7 +14,7 @@ module.exports = {
                 var cursor = collection.find().skip(skip).limit(limit);
 
                 cursor.each(function(err, doc) {
-                    if (err) console.log(err);
+                    if (err) console.error(err);
 
                     if (doc !== null) {
                         data.push(doc);

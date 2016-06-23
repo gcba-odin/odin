@@ -39,8 +39,8 @@ module.exports = {
             size: 500
         },
         createdBy: {
-            model: 'user',
-            // required: true
+            model: 'user'
+                // required: true
         },
 
         toJSON() {

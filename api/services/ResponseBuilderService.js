@@ -715,7 +715,7 @@ class ResponseSearch extends ResponseGET {
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this))
             .catch(function(err) {
-                console.log(err);
+                console.error(err);
             });
 
         this._query = this.populate(this._query, this.model, this.params.include);
