@@ -192,7 +192,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes
@@ -217,11 +217,18 @@ module.exports = {
     afterCreate: (values, next) => {
 
         const fs = require('fs');
-        fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function(err, stats) {
+
+
+        fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
             if (err || !stats.isDirectory()) {
-                fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);
+                fs.mkdirSync(sails.config.odin.uploadFolder);
             }
-            next()
+            fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function(err, stats) {
+                if (err || !stats.isDirectory()) {
+                    fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);
+                }
+                next()
+            })
         })
     }
 };

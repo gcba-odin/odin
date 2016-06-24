@@ -35,6 +35,6 @@ module.exports = {
      * Expose each of your app's models as global variables
      * @type {Boolean}
      */
-    models: false
+    models: true
   }
 };
