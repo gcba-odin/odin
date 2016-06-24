@@ -7,8 +7,8 @@ var patchPropertiesWithNullable = function(schema) {
         for (property in schema['properties']) {
             var partialSchemaToPatch = schema['properties'][property];
             schema['properties'][property] = patchPropertiesWithNullable(partialSchemaToPatch);
-        };
-    };
+        }
+    }
 
     if (schema['description'] !== undefined) {
         if (schema['description'].indexOf("#nullable") > -1) {
@@ -21,9 +21,9 @@ var patchPropertiesWithNullable = function(schema) {
             } else if (Array.isArray(schema['type'])) {
                 schema['type'].push('null');
 
-            };
-        };
-    };
+            }
+        }
+    }
 
     return (schema);
 };
@@ -35,8 +35,8 @@ hooks.beforeAll(function(transactions, callback) {
             var schema = JSON.parse(transaction['expected']['bodySchema']);
             schema = patchPropertiesWithNullable(schema);
             transactions[index]['expected']['bodySchema'] = JSON.stringify(schema, null, 2);
-        };
-    };
+        }
+    }
 
     callback();
 });

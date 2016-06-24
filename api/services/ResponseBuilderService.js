@@ -70,10 +70,10 @@ class ResponseBuilder {
 
         // if (!_.isInteger(this.status)) new Error('Status must be an integer.');
         // if (!_.isPlainObject(this.headers)) new Error('Headers is not an object.');
-        if (!_.isPlainObject(this._meta)) new Error('Meta is not an object.');
-        if (!_.isPlainObject(this._links)) new Error('Links is not an object.');
-        if (_.isEqual(this._meta, _emptyMeta)) new Error('Meta is empty.');
-        if (_.isEmpty(this._links)) new Error('Links is empty.');
+        if (!_.isPlainObject(this._meta)) return new Error('Meta is not an object.');
+        if (!_.isPlainObject(this._links)) return new Error('Links is not an object.');
+        if (_.isEqual(this._meta, _emptyMeta)) return new Error('Meta is empty.');
+        if (_.isEmpty(this._links)) return new Error('Links is empty.');
 
         // this.res.set(this.headers);
 
@@ -82,10 +82,10 @@ class ResponseBuilder {
          */
 
         if (_.isEmpty(error)) {
-            if (!_.isPlainObject(this._data) && !_.isArray(this._data)) new Error('Data is not an object or an array.');
+            if (!_.isPlainObject(this._data) && !_.isArray(this._data)) return new Error('Data is not an object or an array.');
             body = _.omit(elements, 'error');
         } else {
-            if (!_.isPlainObject(this.error)) new Error('Error is not an object.');
+            if (!_.isPlainObject(this.error)) return new Error('Error is not an object.');
             body = _.omit(elements, 'data');
         }
 
@@ -153,11 +153,11 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             if (_.isPlainObject(this._data)) this._data = [];
             else if (_.isArray(this._data)) this._data = _.concat(this._data, value);
-            else new Error('Data is not an array. It should be, since many is true.');
+            else return new Error('Data is not an array. It should be, since many is true.');
         } else {
             if (_.isArray(this._data)) this._data = {};
             else if (_.isPlainObject(this._data)) this._addValue(value, this._data);
-            else new Error('Data is not an object. It should be, since many is false.');
+            else return new Error('Data is not an object. It should be, since many is false.');
         }
 
         return this; // Allows chaining

@@ -60,10 +60,8 @@ class ParamsProcessor {
         switch (_.lowerCase(match)) {
             case 'begins':
                 return 'startsWith';
-                break;
             case 'ends':
                 return 'endsWith';
-                break;
             default:
                 return 'contains'
         }
@@ -123,7 +121,7 @@ class ParamsProcessor {
                     if (_.isArray(split) && split.length > 1) {
                         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
                         else results.partials[split[0]] = [split[1]];
-                    };
+                    }
                 } else results.full.push(testee);
             });
 

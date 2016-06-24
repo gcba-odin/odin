@@ -33,7 +33,7 @@ module.exports = {
   baseAttributes: {
     name: {
       type: 'string'
-    },
+    }
   },
   setAttributes() {
     return this.baseAttributes

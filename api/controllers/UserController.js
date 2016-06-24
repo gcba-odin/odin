@@ -24,25 +24,16 @@ module.exports = {
      * @param res
      */
     refreshToken(req, res) {
-        if (!req.param('token')) return res.badRequest(null, {message: 'You must provide token parameter'});
+        if (!req.param('token')) return res.badRequest(null, {
+            message: 'You must provide token parameter'
+        });
 
         const oldDecoded = CipherService.jwt.decodeSync(req.param('token'));
 
         res.ok({
-            token: CipherService.jwt.encodeSync({id: oldDecoded.id})
+            token: CipherService.jwt.encodeSync({
+                id: oldDecoded.id
+            })
         });
-    },
-    // foo(req, res){
-    //     var methods = (OptionsMethodsService.getMethods.collectionMethods());
-    //     // Key has the function that returns the parameters & value has the HTTP verb
-    //     var methodsArray = [];
-    //     _.forEach(methods, function (key, methodVerb) {
-    //         methodsArray.push({
-    //             "verb": methodVerb,
-    //             "url": req.path,
-    //             "parameters": key(User)
-    //         });
-    //     });
-    //     console.log(methodsArray);
-    // }
+    }
 };

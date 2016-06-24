@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+const fs = require('fs');
 
 module.exports = {
     schema: true,
@@ -68,7 +69,7 @@ module.exports = {
         },
         optional7: {
             type: 'string',
-            size: 500,
+            size: 500
         },
         optional8: {
             type: 'string',
@@ -216,7 +217,6 @@ module.exports = {
     beforeCreate: (values, next) => next(),
     afterCreate: (values, next) => {
 
-        const fs = require('fs');
 
 
         fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {

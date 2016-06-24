@@ -9,7 +9,7 @@
  * Response body content may or may not be present.
  */
 
-module.exports = function (data, config) {
+module.exports = function(data, config) {
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {}),
@@ -22,7 +22,7 @@ module.exports = function (data, config) {
     // }, _.get(config, 'root', {}));
 
     this.res.set({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     });
     this.res.status(201);
     this.res.send(response);

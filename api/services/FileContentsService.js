@@ -1,6 +1,7 @@
+var MongoClient = require('mongodb').MongoClient;
+
 module.exports = {
     mongoContents: function(dataset, filename, limit, skip, res, cb) {
-        var MongoClient = require('mongodb').MongoClient;
 
         // Connect to the db
         MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
@@ -19,7 +20,7 @@ module.exports = {
                     if (doc !== null) {
                         data.push(doc);
                     } else {
-                        cb(data);
+                        return cb(data);
                     }
                 });
             });

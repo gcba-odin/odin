@@ -7,13 +7,14 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const pluralize = require('pluralize');
+var RSS = require('rss');
+var SkipperDisk = require('skipper-disk');
 
 module.exports = {
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
 
         var path = sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip';
-        var SkipperDisk = require('skipper-disk');
         var fileAdapter = SkipperDisk();
 
         res.set('Content-Type', 'application/zip');
@@ -24,7 +25,6 @@ module.exports = {
         }).pipe(res);
     },
     feedRss: function(req, res) {
-        var RSS = require('rss');
 
         var feedOptions = {
             title: 'Datasets',

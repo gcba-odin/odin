@@ -16,7 +16,7 @@ module.exports = function(data, config) {
   }, _.get(config, 'root', {}));
 
   this.res.set({
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   });
   this.res.status(403);
   this.res.send(response);

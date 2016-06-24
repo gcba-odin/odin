@@ -52,7 +52,7 @@ module.exports = {
         },
         user: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes

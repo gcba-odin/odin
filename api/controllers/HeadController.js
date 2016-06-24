@@ -14,7 +14,7 @@ module.exports = {
         var id = req.param('id');
         res.set({
             'Authorization': 'JWT [token]',
-            'Connection': 'keep-alive',
+            'Connection': 'keep-alive'
         });
         if (id) {
             model.findOne({

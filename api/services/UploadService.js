@@ -11,7 +11,6 @@ const shortid = require('shortid');
 const mime = require('mime');
 const Converter = require("csvtojson").Converter;
 const iconv = require('iconv-lite');
-
 module.exports = {
     uploadFile: function(req, res) {
         var extension = '';
@@ -43,17 +42,17 @@ module.exports = {
                             //if name param is not defined, we put the file name as filename.
                             if (_.isUndefined(data.name)) {
                                 filename = file.filename;
-                                cb(null, file.filename);
+                                return cb(null, file.filename);
                                 //else, we use name param
                             } else {
                                 filename = data.name;
-                                cb(null, data.name);
+                                return cb(null, data.name);
 
                             }
                         }
                     },
-                    dirname: require('path').resolve(sails.config.odin.uploadFolder + '/' + dataset),
-                    maxBytes: 2000000000,
+                    dirname: path.resolve(sails.config.odin.uploadFolder + '/' + dataset),
+                    maxBytes: 2000000000
 
                 },
                 function onUploadComplete(err, files) {
@@ -68,6 +67,8 @@ module.exports = {
                     sails.models.filetype.findOne({
                         name: filetypeName
                     }).exec(function(err, record) {
+                        if (err) return res.negotiate(err);
+                        if (!record) return res.notFound();
                         data.type = record.id;
 
                         // Check if the upload is a textfile (via mimetype)

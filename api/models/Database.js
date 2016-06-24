@@ -48,7 +48,7 @@ module.exports = {
         },
         url: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes

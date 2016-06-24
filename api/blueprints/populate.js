@@ -80,7 +80,7 @@ module.exports = function expand(req, res) {
             return res.ok(matchingRecord[relation], {
                 meta: {
                     code: 'OK',
-                    message: 'The operation was executed successfully.',
+                    message: 'The operation was executed successfully.'
                 },
                 links: {
                     parent: req.host + ':' + req.port + '/' + modelName

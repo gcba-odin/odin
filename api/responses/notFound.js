@@ -13,12 +13,12 @@ module.exports = function(data, config) {
 
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
-        links: _.get(config, 'links', {}),
+        links: _.get(config, 'links', {})
     }, _.get(config, 'root', {}));
 
 
     this.res.set({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     });
     this.res.status(404);
     this.res.json(response);

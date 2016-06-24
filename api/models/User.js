@@ -105,7 +105,7 @@ module.exports = {
         },
         datasets: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return _.merge({

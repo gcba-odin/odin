@@ -7,14 +7,14 @@
  * The general catch-all error when the server-side throws an exception.
  */
 
-module.exports = function (data, config) {
+module.exports = function(data, config) {
     const response = _.assign({
         code: _.get(config, 'code', 'E_UNSUPPORTED_MEDIA_TYPE'),
-        message: _.get(config, 'message', 'Filetype not allowed'),
+        message: _.get(config, 'message', 'Filetype not allowed')
     }, _.get(config, 'root', {}));
 
     this.res.set({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     });
     this.res.status(415);
     this.res.send(response);

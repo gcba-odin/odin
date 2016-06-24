@@ -175,7 +175,7 @@ module.exports = {
             fs.unlink(path, function() {
                 DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
                 ZipService.createZip(destroyedRecords.dataset);
-            }.bind(destroyedRecords));
+            });
         }
         next();
     }

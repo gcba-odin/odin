@@ -47,7 +47,7 @@ module.exports = {
         },
         files: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes

@@ -7,6 +7,8 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const mime = require('mime');
+var dirname = require('path')
+var SkipperDisk = require('skipper-disk');
 
 module.exports = {
     upload: function(req, res) {
@@ -18,8 +20,7 @@ module.exports = {
         File.findOne(pk).then(function(file) {
             if (!file) return res.notFound();
 
-            var dirname = require('path').resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name);
-            var SkipperDisk = require('skipper-disk');
+            dirname.resolve(sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name);
             var fileAdapter = SkipperDisk();
 
             res.set('Content-Type', mime.lookup(file.name.split('.').pop()));

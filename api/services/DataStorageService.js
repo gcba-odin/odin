@@ -1,8 +1,9 @@
+var MongoClient = require('mongodb').MongoClient;
+
 module.exports = {
 
     mongoConnect: function(dataset, filename, res, cb) {
 
-        var MongoClient = require('mongodb').MongoClient;
 
         // Connect to the db
         MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
