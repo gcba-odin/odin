@@ -1,5 +1,6 @@
 module.exports = function(req, res, next) {
-    req.user ? req.body.createdBy = req.user.id : req.body.createdBy = 'noUser';
+
+    req.body.createdBy = (req.user ? req.user.id : 'noUser');
 
     return next();
 }

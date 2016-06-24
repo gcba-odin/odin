@@ -46,7 +46,7 @@ class ResponseBuilder {
 
         this._addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
-                if (!_.isPlainObject(target)) new Error('Target is not an object.');
+                if (!_.isPlainObject(target)) return new Error('Target is not an object.');
                 target[value[0]] = value[1];
             }
         }
