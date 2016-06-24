@@ -16,7 +16,6 @@
              if (err || !stats.isDirectory()) {
                  fs.mkdirSync(sails.config.odin.uploadFolder + '/' + pk);
              }
-
              output.on('close', function() {
                  console.log(archive.pointer() + ' total bytes');
                  console.log('archiver has been finalized and the output file descriptor has closed.');
@@ -32,6 +31,7 @@
                  path, pk
              );
              archive.finalize();
+
          });
      }
  };

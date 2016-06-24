@@ -215,20 +215,5 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next(),
-    afterCreate: (values, next) => {
-
-
-
-        fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
-            if (err || !stats.isDirectory()) {
-                fs.mkdirSync(sails.config.odin.uploadFolder);
-            }
-            fs.lstat(sails.config.odin.uploadFolder + '/' + values.id, function(err, stats) {
-                if (err || !stats.isDirectory()) {
-                    fs.mkdirSync(sails.config.odin.uploadFolder + '/' + values.id);
-                }
-                next()
-            })
-        })
-    }
+    afterCreate: (values, next) => next()
 };
