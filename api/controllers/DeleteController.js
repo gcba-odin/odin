@@ -7,18 +7,18 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-    delete: function (req, res) {
+    delete: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
 
         var user;
-        _.isUndefined(req.user) ? user = 'noUser' : user = req.user.id;
+        user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
 
         model.update({
             id: id
         }, {
             deletedAt: new Date()
-        }).exec(function (err, record) {
+        }).exec(function(err, record) {
 
             if (err) return res.negotiate(err);
 
@@ -28,7 +28,7 @@ module.exports = {
             return res.deleted();
         });
     },
-    restore: function (req, res) {
+    restore: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
 
@@ -36,7 +36,7 @@ module.exports = {
             id: id
         }, {
             deletedAt: null
-        }).exec(function (err, record) {
+        }).exec(function(err, record) {
             console.log(record);
             if (err) return res.negotiate(err);
             return res.ok();

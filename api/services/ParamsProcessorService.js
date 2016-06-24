@@ -158,7 +158,7 @@ class ParamsProcessor {
                         else results.partials[split[0]] = [split[1]];
 
                         results.full.push(split[0]);
-                    };
+                    }
                 } else results.full.push(testee);
             });
         }
