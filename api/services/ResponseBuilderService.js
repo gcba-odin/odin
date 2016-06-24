@@ -187,7 +187,7 @@ class ResponseGET extends ResponseBuilder {
 
         this._query = this.populate(this._query, this._model, this.params.include);
         //console.dir(this._query);
-        this._query = this.select(this._query, this.params.fields);
+        //this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -405,7 +405,7 @@ class ResponseGET extends ResponseBuilder {
                     query.populate(key);
                 }, this);
 
-                query.then(function(records) {
+                return query.then(function(records) {
                     // Filter out the partials
                     // Each result item
                     records.forEach(function(element, j) {
@@ -430,8 +430,6 @@ class ResponseGET extends ResponseBuilder {
 
                     return records;
                 });
-
-                return query;
             } else return query;
         }
 
