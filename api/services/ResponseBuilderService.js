@@ -168,8 +168,8 @@ class ResponseGET extends ResponseBuilder {
      */
     findQuery() {
         if (this._many) {
-            this._query = this._model.find(this.params.fields.length > 0 ? {
-                select: this.params.fields
+            this._query = this._model.find(this.params.fields.full.length > 0 ? {
+                select: this.params.fields.full
             } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
 
             this._model.count().where(this.params.where)
@@ -179,12 +179,15 @@ class ResponseGET extends ResponseBuilder {
                 }.bind(this));
         } else {
             this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk, this.params.fields.length > 0 ? {
-                select: this.params.fields
+            this._query = this._model.find(this._pk, this.params.fields.full.length > 0 ? {
+                select: this.params.fields.full
             } : null);
         }
         // this._query = this.select(this._query, this.params.fields);
+
         this._query = this.populate(this._query, this._model, this.params.include);
+        //console.dir(this._query);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -346,6 +349,33 @@ class ResponseGET extends ResponseBuilder {
         return this._links;
     }
 
+    select(query, fields) {
+        query.then(function(records) {
+            // Filter out the partials
+            // Each result item
+            records.forEach(function(element, j) {
+                records[j] = _.transform(element, function(result, value, key) {
+                    // Each granular include, gruped by model
+                    _.forEach(fields.partials, function(partialValue, partialKey) {
+                        if (key === partialKey && _.isObject(element[partialKey])) {
+                            // Each included object in the collection
+                            _.forEach(element[partialKey], function(resultValue, resultKey) {
+                                // If it's not listed on the granular includes, delete it
+                                if (partialValue.indexOf(resultKey) === -1) {
+                                    delete element[partialKey][resultKey];
+                                } else result[partialKey] = element[partialKey];
+                            });
+                        } else result[key] = element[key];
+                    });
+                }, element);
+            });
+
+            return records;
+        });
+
+        return query;
+    }
+
     /*
      * Handles the population of related items and collections
      */
@@ -375,7 +405,7 @@ class ResponseGET extends ResponseBuilder {
                     query.populate(key);
                 }, this);
 
-                return query.then(function(records) {
+                query.then(function(records) {
                     // Filter out the partials
                     // Each result item
                     records.forEach(function(element, j) {
@@ -400,6 +430,8 @@ class ResponseGET extends ResponseBuilder {
 
                     return records;
                 });
+
+                return query;
             } else return query;
         }
 
@@ -704,8 +736,8 @@ class ResponseSearch extends ResponseGET {
      * Builds and returns the query promise
      */
     searchQuery() {
-        this._query = this.model.find(this.params.fields.length > 0 ? {
-            select: this.params.fields
+        this._query = this.model.find(this.params.fields.full.length > 0 ? {
+            select: this.params.fields.full
         } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
 
         this.model.count().where(this.params.where)

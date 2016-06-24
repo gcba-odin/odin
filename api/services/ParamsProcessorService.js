@@ -128,61 +128,45 @@ class ParamsProcessor {
             delete this.req.query.include;
         }
 
+        console.dir(results);
         return results;
     }
 
     parseFields(req) {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
+        var splits = [];
+        var results = {
+            full: [], // Here go the models that will be included with all their attributes
+            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+        };
+
+        console.log(fields);
 
         if (this.req.query.fields) {
             delete this.req.query.fields;
         }
 
-        return fields;
+        if (fields.length > 0) {
+            _.forEach(fields, function(element, i) {
+                var testee = String(element);
 
-        /*
-         var splits = [];
-         var results = {
-         full: [], // Here go the models that will be included with all their attributes
-         partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
-         };
+                if (testee.indexOf('.') !== -1) {
+                    var split = testee.split('.', 2);
 
-         if (fields.length > 0) {
-         _.forEach(fields, function(element, i) {
-         var testee = String(element);
+                    if (_.isArray(split) && split.length > 1) {
+                        if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
+                        else results.partials[split[0]] = [split[1]];
 
-         if (testee.indexOf('.') !== -1) {
-         var split = testee.split('.', 2);
-
-         if (_.isArray(split) && split.length > 1) {
-         if (_.isArray(results.partials[split[0]])) results.partials[split[0]].push(split[1]);
-         else results.partials[split[0]] = [split[1]];
-         };
-         } else results.full.push(testee);
-         });
-         }
-
-         this.partials = results.partials;
-         return results;
-         */
-    }
-
-    select(query, fields) {
-        return query.then(function(records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    _.forEach(fields.full, function(field) {
-                        if (fields.full.indexOf(field) === -1) {
-                            delete element[field];
-                        } else result[key] = element[key];
-                    });
-                }, element);
+                        results.full.push(split[0]);
+                    };
+                } else results.full.push(testee);
             });
+        }
 
-            return records;
-        });
+        console.dir(results);
+        return results;
+
+        //return fields;
     }
 
     toString() {
