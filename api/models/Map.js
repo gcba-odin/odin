@@ -9,6 +9,7 @@ var shortId = require('shortid');
 
 module.exports = {
     schema: true,
+    globalId: '_Map',
 
     attributes: {
         id: {
