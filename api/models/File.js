@@ -51,8 +51,8 @@ module.exports = {
             type: 'datetime'
         },
         type: {
-            model: 'filetype',
-            // required: true
+            model: 'filetype'
+                // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
@@ -67,8 +67,8 @@ module.exports = {
             required: true
         },
         dataset: {
-            model: 'dataset',
-            // required: true
+            model: 'dataset'
+                // required: true
         },
         tags: {
             collection: 'tag',
@@ -80,8 +80,8 @@ module.exports = {
             required: true
         },
         createdBy: {
-            model: 'user',
-            // required: true
+            model: 'user'
+                // required: true
         },
 
         toJSON() {
@@ -133,7 +133,7 @@ module.exports = {
         },
         createdBy: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes

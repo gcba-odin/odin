@@ -24,7 +24,7 @@ module.exports = {
         Promise.reduce(models, (res, modelName) => {
                 const model = sails.models[modelName];
                 const where = _.transform(model.definition, function(result, val, key) {
-                    if (val.type == 'string' && model.searchables && model.searchables.indexOf(key) != -1) {
+                    if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
                         result.or.push(_.set({}, key, {
                             contains: q
                         }))

@@ -7,7 +7,7 @@ module.exports = {
         var model = actionUtil.parseModel(req);
         var target = model.adapter.identity;
 
-        if (sails.config.odin.logWhitelist.indexOf(target) != -1) {
+        if (sails.config.odin.logWhitelist.indexOf(target) !== -1) {
             var user;
             _.isUndefined(req.user) ? user = 'noUser' : user = req.user.id;
 

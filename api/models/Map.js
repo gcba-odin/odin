@@ -45,8 +45,8 @@ module.exports = {
             size: 500
         },
         createdBy: {
-            model: 'user',
-            // required: true
+            model: 'user'
+                // required: true
         },
 
         toJSON() {
@@ -71,7 +71,7 @@ module.exports = {
         },
         createdBy: {
             type: 'object'
-        },
+        }
     },
     setAttributes() {
         return this.baseAttributes

@@ -40,6 +40,8 @@ module.exports = {
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
             var collection = db.collection(filename);
             collection.count({}, function(err, count) {
+                if (err) console.error(err);
+
                 cb(count);
             });
         });

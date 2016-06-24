@@ -30,19 +30,19 @@ module.exports = {
             title: 'Datasets',
             description: 'Feed de datasets',
             generator: 'ODIN',
-            feed_url: req.host + ':' + req.port + '/datasets',
-            // site_url: '',
-            // image_url: '',
-            // docs: '',
-            // managingEditor: '',
-            // webMaster: '',
-            // copyright: '',
-            // categories: '',
-            // pubDate: '',
-            // ttl: '',
-            // hub: '',
-            // custom_namespaces: '',
-            // custom_elements: '',
+            feed_url: req.host + ':' + req.port + '/datasets'
+                // site_url: '',
+                // image_url: '',
+                // docs: '',
+                // managingEditor: '',
+                // webMaster: '',
+                // copyright: '',
+                // categories: '',
+                // pubDate: '',
+                // ttl: '',
+                // hub: '',
+                // custom_namespaces: '',
+                // custom_elements: '',
         }
         var feed = new RSS(feedOptions);
 
@@ -61,17 +61,17 @@ module.exports = {
                     // guid: '',
                     // categories: '',
                     // author: '',
-                    date: record.createdAt,
-                    // lat: '',
-                    // long: '',
-                    // custom_elements: '',
-                    // enclosure: '',
+                    date: record.createdAt
+                        // lat: '',
+                        // long: '',
+                        // custom_elements: '',
+                        // enclosure: '',
                 }
                 feed.item(itemOption);
             });
             var xml = feed.xml();
             res.set({
-                'Content-Type': 'application/rss+xml',
+                'Content-Type': 'application/rss+xml'
             });
             return res.send(xml);
         })

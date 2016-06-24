@@ -38,7 +38,7 @@ module.exports = {
     },
     value: {
       type: 'string',
-      size: 250,
+      size: 250
     },
     updatedBy: {
       model: 'user'

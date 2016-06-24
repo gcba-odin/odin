@@ -20,8 +20,8 @@ const shortid = require('shortid');
 const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
+const mergeDefaults = require('merge-defaults');
 
-//TODO: Extract common variables on parent class ResponseBuilder, eg. model?
 class ResponseBuilder {
     constructor(req, res) {
         this.req = req;
@@ -218,6 +218,7 @@ class ResponseGET extends ResponseBuilder {
 
         return this._query;
     }
+
     getDataForFeedQuery() {
         this._query = this._model.find({
             sort: 'updatedAt DESC'
@@ -261,7 +262,7 @@ class ResponseGET extends ResponseBuilder {
             console.dir(this.params.pages);
 
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this.params.pages == this.params.page) {
+            if (_.isUndefined(this.params.pages) || this.params.pages === this.params.page) {
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
@@ -329,12 +330,12 @@ class ResponseGET extends ResponseBuilder {
                 var relations = {};
 
                 _.forEach(this._model.associations, function(association) {
-                    if (association.type == 'collection') {
+                    if (association.type === 'collection') {
                         relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
                     }
                 }.bind(this));
 
-                !_.isEmpty(relations) ? this._links['collections'] = relations : '';
+                if (!_.isEmpty(relations)) this._links['collections'] = relations;
             }
 
             this._links = _.assign(this._links, {
@@ -445,7 +446,6 @@ class ResponsePATCH extends ResponseBuilder {
     }
 
     parseValues(req) {
-        var mergeDefaults = require('merge-defaults');
         var JSONP_CALLBACK_PARAM = 'callback';
 
         // Allow customizable blacklist for params NOT to include as values.
@@ -630,8 +630,8 @@ class ResponseCount extends ResponseBuilder {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._meta = {
-            code: 'OK',
-            message: 'The operation was executed successfully.',
+            code: sails.config.success.OK.code,
+            message: sails.config.success.OK.message
         };
         this._links = {
             all: this.req.host + ':' + this.req.port + '/' + modelName
@@ -658,10 +658,10 @@ class ResponseSearch extends ResponseGET {
 
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
-            if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
+            if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
 
 
-                if (this.params.condition == 'and') {
+                if (this.params.condition === 'and') {
                     _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
@@ -714,7 +714,7 @@ class ResponseSearch extends ResponseGET {
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this))
             .catch(function(err) {
-                console.log(err);
+                console.error(err);
             });
 
         this._query = this.populate(this._query, this.model, this.params.include);

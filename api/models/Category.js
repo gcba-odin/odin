@@ -28,7 +28,7 @@ module.exports = {
         },
         description: {
             type: 'string',
-            size: 350,
+            size: 350
         },
         createdBy: {
             model: 'user',

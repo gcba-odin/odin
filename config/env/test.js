@@ -25,5 +25,5 @@ module.exports = {
     sockets: false,
     views: false
   },
-  appUrl: 'http://137.135.84.77' + (sails.config.port != 80) ? ':' + sails.config.port : '',
+  appUrl: 'http://137.135.84.77' + (sails.config.port !== 80) ? ':' + sails.config.port : '',
 };
