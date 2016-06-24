@@ -65,7 +65,7 @@ module.exports = {
 
                     // Get the id of the filetype based on extension of the file
                     var filetypeName = extension.split('/').pop();
-                    FileType.findOne({
+                    sails.models.filetype.findOne({
                         name: filetypeName
                     }).exec(function(err, record) {
                         data.type = record.id;
@@ -82,7 +82,7 @@ module.exports = {
                                     if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
                                     // If the file is consumable via the API
-                                    FileType.findOne(data.type).exec(function(err, record) {
+                                    sails.models.filetype.findOne(data.type).exec(function(err, record) {
 
                                         if (record.api) {
                                             // if (extension === 'text/csv') {
@@ -106,7 +106,7 @@ module.exports = {
                                 });
                         }
                         // Save the file metadata to the relational DB
-                        File.create(data).exec(function created(err, newInstance) {
+                        sails.models.file.create(data).exec(function created(err, newInstance) {
                             if (err) return res.negotiate(err);
 
                             if (req._sails.hooks.pubsub) {
