@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * File
- * @description :: Model for storing File records
+ * Map
+ * @description :: Model for storing Map records
  */
 
 var shortId = require('shortid');

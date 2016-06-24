@@ -1,6 +1,6 @@
 module.exports = {
     fixtures: {
-        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Config', 'Log'],
+        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Chart', 'Map', 'Config', 'Log'],
         User: [{
             id: 'dogPzIz9',
             username: 'admin',
@@ -786,6 +786,83 @@ module.exports = {
                     name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
+        }],
+        Chart: [{
+            id: '1ogPbIz9',
+            name: 'Chart 1',
+            description: 'An example chart.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/i2604rk.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '2ogPbIz9',
+            name: 'Chart 2',
+            description: 'An example chart.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/i2604rk.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '3ogPbIz9',
+            name: 'Chart 3',
+            description: 'An example chart.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/i2604rk.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '4ogPbIz9',
+            name: 'Chart 4',
+            description: 'An example chart.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/i2604rk.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '5ogPbIz9',
+            name: 'Chart 5',
+            description: 'An example chart.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            url: 'http://i.imgur.com/i2604rk.jpg',
+            createdBy: 'dogPzIz9'
+        }],
+        Map: [{
+            id: '6ogPbIz9',
+            name: 'Map 1',
+            description: 'An example map.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            basemap: 'roadmap',
+            url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '7ogPbIz9',
+            name: 'Map 2',
+            description: 'An example map.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            basemap: 'satellite',
+            url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '8ogPbIz9',
+            name: 'Map 3',
+            description: 'An example map.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            basemap: 'hybrid',
+            url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '9ogPbIz9',
+            name: 'Map 4',
+            description: 'An example map.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            basemap: 'terrain',
+            url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            createdBy: 'dogPzIz9'
+        }, {
+            id: '10gPbIz9',
+            name: 'Map 5',
+            description: 'An example map.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            basemap: 'roadmap',
+            url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            createdBy: 'dogPzIz9'
         }],
         Config: [{
             id: '1ogPzIz9',

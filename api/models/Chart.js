@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * File
- * @description :: Model for storing File records
+ * Chart
+ * @description :: Model for storing Chart records
  */
 
 var shortId = require('shortid');
