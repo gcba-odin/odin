@@ -5,8 +5,11 @@ var hooks = require('hooks');
 var patchPropertiesWithNullable = function(schema) {
     if (typeof(schema['properties']) === 'object' && !Array.isArray(schema['properties'])) {
         for (property in schema['properties']) {
-            var partialSchemaToPatch = schema['properties'][property];
-            schema['properties'][property] = patchPropertiesWithNullable(partialSchemaToPatch);
+            if (schema['properties'].hasOwnProperty(property)) {
+
+                var partialSchemaToPatch = schema['properties'][property];
+                schema['properties'][property] = patchPropertiesWithNullable(partialSchemaToPatch);
+            }
         }
     }
 
@@ -30,11 +33,14 @@ var patchPropertiesWithNullable = function(schema) {
 
 hooks.beforeAll(function(transactions, callback) {
     for (index in transactions) {
-        var transaction = transactions[index];
-        if (transaction['expected']['bodySchema'] !== undefined) {
-            var schema = JSON.parse(transaction['expected']['bodySchema']);
-            schema = patchPropertiesWithNullable(schema);
-            transactions[index]['expected']['bodySchema'] = JSON.stringify(schema, null, 2);
+        if (transactions.hasOwnProperty(index)) {
+
+            var transaction = transactions[index];
+            if (transaction['expected']['bodySchema'] !== undefined) {
+                var schema = JSON.parse(transaction['expected']['bodySchema']);
+                schema = patchPropertiesWithNullable(schema);
+                transactions[index]['expected']['bodySchema'] = JSON.stringify(schema, null, 2);
+            }
         }
     }
 
