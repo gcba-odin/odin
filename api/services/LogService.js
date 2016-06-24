@@ -9,7 +9,7 @@ module.exports = {
 
         if (sails.config.odin.logWhitelist.indexOf(target) !== -1) {
             var user;
-            _.isUndefined(req.user) ? user = 'noUser' : user = req.user.id;
+            user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
 
             if (_.isUndefined(id)) id = actionUtil.requirePk(req);
             var httpMethod = req.method;
