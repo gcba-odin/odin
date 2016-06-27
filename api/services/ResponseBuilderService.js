@@ -698,10 +698,6 @@ class ResponseSearch extends ResponseGET {
             message: 'You should specify a "query" parameter!'
         });
 
-        << << << < HEAD
-            === === =
-            // console.log('Params is equal to = ' + JSON.stringify(this.params));
-            >>> >>> > 52677 c15dfa77972d2560c2e887e8c77ad9786d4
 
         this.model = model;
 
