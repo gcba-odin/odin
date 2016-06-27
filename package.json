@@ -52,6 +52,6 @@
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.js test/unit/**/*.test.js"
+    "test": "mocha"
   }
 }
