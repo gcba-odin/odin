@@ -236,6 +236,7 @@ class ResponseGET extends ResponseBuilder {
 
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -251,6 +252,7 @@ class ResponseGET extends ResponseBuilder {
 
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -419,7 +421,7 @@ class ResponseGET extends ResponseBuilder {
                             // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
 
-                                // If it's not listed on the granular fields, delete it
+                                // If it's not listed in the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
                                 } else result[partialKey] = element[partialKey];
@@ -476,7 +478,7 @@ class ResponseGET extends ResponseBuilder {
                                     element[partialKey].forEach(function(item, k) {
                                         // Each included object in the collection
                                         _.forEach(item, function(resultValue, resultKey) {
-                                            // If it's not listed on the granular includes, delete it
+                                            // If it's not listed in the granular includes, delete it
                                             if (partialValue.indexOf(resultKey) === -1) {
                                                 delete element[partialKey][k][resultKey];
                                             } else result[partialKey][k] = element[partialKey][k];
