@@ -167,8 +167,6 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        console.log(this.params.where);
-
         // this.params.where = _.transform(model.definition, function(result, val, key) {});
 
         if (this._many) {
@@ -359,12 +357,12 @@ class ResponseGET extends ResponseBuilder {
             // Each result item
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
-                    // Each granular include, gruped by model
+                    // Each granular field
                     _.forEach(fields.partials, function(partialValue, partialKey) {
                         if (key === partialKey && _.isObject(element[partialKey])) {
-                            // Each included object in the collection
+                            // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
-                                // If it's not listed on the granular includes, delete it
+                                // If it's not listed on the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
                                 } else result[partialKey] = element[partialKey];
@@ -684,7 +682,6 @@ class ResponseSearch extends ResponseGET {
         if (!query) return res.badRequest(null, {
             message: 'You should specify a "query" parameter!'
         });
-
 
         // console.log('Params is equal to = ' + JSON.stringify(this.params));
 
