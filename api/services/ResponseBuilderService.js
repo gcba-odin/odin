@@ -167,6 +167,12 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
+        console.log(this.params.where);
+
+        // this.params.where = _.transform(model.definition, function(result, val, key) {});
+
+
+
         if (this._many) {
             this._query = this._model.find(this.params.fields.full.length > 0 ? {
                 select: this.params.fields.full
@@ -688,16 +694,10 @@ class ResponseSearch extends ResponseGET {
 
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
-            if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
+            if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
 
 
-                if (this.params.condition === 'and') {
-                    _.forEach(query, function(value) {
-                        result.or.push(_.set({}, key, {
-                            [this.params.match]: value
-                        }));
-                    }.bind(this))
-                } else {
+                if (this.params.condition == 'and') {
 
                     query = _.replace(query, ',', ' ');
 
@@ -706,23 +706,23 @@ class ResponseSearch extends ResponseGET {
                     }))
 
                 }
-            }
-            // The condition is OR
-            else {
+                // The condition is OR
+                else {
 
-                query = _.split(query, ',');
+                    query = _.split(query, ',');
 
-                if (_.isArray(query)) {
+                    if (_.isArray(query)) {
 
-                    _.forEach(query, function(value) {
+                        _.forEach(query, function(value) {
+                            result.or.push(_.set({}, key, {
+                                [this.params.match]: value
+                            }));
+                        }.bind(this))
+                    } else {
                         result.or.push(_.set({}, key, {
-                            [this.params.match]: value
-                        }));
-                    }.bind(this))
-                } else {
-                    result.or.push(_.set({}, key, {
-                        [this.params.match]: query
-                    }))
+                            [this.params.match]: query
+                        }))
+                    }
                 }
             }
         }.bind(this), {
