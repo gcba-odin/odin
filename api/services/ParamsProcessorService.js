@@ -78,9 +78,9 @@ class ParamsProcessor {
     parseCriteria(req, model) {
         var criteria = _actionUtil.parseCriteria(req);
 
-        _.forEach(criteria, function(value, key) {
-            if (!model.schema[key]) delete criteria[key];
-        });
+        // _.forEach(criteria, function(value, key) {
+        //     if (!model.schema[key]) delete criteria[key];
+        // });
 
         return criteria;
     }

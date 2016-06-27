@@ -167,23 +167,34 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
+        var collections = [];
+        var collectionsFilter = {};
+        _.forEach(this._model.associations, function(association) {
+
+            if (association.type === 'collection') collections.push(association.alias);
+        });
         if (!_.isEmpty(this.params.where)) {
 
             this.params.where = _.transform(this.params.where, function(result, val, key) {
 
-                val = _.split(val, ',');
+                if (collections.indexOf(key) === -1) {
+                    val = _.split(val, ',');
 
-                // if (_.size(val) === 1) {
-                // result.or[key] = val[0];
-                // } else
-                result.or.push({
-                    [key]: val
-                });
-                // result.or[key] = val;
-
-            }, {
+                    result.or.push({
+                        [key]: val
+                    });
+                }
+                //if it is a collection  we add it to the include object, and store it in the collection filter array.
+                else {
+                    this.params.include.full.push(key);
+                    collectionsFilter[key] = val
+                }
+            }.bind(this), {
                 or: []
             });
+        }
+        if (_.isEmpty(this.params.where.or)) {
+            this.params.where = {}
         }
         if (this._many) {
             this._query = this._model.find()
@@ -204,6 +215,11 @@ class ResponseGET extends ResponseBuilder {
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
+        //console.dir(this._query);
+        if (!_.isEmpty(collectionsFilter)) {
+            this._query = this.filter(this._query, collectionsFilter)
+        }
+
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
@@ -366,18 +382,45 @@ class ResponseGET extends ResponseBuilder {
 
         return this._links;
     }
+    filter(query, filters) {
+        query.then(function(records) {
+
+            records.forEach(function(element, j) {
+                records[j] = _.transform(element, function(result, value, key) {
+
+                    if (!_.isUndefined(filters[key])) {
+                        console.dir(element[key]);
+                        // TBD: Search if the element has the filters asked. if it satisfies do nothing, else remove it from reponse.
+
+                        //     } else delete element[key];
+
+                    }
+
+
+                }, element);
+            });
+
+            return records;
+        });
+
+        return query;
+    }
 
     select(query, fields) {
         query.then(function(records) {
             // Filter out the partials
             // Each result item
             records.forEach(function(element, j) {
+
                 records[j] = _.transform(element, function(result, value, key) {
                     // Each granular field
+
                     _.forEach(fields.partials, function(partialValue, partialKey) {
+
                         if (key === partialKey && _.isObject(element[partialKey])) {
                             // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
+
                                 // If it's not listed in the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
