@@ -6,7 +6,8 @@ const config = require('../config/env/test');
 let sails;
 
 before(done => {
-  this.timeout(5000);
+  //this.timeout(5000);
+
   Sails.lift(config, (error, server) => {
     if (error) return done(error);
 
@@ -15,4 +16,4 @@ before(done => {
   });
 });
 
-after(done => sails.lower(done));
+after(done => Sails.lower(done));

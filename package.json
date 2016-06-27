@@ -52,7 +52,6 @@
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    // "test": "istanbul cover _mocha",
-    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js"
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.js test/unit/**/*.test.js"
   }
 }
