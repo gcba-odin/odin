@@ -167,12 +167,27 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        console.log(this.params.where);
+        console.log('\nwhere params is equal to = ');
+        console.dir(this.params.where);
+        if (!_.isEmpty(this.params.where)) {
 
-        // this.params.where = _.transform(model.definition, function(result, val, key) {});
+            this.params.where = _.transform(this.params.where, function(result, val, key) {
 
+                val = _.split(val, ',');
 
+                // if (_.size(val) === 1) {
+                // result.or[key] = val[0];
+                // } else
+                result.or.push({
+                    [key]: val
+                });
+                // result.or[key] = val;
 
+            }, {
+                or: []
+            });
+        }
+        console.dir(this.params.where);
         if (this._many) {
             this._query = this._model.find(this.params.fields.full.length > 0 ? {
                 select: this.params.fields.full
@@ -268,7 +283,6 @@ class ResponseGET extends ResponseBuilder {
         }
 
         if (!_.isUndefined(records)) {
-            console.dir(this.params.pages);
 
             //if link to next page is not defined, the content is not paginated
             if (_.isUndefined(this.params.pages) || this.params.pages === this.params.page) {
@@ -690,16 +704,14 @@ class ResponseSearch extends ResponseGET {
         });
 
 
-        // console.log('Params is equal to = ' + JSON.stringify(this.params));
-
         this.model = model;
 
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
-            if (val.type == 'string' && model.searchables.indexOf(key) !== -1) {
+            if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
 
 
-                if (this.params.condition == 'and') {
+                if (this.params.condition === 'and') {
 
                     query = _.replace(query, ',', ' ');
 
@@ -713,18 +725,18 @@ class ResponseSearch extends ResponseGET {
 
                     query = _.split(query, ',');
 
-                    if (_.isArray(query)) {
+                    // if (_.isArray(query)) {
 
-                        _.forEach(query, function(value) {
+                    _.forEach(query, function(value) {
                             result.or.push(_.set({}, key, {
                                 [this.params.match]: value
                             }));
                         }.bind(this))
-                    } else {
-                        result.or.push(_.set({}, key, {
-                            [this.params.match]: query
-                        }))
-                    }
+                        // } else {
+                        // result.or.push(_.set({}, key, {
+                        // [this.params.match]: query
+                        // }))
+                        // }
                 }
             }
         }.bind(this), {
