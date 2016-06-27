@@ -378,7 +378,7 @@ class ResponseGET extends ResponseBuilder {
                         if (key === partialKey && _.isObject(element[partialKey])) {
                             // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
-                                // If it's not listed on the granular fields, delete it
+                                // If it's not listed in the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
                                 } else result[partialKey] = element[partialKey];
@@ -435,7 +435,7 @@ class ResponseGET extends ResponseBuilder {
                                     element[partialKey].forEach(function(item, k) {
                                         // Each included object in the collection
                                         _.forEach(item, function(resultValue, resultKey) {
-                                            // If it's not listed on the granular includes, delete it
+                                            // If it's not listed in the granular includes, delete it
                                             if (partialValue.indexOf(resultKey) === -1) {
                                                 delete element[partialKey][k][resultKey];
                                             } else result[partialKey][k] = element[partialKey][k];
