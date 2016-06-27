@@ -204,7 +204,6 @@ class ResponseGET extends ResponseBuilder {
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
-        //console.dir(this._query);
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
@@ -221,6 +220,7 @@ class ResponseGET extends ResponseBuilder {
 
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -236,6 +236,7 @@ class ResponseGET extends ResponseBuilder {
 
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
