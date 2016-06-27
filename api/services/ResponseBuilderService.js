@@ -167,8 +167,6 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        console.log('\nwhere params is equal to = ');
-        console.dir(this.params.where);
         if (!_.isEmpty(this.params.where)) {
 
             this.params.where = _.transform(this.params.where, function(result, val, key) {
@@ -187,11 +185,12 @@ class ResponseGET extends ResponseBuilder {
                 or: []
             });
         }
-        console.dir(this.params.where);
         if (this._many) {
-            this._query = this._model.find(this.params.fields.full.length > 0 ? {
-                select: this.params.fields.full
-            } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+            this._query = this._model.find()
+                .where(this.params.where)
+                .limit(this.params.limit)
+                .skip(this.params.skip)
+                .sort(this.params.sort);
 
             this._model.count().where(this.params.where)
                 .then(function(cant) {
@@ -200,9 +199,7 @@ class ResponseGET extends ResponseBuilder {
                 }.bind(this));
         } else {
             this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk, this.params.fields.full.length > 0 ? {
-                select: this.params.fields.full
-            } : null);
+            this._query = this._model.find(this._pk);
         }
         // this._query = this.select(this._query, this.params.fields);
 
@@ -375,17 +372,17 @@ class ResponseGET extends ResponseBuilder {
             // Each result item
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
-                    // Each granular include, gruped by model
+                    // Each granular field
                     _.forEach(fields.partials, function(partialValue, partialKey) {
                         if (key === partialKey && _.isObject(element[partialKey])) {
-                            // Each included object in the collection
+                            // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
-                                // If it's not listed on the granular includes, delete it
+                                // If it's not listed on the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
                                 } else result[partialKey] = element[partialKey];
                             });
-                        } else result[key] = element[key];
+                        } else delete element[key];
                     });
                 }, element);
             });
@@ -425,7 +422,7 @@ class ResponseGET extends ResponseBuilder {
                     query.populate(key);
                 }, this);
 
-                query.then(function(records) {
+                return query.then(function(records) {
                     // Filter out the partials
                     // Each result item
                     records.forEach(function(element, j) {
@@ -450,8 +447,6 @@ class ResponseGET extends ResponseBuilder {
 
                     return records;
                 });
-
-                return query;
             } else return query;
         }
 
@@ -703,6 +698,10 @@ class ResponseSearch extends ResponseGET {
             message: 'You should specify a "query" parameter!'
         });
 
+        << << << < HEAD
+            === === =
+            // console.log('Params is equal to = ' + JSON.stringify(this.params));
+            >>> >>> > 52677 c15dfa77972d2560c2e887e8c77ad9786d4
 
         this.model = model;
 
@@ -748,9 +747,11 @@ class ResponseSearch extends ResponseGET {
      * Builds and returns the query promise
      */
     searchQuery() {
-        this._query = this.model.find(this.params.fields.full.length > 0 ? {
-            select: this.params.fields.full
-        } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+        this._query = this.model.find()
+            .where(this.params.where)
+            .limit(this.params.limit)
+            .skip(this.params.skip)
+            .sort(this.params.sort);
 
         this.model.count().where(this.params.where)
             .then(function(cant) {
