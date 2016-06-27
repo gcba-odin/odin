@@ -2,3 +2,4 @@
 ./test/unit/**/*.test.js
 --reporter spec
 --recursive
+--timeout 5s
