@@ -1,13 +1,13 @@
 "use strict";
 
+/*
 const Sails = require('sails');
 const config = require('../config/env/test');
 
 let sails;
 
-before(done => {
-  //this.timeout(5000);
 
+before(done => {
   Sails.lift(config, (error, server) => {
     if (error) return done(error);
 
@@ -16,4 +16,5 @@ before(done => {
   });
 });
 
-after(done => Sails.lower(done));
+after(done => sails.lower(done));
+*/

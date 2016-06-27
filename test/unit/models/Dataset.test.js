@@ -2,10 +2,14 @@
 
 const assert = require('chai').assert;
 const Model = require('../../../api/models/Dataset');
-const Fixture = require('../../fixtures/DatasetFixture');
+const chakram = require('chakram');
+const expect = chakram.expect;
+const sails = require('sails');
 
-describe('models:Dataset', () => {
-  it('Should be tested', () => {
-    assert(false);
+var getAllDatasets;
+
+describe('Dataset Endpoint', () => {
+  before(function() {
+    getAllDatasets = chakram.get('http://localhost:3000/datasets');
   });
 });

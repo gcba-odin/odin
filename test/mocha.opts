@@ -1,5 +1,5 @@
 ./test/bootstrap.js
-./test/unit/**/*.test.js
+./test/unit/models/*.test.js
 --reporter spec
 --recursive
 --timeout 10s
