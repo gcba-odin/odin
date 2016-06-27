@@ -171,12 +171,12 @@ class ResponseGET extends ResponseBuilder {
 
         // this.params.where = _.transform(model.definition, function(result, val, key) {});
 
-
-
         if (this._many) {
-            this._query = this._model.find(this.params.fields.full.length > 0 ? {
-                select: this.params.fields.full
-            } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+            this._query = this._model.find()
+                .where(this.params.where)
+                .limit(this.params.limit)
+                .skip(this.params.skip)
+                .sort(this.params.sort);
 
             this._model.count().where(this.params.where)
                 .then(function(cant) {
@@ -185,15 +185,13 @@ class ResponseGET extends ResponseBuilder {
                 }.bind(this));
         } else {
             this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk, this.params.fields.full.length > 0 ? {
-                select: this.params.fields.full
-            } : null);
+            this._query = this._model.find(this._pk);
         }
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
         //console.dir(this._query);
-        //this._query = this.select(this._query, this.params.fields);
+        this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -371,7 +369,7 @@ class ResponseGET extends ResponseBuilder {
                                     delete element[partialKey][resultKey];
                                 } else result[partialKey] = element[partialKey];
                             });
-                        } else result[key] = element[key];
+                        } else delete element[key];
                     });
                 }, element);
             });
@@ -734,9 +732,11 @@ class ResponseSearch extends ResponseGET {
      * Builds and returns the query promise
      */
     searchQuery() {
-        this._query = this.model.find(this.params.fields.full.length > 0 ? {
-            select: this.params.fields.full
-        } : null).where(this.params.where).limit(this.params.limit).skip(this.params.skip).sort(this.params.sort);
+        this._query = this.model.find()
+            .where(this.params.where)
+            .limit(this.params.limit)
+            .skip(this.params.skip)
+            .sort(this.params.sort);
 
         this.model.count().where(this.params.where)
             .then(function(cant) {
