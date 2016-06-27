@@ -485,26 +485,26 @@ module.exports = {
 
         // Datasets
         'GET /datasets/:id/download': 'Dataset.download',
-        'GET /datasets/:id/feed/rss': 'Dataset.feedRss',
+        'GET /datasets/feed/rss': 'Dataset.feedRss',
         'GET /datasets/first': {
             blueprint: 'first',
-            model: 'dataset',
-            // policy: 'isAuthenticated'
+            model: 'dataset'
+                // policy: 'isAuthenticated'
         },
         'GET /datasets/last': {
             blueprint: 'last',
-            model: 'dataset',
-            // policy: 'isAuthenticated'
+            model: 'dataset'
+                // policy: 'isAuthenticated'
         },
         'GET /datasets/search': {
             blueprint: 'search',
-            model: 'dataset',
-            // policy: 'isAuthenticated'
+            model: 'dataset'
+                // policy: 'isAuthenticated'
         },
         'PATCH /datasets/:id': {
             blueprint: 'update',
-            model: 'dataset',
-            // policy: 'isAuthenticated'
+            model: 'dataset'
+                // policy: 'isAuthenticated'
         },
         'HEAD /datasets/*': {
             controller: 'Head',
@@ -849,18 +849,18 @@ module.exports = {
 
         'GET /charts/first': {
             blueprint: 'first',
-            model: 'chart',
-            // policy: 'isAuthenticated'
+            model: 'chart'
+                // policy: 'isAuthenticated'
         },
         'GET /charts/last': {
             blueprint: 'last',
-            model: 'chart',
-            // policy: 'isAuthenticated'
+            model: 'chart'
+                // policy: 'isAuthenticated'
         },
         'GET /charts/search': {
             blueprint: 'search',
-            model: 'chart',
-            // policy: 'isAuthenticated'
+            model: 'chart'
+                // policy: 'isAuthenticated'
         },
 
         'HEAD /charts/*': {
