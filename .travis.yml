@@ -4,6 +4,7 @@ node_js:
 env:
   - CXX=g++-4.8
 before_script:
+  - npm start
   - npm update -g npm
   - npm install -g dredd@unstable
 script:
