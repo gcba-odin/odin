@@ -388,33 +388,36 @@ class ResponseGET extends ResponseBuilder {
     filter(query, filters) {
         query.then(function(records) {
 
-            console.log('\n\n ========= SIZE BEFORE ================== \n\n');
-            console.log(_.size(records));
-
+            // Variable where we'll save all the indexes to be removed
+            var toRemove = [];
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
-                    // console.log('\n\n =========VALUE/KEY================== \n\n')
+
                     if (!_.isUndefined(filters[key])) {
-                        var found = _.find(element[key], {
-                            'id': filters[key]
+
+                        // get the ids of the collection filtered
+                        var elementsId = _.map(element[key], function(item) {
+                            return item.id
                         });
-                        if (_.isUndefined(found)) {
-                            console.log('\n\n =========FOUND IS UNDEFINED ================== \n\n')
-                            console.dir(element[key])
-                            delete records[j];
-                            // delete element[key];
+
+                        var filter = _.split(filters[key], ',');
+
+                        // if it doesnt fulfill the filter, we add it to the array which will remove the element from the response
+
+                        if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
+                            toRemove.push(j);
                         }
                     }
 
-
                 }, element);
             });
-
-            console.log('\n\n ========= SIZE AFTER ==================');
-            console.log(_.size(records));
-
+            // pull out of the final records all the records which didnt fulfill the filter
+            _.pullAt(records, toRemove);
+            // with some of the records deleted, we need to update the count
+            this._count = _.size(records);
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             return records;
-        });
+        }.bind(this));
 
         return query;
     }
