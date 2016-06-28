@@ -169,11 +169,14 @@ class ResponseGET extends ResponseBuilder {
     findQuery() {
         var collections = [];
         var collectionsFilter = {};
+
         _.forEach(this._model.associations, function(association) {
 
             if (association.type === 'collection') collections.push(association.alias);
         });
+
         if (!_.isEmpty(this.params.where)) {
+
 
             this.params.where = _.transform(this.params.where, function(result, val, key) {
 
@@ -193,7 +196,8 @@ class ResponseGET extends ResponseBuilder {
                 or: []
             });
         }
-        if (_.isEmpty(this.params.where.or)) {
+        console.log(this.params.where)
+        if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
             this.params.where = {}
         }
         if (this._many) {
