@@ -52,6 +52,6 @@
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    "test": "dredd"
+    "test": "dredd odin.apib http://localhost:3000 --hookfiles=dredd.js"
   }
 }
