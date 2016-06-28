@@ -7,7 +7,7 @@ before_script:
   - npm update -g npm
   - npm install -g dredd@stable
 script:
-  - dredd odin.apib http://54.175.155.181:3000 --hookfiles=dredd.js
+  - dredd odin.apib http://137.135.84.77 --hookfiles=dredd.js
 addons:
   apt:
     sources:

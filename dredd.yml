@@ -32,4 +32,4 @@ hooks-worker-term-retry: 200
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
 blueprint: odin.apib
-endpoint: 'http://54.175.155.181:3000'
+endpoint: 'http://137.135.84.77'
