@@ -196,7 +196,6 @@ class ResponseGET extends ResponseBuilder {
                 or: []
             });
         }
-        console.log(this.params.where)
         if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
             this.params.where = {}
         }
@@ -683,8 +682,10 @@ class ResponseOPTIONS extends ResponseBuilder {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
+
         _.forEach(methods, function(key, methodVerb) {
-            var headers = OptionsMethodsService.getHeaders(methodVerb);
+
+            var headers = OptionsMethodService.getHeaders(methodVerb);
 
             methodsArray.push({
                 "headers": headers,
