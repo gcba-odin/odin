@@ -388,23 +388,36 @@ class ResponseGET extends ResponseBuilder {
     filter(query, filters) {
         query.then(function(records) {
 
+            // Variable where we'll save all the indexes to be removed
+            var toRemove = [];
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
 
                     if (!_.isUndefined(filters[key])) {
-                        console.dir(element[key]);
-                        // TBD: Search if the element has the filters asked. if it satisfies do nothing, else remove it from reponse.
 
-                        //     } else delete element[key];
+                        // get the ids of the collection filtered
+                        var elementsId = _.map(element[key], function(item) {
+                            return item.id
+                        });
 
+                        var filter = _.split(filters[key], ',');
+
+                        // if it doesnt fulfill the filter, we add it to the array which will remove the element from the response
+
+                        if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
+                            toRemove.push(j);
+                        }
                     }
-
 
                 }, element);
             });
-
+            // pull out of the final records all the records which didnt fulfill the filter
+            _.pullAt(records, toRemove);
+            // with some of the records deleted, we need to update the count
+            this._count = _.size(records);
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             return records;
-        });
+        }.bind(this));
 
         return query;
     }
