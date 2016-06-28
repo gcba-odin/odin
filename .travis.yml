@@ -5,7 +5,7 @@ env:
   - CXX=g++-4.8
 before_script:
   - npm update -g npm
-  - npm install -g dredd@unstable
+  - npm install -g dredd@stable
 script:
   - dredd odin.apib http://54.175.155.181:3000 --hookfiles=dredd.js
 addons:
