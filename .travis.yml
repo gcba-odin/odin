@@ -1,8 +1,17 @@
 language: node_js
 node_js:
   - '5.12'
+env:
+  - CXX=g++-4.8
 before_script:
+  - npm start
   - npm update -g npm
   - npm install -g dredd@unstable
 script:
   - dredd odin.apib http://localhost:30000 --hookfiles=dredd.js
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
