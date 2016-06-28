@@ -388,20 +388,30 @@ class ResponseGET extends ResponseBuilder {
     filter(query, filters) {
         query.then(function(records) {
 
+            console.log('\n\n ========= SIZE BEFORE ================== \n\n');
+            console.log(_.size(records));
+
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
-
+                    // console.log('\n\n =========VALUE/KEY================== \n\n')
                     if (!_.isUndefined(filters[key])) {
-                        console.dir(element[key]);
-                        // TBD: Search if the element has the filters asked. if it satisfies do nothing, else remove it from reponse.
-
-                        //     } else delete element[key];
-
+                        var found = _.find(element[key], {
+                            'id': filters[key]
+                        });
+                        if (_.isUndefined(found)) {
+                            console.log('\n\n =========FOUND IS UNDEFINED ================== \n\n')
+                            console.dir(element[key])
+                            delete records[j];
+                            // delete element[key];
+                        }
                     }
 
 
                 }, element);
             });
+
+            console.log('\n\n ========= SIZE AFTER ==================');
+            console.log(_.size(records));
 
             return records;
         });
