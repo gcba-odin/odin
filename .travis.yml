@@ -5,7 +5,7 @@ env:
   - CXX=g++-4.8
 before_script:
   - psql -c 'create database odin;' -U postgres
-  - psql -c 'ALTER USER postgres with password 'postgres';' -U postgres
+  - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
   - npm start
   - npm update -g npm
   - npm install -g dredd@stable
