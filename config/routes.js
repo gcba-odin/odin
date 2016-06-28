@@ -618,57 +618,57 @@ module.exports = {
 
         'GET /updatefrequencies/first': {
             blueprint: 'first',
-            model: 'updatefrequency',
-            // policy: 'isAuthenticated'
+            model: 'updatefrequency'
+                // policy: 'isAuthenticated'
         },
         'GET /updatefrequencies/search': {
             blueprint: 'search',
-            model: 'updatefrequency',
-            // policy: 'isAuthenticated'
+            model: 'updatefrequency'
+                // policy: 'isAuthenticated'
         },
         'GET /updatefrequencies/last': {
             blueprint: 'last',
-            model: 'updatefrequency',
-            // policy: 'isAuthenticated'
+            model: 'updatefrequency'
+                // policy: 'isAuthenticated'
         },
 
         'PATCH /updatefrequencies/:id': {
             blueprint: 'update',
-            model: 'updatefrequency',
-            // policy: 'isAuthenticated'
+            model: 'updatefrequency'
+                // policy: 'isAuthenticated'
         },
-        'HEAD /updatedfrequencies/*': {
+        'HEAD /updatefrequencies/*': {
             controller: 'Head',
             action: 'Head',
             model: 'updatefrequency'
         },
-        'HEAD /updatedfrequencies': {
+        'HEAD /updatefrequencies': {
             controller: 'Head',
             action: 'Head',
             model: 'updatefrequency'
         },
 
-        'OPTIONS /updatedfrequencies': {
+        'OPTIONS /updatefrequencies': {
             controller: 'Options',
             model: 'updatefrequency',
             action: 'collection'
         },
-        'OPTIONS /updatedfrequencies/:id': {
+        'OPTIONS /updatefrequencies/:id': {
             controller: 'Options',
             model: 'updatefrequency',
             action: 'instance'
         },
-        'OPTIONS /updatedfrequencies/first': {
+        'OPTIONS /updatefrequencies/first': {
             controller: 'Options',
             model: 'updatefrequency',
             action: 'query'
         },
-        'OPTIONS /updatedfrequencies/last': {
+        'OPTIONS /updatefrequencies/last': {
             controller: 'Options',
             model: 'updatefrequency',
             action: 'query'
         },
-        'OPTIONS /updatedfrequencies/count': {
+        'OPTIONS /updatefrequencies/count': {
             controller: 'Options',
             model: 'updatefrequency',
             action: 'query'
