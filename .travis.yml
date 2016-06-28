@@ -4,10 +4,13 @@ node_js:
 env:
   - CXX=g++-4.8
 before_script:
+  - psql -c 'create database odin;' -U postgres
+  - psql -c 'ALTER USER postgres with password 'postgres';' -U postgres
+  - npm start
   - npm update -g npm
   - npm install -g dredd@stable
 script:
-  - dredd odin.apib http://137.135.84.77 --hookfiles=dredd.js
+  - dredd odin.apib http://localhost:3000 --hookfiles=dredd.js
 addons:
   apt:
     sources:
