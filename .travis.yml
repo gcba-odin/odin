@@ -10,6 +10,10 @@ before_script:
   - sudo mkdir /home/Admin001
   - sudo mkdir /home/Admin001/files
   - sudo mkdir /home/Admin001/files/sWRhpRk
+  - sudo mkdir /home/Admin001/files/sWRhpRm
+  - sudo mkdir /home/Admin001/files/sWRhpRn
+  - sudo mkdir /home/Admin001/files/sWRhpRl
+  - sudo mkdir /home/Admin001/files/sWRhpRo
   - sudo chmod 777 -R /home/Admin001/files
   - npm update -g npm
   - npm install -g dredd@stable
