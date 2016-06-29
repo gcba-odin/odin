@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * MapController
+ * ViewController
  * @description :: Server-side logic for ...
  */
 

@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * CategoryController
+ * ChartController
  * @description :: Server-side logic for ...
  */
 
