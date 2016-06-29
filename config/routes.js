@@ -899,5 +899,60 @@ module.exports = {
             model: 'chart',
             action: 'query'
         },
+
+        // Views
+
+        'GET /views/first': {
+            blueprint: 'first',
+            model: 'view'
+            // policy: 'isAuthenticated'
+        },
+        'GET /views/last': {
+            blueprint: 'last',
+            model: 'view'
+            // policy: 'isAuthenticated'
+        },
+        'GET /views/search': {
+            blueprint: 'search',
+            model: 'view'
+            // policy: 'isAuthenticated'
+        },
+
+        'HEAD /views/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'view'
+        },
+        'HEAD /views': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'view'
+        },
+
+        'OPTIONS /views': {
+            controller: 'Options',
+            model: 'view',
+            action: 'collection'
+        },
+        'OPTIONS /views/:id': {
+            controller: 'Options',
+            model: 'view',
+            action: 'instance'
+        },
+        'OPTIONS /views/first': {
+            controller: 'Options',
+            model: 'view',
+            action: 'query'
+        },
+        'OPTIONS /views/last': {
+            controller: 'Options',
+            model: 'view',
+            action: 'query'
+        },
+        'OPTIONS /views/count': {
+            controller: 'Options',
+            model: 'view',
+            action: 'query'
+        },
     }
 };
