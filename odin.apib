@@ -5010,7 +5010,7 @@ Gets the Views options
 + id: dogPzIz8 (string, required)
 + createdAt: 1415203908 (string) - datetime
 + updatedAt: 1415203908 (string) - datetime
-+ createdBy: (User Get, required)
++ createdBy: (object, required)
 
 ## Dataset Base (object)
 + name: examplename (string,required)
@@ -5029,23 +5029,23 @@ Gets the Views options
 + optional9: some optional data (string)
 + optional10: some optional data (string)
 + publishedAt: 1415203908 (string) - datetime
-+ category: (Category)
-+ status: (Status)
-+ organization: (Organization)
-+ createdBy: (User Get)
-+ owner: (User Get, required)
++ category: (object)
++ status: (object)
++ organization: (object)
++ createdBy: (object)
++ owner: (object, required)
 
 
 ## Category Base (object)
 + name: name of the category (string, required)
 + description: description of the category (string)
-+ createdBy: (User Get)
++ createdBy: (object)
 
 
 ## Log Base (object)
 + action: the action that was performed (string, required)
 + target: the model the action was performed upon (string, required)
-+ user: (User Get, required)
++ user: (object, required)
 
 
 ## Config Base (object)
@@ -5053,7 +5053,7 @@ Gets the Views options
 + type: the type of the config (string, required)
 + key: the key of the config (string, required)
 + value: the value of the config (string)
-+ updatedBy: (User Get)
++ updatedBy: (object)
 
 ## Database Base (object)
 + name: the name of the database (string, required)
@@ -5068,13 +5068,13 @@ Gets the Views options
 + visible: weather if the file is visible or not (boolean)
 + url: the url associated to the file (string)
 + publishedAt: the time that the file was published (string)
-+ type: (Filetype)
-+ updateFrequency: (Updatefrequency)
-+ status: (Status)
-+ organization: (Organization)
-+ dataset:(Dataset)
-+ owner: (User Get)
-+ createdBy: (User Get)
++ type: (object)
++ updateFrequency: (object)
++ status: (object)
++ organization: (object)
++ dataset:(object)
++ owner: (object)
++ createdBy: (object)
 
 ## Filetype Base (object)
 + api: whether the file is saved on the database or not (boolean)
@@ -5085,7 +5085,7 @@ Gets the Views options
 + name: name of the organization (string, required)
 + description: description of the organization (string, required)
 + adress: adress of the organization (string)
-+ createdBy: (User Get)
++ createdBy: (object)
 + users: the users associated to the organization (array)
 + parent: (object)
 + children: the childrens of the organization (array)
@@ -5100,7 +5100,7 @@ Gets the Views options
 + name: the name of the tag (string, required)
 + files: files associated with the tag (array)
 + datasets: datasets associated with the tag (array)
-+ createdBy: (User Get, required)
++ createdBy: (object, required)
 
 ## Updatefrequency Base (object)
 + name: the name of the update frequency (string, required)
@@ -5110,7 +5110,7 @@ Gets the Views options
 + description: the description of the chart (string)
 + notes: notes associated with the map (string)
 + url: the url of the chart (string)
-+ createdBy: (User Get, required)
++ createdBy: (object, required)
 + embedCode: embed code of the chart (string)
 
 ## Map Base (object)
@@ -5119,7 +5119,7 @@ Gets the Views options
 + notes: notes associated with the map (string)
 + basemap: basemap of the map (string)
 + url: the url of the map (string)
-+ createdBy: (User Get, required)
++ createdBy: (object, required)
 + embedCode: embed code of the map (string)
 + geojson: (object)
 
@@ -5127,7 +5127,7 @@ Gets the Views options
 + name: the name of the map (string, required)
 + description: the description of the map (string)
 + notes: notes associated with the map (string)
-+ createdBy: (User Get, required)
++ createdBy: (object, required)
 + tags: tags of the view (array)
 
 
