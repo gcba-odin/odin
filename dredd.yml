@@ -6,8 +6,8 @@ dry-run: null
 hookfiles: dredd.js
 language: nodejs
 sandbox: false
-server: null
-server-wait: 3
+server: npm start
+server-wait: 15
 init: false
 names: false
 only: []
@@ -32,4 +32,4 @@ hooks-worker-term-retry: 200
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
 blueprint: odin.apib
-endpoint: 'http://54.175.155.181:3000'
+endpoint: 'http://localhost:3000'

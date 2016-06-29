@@ -3,12 +3,21 @@ node_js:
   - '5.12'
 env:
   - CXX=g++-4.8
+sudo: required
 before_script:
+  - psql -c 'create database odin;' -U postgres
+  - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
+  - sudo mkdir /home/Admin001
+  - sudo mkdir /home/Admin001/files
+  - sudo mkdir /home/Admin001/files/sWRhpRk
+  - sudo mkdir /home/Admin001/files/sWRhpRn
+  - sudo chmod 777 -R /home/Admin001/files
   - npm update -g npm
   - npm install -g dredd@stable
 script:
-  - dredd odin.apib http://54.175.155.181:3000 --hookfiles=dredd.js
+  - dredd odin.apib http://localhost:3000 --hookfiles=dredd.js
 addons:
+  postgresql: "9.4"
   apt:
     sources:
       - ubuntu-toolchain-r-test

@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * Tag
- * @description :: Model for storing Tag records
+ * View
+ * @description :: Model for storing View records
  */
 
 var shortId = require('shortid');
@@ -22,27 +22,26 @@ module.exports = {
         name: {
             type: 'string',
             required: true,
-            unique: true,
-            size: 100,
+            size: 150,
             minLength: 1
         },
-        files: {
-            collection: 'file',
-            via: 'tags'
+        description: {
+            type: 'string',
+            size: 350
         },
-        datasets: {
-            collection: 'dataset',
-            via: 'tags'
+        notes: {
+            type: 'string',
+            size: 500
         },
         createdBy: {
-            model: 'user',
-            required: true
+            model: 'user'
+            // required: true
         },
-        views: {
-            collection: 'view',
-            via: 'tags'
+        tags: {
+            collection: 'tag',
+            via: 'views',
+            dominant: true
         },
-
         toJSON() {
             return this.toObject();
         }
@@ -51,13 +50,13 @@ module.exports = {
         name: {
             type: 'string'
         },
-        files: {
-            type: 'object'
+        description: {
+            type: 'string'
+        },
+        notes: {
+            type: 'string'
         },
         createdBy: {
-            type: 'object'
-        },
-        datasets: {
             type: 'object'
         }
     },
@@ -77,5 +76,19 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
-    searchables: ['name']
+    searchables: ['name', 'description'],
+
+    beforeUpdate: (values, next) => next(),
+    beforeCreate: (values, next) => {
+        next();
+    },
+    afterUpdate: (values, next) => {
+        next()
+    },
+    afterCreate: (values, next) => {
+        next();
+    },
+    afterDestroy: (destroyedRecords, next) => {
+        next();
+    }
 };

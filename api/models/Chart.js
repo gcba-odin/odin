@@ -42,6 +42,10 @@ module.exports = {
             model: 'user'
                 // required: true
         },
+        embedCode: {
+            type: 'string',
+            size: 500
+        },
 
         toJSON() {
             return this.toObject();
@@ -62,6 +66,9 @@ module.exports = {
         },
         createdBy: {
             type: 'object'
+        },
+        embedCode: {
+            type: 'string'
         }
     },
     setAttributes() {

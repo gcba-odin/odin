@@ -271,6 +271,10 @@ module.exports = {
             name: 'xls',
             api: false
         }, {
+            id: '1WRhpRV',
+            name: 'xlsx',
+            api: false
+        }, {
             id: 'zWRhpRV',
             name: 'xml',
             api: false
