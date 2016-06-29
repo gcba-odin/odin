@@ -46,9 +46,15 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
-
+        embedCode: {
+            type: 'string',
+            size: 500
+        },
+        geojson: {
+            type: 'json'
+        },
         toJSON() {
             return this.toObject();
         }
@@ -71,7 +77,14 @@ module.exports = {
         },
         createdBy: {
             type: 'object'
+        },
+        embedCode: {
+            type: 'string'
+        },
+        geojson: {
+            type: 'json'
         }
+
     },
     setAttributes() {
         return this.baseAttributes
