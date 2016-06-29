@@ -3,9 +3,11 @@ node_js:
   - "5.12"
 env:
   - CXX=g++-4.8
+sudo: required
 before_script:
   - psql -c 'create database odin;' -U postgres
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
+  - mkdir /home/Admin001/files
   - npm start
   - npm update -g npm
   - npm install -g dredd@stable
