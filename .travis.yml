@@ -9,7 +9,7 @@ before_script:
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
   - sudo mkdir /home/Admin001
   - sudo mkdir /home/Admin001/files
-  - npm start
+  - sudo mkdir /home/Admin001/files/sWRhpRk
   - npm update -g npm
   - npm install -g dredd@stable
 script:
