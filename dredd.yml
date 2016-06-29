@@ -19,7 +19,7 @@ inline-errors: false
 details: false
 method: []
 color: true
-level: info
+level: silly
 timestamp: false
 silent: false
 path: []
