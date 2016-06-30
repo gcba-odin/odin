@@ -1,10 +1,12 @@
-"use strict";
+//-- test/unit/controllers/FileController.test.js
+require("sails-test-helper");
 
-const assert = require('chai').assert;
-const Controller = require('../../../api/controllers/FileController');
-
-describe('controllers:FileController', () => {
-  it('Should be tested', () => {
-    assert(false);
-  });
+describe(TEST_NAME, function() {
+    describe("GET /files", function() {
+        it("should be successful", function(done) {
+            request.get("/files")
+                .expect(200)
+                .end(done);
+        });
+    });
 });
