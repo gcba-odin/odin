@@ -18,7 +18,7 @@ before_install:
   - npm update -g npm
   - npm install -g dredd@stable
 after_success:
-    - dredd
+    - sudo dredd
 addons:
   postgresql: "9.4"
   apt:
