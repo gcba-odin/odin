@@ -36,7 +36,7 @@ module.exports = (req, res) => {
                 links: builder.links(undefined)
             });
             else {
-                if (record[0].deletedAt === null) {
+                if (record[0].deletedAt !== null) {
                     return res.gone();
                 }
                 return res.ok(
