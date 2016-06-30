@@ -19,6 +19,8 @@ before_install:
   - npm install -g dredd@stable
 script:
     - make test
+services:
+  - mongodb
 addons:
   postgresql: "9.4"
   apt:
