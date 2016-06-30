@@ -14,7 +14,6 @@ module.exports = {
         var meta = builder._meta;
         var data = builder.getMethods(methods);
         return res.options(data, meta);
-        // return res.ok;
     },
     instance(req, res) {
         var builder = new Response.ResponseOPTIONS(req, res, false);
@@ -32,9 +31,15 @@ module.exports = {
 
     query(req, res) {
         var builder = new Response.ResponseOPTIONS(req, res, true);
-
         var methods = OptionsMethodService.getMethods.queryMethods();
-
+        var meta = builder._meta;
+        var data = builder.getMethods(methods);
+        return res.options(data, meta);
+    },
+    custom(req, res) {
+        var builder = new Response.ResponseOPTIONS(req, res, true);
+        var methodName = _.split(req.path, '/').pop() + 'Method';
+        var methods = builder._model[methodName]()
         var meta = builder._meta;
         var data = builder.getMethods(methods);
         return res.options(data, meta);

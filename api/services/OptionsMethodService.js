@@ -1,67 +1,59 @@
 module.exports = {
     getMethods: {
-        collectionMethods: function () {
+        collectionMethods: function() {
             return {
-                'GET': function (model) {
+                'GET': function(model) {
                     return model.getAttributes();
                 },
-                'POST': function (model) {
+                'POST': function(model) {
                     return model.setAttributes();
                 },
-                'HEAD': function (model) {
+                'HEAD': function(model) {
                     return {};
                 },
-                'OPTIONS': function (model) {
+                'OPTIONS': function(model) {
                     return {};
                 }
             }
         },
-        instanceMethods: function () {
+        instanceMethods: function() {
             return {
-                'GET': function (model) {
+                'GET': function(model) {
                     return model.getAttributes();
                 },
-                'PATCH': function (model) {
+                'PATCH': function(model) {
                     return model.setAttributes();
                 },
-                'DELETE': function (model) {
+                'DELETE': function(model) {
                     return {};
                 },
-                'HEAD': function (model) {
+                'HEAD': function(model) {
                     return {};
                 },
-                'OPTIONS': function (model) {
+                'OPTIONS': function(model) {
                     return {};
                 }
             }
         },
-        queryMethods: function () {
+        queryMethods: function() {
             return {
-                'GET': function (model) {
+                'GET': function(model) {
                     return model.getAttributes();
                 },
-                'HEAD': function (model) {
+                'HEAD': function(model) {
                     return {};
                 },
-                'OPTIONS': function (model) {
+                'OPTIONS': function(model) {
                     return {};
                 }
             }
         }
     },
-    getHeaders: function (method) {
+    getHeaders: function(method) {
         var headers = {
             'Authorization': 'JWT [token]',
             'Accepts': 'json'
         };
-        // if (method == 'POST' || method == 'PATCH') {
-        //     return _.merge(
-        //         {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         headers
-        //     )
-        // }
         return headers;
     }
 };

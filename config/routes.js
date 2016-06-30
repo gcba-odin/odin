@@ -53,11 +53,12 @@ module.exports = {
             model: 'user',
             action: 'collection'
         },
-        'OPTIONS /users/:id': {
+        'OPTIONS /users/login': {
             controller: 'Options',
             model: 'user',
-            action: 'instance'
+            action: 'custom'
         },
+
         'OPTIONS /users/first': {
             controller: 'Options',
             model: 'user',
@@ -68,10 +69,17 @@ module.exports = {
             model: 'user',
             action: 'query'
         },
+
         'OPTIONS /users/count': {
             controller: 'Options',
             model: 'user',
             action: 'query'
+        },
+
+        'OPTIONS /users/:id': {
+            controller: 'Options',
+            model: 'user',
+            action: 'instance'
         },
 
         'HEAD /users/*': {
@@ -905,17 +913,17 @@ module.exports = {
         'GET /views/first': {
             blueprint: 'first',
             model: 'view'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
         'GET /views/last': {
             blueprint: 'last',
             model: 'view'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
         'GET /views/search': {
             blueprint: 'search',
             model: 'view'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
 
         'HEAD /views/*': {
