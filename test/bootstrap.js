@@ -1,20 +1,60 @@
-"use strict";
+/**
+ * Test starter - with this version of sails.js we can only start one sails server,
+ * to solve this problem we use only one before All and after All to start and
+ * stop the server
+ */
 
-/*
-const Sails = require('sails');
-const config = require('../config/env/test');
+var Sails = require('sails');
+var _ = require('lodash');
+var server;
 
-let sails;
+global.DOMAIN = 'http://localhost';
+global.PORT = 3000;
+global.HOST = DOMAIN + ':' + PORT;
 
+before(function(callback) {
+  this.timeout(10000);
 
-before(done => {
-  Sails.lift(config, (error, server) => {
-    if (error) return done(error);
+  var configs = {
+    log: {
+      level: 'info'
+    },
+    connections: {
+      memory: {
+        // lets use memory tests ...
+        adapter: 'sails-memory'
+      }
+    },
+    models: {
+      connection: 'memory'
+    },
+    port: PORT,
+    environment: 'test',
 
-    sails = server;
-    done();
+    // @TODO needs suport to csrf token
+    csrf: false,
+
+    // we dont need this configs in API test
+    hooks: {
+      grunt: false,
+      socket: false,
+      pubsub: false
+    }
+  };
+
+  Sails.load(configs, function(err, sails) {
+    if (err) {
+      console.error(err);
+      return callback(err);
+    }
+
+    // here you can load fixtures, etc.
+    server = sails;
+    callback(err, sails);
   });
 });
 
-after(done => sails.lower(done));
-*/
+after(function(done) {
+  // here you can clear fixtures, etc.
+  server.lower(done);
+});

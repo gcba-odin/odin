@@ -5,7 +5,5 @@ const Model = require('../../../api/models/Status');
 const Fixture = require('../../fixtures/StatusFixture');
 
 describe('models:Status', () => {
-  it('Should be tested', () => {
-    assert(false);
-  });
+
 });
