@@ -2,7 +2,10 @@
 
 module.exports = function(data, meta) {
     const response = _.assign({
-        meta: meta,
+        meta: {
+            code: 'OK',
+            message: 'The operation was executed successfully.'
+        },
         methods: data
     });
 

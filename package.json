@@ -35,7 +35,9 @@
     "sails-service-mailer": "^3.2.1",
     "shortid": "^2.2.6",
     "url-assembler": "^1.2.4",
-    "waterline": "^0.12.1"
+    "waterline": "^0.12.1",
+    "xlsx": "^0.8.0",
+    "xlsx-style": "^0.8.13"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -43,15 +45,18 @@
     "esdoc": "^0.4.7",
     "gulp-shell": "^0.5.2",
     "istanbul": "^0.4.3",
+    "mobify-chai-assertions": "^1.2.0",
     "mocha": "^2.5.3",
     "sails-memory": "0.10.5",
-    "sinon": "^1.17.4"
+    "sails-test-helper": "^0.5.0",
+    "sinon": "^1.17.4",
+    "supertest": "^1.2.0"
   },
   "scripts": {
     "clean": "rm -rf ./.tmp",
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    "test": "dredd odin.apib http://localhost:3000 --hookfiles=dredd.js"
+    "test": "make test"
   }
 }

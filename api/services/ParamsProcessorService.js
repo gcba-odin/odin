@@ -128,7 +128,6 @@ class ParamsProcessor {
             delete this.req.query.include;
         }
 
-        console.dir(results);
         return results;
     }
 
@@ -139,8 +138,6 @@ class ParamsProcessor {
             full: [], // Here go the models that will be included with all their attributes
             partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
         };
-
-        console.log(fields);
 
         if (this.req.query.fields) {
             delete this.req.query.fields;
@@ -163,7 +160,6 @@ class ParamsProcessor {
             });
         }
 
-        console.dir(results);
         return results;
 
         //return fields;

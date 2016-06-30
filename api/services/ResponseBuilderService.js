@@ -200,6 +200,10 @@ class ResponseGET extends ResponseBuilder {
             this.params.where = {}
         }
         if (this._many) {
+            // Only find not deleted records
+            _.merge(this.params.where, {
+                deletedAt: null
+            });
             this._query = this._model.find()
                 .where(this.params.where)
                 .limit(this.params.limit)
@@ -218,7 +222,6 @@ class ResponseGET extends ResponseBuilder {
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
-        //console.dir(this._query);
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter)
         }
@@ -690,8 +693,15 @@ class ResponseDELETE extends ResponseBuilder {
 class ResponseOPTIONS extends ResponseBuilder {
     // Constructor get the methods to build the parameters response body
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
-    constructor(req, res, methods, headers, count) {
+    constructor(req, res, many) {
         super(req, res);
+        this._many = many
+        if (!this._many) {
+            this._pk = actionUtil.requirePk(this.req);
+            this._query = this._model.find(this._pk);
+        }
+    }
+    getMethods(methods, headers, count) {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
@@ -708,7 +718,7 @@ class ResponseOPTIONS extends ResponseBuilder {
             });
         }.bind(this));
 
-        this._data = methodsArray;
+        return methodsArray;
     }
 }
 
