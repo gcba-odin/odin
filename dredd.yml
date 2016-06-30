@@ -7,12 +7,13 @@ hookfiles: dredd.js
 language: nodejs
 sandbox: false
 server: npm start
-server-wait: 15
+server-wait: 7
 init: false
 names: false
 only: []
 output: []
 header: []
+custom: {}
 sorted: false
 user: null
 inline-errors: false
@@ -32,4 +33,4 @@ hooks-worker-term-retry: 200
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
 blueprint: odin.apib
-endpoint: 'http://localhost:3000'
+endpoint: 'http://127.0.0.1:3000'
