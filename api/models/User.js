@@ -78,6 +78,7 @@ module.exports = {
             return obj;
         }
     },
+
     baseAttributes: {
         username: {
             type: 'string'
@@ -130,6 +131,21 @@ module.exports = {
             }
         }, this.baseAttributes)
     },
+    loginMethod() {
+        return {
+            'POST': function() {
+                return {
+                    username: {
+                        type: 'string'
+                    },
+                    password: {
+                        type: 'string'
+                    }
+                }
+            }
+        }
+    },
+
     searchables: ['username', 'email', 'firstName', 'lastName'],
 
     beforeUpdate(values, next) {
