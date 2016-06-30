@@ -200,6 +200,10 @@ class ResponseGET extends ResponseBuilder {
             this.params.where = {}
         }
         if (this._many) {
+            // Only find not deleted records
+            _.merge(this.params.where, {
+                deletedAt: null
+            });
             this._query = this._model.find()
                 .where(this.params.where)
                 .limit(this.params.limit)
@@ -218,7 +222,6 @@ class ResponseGET extends ResponseBuilder {
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
-        //console.dir(this._query);
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter)
         }
