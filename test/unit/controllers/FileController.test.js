@@ -11,7 +11,14 @@ describe('All Files', function() {
             request.get("/files")
                 .set('Accept', 'application/json')
                 .expect(200)
-                .end(done);
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'data');
+                    assert.property(result.body, 'links');
+
+                    err ? done(err) : done();
+                });
         });
     });
 });
@@ -36,6 +43,10 @@ describe('Single File', function() {
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'data');
+                    assert.property(result.body, 'links');
+
                     assert.equal(result.body.data.name, 'CSV File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
@@ -64,6 +75,10 @@ describe('Single File', function() {
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'data');
+                    assert.property(result.body, 'links');
+
                     assert.equal(result.body.data.name, 'XLS File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
@@ -92,6 +107,10 @@ describe('Single File', function() {
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'data');
+                    assert.property(result.body, 'links');
+
                     assert.equal(result.body.data.name, 'XLSX File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
