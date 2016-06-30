@@ -8,26 +8,35 @@ const Response = require('../services/ResponseBuilderService');
 
 module.exports = {
     collection(req, res) {
+        var builder = new Response.ResponseOPTIONS(req, res, true);
+
         var methods = OptionsMethodService.getMethods.collectionMethods();
-        var builder = new Response.ResponseOPTIONS(req, res, methods);
         var meta = builder._meta;
-        var data = builder._data;
+        var data = builder.getMethods(methods);
         return res.options(data, meta);
         // return res.ok;
     },
     instance(req, res) {
-        var methods = OptionsMethodService.getMethods.instanceMethods();
-        var builder = new Response.ResponseOPTIONS(req, res, methods);
-        var meta = builder._meta;
-        var data = builder._data;
-        return res.options(data, meta);
+        var builder = new Response.ResponseOPTIONS(req, res, false);
+        builder._query.then(function(record, err) {
+            if (_.isEmpty(record)) {
+                return res.notFound();
+            } else {
+                var methods = OptionsMethodService.getMethods.instanceMethods();
+                var meta = builder._meta;
+                var data = builder.getMethods(methods);
+                return res.options(data, meta);
+            }
+        });
     },
 
     query(req, res) {
+        var builder = new Response.ResponseOPTIONS(req, res, true);
+
         var methods = OptionsMethodService.getMethods.queryMethods();
-        var builder = new Response.ResponseOPTIONS(req, res, methods);
+
         var meta = builder._meta;
-        var data = builder._data;
+        var data = builder.getMethods(methods);
         return res.options(data, meta);
     }
 };

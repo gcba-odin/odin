@@ -693,8 +693,15 @@ class ResponseDELETE extends ResponseBuilder {
 class ResponseOPTIONS extends ResponseBuilder {
     // Constructor get the methods to build the parameters response body
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
-    constructor(req, res, methods, headers, count) {
+    constructor(req, res, many) {
         super(req, res);
+        this._many = many
+        if (!this._many) {
+            this._pk = actionUtil.requirePk(this.req);
+            this._query = this._model.find(this._pk);
+        }
+    }
+    getMethods(methods, headers, count) {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
@@ -711,7 +718,7 @@ class ResponseOPTIONS extends ResponseBuilder {
             });
         }.bind(this));
 
-        this._data = methodsArray;
+        return methodsArray;
     }
 }
 
