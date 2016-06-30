@@ -3,6 +3,7 @@
 require("sails-test-helper");
 
 const sails = require('sails');
+const assert = chai.assert;
 
 describe('All Files', function() {
     describe("GET /files", function() {
@@ -33,7 +34,14 @@ describe('Single File', function() {
                 .field('createdBy', 'dogPzIz9')
                 .attach('uploadFile', 'test/assets/example.csv')
                 .expect(201)
-                .end(done);
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.equal(result.body.data.name, 'CSV File');
+                    assert.equal(result.body.data.description, 'An example file');
+                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+
+                    err ? done(err) : done();
+                });
         });
     });
 
@@ -54,7 +62,14 @@ describe('Single File', function() {
                 .field('createdBy', 'dogPzIz9')
                 .attach('uploadFile', 'test/assets/example.xls')
                 .expect(201)
-                .end(done);
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.equal(result.body.data.name, 'XLS File');
+                    assert.equal(result.body.data.description, 'An example file');
+                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+
+                    err ? done(err) : done();
+                });
         });
     });
 
@@ -75,7 +90,14 @@ describe('Single File', function() {
                 .field('createdBy', 'dogPzIz9')
                 .attach('uploadFile', 'test/assets/example.xlsx')
                 .expect(201)
-                .end(done);
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.equal(result.body.data.name, 'XLSX File');
+                    assert.equal(result.body.data.description, 'An example file');
+                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+
+                    err ? done(err) : done();
+                });
         });
     });
 });

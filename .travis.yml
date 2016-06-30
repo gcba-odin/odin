@@ -17,7 +17,7 @@ before_install:
   - sudo chmod 777 -R /home/Admin001/files
   - npm update -g npm
   - npm install -g dredd@stable
-after_success:
+script:
     - make test
 addons:
   postgresql: "9.4"

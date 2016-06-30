@@ -45,6 +45,7 @@
     "esdoc": "^0.4.7",
     "gulp-shell": "^0.5.2",
     "istanbul": "^0.4.3",
+    "mobify-chai-assertions": "^1.2.0",
     "mocha": "^2.5.3",
     "sails-memory": "0.10.5",
     "sails-test-helper": "^0.5.0",
@@ -56,6 +57,6 @@
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    "test": "dredd"
+    "test": "make test"
   }
 }
