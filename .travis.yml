@@ -4,7 +4,7 @@ node_js:
 env:
   - CXX=g++-4.8
 sudo: required
-before_script:
+before_install:
   - psql -c 'create database odin;' -U postgres
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
   - sudo mkdir /home/Admin001
