@@ -21,7 +21,8 @@ module.exports = {
             create: ['addCreatedBy']
         },
         FileController: {
-            create: ['addCreatedBy', 'addUrl']
+            create: ['addCreatedBy', 'addUrl'],
+            upload: ['addCreatedBy', 'addUrl']
         },
         OrganizationController: {
             create: ['addCreatedBy']
