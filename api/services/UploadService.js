@@ -110,7 +110,7 @@ module.exports = {
                                         }, {});
 
 
-                                        DataStorageService.mongoSave(dataset, files[0].filename, json, res);
+                                        DataStorageService.mongoSave(dataset, filename, json, res);
 
 
                                     } else {
@@ -127,7 +127,7 @@ module.exports = {
                                             if (json.length === 0) return res.badRequest("Invalid or empty csv.");
 
                                             // Connect to the db
-                                            DataStorageService.mongoSave(dataset, files[0].filename, json, res);
+                                            DataStorageService.mongoSave(dataset, filename, json, res);
                                         });
                                     }
                                 }
