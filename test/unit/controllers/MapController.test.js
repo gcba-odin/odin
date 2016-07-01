@@ -61,6 +61,7 @@ describe('Single Map', function() {
                 .field('basemap', 'roadmap')
                 .field('latetitudeKey', 'latitude')
                 .field('longitudeKey', 'longitude')
+                .field('file', fileId)
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
