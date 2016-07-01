@@ -30,7 +30,7 @@ describe('All Files', function() {
 
 describe('Single File', function() {
     // CSV upload
-    describe("POST /file [csv]", function() {
+    describe("POST /files [csv]", function() {
         it("should upload a new file [csv]", function(done) {
             request.post("/files")
                 .set('Accept', 'application/json')
@@ -55,11 +55,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'CSV File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-
-                    const host = `http://127.0.0.1`;
-                    const downloadPath = `/files/${result.body.data.id}/download`;
-                    assert.startsWith(result.body.data.url, host);
-                    assert.endsWith(result.body.data.url, downloadPath);
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
@@ -92,11 +89,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLS File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-
-                    const host = `http://127.0.0.1`;
-                    const downloadPath = `/files/${result.body.data.id}/download`;
-                    assert.startsWith(result.body.data.url, host);
-                    assert.endsWith(result.body.data.url, downloadPath);
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
@@ -129,11 +123,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLSX File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-
-                    const host = `http://127.0.0.1`;
-                    const downloadPath = `/files/${result.body.data.id}/download`;
-                    assert.startsWith(result.body.data.url, host);
-                    assert.endsWith(result.body.data.url, downloadPath);
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
