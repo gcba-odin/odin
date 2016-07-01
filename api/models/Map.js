@@ -62,7 +62,7 @@ module.exports = {
         file: {
             model: 'file',
             required: true
-        }
+        },
         createdBy: {
             model: 'user'
                 // required: true
