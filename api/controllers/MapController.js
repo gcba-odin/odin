@@ -11,7 +11,7 @@ module.exports = {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
-        var latitud = _.get(values, 'latetitudeKey', '');
+        var latitud = _.get(values, 'latitudeKey', '');
         var longitud = _.get(values, 'longitudeKey', '');
 
         var properties = _.get(values, 'properties', '');
@@ -30,7 +30,6 @@ module.exports = {
                 }
 
                 _.forEach(data, function(value, index) {
-                    console.dir(index)
                     var propertiesMap = {};
                     // for each property sent we add it to the map
                     _.forEach(propertiesArray, function(property) {

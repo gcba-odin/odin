@@ -51,12 +51,12 @@ module.exports = {
         latitudeKey: {
             type: 'string',
             size: 100,
-            required: true
+            // required: true
         },
         longitudeKey: {
             type: 'string',
             size: 100,
-            required: true
+            // required: true
         },
         geojson: {
             type: 'json'
