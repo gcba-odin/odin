@@ -7,14 +7,14 @@ sudo: required
 before_install:
   - psql -c 'create database odin;' -U postgres
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
-  - sudo mkdir /home/Admin001
-  - sudo mkdir /home/Admin001/files
-  - sudo mkdir /home/Admin001/files/sWRhpRk
-  - sudo mkdir /home/Admin001/files/sWRhpRm
-  - sudo mkdir /home/Admin001/files/sWRhpRn
-  - sudo mkdir /home/Admin001/files/sWRhpRl
-  - sudo mkdir /home/Admin001/files/sWRhpRo
-  - sudo chmod 777 -R /home/Admin001/files
+  - sudo mkdir /home/test
+  - sudo mkdir /home/test/files
+  - sudo mkdir /home/test/files/sWRhpRk
+  - sudo mkdir /home/test/files/sWRhpRm
+  - sudo mkdir /home/test/files/sWRhpRn
+  - sudo mkdir /home/test/files/sWRhpRl
+  - sudo mkdir /home/test/files/sWRhpRo
+  - sudo chmod 777 -R /home/test/files
   - npm update -g npm
   - npm install -g dredd@stable
 script:

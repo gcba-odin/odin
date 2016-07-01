@@ -3,11 +3,9 @@ var MongoClient = require('mongodb').MongoClient;
 module.exports = {
 
     mongoConnect: function(dataset, filename, res, cb) {
-
-
         // Connect to the db
-        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-            sails.config.odin.filesDb.port + "/" + dataset,
+        MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
+            sails.config.odin.dataStorage.port + "/" + dataset,
             function(err, db) {
                 if (err && !res.headersSent) return res.negotiate(err);
                 cb(db)
@@ -15,13 +13,6 @@ module.exports = {
     },
     mongoSave: function(dataset, filename, json, res) {
 
-        // var MongoClient = require('mongodb').MongoClient;
-
-        // Connect to the db
-        // MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-        // sails.config.odin.filesDb.port + "/" + dataset,
-        // function(err, db) {
-        // if (err && !res.headersSent) return res.negotiate(err);
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
             var collection = db.collection(filename);
             collection.insert(json, {
@@ -32,12 +23,6 @@ module.exports = {
         });
     },
     mongoCount: function(dataset, filename, res, cb) {
-        // var MongoClient = require('mongodb').MongoClient;
-        // Connect to the db
-        // MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-        // sails.config.odin.filesDb.port + "/" + dataset,
-        // function(err, db) {
-        // if (err && !res.headersSent) return res.negotiate(err);
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
             var collection = db.collection(filename);
             collection.count({}, function(err, count) {
@@ -48,8 +33,21 @@ module.exports = {
         });
     },
     deleteCollection: function(dataset, filename, res) {
-        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
-            db.collection(filename).drop();
-        });
-    }
+            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+                db.collection(filename).drop();
+            });
+        }
+        // getData: function(dataset, filename, res, cb) {
+        //     DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+        //         var collection = db.collection(filename);
+        //         // TODO: find gets only first 20?
+        //         var cursor = collection.find()
+
+    //         cursor.forEach(function(tmp) {
+    //             console.dir(tmp)
+    //         });
+
+    //         cb(collection.find());
+    //     })
+    // }
 }

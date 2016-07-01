@@ -297,7 +297,7 @@ module.exports = {
             name: 'Semestral'
         }, {
             id: 'vWRhpR4',
-            name: 'QuCultura, Recreación y Turismoerly'
+            name: 'Quarterly'
         }, {
             id: '0WRhpR9',
             name: 'Bimonthly'
@@ -772,7 +772,7 @@ module.exports = {
                     name: 'Dataset 5'
                 },
                 updateFrequency: {
-                    name: 'QuCultura, Recreación y Turismoerly'
+                    name: 'Quarterly'
                 },
                 owner: {
                     username: 'admin'
@@ -797,14 +797,22 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '2ogPbIz9',
             name: 'Chart 2',
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '3ogPbIz9',
             name: 'Chart 3',
@@ -818,14 +826,22 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '5ogPbIz9',
             name: 'Chart 5',
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Map: [{
             id: '6ogPbIz9',
@@ -834,7 +850,53 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '7ogPbIz9',
             name: 'Map 2',
@@ -842,7 +904,53 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'satellite',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '8ogPbIz9',
             name: 'Map 3',
@@ -850,7 +958,53 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'hybrid',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '9ogPbIz9',
             name: 'Map 4',
@@ -858,7 +1012,53 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'terrain',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '10gPbIz9',
             name: 'Map 5',
@@ -866,7 +1066,53 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Config: [{
             id: '1ogPzIz9',
