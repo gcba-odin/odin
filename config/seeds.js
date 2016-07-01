@@ -834,7 +834,44 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            createdBy: 'dogPzIz9',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            }
         }, {
             id: '7ogPbIz9',
             name: 'Map 2',
@@ -842,7 +879,44 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'satellite',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            createdBy: 'dogPzIz9',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            }
         }, {
             id: '8ogPbIz9',
             name: 'Map 3',
@@ -850,7 +924,44 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'hybrid',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            createdBy: 'dogPzIz9',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            }
         }, {
             id: '9ogPbIz9',
             name: 'Map 4',
@@ -858,7 +969,44 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'terrain',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            createdBy: 'dogPzIz9',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            }
         }, {
             id: '10gPbIz9',
             name: 'Map 5',
@@ -866,7 +1014,44 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9'
+            createdBy: 'dogPzIz9',
+            geojson: {
+                "type": "FeatureCollection",
+                "features": [{
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.504982, -34.659614]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|1",
+                    "properties": {
+                        "Nombre": "Landmark 1",
+                        "Id": "Feature|1"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.48353, -34.631904]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|2",
+                    "properties": {
+                        "Name": "Landmark 2",
+                        "Id": "Feature|2"
+                    }
+                }, {
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-58.516081, -34.608215]
+                    },
+                    "type": "Feature",
+                    "id": "Feature|3",
+                    "properties": {
+                        "Name": "Landmark 3",
+                        "Id": "Feature|3"
+                    }
+                }]
+            }
         }],
         Config: [{
             id: '1ogPzIz9',
