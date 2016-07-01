@@ -62,6 +62,7 @@ describe('Single Map', function() {
                 .field('latetitudeKey', 'latitude')
                 .field('longitudeKey', 'longitude')
                 .field('file', fileId)
+                .field('createdBy', 'dogPzIz9')
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
