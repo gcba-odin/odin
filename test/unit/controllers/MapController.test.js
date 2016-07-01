@@ -31,6 +31,7 @@ describe('All Maps', function() {
 describe('Single Map', function() {
     var fileId, mapId;
 
+    // Upload geodata CSV file
     describe('POST /files [csv]', function() {
         it('should upload a new file [csv]', function(done) {
             request.post('/files')
@@ -57,8 +58,9 @@ describe('Single Map', function() {
         });
     });
 
+    // Create map
     describe('POST /maps', function() {
-        it('should create a new map from a geodata file', function(done) {
+        it('should create a new map from the geodata file', function(done) {
             request.post('/maps')
                 .set('Accept', 'application/json')
                 .field('name', 'Example Map')
@@ -93,8 +95,9 @@ describe('Single Map', function() {
         });
     });
 
+    // Get map
     describe(`GET /maps/${mapId}`, function() {
-        it('should get the previosuly created map', function(done) {
+        it('should get the map', function(done) {
             request.get('/maps')
                 .set('Accept', 'application/json')
                 .expect(200)
