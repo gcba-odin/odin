@@ -67,8 +67,8 @@ describe('Single Map', function() {
                 .field('description', 'An example map')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('basemap', 'roadmap')
-                .field('latetitudeKey', 'latitude')
-                .field('longitudeKey', 'longitude')
+                .field('latitudeKey', 'LATITUDE')
+                .field('longitudeKey', 'LONGITUDE')
                 .field('file', fileId)
                 .field('createdBy', 'dogPzIz9')
                 .expect(201)
@@ -96,9 +96,9 @@ describe('Single Map', function() {
     });
 
     // Get map
-    describe(`GET /maps/${mapId}`, function() {
+    describe('GET /maps/:id', function() {
         it('should get the map', function(done) {
-            request.get('/maps')
+            request.get(`/maps/${mapId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -140,6 +140,7 @@ describe('Single Map', function() {
                         }, this);
                     }
 
+                    console.dir(result.body.data.geojson.features[0].geometry);
                     err ? done(err) : done();
                 });
         });
