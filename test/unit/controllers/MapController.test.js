@@ -128,19 +128,21 @@ describe('Single Map', function() {
 
                         result.body.data.geojson.features.forEach(function(element) {
                             assert.property(element, 'id');
-                            assert.property(element, 'geometry');
+                            assert.isNumber(element.id);
 
+                            assert.property(element, 'geometry');
                             assert.property(element.geometry, 'type');
                             assert.equal(element.geometry.type, 'Point');
 
                             assert.property(element.geometry, 'coordinates');
                             assert.isArray(element.geometry.coordinates);
+                            assert.isNumber(element.geometry.coordinates[0]);
+                            assert.isNumber(element.geometry.coordinates[1]);
 
                             assert.property(element, 'properties');
                         }, this);
                     }
 
-                    console.dir(result.body.data.geojson.features[0].geometry);
                     err ? done(err) : done();
                 });
         });
