@@ -44,16 +44,30 @@ module.exports = {
             url: true,
             size: 500
         },
-        createdBy: {
-            model: 'user'
-            // required: true
-        },
         embedCode: {
             type: 'string',
             size: 500
         },
+        latitudeKey: {
+            type: 'string',
+            size: 100,
+            required: true
+        },
+        longitudeKey: {
+            type: 'string',
+            size: 100,
+            required: true
+        },
         geojson: {
             type: 'json'
+        },
+        file: {
+            model: 'file',
+            required: true
+        },
+        createdBy: {
+            model: 'user'
+                // required: true
         },
         toJSON() {
             return this.toObject();
@@ -75,15 +89,24 @@ module.exports = {
         url: {
             type: 'string'
         },
-        createdBy: {
-            type: 'object'
-        },
         embedCode: {
+            type: 'string'
+        },
+        latitudeKey: {
+            type: 'string'
+        },
+        longitudeKey: {
             type: 'string'
         },
         geojson: {
             type: 'json'
-        }
+        },
+        file: {
+            type: 'string'
+        },
+        createdBy: {
+            type: 'string'
+        },
 
     },
     setAttributes() {

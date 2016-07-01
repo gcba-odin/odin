@@ -4,11 +4,8 @@ module.exports = {
     mongoContents: function(dataset, filename, limit, skip, res, cb) {
 
         // Connect to the db
-        console.dir(dataset)
-        console.dir(filename)
-        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-            sails.config.odin.filesDb.port + "/" + dataset,
-
+        MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
+            sails.config.odin.dataStorage.port + "/" + dataset,
             function(err, db) {
                 var data = [];
 

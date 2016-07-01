@@ -1,9 +1,14 @@
-//-- test/unit/controllers/FileController.test.json
+//-- test/unit/controllers/FileController.test.js
+"use strict";
 
 require("sails-test-helper");
 
 const sails = require('sails');
+const config = require('../../../config/env/test');
 const assert = chai.assert;
+
+chai.use(require('chai-fs'));
+chai.use(require('chai-string'));
 
 describe('All Files', function() {
     describe("GET /files", function() {
@@ -25,7 +30,7 @@ describe('All Files', function() {
 
 describe('Single File', function() {
     // CSV upload
-    describe("POST /file [csv]", function() {
+    describe("POST /files [csv]", function() {
         it("should upload a new file [csv]", function(done) {
             request.post("/files")
                 .set('Accept', 'application/json')
@@ -50,6 +55,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'CSV File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
@@ -82,6 +89,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLS File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
@@ -114,6 +123,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLSX File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
                 });
