@@ -83,6 +83,9 @@ module.exports = {
         url: {
             type: 'string'
         },
+        createdBy: {
+            type: 'object'
+        },
         embedCode: {
             type: 'string'
         },
@@ -94,10 +97,8 @@ module.exports = {
         },
         geojson: {
             type: 'json'
-        },
-        createdBy: {
-            type: 'object'
         }
+
     },
     setAttributes() {
         return this.baseAttributes
