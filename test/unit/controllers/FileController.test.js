@@ -56,8 +56,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
-                    let host = `http://127.0.0.1`;
-                    let downloadPath = `/files/${result.body.data.id}/download`;
+                    const host = `http://127.0.0.1`;
+                    const downloadPath = `/files/${result.body.data.id}/download`;
                     assert.startsWith(result.body.data.url, host);
                     assert.endsWith(result.body.data.url, downloadPath);
 
@@ -93,8 +93,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
-                    let host = `http://127.0.0.1`;
-                    let downloadPath = `/files/${result.body.data.id}/download`;
+                    const host = `http://127.0.0.1`;
+                    const downloadPath = `/files/${result.body.data.id}/download`;
                     assert.startsWith(result.body.data.url, host);
                     assert.endsWith(result.body.data.url, downloadPath);
 
@@ -130,8 +130,8 @@ describe('Single File', function() {
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
-                    let host = `http://127.0.0.1`;
-                    let downloadPath = `/files/${result.body.data.id}/download`;
+                    const host = `http://127.0.0.1`;
+                    const downloadPath = `/files/${result.body.data.id}/download`;
                     assert.startsWith(result.body.data.url, host);
                     assert.endsWith(result.body.data.url, downloadPath);
 
