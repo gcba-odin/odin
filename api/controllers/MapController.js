@@ -29,10 +29,11 @@ module.exports = {
                     features: []
                 }
 
-                _.forEach(data, function(value) {
+                _.forEach(data, function(value, index) {
+                    console.dir(index)
                     var propertiesMap = {};
                     // for each property sent we add it to the map
-                    _.forEach(propertiesArray, function(property, index) {
+                    _.forEach(propertiesArray, function(property) {
                             propertiesMap[property] = value[property];
                         })
                         //geojson data
