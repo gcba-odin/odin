@@ -1,12 +1,14 @@
-//-- test/unit/controllers/MapController.test.js
+//-- test/unit/controllers/FileController.test.json
 "use strict";
 
 require("sails-test-helper");
 
 const sails = require('sails');
+const config = require('../../../config/env/test');
 const assert = chai.assert;
 
 chai.use(require('chai-fs'));
+chai.use(require('chai-string'));
 
 describe('All Maps', function() {
     describe("GET /maps", function() {
@@ -59,8 +61,6 @@ describe('Single Map', function() {
                 .field('basemap', 'roadmap')
                 .field('latetitudeKey', 'latitude')
                 .field('longitudeKey', 'longitude')
-                .field('file', fileId)
-                .field('createdBy', 'dogPzIz9')
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
