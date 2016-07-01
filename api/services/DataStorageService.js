@@ -6,8 +6,8 @@ module.exports = {
 
 
         // Connect to the db
-        MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-            sails.config.odin.filesDb.port + "/" + dataset,
+        MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
+            sails.config.odin.dataStorage.port + "/" + dataset,
             function(err, db) {
                 if (err && !res.headersSent) return res.negotiate(err);
                 cb(db)
@@ -18,8 +18,8 @@ module.exports = {
         // var MongoClient = require('mongodb').MongoClient;
 
         // Connect to the db
-        // MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-        // sails.config.odin.filesDb.port + "/" + dataset,
+        // MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
+        // sails.config.odin.dataStorage.port + "/" + dataset,
         // function(err, db) {
         // if (err && !res.headersSent) return res.negotiate(err);
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
@@ -34,8 +34,8 @@ module.exports = {
     mongoCount: function(dataset, filename, res, cb) {
         // var MongoClient = require('mongodb').MongoClient;
         // Connect to the db
-        // MongoClient.connect("mongodb://" + sails.config.odin.filesDb.host + ":" +
-        // sails.config.odin.filesDb.port + "/" + dataset,
+        // MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
+        // sails.config.odin.dataStorage.port + "/" + dataset,
         // function(err, db) {
         // if (err && !res.headersSent) return res.negotiate(err);
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
