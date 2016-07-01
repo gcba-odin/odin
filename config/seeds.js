@@ -297,7 +297,7 @@ module.exports = {
             name: 'Semestral'
         }, {
             id: 'vWRhpR4',
-            name: 'QuCultura, Recreación y Turismoerly'
+            name: 'Quarterly'
         }, {
             id: '0WRhpR9',
             name: 'Bimonthly'
