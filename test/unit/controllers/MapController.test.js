@@ -29,7 +29,7 @@ describe('All Maps', function() {
 });
 
 describe('Single Map', function() {
-    var fileId;
+    var fileId, mapId;
 
     describe("POST /files [csv]", function() {
         it("should upload a new file [csv]", function(done) {
@@ -71,6 +71,7 @@ describe('Single Map', function() {
                 .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
+
                     assert.property(result.body, 'meta');
                     assert.property(result.body, 'data');
                     assert.property(result.body, 'links');
@@ -81,8 +82,27 @@ describe('Single Map', function() {
 
                     assert.property(result.body.data, 'latitudeKey');
                     assert.property(result.body.data, 'longitudeKey');
-
                     assert.property(result.body.data, 'geojson');
+
+                    if (!err) {
+                        mapId = result.body.data.id;
+                        done();
+                    } else done(err);
+                });
+        });
+    });
+
+    describe(`GET /maps/${mapId}`, function() {
+        it("should get the previosuly created map", function(done) {
+            request.get("/maps")
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'data');
+                    assert.property(result.body, 'links');
+
                     assert.property(result.body.data.geojson, 'type');
 
                     if (result.body.data.geojson.type === 'Feature') {

@@ -44,10 +44,6 @@ module.exports = {
             url: true,
             size: 500
         },
-        createdBy: {
-            model: 'user'
-                // required: true
-        },
         embedCode: {
             type: 'string',
             size: 500
@@ -62,6 +58,14 @@ module.exports = {
         },
         geojson: {
             type: 'json'
+        },
+        file: {
+            model: 'file',
+            required: true
+        }
+        createdBy: {
+            model: 'user'
+                // required: true
         },
         toJSON() {
             return this.toObject();
