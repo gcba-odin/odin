@@ -850,6 +850,8 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -902,6 +904,8 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'satellite',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -954,6 +958,8 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'hybrid',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -1006,6 +1012,8 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'terrain',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -1058,6 +1066,8 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
+            latitudeKey: 'latitude',
+            longitudeKey: 'longitude',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{

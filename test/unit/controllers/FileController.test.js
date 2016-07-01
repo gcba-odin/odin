@@ -1,4 +1,4 @@
-//-- test/unit/controllers/FileController.test.json
+//-- test/unit/controllers/FileController.test.js
 "use strict";
 
 require("sails-test-helper");
