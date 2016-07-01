@@ -1,7 +1,7 @@
 //-- test/unit/controllers/FileController.test.json
-"use strict";
+'use strict';
 
-require("sails-test-helper");
+require('sails-test-helper');
 
 const sails = require('sails');
 const config = require('../../../config/env/test');
@@ -11,9 +11,9 @@ chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
 
 describe('All Maps', function() {
-    describe("GET /maps", function() {
-        it("should get all maps", function(done) {
-            request.get("/maps")
+    describe('GET /maps', function() {
+        it('should get all maps', function(done) {
+            request.get('/maps')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -31,9 +31,9 @@ describe('All Maps', function() {
 describe('Single Map', function() {
     var fileId, mapId;
 
-    describe("POST /files [csv]", function() {
-        it("should upload a new file [csv]", function(done) {
-            request.post("/files")
+    describe('POST /files [csv]', function() {
+        it('should upload a new file [csv]', function(done) {
+            request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'CSV File')
                 .field('description', 'An example file')
@@ -57,9 +57,9 @@ describe('Single Map', function() {
         });
     });
 
-    describe("POST /maps", function() {
-        it("should create a new map from a geodata file", function(done) {
-            request.post("/maps")
+    describe('POST /maps', function() {
+        it('should create a new map from a geodata file', function(done) {
+            request.post('/maps')
                 .set('Accept', 'application/json')
                 .field('name', 'Example Map')
                 .field('description', 'An example map')
@@ -94,8 +94,8 @@ describe('Single Map', function() {
     });
 
     describe(`GET /maps/${mapId}`, function() {
-        it("should get the previosuly created map", function(done) {
-            request.get("/maps")
+        it('should get the previosuly created map', function(done) {
+            request.get('/maps')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', /json/)
