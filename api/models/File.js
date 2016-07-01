@@ -157,6 +157,7 @@ module.exports = {
     beforeCreate: (values, next) => {
         values.url = _.replace(values.url, 'model', 'files');
         values.url = _.replace(values.url, 'id', values.id);
+        values.url = values.url + '/download'
         next();
     },
     afterUpdate: (values, next) => {

@@ -5,4 +5,6 @@
  * @description :: Server-side logic for ...
  */
 
-module.exports = {};
+module.exports = {
+    create: function(req, res) {}
+};
