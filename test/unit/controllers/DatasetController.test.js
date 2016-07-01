@@ -53,6 +53,24 @@ describe('All Datasets', function() {
                 });
         });
     });
+
+    describe('DELETE /datasets', function() {
+        it('should get 501 Method Not Implemented error', function(done) {
+            request.del('/datasets')
+                .set('Accept', 'application/json')
+                .expect(501)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_IMPLEMENTED');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
 });
 
 describe('Single Dataset', function() {
@@ -124,11 +142,28 @@ describe('Single Dataset', function() {
     // Delete dataset
     describe('DELETE /datasets/:id', function() {
         it('should delete the dataset', function(done) {
+            request.del(`/datasets/${datasetId}`)
+                .expect(204)
+                .end(function(err, result) {
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Check deleted dataset
+    describe('GET /datasets/:id', function() {
+        it('should get error 404', function(done) {
             request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
-                // .expect(204)
+                .expect(404)
                 .expect('Content-Type', /json/)
                 .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
                     err ? done(err) : done();
                 });
         });

@@ -26,6 +26,24 @@ describe('All Maps', function() {
                 });
         });
     });
+
+    describe('DELETE /maps', function() {
+        it('should get 501 Method Not Implemented error', function(done) {
+            request.del('/maps')
+                .set('Accept', 'application/json')
+                .expect(501)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_IMPLEMENTED');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
 });
 
 describe('Single Map', function() {
@@ -142,6 +160,36 @@ describe('Single Map', function() {
                             assert.property(element, 'properties');
                         }, this);
                     }
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Delete map
+    describe('DELETE /maps/:id', function() {
+        it('should delete the map', function(done) {
+            request.del(`/maps/${mapId}`)
+                .expect(204)
+                .end(function(err, result) {
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Check deleted map
+    describe('GET /map/:id [xlsx]', function() {
+        it('should get error 404', function(done) {
+            request.get(`/maps/${mapId}`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
 
                     err ? done(err) : done();
                 });

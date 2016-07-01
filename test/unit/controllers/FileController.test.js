@@ -50,6 +50,24 @@ describe('All Files', function() {
                 });
         });
     });
+
+    describe('DELETE /files', function() {
+        it('should get 501 Method Not Implemented error', function(done) {
+            request.del('/files')
+                .set('Accept', 'application/json')
+                .expect(501)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_IMPLEMENTED');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
 });
 
 describe('Single File', function() {
@@ -341,6 +359,93 @@ describe('Single File', function() {
                     assert.property(result.body, 'meta');
                     assert.property(result.body, 'data');
                     assert.property(result.body, 'links');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Delete the CSV file
+    describe('DELETE /files/:id [csv]', function() {
+        it('should delete the file', function(done) {
+            request.del(`/files/${csvId}`)
+                .expect(204)
+                .end(function(err, result) {
+                    console.info(csvId);
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Delete the XLS file
+    describe('DELETE /files/:id [xls]', function() {
+        it('should delete the file', function(done) {
+            request.del(`/files/${xlsId}`)
+                .expect(204)
+                .end(function(err, result) {
+                    console.info(xlsId);
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Delete the XLSX file
+    describe('DELETE /files/:id [xlsx]', function() {
+        it('should delete the file', function(done) {
+            request.del(`/files/${xlsxId}`)
+                .expect(204)
+                .end(function(err, result) {
+                    console.log(`/files/${xlsxId}`);
+                    console.log(result.body);
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Check deleted CSV file
+    describe('GET /file/:id [csv]', function() {
+        it('should get error 404', function(done) {
+            request.get(`/files/${csvId}`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    console.dir(result.body);
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Check deletd XLS file
+    describe('GET /file/:id [xls]', function() {
+        it('should get error 404', function(done) {
+            request.get(`/files/${xlsId}`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Check deleted XLSX file
+    describe('GET /file/:id [xlsx]', function() {
+        it('should get error 404', function(done) {
+            request.get(`/files/${xlsxId}`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.property(result.body, 'links');
+                    assert.property(result.body.links, 'all');
+
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
 
                     err ? done(err) : done();
                 });
