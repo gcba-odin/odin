@@ -772,7 +772,7 @@ module.exports = {
                     name: 'Dataset 5'
                 },
                 updateFrequency: {
-                    name: 'QuCultura, Recreación y Turismoerly'
+                    name: 'Quarterly'
                 },
                 owner: {
                     username: 'admin'
@@ -797,14 +797,22 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '2ogPbIz9',
             name: 'Chart 2',
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '3ogPbIz9',
             name: 'Chart 3',
@@ -818,14 +826,22 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '5ogPbIz9',
             name: 'Chart 5',
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }],
         Map: [{
             id: '6ogPbIz9',
@@ -834,7 +850,6 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -871,6 +886,14 @@ module.exports = {
                         "Id": "Feature|3"
                     }
                 }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
             }
         }, {
             id: '7ogPbIz9',
@@ -879,7 +902,6 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'satellite',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -916,6 +938,14 @@ module.exports = {
                         "Id": "Feature|3"
                     }
                 }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
             }
         }, {
             id: '8ogPbIz9',
@@ -924,7 +954,6 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'hybrid',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -961,6 +990,14 @@ module.exports = {
                         "Id": "Feature|3"
                     }
                 }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
             }
         }, {
             id: '9ogPbIz9',
@@ -969,7 +1006,6 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'terrain',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -1006,6 +1042,14 @@ module.exports = {
                         "Id": "Feature|3"
                     }
                 }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
             }
         }, {
             id: '10gPbIz9',
@@ -1014,7 +1058,6 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             basemap: 'roadmap',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
-            createdBy: 'dogPzIz9',
             geojson: {
                 "type": "FeatureCollection",
                 "features": [{
@@ -1051,6 +1094,14 @@ module.exports = {
                         "Id": "Feature|3"
                     }
                 }]
+            },
+            models: {
+                file: {
+                    name: 'File 1'
+                },
+                createdBy: {
+                    username: 'admin'
+                }
             }
         }],
         Config: [{
