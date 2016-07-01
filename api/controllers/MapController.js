@@ -11,9 +11,8 @@ module.exports = {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
-        var pointId = _.get(values, 'pointId', '');
-        var x = _.get(values, 'x', '');
-        var y = _.get(values, 'y', '');
+        var latitud = _.get(values, 'latetitudeKey', '');
+        var longitud = _.get(values, 'longitudeKey', '');
 
         var properties = _.get(values, 'properties', '');
 
@@ -33,23 +32,22 @@ module.exports = {
                 _.forEach(data, function(value) {
                     var propertiesMap = {};
                     // for each property sent we add it to the map
-                    _.forEach(propertiesArray, function(property) {
+                    _.forEach(propertiesArray, function(property, index) {
                             propertiesMap[property] = value[property];
                         })
                         //geojson data
                     var point = {
                         geometry: {
                             type: "Point",
-                            coordinates: [value[x], value[y]]
+                            coordinates: [value[latitud], value[longitud]]
                         },
                         type: 'Feature',
-                        id: value[pointId],
+                        id: index,
                         properties: propertiesMap
                     }
 
                     geoJson.features.push(point)
                 })
-                console.dir(geoJson);
                 values.geojson = geoJson
                     // Once the geoJson is created, we create the map
                 _Map.create(values).exec(function created(err, newInstance) {
