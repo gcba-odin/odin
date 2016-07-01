@@ -25,10 +25,15 @@ module.exports = {
             if (err) return res.negotiate(err)
                 // fetch the collection data of the file
             FileContentsService.mongoContents(record.dataset, record.name, 0, 0, res, function(data) {
+                var geoJson = {
+                    type: "FeatureCollection",
+                    features: []
+                }
+
                 _.forEach(data, function(value) {
                     var propertiesMap = {};
                     // for each property sent we add it to the map
-                    _.foreach(propertiesArray, function(property) {
+                    _.forEach(propertiesArray, function(property) {
                             propertiesMap[property] = value[property];
                         })
                         //geojson data
@@ -41,13 +46,42 @@ module.exports = {
                         id: value[pointId],
                         properties: propertiesMap
                     }
+
+                    geoJson.features.push(point)
                 })
+                console.dir(geoJson);
+                values.geojson = geoJson
+                    // Once the geoJson is created, we create the map
+                _Map.create(values).exec(function created(err, newInstance) {
+                    if (err) return res.negotiate(err);
+
+                    if (req._sails.hooks.pubsub) {
+                        if (req.isSocket) {
+                            Model.subscribe(req, newInstance);
+                            Model.introduce(newInstance);
+                        }
+                        // Make sure data is JSON-serializable before publishing
+                        var publishData = _.isArray(newInstance) ?
+                            _.map(newInstance, function(instance) {
+                                return instance.toJSON();
+                            }) :
+                            newInstance.toJSON();
+                        Model.publishCreate(publishData, !req.options.mirror && req);
+                    }
+
+                    // Send JSONP-friendly response if it's supported
+                    res.created(newInstance, {
+                        meta: {
+                            code: sails.config.success.CREATED.code,
+                            message: sails.config.success.CREATED.message
+                        },
+                        links: {
+                            record: req.host + ':' + req.port + '/maps/' + newInstance.id
+                        }
+                    });
+                });
             });
 
-            // DataStorageService.getData(record.dataset, record.name, res, function(data) {
-            // console.dir(tojson(data.next()));
-            // console.dir(data[0])
-            // });
 
         })
     }
