@@ -46,11 +46,19 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-            // required: true
+                // required: true
         },
         embedCode: {
             type: 'string',
             size: 500
+        },
+        latitudeKey: {
+            type: 'string',
+            size: 100
+        },
+        longitudeKey: {
+            type: 'string',
+            size: 100
         },
         geojson: {
             type: 'json'
@@ -79,6 +87,12 @@ module.exports = {
             type: 'object'
         },
         embedCode: {
+            type: 'string'
+        },
+        latitudeKey: {
+            type: 'string'
+        },
+        longitudeKey: {
             type: 'string'
         },
         geojson: {
