@@ -16,7 +16,6 @@ module.exports = function(data, config) {
         links: _.get(config, 'links', {})
     }, _.get(config, 'root', {}));
 
-
     this.res.set({
         'Content-Type': 'application/json'
     });

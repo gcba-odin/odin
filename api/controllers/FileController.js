@@ -37,7 +37,6 @@ module.exports = {
         });
     },
     contents: function(req, res) {
-
         const pk = actionUtil.requirePk(req);
 
         File.findOne(pk).then(function(file) {

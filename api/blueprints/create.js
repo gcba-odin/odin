@@ -1,6 +1,7 @@
 "use strict";
 
 const Response = require('../services/ResponseBuilderService');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 /**
  * Create Record
@@ -12,11 +13,19 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePOST(req, res);
 
     builder.create
-        .then( record => {
+        .then(record => {
+            var model = (actionUtil.parseModel(req)).adapter.identity;
             LogService.log(req, record.id);
-            res.created( record, {
-                meta: builder.meta( record ),
-                links: builder.links( record )
+            console.log(' before winston')
+            LogService.winstonLog('info', model + ' created', {
+                ip: req.ip,
+                resource: record.id
+            });
+            console.log(' after winston')
+
+            res.created(record, {
+                meta: builder.meta(record),
+                links: builder.links(record)
             });
         })
         .catch(res.negotiate);

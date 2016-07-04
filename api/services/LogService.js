@@ -1,4 +1,5 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+var winston = require('winston');
 
 module.exports = {
 
@@ -39,5 +40,22 @@ module.exports = {
                 throw new Error(err)
             });
         }
+    },
+
+    winstonLog: function(type, message, content) {
+        console.log('inside winston log');
+
+        // Attach context to the content
+        var finalContent = {
+            timestamp: Date.now()
+        };
+        for (var attribute in content) {
+            if (content[attribute])
+                finalContent[attribute] = content[attribute];
+        }
+        // Send the log
+        winston.log(type, message, finalContent);
+        console.log('end winston log');
+        // winston.log('info', 'Now my debug messages are written to console!');
     }
 };
