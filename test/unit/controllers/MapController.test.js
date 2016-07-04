@@ -71,6 +71,7 @@ describe('All Maps', function() {
                         result.body.data.forEach(function(element) {
                             assert.property(element, 'id');
                             assert.isString(element.id);
+                            assert.ok(shortid.isValid(element.id));
 
                             assert.property(element, 'name');
                             assert.isString(element.name);
@@ -265,6 +266,7 @@ describe('Single Map', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -318,6 +320,7 @@ describe('Single Map', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -407,6 +410,7 @@ describe('Single Map', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -460,6 +464,7 @@ describe('Single Map', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);

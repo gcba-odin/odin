@@ -72,6 +72,7 @@ describe('All Files', function() {
                         result.body.data.forEach(function(element) {
                             assert.property(element, 'id');
                             assert.isString(element.id);
+                            assert.ok(shortid.isValid(element.id));
 
                             assert.property(element, 'name');
                             assert.isString(element.name);
@@ -242,6 +243,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -329,6 +331,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -416,6 +419,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -489,6 +493,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -559,6 +564,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -629,6 +635,7 @@ describe('Single File', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -747,6 +754,42 @@ describe('Single File', function() {
                     assert.property(result.body.links, 'all');
                     assert.isString(result.body.links.all);
 
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // CSV file download
+    describe('- GET /file/:id/download [csv]', function() {
+        it('- Should download the file', function(done) {
+            request.get(`/files/${csvId}/download`)
+                .expect(200)
+                .expect('Content-Disposition', /attachment/)
+                .end(function(err, result) {
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // XLS file download
+    describe('- GET /file/:id/download [xls]', function() {
+        it('- Should download the file', function(done) {
+            request.get(`/files/${xlsId}/download`)
+                .expect(200)
+                .expect('Content-Disposition', /attachment/)
+                .end(function(err, result) {
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // XLSX file download
+    describe('- GET /file/:id/download [xlsx]', function() {
+        it('- Should download the file', function(done) {
+            request.get(`/files/${xlsxId}/download`)
+                .expect(200)
+                .expect('Content-Disposition', /attachment/)
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });

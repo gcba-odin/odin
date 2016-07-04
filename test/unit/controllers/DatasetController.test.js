@@ -6,6 +6,7 @@ require('sails-test-helper');
 const sails = require('sails');
 const config = require('../../../config/env/test');
 const assert = chai.assert;
+const shortid = require('shortid');
 var datasetId;
 
 chai.use(require('chai-fs'));
@@ -72,6 +73,7 @@ describe('All Datasets', function() {
                         result.body.data.forEach(function(element) {
                             assert.property(element, 'id');
                             assert.isString(element.id);
+                            assert.ok(shortid.isValid(element.id));
 
                             assert.property(element, 'name');
                             assert.isString(element.name);
@@ -117,6 +119,18 @@ describe('All Datasets', function() {
                         }, this);
                     }
 
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // RSS Feed
+    describe('- GET /datasets/feed/rss', function() {
+        it('- Should get the RSS feed', function(done) {
+            request.get('/datasets/feed/rss')
+                .expect(200)
+                .expect('Content-Type', 'application/rss+xml; charset=utf-8')
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
@@ -240,6 +254,7 @@ describe('Single Dataset', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -290,6 +305,7 @@ describe('Single Dataset', function() {
                 .end(function(err, result) {
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -362,6 +378,7 @@ describe('Single Dataset', function() {
 
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
@@ -421,6 +438,7 @@ describe('Single Dataset', function() {
                 .end(function(err, result) {
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
 
                     assert.property(result.body.data, 'name');
                     assert.isString(result.body.data.name);
