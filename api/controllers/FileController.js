@@ -20,7 +20,7 @@ module.exports = {
         File.findOne(pk).then(function(file) {
             if (!file) return res.notFound();
 
-            dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name;
+            var dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name;
 
             var fileAdapter = SkipperDisk();
 

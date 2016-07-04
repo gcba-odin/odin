@@ -36,7 +36,8 @@ module.exports = {
 
     // Require and configure Winston with File
     winston.add(winston.transports.File, {
-      filename: 'logs/' + sails.config.environment + '.log'
+      filename: 'logs/' + sails.config.environment + '.log',
+      level: 'silly'
     });
     winston.remove(winston.transports.Console);
 

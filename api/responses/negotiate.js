@@ -18,7 +18,9 @@ module.exports = function(error) {
         message,
         root
     };
-    LogService.winstonLog('info', message, {
+    LogService.winstonLog('error', 'error: ' + code, {
+        code: code,
+        message: message,
         ip: this.req.ip
     })
     if (statusCode === 401) return res.unauthorized(data, config);

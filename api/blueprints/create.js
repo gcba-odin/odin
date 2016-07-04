@@ -15,13 +15,13 @@ module.exports = (req, res) => {
     builder.create
         .then(record => {
             var model = (actionUtil.parseModel(req)).adapter.identity;
+
             LogService.log(req, record.id);
-            console.log(' before winston')
+
             LogService.winstonLog('info', model + ' created', {
                 ip: req.ip,
                 resource: record.id
             });
-            console.log(' after winston')
 
             res.created(record, {
                 meta: builder.meta(record),
