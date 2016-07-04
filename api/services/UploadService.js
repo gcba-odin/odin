@@ -139,11 +139,19 @@ module.exports = {
                         sails.models.file.create(data).exec(function created(err, newInstance) {
                             if (err) return res.negotiate(err);
 
+                            // Log to winston
+                            console.dir(newInstance)
+                            LogService.winstonLog('info', 'file created', {
+                                ip: req.ip,
+                                resource: newInstance.id
+                            });
+
                             if (req._sails.hooks.pubsub) {
                                 if (req.isSocket) {
                                     Model.subscribe(req, newInstance);
                                     Model.introduce(newInstance);
                                 }
+
                                 // Make sure data is JSON-serializable before publishing
                                 var publishData = _.isArray(newInstance) ?
                                     _.map(newInstance, function(instance) {

@@ -18,7 +18,6 @@ module.exports = function(error) {
         message,
         root
     };
-    console.log(config)
     LogService.winstonLog('info', message, {
         ip: this.req.ip
     })
