@@ -2,7 +2,7 @@
 
 /**
  * OptionsController
- * @description :: Server-side logic for ...
+ * @description :: Server-side logic for Options
  */
 const Response = require('../services/ResponseBuilderService');
 

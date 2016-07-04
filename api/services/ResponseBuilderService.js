@@ -720,7 +720,7 @@ class ResponseOPTIONS extends ResponseBuilder {
             methodsArray.push({
                 "headers": headers,
                 "verb": methodVerb,
-                "url": this.req.path,
+                "endpoint": this.req.path,
                 "parameters": key(this._model)
             });
         }.bind(this));
