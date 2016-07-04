@@ -50,6 +50,13 @@ class ResponseBuilder {
                 target[value[0]] = value[1];
             }
         }
+        LogService.winstonLog('silly', 'Request', {
+            ip: req.ip,
+            headers: req.headers,
+            body: req.body,
+            parameters: req.params
+        });
+
     }
 
     /**

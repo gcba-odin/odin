@@ -43,8 +43,6 @@ module.exports = {
     },
 
     winstonLog: function(type, message, content) {
-        console.log('inside winston log');
-
         // Attach context to the content
         var finalContent = {
             timestamp: Date.now()
@@ -55,7 +53,6 @@ module.exports = {
         }
         // Send the log
         winston.log(type, message, finalContent);
-        console.log('end winston log');
     },
     winstonLogResponse: function(message, metaCode, metaMessage, headers, body, ip) {
 
