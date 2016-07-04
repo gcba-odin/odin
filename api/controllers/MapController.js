@@ -11,8 +11,8 @@ module.exports = {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
-        var latitud = _.get(values, 'latitudeKey', '');
-        var longitud = _.get(values, 'longitudeKey', '');
+        var latitude = _.get(values, 'latitudeKey', '');
+        var longitude = _.get(values, 'longitudeKey', '');
 
         var properties = _.get(values, 'properties', '');
 
@@ -28,7 +28,6 @@ module.exports = {
                     type: "FeatureCollection",
                     features: []
                 }
-
                 _.forEach(data, function(value, index) {
                     var propertiesMap = {};
                     // for each property sent we add it to the map
@@ -37,15 +36,15 @@ module.exports = {
                         })
                         //geojson data
                     var point = {
-                        geometry: {
-                            type: "Point",
-                            coordinates: [value[latitud], value[longitud]]
-                        },
-                        type: 'Feature',
-                        id: index,
-                        properties: propertiesMap
-                    }
-
+                            geometry: {
+                                type: "Point",
+                                coordinates: [value[latitude], value[longitude]]
+                            },
+                            type: 'Feature',
+                            id: index,
+                            properties: propertiesMap
+                        }
+                        // console.dir(point.geometry)
                     geoJson.features.push(point)
                 })
                 values.geojson = geoJson
