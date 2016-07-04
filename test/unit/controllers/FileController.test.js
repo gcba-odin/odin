@@ -471,6 +471,13 @@ describe('Single File', function() {
         });
     });
 
+    // Check CSV file encoding
+    describe('- File encoding', function() {
+        it('Should check that the file is UTF-8 encoded', function(done) {
+
+        })
+    });
+
     // Check CSV file
     describe('- GET /file/:id [csv]', function() {
         it('- Should get the file', function(done) {
