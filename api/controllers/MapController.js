@@ -41,7 +41,7 @@ module.exports = {
                                 coordinates: [value[latitude], value[longitude]]
                             },
                             type: 'Feature',
-                            id: index,
+                            id: index + 1,
                             properties: propertiesMap
                         }
                         // console.dir(point.geometry)

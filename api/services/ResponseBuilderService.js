@@ -305,7 +305,7 @@ class ResponseGET extends ResponseBuilder {
         if (!_.isUndefined(records)) {
 
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this.params.pages === this.params.page) {
+            if (_.isUndefined(this.params.pages) || this.params.pages <= this.params.page) {
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
