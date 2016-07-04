@@ -56,6 +56,20 @@ module.exports = {
         // Send the log
         winston.log(type, message, finalContent);
         console.log('end winston log');
-        // winston.log('info', 'Now my debug messages are written to console!');
+    },
+    winstonLogResponse: function(message, metaCode, metaMessage, headers, body, ip) {
+
+        LogService.winstonLog('verbose', message, {
+            ip: ip,
+            code: metaCode,
+            message: metaMessage
+        });
+
+        LogService.winstonLog('silly', message, {
+            ip: ip,
+            headers: headers,
+            body: body
+        });
+
     }
 };
