@@ -61,6 +61,9 @@ module.exports = {
         geojson: {
             type: 'json'
         },
+        publishedAt: {
+            type: 'datetime'
+        },
         file: {
             model: 'file',
             required: true
@@ -100,6 +103,9 @@ module.exports = {
         },
         geojson: {
             type: 'json'
+        },
+        publishedAt: {
+            type: 'datetime'
         },
         file: {
             type: 'string'

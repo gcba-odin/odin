@@ -38,15 +38,17 @@ module.exports = {
             url: true,
             size: 500
         },
-        createdBy: {
-            model: 'user'
-                // required: true
-        },
         embedCode: {
             type: 'string',
             size: 500
         },
-
+        publishedAt: {
+            type: 'datetime'
+        },
+        createdBy: {
+            model: 'user'
+                // required: true
+        },
         toJSON() {
             return this.toObject();
         }
@@ -64,11 +66,14 @@ module.exports = {
         url: {
             type: 'string'
         },
-        createdBy: {
-            type: 'object'
-        },
         embedCode: {
             type: 'string'
+        },
+        publishedAt: {
+            type: 'datetime'
+        },
+        createdBy: {
+            type: 'object'
         }
     },
     setAttributes() {
