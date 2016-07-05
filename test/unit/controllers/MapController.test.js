@@ -340,7 +340,7 @@ describe('All Maps', function() {
     // Filters
 
     describe('- GET /maps?name=map 1', function() {
-        it('- Should get the first dataset', function(done) {
+        it('- Should get the first map', function(done) {
             request.get('/maps?name=map 1')
                 .set('Accept', 'application/json')
                 .expect(200)
@@ -362,7 +362,7 @@ describe('All Maps', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, '6ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -377,9 +377,9 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?name=map 1&status.name=Draft', function() {
-        it('- Should get one dataset', function(done) {
-            request.get('/maps?name=map 1&status.name=Draft')
+    describe('- GET /maps?name=map 1&basemap=roadmap', function() {
+        it('- Should get one map', function(done) {
+            request.get('/maps?name=map 1&basemap=roadmap')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -400,15 +400,15 @@ describe('All Maps', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, '6ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
                     assert.equal(result.body.data[0].name, 'Map 1');
 
-                    assert.property(result.body.data[0], 'status');
-                    assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Draft');
+                    assert.property(result.body.data[0], 'basemap');
+                    assert.isString(result.body.data[0].basemap);
+                    assert.equal(result.body.data[0].basemap, 'roadmap');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -419,11 +419,11 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?name=map 1&status.name=Published', function() {
-        it('- Should get 404 Not Found error', function(done) {
-            request.get('/maps?name=map 1&status.name=Published')
+    describe('- GET /maps?name=map 1&basemap=terrain', function() {
+        it('- Should get no record', function(done) {
+            request.get('/maps?name=map 1&basemap=terrain')
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     //Meta
@@ -432,7 +432,12 @@ describe('All Maps', function() {
 
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
 
                     // Links
                     assert.property(result.body, 'links');
@@ -446,9 +451,9 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?status.name=Published', function() {
-        it('- Should get one dataset', function(done) {
-            request.get('/maps?status.name=Published')
+    describe('- GET /maps?file.name=File 1', function() {
+        it('- Should get one map', function(done) {
+            request.get('/maps?file.name=File 1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -469,11 +474,15 @@ describe('All Maps', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRn');
+                    assert.equal(result.body.data[0].id, '6ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Map 4');
+                    assert.equal(result.body.data[0].name, 'Map 1');
+
+                    assert.property(result.body.data[0], 'file');
+                    assert.isObject(result.body.data[0].file);
+                    assert.equal(result.body.data[0].file.name, 'File 1');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -487,7 +496,7 @@ describe('All Maps', function() {
     // Search
 
     describe('- GET /maps?search?query=1', function() {
-        it('- Should get one dataset', function(done) {
+        it('- Should get one map', function(done) {
             request.get('/maps?search?query=1')
                 .set('Accept', 'application/json')
                 .expect(200)
@@ -509,7 +518,7 @@ describe('All Maps', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, '6ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -547,7 +556,7 @@ describe('All Maps', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, '6ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -556,7 +565,7 @@ describe('All Maps', function() {
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, 'sWRhpRl');
+                    assert.equal(result.body.data[1].id, '7ogPbIz9');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
@@ -696,7 +705,7 @@ describe('Single Map', function() {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
-                .field('dataset', 'sWRhpRkh')
+                .field('map', 'sWRhpRkh')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')
                 .field('owner', 'dogPzIz9')
@@ -858,6 +867,36 @@ describe('Single Map', function() {
                             assert.property(element, 'properties');
                         }, this);
                     }
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Granular Populate
+
+    describe('- GET /maps/:id?include=tags.name', function() {
+        it('- Should get 400 Bad Request error', function(done) {
+            request.get('/maps/sWRhpRk?include=tags.name')
+                .set('Accept', 'application/json')
+                .expect(400)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_BAD_REQUEST');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'record');
+                    assert.isString(result.body.links.record);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
 
                     err ? done(err) : done();
                 });

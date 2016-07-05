@@ -426,10 +426,10 @@ describe('All Datasets', function() {
     });
 
     describe('- GET /datasets?name=Dataset 1&status.name=Published', function() {
-        it('- Should get 404 Not Found error', function(done) {
+        it('- Should get no record', function(done) {
             request.get('/datasets?name=Dataset 1&status.name=Published')
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     //Meta
@@ -438,7 +438,12 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
 
                     // Links
                     assert.property(result.body, 'links');
@@ -480,6 +485,10 @@ describe('All Datasets', function() {
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
                     assert.equal(result.body.data[0].name, 'Dataset 4');
+
+                    assert.property(result.body.data[0], 'status');
+                    assert.isObject(result.body.data[0].status);
+                    assert.equal(result.body.data[0].status.name, 'Published');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -888,7 +897,7 @@ describe('Single Dataset', function() {
     });
 
     describe('- GET /datasets/:id?include=tags.name,files.name', function() {
-        it('- Should get 404 Not Found error', function(done) {
+        it('- Should get just the tag names and file names', function(done) {
             request.get('/datasets/sWRhpRk?include=tags.name,files.name')
                 .set('Accept', 'application/json')
                 .expect(200)

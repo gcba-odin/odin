@@ -367,11 +367,11 @@ describe('All Files', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, 'sWRhpRa');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'file 1');
+                    assert.equal(result.body.data[0].name, 'File 1');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -405,11 +405,11 @@ describe('All Files', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, 'sWRhpRa');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'file 1');
+                    assert.equal(result.body.data[0].name, 'File 1');
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
@@ -425,10 +425,10 @@ describe('All Files', function() {
     });
 
     describe('- GET /files?name=file 1&status.name=Published', function() {
-        it('- Should get 404 Not Found error', function(done) {
+        it('- Should get no record', function(done) {
             request.get('/files?name=file 1&status.name=Published')
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     //Meta
@@ -437,7 +437,12 @@ describe('All Files', function() {
 
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
 
                     // Links
                     assert.property(result.body, 'links');
@@ -474,7 +479,7 @@ describe('All Files', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRn');
+                    assert.equal(result.body.data[0].id, 'vWRhpRd');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -514,7 +519,7 @@ describe('All Files', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, 'sWRhpRa');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -552,7 +557,7 @@ describe('All Files', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, 'sWRhpRa');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -561,7 +566,7 @@ describe('All Files', function() {
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, 'sWRhpRl');
+                    assert.equal(result.body.data[1].id, 'tWRhpRb');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
@@ -1234,7 +1239,7 @@ describe('Single File', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.equal(result.body.data[0].id, 'sWRhpRa');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
