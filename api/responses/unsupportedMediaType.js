@@ -18,7 +18,7 @@ module.exports = function(data, config) {
     });
     this.res.status(415);
 
-    LogService.winstonLogResponse('Unsupported Media Type', response.code, response.message, this.res.headers, response, this.req.ip)
+    LogService.winstonLogResponse('Unsupported Media Type', response.code, response.message, this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

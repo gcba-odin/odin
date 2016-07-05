@@ -27,6 +27,7 @@ module.exports = (req, res) => {
                     links: builder.links(undefined)
                 });
             }
+
             LogService.log(req, record[0].id);
 
             LogService.winstonLog('info', model + ' updated', {
@@ -36,18 +37,18 @@ module.exports = (req, res) => {
 
             var associations = [];
 
-            _.forEach(builder._model.definition, function (value, key) {
+            _.forEach(builder._model.definition, function(value, key) {
                 if (value.foreignKey) {
-                    associations.push(key)
+                    associations.push(key);
                 }
             });
 
             //populate the response
-            builder._model.find(record[0].id).populate(associations).exec(function (err, record) {
+            builder._model.find(record[0].id).populate(associations).exec(function(err, record) {
                 res.updated(record, {
                     meta: builder.meta(record),
                     links: builder.links(record)
-                })
+                });
 
             });
 

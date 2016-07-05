@@ -112,9 +112,6 @@ describe('All Maps', function() {
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
-
-                            // assert.startsWith(element.url, `http://127.0.0.1`);
-                            // assert.endsWith(element.url, `/maps/${element.id}/download`);
                         }, this);
                     }
 
@@ -1081,7 +1078,7 @@ describe('Single Map', function() {
         it('- Should delete the map', function(done) {
             request.del(`/maps/${mapId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

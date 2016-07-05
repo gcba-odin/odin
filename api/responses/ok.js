@@ -21,7 +21,6 @@ module.exports = function(data, config) {
         links: _.get(config, 'links', {})
     }, _.get(config, 'root', {}));
 
-
     var status = "";
 
     try {
@@ -30,13 +29,13 @@ module.exports = function(data, config) {
         status = 200;
     }
 
-
     // Add headers to the res object as needed
     this.res.set({
         'Content-Type': 'application/json'
     });
     this.res.status(status);
-    LogService.winstonLogResponse('Ok', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip)
+
+    LogService.winstonLogResponse('Ok', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

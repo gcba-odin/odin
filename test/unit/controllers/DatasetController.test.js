@@ -650,7 +650,7 @@ describe('All Datasets', function() {
             request.get('/datasets/feed/rss')
                 .expect(200)
                 .expect('Content-Type', 'application/rss+xml; charset=utf-8')
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

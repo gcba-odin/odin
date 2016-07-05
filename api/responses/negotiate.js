@@ -18,11 +18,13 @@ module.exports = function(error) {
         message,
         root
     };
+
     LogService.winstonLog('error', 'error: ' + code, {
         code: code,
         message: message,
         ip: this.req.ip
-    })
+    });
+
     if (statusCode === 401) return res.unauthorized(data, config);
     if (statusCode === 403) return res.forbidden(data, config);
     if (statusCode === 404) return res.notFound(data, config);

@@ -22,8 +22,8 @@
              });
 
              archive.on('error', function(err) {
-                 console.error('\nerror archive.on ' + err)
-                     // if (!res.headersSent) return res.negotiate(err);
+                 console.error('\nerror archive.on ' + err);
+                 // if (!res.headersSent) return res.negotiate(err);
              });
 
              archive.pipe(output);

@@ -22,7 +22,7 @@ module.exports = function(data, config) {
 
     this.res.status(400);
 
-    LogService.winstonLogResponse('Bad Request', response.code, response.message, this.res.headers, response, this.req.ip)
+    LogService.winstonLogResponse('Bad Request', response.code, response.message, this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };
