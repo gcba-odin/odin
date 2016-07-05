@@ -19,6 +19,7 @@ before_install:
   - npm install -g node-gyp
   - cd /home/travis/build/gcba-odin/odin/node_modules/detect-character-encoding
   - node-gyp rebuild
+  - cd /home/travis/build/gcba-odin/odin
 script:
     - make test
 services:
