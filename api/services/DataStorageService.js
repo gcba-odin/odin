@@ -50,4 +50,4 @@ module.exports = {
     //         cb(collection.find());
     //     })
     // }
-}
+};

@@ -27,7 +27,8 @@ module.exports = {
                 var geoJson = {
                     type: "FeatureCollection",
                     features: []
-                }
+                };
+
                 _.forEach(data, function(value, index) {
                     var propertiesMap = {};
                     // for each property sent we add it to the map
@@ -45,10 +46,10 @@ module.exports = {
                             properties: propertiesMap
                         }
                         // console.dir(point.geometry)
-                    geoJson.features.push(point)
+                    geoJson.features.push(point);
                 })
-                values.geojson = geoJson
-                    // Once the geoJson is created, we create the map
+                values.geojson = geoJson;
+                // Once the geoJson is created, we create the map
                 _Map.create(values).exec(function created(err, newInstance) {
                     if (err) return res.negotiate(err);
 

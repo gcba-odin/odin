@@ -35,7 +35,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-            // required: true
+                // required: true
         },
         tags: {
             collection: 'tag',
@@ -74,7 +74,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name', 'description'],
 
@@ -83,7 +83,7 @@ module.exports = {
         next();
     },
     afterUpdate: (values, next) => {
-        next()
+        next();
     },
     afterCreate: (values, next) => {
         next();
