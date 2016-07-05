@@ -16,10 +16,6 @@ before_install:
   - sudo chmod 777 -R /tmp/odin
   - npm update -g npm
   - npm install -g dredd@stable
-  - npm install -g node-gyp
-  - cd /home/travis/build/gcba-odin/odin/node_modules/detect-character-encoding
-  - node-gyp rebuild
-  - cd /home/travis/build/gcba-odin/odin
 script:
     - make test
 services:
