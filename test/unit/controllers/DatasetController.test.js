@@ -5,6 +5,7 @@ require('sails-test-helper');
 
 const sails = require('sails');
 const config = require('../../../config/env/test');
+const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
 var datasetId;
@@ -23,7 +24,7 @@ describe('All Datasets', function() {
             request.get('/datasets')
                 .set('Accept', 'application/json')
                 .expect(200)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
@@ -51,6 +52,7 @@ describe('All Datasets', function() {
                     assert.property(result.body.meta, 'pages');
                     assert.isNumber(result.body.meta.pages);
 
+                    assert.isAtMost(result.body.meta.end, result.body.meta.count);
                     assert.isAtMost(result.body.meta.page, result.body.meta.pages);
 
                     // Data
@@ -63,11 +65,11 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(element.url, `/datasets/first`);
+                    assert.endsWith(result.body.links.firstItem, '/datasets/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(element.url, `/datasets/last`);
+                    assert.endsWith(result.body.links.lastItem, '/datasets/last');
 
                     if (result.body.data.length > 0) {
                         result.body.data.forEach(function(element) {
@@ -124,6 +126,220 @@ describe('All Datasets', function() {
         });
     });
 
+    // Pagination
+
+    describe('- GET /datasets?limit=2', function() {
+        it('- Should get the first two datasets', function(done) {
+            request.get('/datasets?limit=2')
+                .set('Accept', 'application/json')
+                .expect(206)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'PARTIAL_CONTENT');
+
+                    assert.property(result.body.meta, 'count');
+                    assert.isNumber(result.body.meta.count);
+
+                    assert.property(result.body.meta, 'limit');
+                    assert.isNumber(result.body.meta.limit);
+                    assert.equal(result.body.meta.limit, 2);
+
+                    assert.property(result.body.meta, 'start');
+                    assert.isNumber(result.body.meta.start);
+                    assert.equal(result.body.meta.start, 1);
+
+                    assert.property(result.body.meta, 'end');
+                    assert.isNumber(result.body.meta.end);
+                    assert.equal(result.body.meta.end, 2);
+
+                    assert.property(result.body.meta, 'page');
+                    assert.isNumber(result.body.meta.page);
+                    assert.equal(result.body.meta.page, 1);
+
+                    assert.property(result.body.meta, 'pages');
+                    assert.isNumber(result.body.meta.pages);
+
+                    assert.isAtMost(result.body.meta.end, result.body.meta.count);
+                    assert.isAtMost(result.body.meta.page, result.body.meta.pages);
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'next');
+                    assert.isString(result.body.links.next);
+                    assert.endsWith(result.body.links.next, 'datasets?limit=2&skip=2');
+
+                    assert.property(result.body.links, 'last');
+                    assert.isString(result.body.links.last);
+                    assert.endsWith(result.body.links.last, 'datasets?limit=2&skip=4');
+
+                    assert.property(result.body.links, 'firstItem');
+                    assert.isString(result.body.links.firstItem);
+                    assert.endsWith(result.body.links.firstItem, '/datasets/first');
+
+                    assert.property(result.body.links, 'lastItem');
+                    assert.isString(result.body.links.lastItem);
+                    assert.endsWith(result.body.links.lastItem, '/datasets/last');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /datasets?limit=2&skip=2', function() {
+        it('- Should get the next page', function(done) {
+            request.get('/datasets?limit=2&skip=2')
+                .set('Accept', 'application/json')
+                .expect(206)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'PARTIAL_CONTENT');
+
+                    assert.property(result.body.meta, 'count');
+                    assert.isNumber(result.body.meta.count);
+
+                    assert.property(result.body.meta, 'limit');
+                    assert.isNumber(result.body.meta.limit);
+                    assert.equal(result.body.meta.limit, 2);
+
+                    assert.property(result.body.meta, 'start');
+                    assert.isNumber(result.body.meta.start);
+                    assert.equal(result.body.meta.start, 3);
+
+                    assert.property(result.body.meta, 'end');
+                    assert.isNumber(result.body.meta.end);
+                    assert.equal(result.body.meta.end, 4);
+
+                    assert.property(result.body.meta, 'page');
+                    assert.isNumber(result.body.meta.page);
+                    assert.equal(result.body.meta.page, 2);
+
+                    assert.property(result.body.meta, 'pages');
+                    assert.isNumber(result.body.meta.pages);
+
+                    assert.isAtMost(result.body.meta.end, result.body.meta.count);
+                    assert.isAtMost(result.body.meta.page, result.body.meta.pages);
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'previous');
+                    assert.isString(result.body.links.previous);
+                    assert.endsWith(result.body.links.previous, 'datasets?limit=2&skip=0');
+
+                    assert.property(result.body.links, 'next');
+                    assert.isString(result.body.links.next);
+                    assert.endsWith(result.body.links.next, 'datasets?limit=2&skip=2');
+
+                    assert.property(result.body.links, 'first');
+                    assert.isString(result.body.links.first);
+                    assert.endsWith(result.body.links.first, 'datasets?limit=2&skip=0');
+
+                    assert.property(result.body.links, 'last');
+                    assert.isString(result.body.links.last);
+                    assert.endsWith(result.body.links.last, 'datasets?limit=2&skip=4');
+
+                    assert.property(result.body.links, 'firstItem');
+                    assert.isString(result.body.links.firstItem);
+                    assert.endsWith(result.body.links.firstItem, '/datasets/first');
+
+                    assert.property(result.body.links, 'lastItem');
+                    assert.isString(result.body.links.lastItem);
+                    assert.endsWith(result.body.links.lastItem, '/datasets/last');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /datasets?limit=2&skip=4', function() {
+        it('- Should get the first two datasets', function(done) {
+            request.get('/datasets?limit=2&skip=4')
+                .set('Accept', 'application/json')
+                .expect(206)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'PARTIAL_CONTENT');
+
+                    assert.property(result.body.meta, 'count');
+                    assert.isNumber(result.body.meta.count);
+
+                    assert.property(result.body.meta, 'limit');
+                    assert.isNumber(result.body.meta.limit);
+                    assert.equal(result.body.meta.limit, 2);
+
+                    assert.property(result.body.meta, 'start');
+                    assert.isNumber(result.body.meta.start);
+                    assert.equal(result.body.meta.start, 5);
+
+                    assert.property(result.body.meta, 'end');
+                    assert.isNumber(result.body.meta.end);
+                    assert.equal(result.body.meta.end, 5);
+
+                    assert.property(result.body.meta, 'page');
+                    assert.isNumber(result.body.meta.page);
+                    assert.equal(result.body.meta.page, 3);
+
+                    assert.property(result.body.meta, 'pages');
+                    assert.isNumber(result.body.meta.pages);
+
+                    assert.isAtMost(result.body.meta.end, result.body.meta.count);
+                    assert.isAtMost(result.body.meta.page, result.body.meta.pages);
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'previous');
+                    assert.isString(result.body.links.previous);
+                    assert.endsWith(result.body.links.previous, 'datasets?limit=2&skip=2');
+
+                    assert.property(result.body.links, 'first');
+                    assert.isString(result.body.links.first);
+                    assert.endsWith(result.body.links.first, 'datasets?limit=2&skip=0');
+
+                    assert.property(result.body.links, 'firstItem');
+                    assert.isString(result.body.links.firstItem);
+                    assert.endsWith(result.body.links.firstItem, '/datasets/first');
+
+                    assert.property(result.body.links, 'lastItem');
+                    assert.isString(result.body.links.lastItem);
+                    assert.endsWith(result.body.links.lastItem, '/datasets/last');
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // RSS Feed
     describe('- GET /datasets/feed/rss', function() {
         it('- Should get the RSS feed', function(done) {
@@ -143,7 +359,7 @@ describe('All Datasets', function() {
             request.del('/datasets')
                 .set('Accept', 'application/json')
                 .expect(501)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -168,7 +384,7 @@ describe('All Datasets', function() {
             request.patch('/datasets')
                 .set('Accept', 'application/json')
                 .expect(501)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -193,7 +409,7 @@ describe('All Datasets', function() {
             request.put('/datasets')
                 .set('Accept', 'application/json')
                 .expect(501)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -235,7 +451,7 @@ describe('Single Dataset', function() {
                 .field('owner', 'dogPzIz9')
                 .field('createdBy', 'dogPzIz9')
                 .expect(201)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -301,7 +517,7 @@ describe('Single Dataset', function() {
             request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
@@ -359,7 +575,7 @@ describe('Single Dataset', function() {
                 .field('category', 'kWRhpRV')
                 .field('status', 'qWRhpRV')
                 .expect(200)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -434,7 +650,7 @@ describe('Single Dataset', function() {
             request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body.data, 'id');
                     assert.isString(result.body.data.id);
@@ -505,7 +721,7 @@ describe('Single Dataset', function() {
             request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
