@@ -5,8 +5,13 @@ require('sails-test-helper');
 
 const sails = require('sails');
 const config = require('../../../config/env/test');
+const chai = require('chai');
 const assert = chai.assert;
-var csvId, xlsId, xlsxId;
+const fs = require('fs');
+const detectCharacterEncoding = require('detect-character-encoding');
+const shortid = require('shortid');
+const datasetId = 'sWRhpRl';
+var csvId, csvName, xlsId, xlsName, xlsxId, xlsxName;
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
@@ -62,11 +67,11 @@ describe('All Files', function() {
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(element.url, `/datasets/first`);
+                    assert.endsWith(result.body.links.firstItem, '/files/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(element.url, `/datasets/last`);
+                    assert.endsWith(result.body.links.lastItem, '/files/last');
 
                     if (result.body.data.length > 0) {
                         result.body.data.forEach(function(element) {
@@ -117,6 +122,69 @@ describe('All Files', function() {
                             // assert.endsWith(element.url, `/files/${element.id}/download`);
                         }, this);
                     }
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Pagination
+
+    describe('- GET /files?limit=2', function() {
+        it('- Should get the first two files', function(done) {
+            request.get('/files?limit=2')
+                .set('Accept', 'application/json')
+                .expect(206)
+                .expect('Content-Type', /json/)
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'PARTIAL_CONTENT');
+
+                    assert.property(result.body.meta, 'count');
+                    assert.isNumber(result.body.meta.count);
+
+                    assert.property(result.body.meta, 'limit');
+                    assert.isNumber(result.body.meta.limit);
+                    assert.equal(result.body.meta.limit, 2);
+
+                    assert.property(result.body.meta, 'start');
+                    assert.isNumber(result.body.meta.start);
+                    assert.equal(result.body.meta.start, 1);
+
+                    assert.property(result.body.meta, 'end');
+                    assert.isNumber(result.body.meta.end);
+                    assert.equal(result.body.meta.end, 2);
+
+                    assert.property(result.body.meta, 'page');
+                    assert.isNumber(result.body.meta.page);
+                    assert.equal(result.body.meta.page, 1);
+
+                    assert.property(result.body.meta, 'pages');
+                    assert.isNumber(result.body.meta.pages);
+
+                    assert.isAtMost(result.body.meta.page, result.body.meta.pages);
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.endsWith(result.body.links.next, 'files?limit=2&skip=2');
+
+                    assert.property(result.body.links, 'firstItem');
+                    assert.isString(result.body.links.firstItem);
+                    assert.endsWith(result.body.links.firstItem, '/files/first');
+
+                    assert.property(result.body.links, 'lastItem');
+                    assert.isString(result.body.links.lastItem);
+                    assert.endsWith(result.body.links.lastItem, '/files/last');
 
                     err ? done(err) : done();
                 });
@@ -289,6 +357,7 @@ describe('Single File', function() {
 
                     if (!err) {
                         csvId = result.body.data.id;
+                        csvName = result.body.data.name;
                         done();
                     } else done(err);
                 });
@@ -377,6 +446,7 @@ describe('Single File', function() {
 
                     if (!err) {
                         xlsId = result.body.data.id;
+                        xlsName = result.body.data.name;
                         done();
                     } else done(err);
                 });
@@ -465,6 +535,7 @@ describe('Single File', function() {
 
                     if (!err) {
                         xlsxId = result.body.data.id;
+                        xlsxName = result.body.data.name;
                         done();
                     } else done(err);
                 });
@@ -473,9 +544,42 @@ describe('Single File', function() {
 
     // Check CSV file encoding
     describe('- File encoding', function() {
-        it('Should check that the file is UTF-8 encoded', function(done) {
+        it('- Should check that the folder exists', function(done) {
+            assert.isDirectory('/tmp/odin');
+        });
 
-        })
+        it('- Should check that the file exists', function(done) {
+            assert.isFile(`/tmp/odin/${datasetId}/${csvName}.csv`);
+        });
+
+        it('- Should check that the file is UTF-8 encoded', function(done) {
+            let fileBuffer = fs.readFileSync(`/tmp/odin/${datasetId}/${csvName}.csv`);
+            let charsetMatch = detectCharacterEncoding(fileBuffer);
+
+            assert.equal(charsetMatch.encoding, 'UTF-8');
+        });
+    });
+
+    // Check XLS file existence
+    describe('- XLS file check', function() {
+        it('- Should check that the folder exists', function(done) {
+            assert.isDirectory('/tmp/odin');
+        });
+
+        it('- Should check that the file exists', function(done) {
+            assert.isFile(`/tmp/odin/${datasetId}/${xlsName}.xls`);
+        });
+    });
+
+    // Check XLSX file existence
+    describe('- XLSX file check', function() {
+        it('- Should check that the folder exists', function(done) {
+            assert.isDirectory('/tmp/odin');
+        });
+
+        it('- Should check that the file exists', function(done) {
+            assert.isFile(`/tmp/odin/${datasetId}/${xlsxName}.xlsx`);
+        });
     });
 
     // Check CSV file

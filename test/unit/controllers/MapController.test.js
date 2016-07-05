@@ -5,7 +5,9 @@ require('sails-test-helper');
 
 const sails = require('sails');
 const config = require('../../../config/env/test');
+const chai = require('chai');
 const assert = chai.assert;
+const shortid = require('shortid');
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
@@ -61,11 +63,11 @@ describe('All Maps', function() {
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(element.url, `/datasets/first`);
+                    assert.endsWith(result.body.links.firstItem, '/maps/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(element.url, `/datasets/last`);
+                    assert.endsWith(result.body.links.lastItem, '/maps/last');
 
                     if (result.body.data.length > 0) {
                         result.body.data.forEach(function(element) {
