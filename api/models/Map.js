@@ -50,13 +50,13 @@ module.exports = {
         },
         latitudeKey: {
             type: 'string',
-            size: 100,
-            // required: true
+            size: 100
+                // required: true
         },
         longitudeKey: {
             type: 'string',
-            size: 100,
-            // required: true
+            size: 100
+                // required: true
         },
         geojson: {
             type: 'json'
@@ -106,7 +106,7 @@ module.exports = {
         },
         createdBy: {
             type: 'string'
-        },
+        }
 
     },
     setAttributes() {
