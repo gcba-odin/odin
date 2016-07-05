@@ -43,9 +43,8 @@ module.exports = {
                 // hub: '',
                 // custom_namespaces: '',
                 // custom_elements: '',
-        }
+        };
         var feed = new RSS(feedOptions);
-
         var builder = new Response.ResponseGET(req, res, false);
 
         // const modelName = pluralize(buiilder._model.adapter.identity);
@@ -74,6 +73,6 @@ module.exports = {
                 'Content-Type': 'application/rss+xml'
             });
             return res.send(xml);
-        })
+        });
     }
 };

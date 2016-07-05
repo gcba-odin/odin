@@ -13,4 +13,4 @@ gulp.task('default', ['watch']);
 
 gulp.task('watch', function() {
     gulp.watch('odin.apib', ['dredd']);
-})
+});

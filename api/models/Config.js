@@ -66,7 +66,7 @@ module.exports = {
     }
   },
   setAttributes() {
-    return this.baseAttributes
+    return this.baseAttributes;
   },
   getAttributes() {
     return _.merge({
@@ -79,18 +79,18 @@ module.exports = {
       updatedAt: {
         type: 'datetime'
       }
-    }, this.baseAttributes)
+    }, this.baseAttributes);
   },
   searchables: ['description'],
 
   beforeCreate(values, next) {
-    values.updatedBy = values.createdBy
-    delete values.createdBy
-    next()
+    values.updatedBy = values.createdBy;
+    delete values.createdBy;
+    next();
   },
   beforeUpdate(values, next) {
-    values.updatedBy = values.createdBy
-    delete values.createdBy
-    next()
+    values.updatedBy = values.createdBy;
+    delete values.createdBy;
+    next();
   }
 };

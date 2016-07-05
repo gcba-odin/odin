@@ -71,7 +71,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name', 'description'],
 

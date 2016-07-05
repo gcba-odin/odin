@@ -197,14 +197,14 @@ class ResponseGET extends ResponseBuilder {
                 //if it is a collection  we add it to the include object, and store it in the collection filter array.
                 else {
                     this.params.include.full.push(key);
-                    collectionsFilter[key] = val
+                    collectionsFilter[key] = val;
                 }
             }.bind(this), {
                 or: []
             });
         }
         if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
-            this.params.where = {}
+            this.params.where = {};
         }
         if (this._many) {
             // Only find not deleted records
@@ -274,7 +274,7 @@ class ResponseGET extends ResponseBuilder {
         this._query = this._model.find({
             sort: 'updatedAt DESC'
         });
-        return this._query
+        return this._query;
     }
 
     contentsQuery(dataset, file, cb) {
@@ -385,7 +385,7 @@ class ResponseGET extends ResponseBuilder {
                     }
                 }.bind(this));
 
-                if (!_.isEmpty(relations)) this._links['collections'] = relations;
+                if (!_.isEmpty(relations)) this._links.collections = relations;
             }
 
             this._links = _.assign(this._links, {
@@ -407,7 +407,7 @@ class ResponseGET extends ResponseBuilder {
 
                         // get the ids of the collection filtered
                         var elementsId = _.map(element[key], function(item) {
-                            return item.id
+                            return item.id;
                         });
 
                         var filter = _.split(filters[key], ',');
@@ -791,7 +791,7 @@ class ResponseSearch extends ResponseGET {
 
                     result.or.push(_.set({}, key, {
                         'contains': query
-                    }))
+                    }));
 
                 }
                 // The condition is OR
@@ -802,15 +802,15 @@ class ResponseSearch extends ResponseGET {
                     // if (_.isArray(query)) {
 
                     _.forEach(query, function(value) {
-                            result.or.push(_.set({}, key, {
-                                [this.params.match]: value
-                            }));
-                        }.bind(this))
-                        // } else {
-                        // result.or.push(_.set({}, key, {
-                        // [this.params.match]: query
-                        // }))
-                        // }
+                        result.or.push(_.set({}, key, {
+                            [this.params.match]: value
+                        }));
+                    }.bind(this));
+                    // } else {
+                    // result.or.push(_.set({}, key, {
+                    // [this.params.match]: query
+                    // }))
+                    // }
                 }
             }
         }.bind(this), {

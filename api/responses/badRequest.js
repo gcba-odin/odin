@@ -19,7 +19,6 @@ module.exports = function(data, config) {
         'Content-Type': 'application/json',
         'Accept-Charset': 'utf-8'
     });
-
     this.res.status(400);
 
     LogService.winstonLogResponse('Bad Request', response.code, response.message, this.res.headers, response, this.req.ip);

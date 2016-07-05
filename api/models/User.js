@@ -75,6 +75,7 @@ module.exports = {
             let obj = this.toObject();
             delete obj.password;
             obj.fullName = this.fullName();
+
             return obj;
         }
     },
@@ -113,7 +114,7 @@ module.exports = {
             password: {
                 type: 'string'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     getAttributes() {
         return _.merge({
@@ -129,7 +130,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     loginMethod() {
         return {

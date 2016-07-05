@@ -149,7 +149,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name', 'description'],
 
@@ -162,7 +162,7 @@ module.exports = {
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
-        next()
+        next();
     },
     afterCreate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);

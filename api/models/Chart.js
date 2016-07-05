@@ -77,7 +77,7 @@ module.exports = {
         }
     },
     setAttributes() {
-        return this.baseAttributes
+        return this.baseAttributes;
     },
     getAttributes() {
         return _.merge({

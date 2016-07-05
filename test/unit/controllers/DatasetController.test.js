@@ -863,8 +863,8 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.data.name, 'Dataset');
                     assert.equal(result.body.data.description, 'An example dataset');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.visible, false)
-                    assert.equal(result.body.data.starred, false)
+                    assert.equal(result.body.data.visible, false);
+                    assert.equal(result.body.data.starred, false);
 
                     err ? done(err) : done();
                 });

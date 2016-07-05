@@ -42,7 +42,7 @@ class ParamsProcessor {
                 page: this.page,
                 match: this.match,
                 condition: this.condition
-            }
+            };
         } else {
             this.result = {
                 include: this.include,
@@ -63,7 +63,7 @@ class ParamsProcessor {
             case 'ends':
                 return 'endsWith';
             default:
-                return 'contains'
+                return 'contains';
         }
     }
 

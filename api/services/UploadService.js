@@ -171,8 +171,8 @@ module.exports = {
                                 }
                             });
                         });
-                    })
-                })
+                    });
+                });
         } else {
             return res.badRequest('No file was uploaded.');
         }

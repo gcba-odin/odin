@@ -27,7 +27,7 @@ module.exports = {
                     if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
                         result.or.push(_.set({}, key, {
                             contains: q
-                        }))
+                        }));
                     }
                 }, {
                     or: []
@@ -39,7 +39,7 @@ module.exports = {
                 return [records, {
                     // records is an array of models, within each one, the result of the search
                     // meta: {count: _.size(records)}
-                }]
+                }];
             }).spread(res.ok)
             .catch(res.negotiate);
     }

@@ -13,7 +13,6 @@ module.exports = function(data, config) {
         message: _.get(config, 'message', 'The requested resource is not available anymore.')
     }, _.get(config, 'root', {}));
 
-
     this.res.set({
         'Content-Type': 'application/json'
     });
