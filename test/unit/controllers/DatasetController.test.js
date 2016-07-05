@@ -836,7 +836,7 @@ describe('Single Dataset', function() {
     // Granular Populate
 
     describe('- GET /datasets/:id?include=tags.name', function() {
-        it('- Should get 404 Not Found error', function(done) {
+        it('- Should get just the tag names', function(done) {
             request.get('/datasets/sWRhpRk?include=tags.name')
                 .set('Accept', 'application/json')
                 .expect(200)

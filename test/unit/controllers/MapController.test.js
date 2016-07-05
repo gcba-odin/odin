@@ -337,6 +337,269 @@ describe('All Maps', function() {
         });
     });
 
+    // Filters
+
+    describe('- GET /maps?name=map 1', function() {
+        it('- Should get the first dataset', function(done) {
+            request.get('/maps?name=map 1')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'Map 1');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /maps?name=map 1&status.name=Draft', function() {
+        it('- Should get one dataset', function(done) {
+            request.get('/maps?name=map 1&status.name=Draft')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'Map 1');
+
+                    assert.property(result.body.data[0], 'status');
+                    assert.isObject(result.body.data[0].status);
+                    assert.equal(result.body.data[0].status.name, 'Draft');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /maps?name=map 1&status.name=Published', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/maps?name=map 1&status.name=Published')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    //Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /maps?status.name=Published', function() {
+        it('- Should get one dataset', function(done) {
+            request.get('/maps?status.name=Published')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRn');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'Map 4');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Search
+
+    describe('- GET /maps?search?query=1', function() {
+        it('- Should get one dataset', function(done) {
+            request.get('/maps?search?query=1')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'Map 1');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /maps?search?query=1,2', function() {
+        it('- Should get two maps', function(done) {
+            request.get('/maps?search?query=1,2')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 2);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'Map 1');
+
+                    assert.property(result.body.data[1], 'id');
+                    assert.isString(result.body.data[1].id);
+                    assert.ok(shortid.isValid(result.body.data[1].id));
+                    assert.equal(result.body.data[1].id, 'sWRhpRl');
+
+                    assert.property(result.body.data[1], 'name');
+                    assert.isString(result.body.data[1].name);
+                    assert.equal(result.body.data[1].name, 'Map 2');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /maps?search?query=1,2&condition=AND', function() {
+        it('- Should get no results', function(done) {
+            request.get('/maps?search?query=1,2&condition=AND')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /maps', function() {

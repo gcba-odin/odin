@@ -10,7 +10,7 @@ const assert = chai.assert;
 const fs = require('fs');
 const detectCharacterEncoding = require('detect-character-encoding');
 const shortid = require('shortid');
-const datasetId = 'sWRhpRl';
+const FileId = 'sWRhpRl';
 var csvId, csvName, xlsId, xlsName, xlsxId, xlsxName;
 
 chai.use(require('chai-fs'));
@@ -106,8 +106,8 @@ describe('All Files', function() {
                             assert.property(element, 'organization');
                             assert.isObject(element.organization);
 
-                            assert.property(element, 'dataset');
-                            assert.isObject(element.dataset);
+                            assert.property(element, 'file');
+                            assert.isObject(element.file);
 
                             assert.property(element, 'owner');
                             assert.isObject(element.owner);
@@ -342,6 +342,269 @@ describe('All Files', function() {
         });
     });
 
+    // Filters
+
+    describe('- GET /files?name=file 1', function() {
+        it('- Should get the first file', function(done) {
+            request.get('/files?name=file 1')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'file 1');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /files?name=file 1&status.name=Draft', function() {
+        it('- Should get one file', function(done) {
+            request.get('/files?name=file 1&status.name=Draft')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'file 1');
+
+                    assert.property(result.body.data[0], 'status');
+                    assert.isObject(result.body.data[0].status);
+                    assert.equal(result.body.data[0].status.name, 'Draft');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /files?name=file 1&status.name=Published', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/files?name=file 1&status.name=Published')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    //Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /files?status.name=Published', function() {
+        it('- Should get one file', function(done) {
+            request.get('/files?status.name=Published')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRn');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'File 4');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Search
+
+    describe('- GET /files?search?query=1', function() {
+        it('- Should get one file', function(done) {
+            request.get('/files?search?query=1')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'File 1');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /files?search?query=1,2', function() {
+        it('- Should get two files', function(done) {
+            request.get('/files?search?query=1,2')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 2);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'File 1');
+
+                    assert.property(result.body.data[1], 'id');
+                    assert.isString(result.body.data[1].id);
+                    assert.ok(shortid.isValid(result.body.data[1].id));
+                    assert.equal(result.body.data[1].id, 'sWRhpRl');
+
+                    assert.property(result.body.data[1], 'name');
+                    assert.isString(result.body.data[1].name);
+                    assert.equal(result.body.data[1].name, 'File 2');
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /files?search?query=1,2&condition=AND', function() {
+        it('- Should get no results', function(done) {
+            request.get('/files?search?query=1,2&condition=AND')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /files', function() {
@@ -436,7 +699,7 @@ describe('Single File', function() {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
-                .field('dataset', 'sWRhpRl')
+                .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')
                 .field('owner', 'dogPzIz9')
@@ -491,8 +754,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -525,7 +788,7 @@ describe('Single File', function() {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
-                .field('dataset', 'sWRhpRl')
+                .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')
                 .field('owner', 'dogPzIz9')
@@ -580,8 +843,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -614,7 +877,7 @@ describe('Single File', function() {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
-                .field('dataset', 'sWRhpRl')
+                .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')
                 .field('owner', 'dogPzIz9')
@@ -669,8 +932,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -700,11 +963,11 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${datasetId}/${csvName}.csv`);
+            assert.isFile(`/tmp/odin/${FileId}/${csvName}.csv`);
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
-            let fileBuffer = fs.readFileSync(`/tmp/odin/${datasetId}/${csvName}.csv`);
+            let fileBuffer = fs.readFileSync(`/tmp/odin/${FileId}/${csvName}.csv`);
             let charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
@@ -718,7 +981,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${datasetId}/${xlsName}.xls`);
+            assert.isFile(`/tmp/odin/${FileId}/${xlsName}.xls`);
         });
     });
 
@@ -729,7 +992,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${datasetId}/${xlsxName}.xlsx`);
+            assert.isFile(`/tmp/odin/${FileId}/${xlsxName}.xlsx`);
         });
     });
 
@@ -784,8 +1047,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -855,8 +1118,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -926,8 +1189,8 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'organization');
                     assert.isObject(result.body.data.organization);
 
-                    assert.property(result.body.data, 'dataset');
-                    assert.isObject(result.body.data.dataset);
+                    assert.property(result.body.data, 'file');
+                    assert.isObject(result.body.data.file);
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -940,6 +1203,60 @@ describe('Single File', function() {
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Granular Populate
+
+    describe('- GET /files/:id?include=tags.name', function() {
+        it('- Should get just the tag names', function(done) {
+            request.get('/files/sWRhpRk?include=tags.name')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 1);
+
+                    assert.property(result.body.data[0], 'id');
+                    assert.isString(result.body.data[0].id);
+                    assert.ok(shortid.isValid(result.body.data[0].id));
+                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    assert.property(result.body.data[0], 'name');
+                    assert.isString(result.body.data[0].name);
+                    assert.equal(result.body.data[0].name, 'File 1');
+
+                    assert.property(result.body.data[0], 'tags');
+                    assert.isArray(result.body.data[0].tags);
+
+                    result.body.data[0].tags.forEach(function(element) {
+                        assert.isObject(element);
+
+                        assert.property(element, 'name');
+                        assert.isString(element.name);
+
+                        assert.notProperty(element, 'id');
+                        assert.notProperty(element, 'createdAt');
+                        assert.notProperty(element, 'updatedAt');
+                    }, this);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
 
                     err ? done(err) : done();
                 });
