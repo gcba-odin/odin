@@ -1,6 +1,9 @@
 module.exports = {
     fixtures: {
-        order: ['Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency', 'Tag', 'Dataset', 'File', 'Chart', 'Map', 'Config', 'Log'],
+        order: [
+            'Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency',
+            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log'
+        ],
         User: [{
             id: 'dogPzIz9',
             username: 'admin',
@@ -819,7 +822,11 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
-            createdBy: 'dogPzIz9'
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            }
         }, {
             id: '4ogPbIz9',
             name: 'Chart 4',
@@ -1111,6 +1118,102 @@ module.exports = {
                 },
                 createdBy: {
                     username: 'admin'
+                }
+            }
+        }],
+        View: [{
+            id: '1ogP1Iz9',
+            name: 'View 1',
+            description: 'An example view.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
+                }
+            }
+        }, {
+            id: '2ogP2Iz9',
+            name: 'View 2',
+            description: 'An example view.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
+                }
+            }
+        }, {
+            id: '3ogP3Iz9',
+            name: 'View 3',
+            description: 'An example view.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 7', 'Tag 8', 'Tag 9']
+                }
+            }
+        }, {
+            id: '4ogP4Iz9',
+            name: 'View 4',
+            description: 'An example view.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 1', 'Tag 2', 'Tag 3']
+                }
+            }
+        }, {
+            id: '5ogP5Iz9',
+            name: 'View 5',
+            description: 'An example view.',
+            notes: 'Lorem ipsum dolor sit amet...',
+            models: {
+                createdBy: {
+                    username: 'admin'
+                }
+            },
+            collections: {
+                // Queries a 'where' query internally
+                // with {username: user} as object.
+                // resulting documents are added to the
+                // alias of the 'user' association
+                tag: {
+                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }],

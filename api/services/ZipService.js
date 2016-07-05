@@ -17,12 +17,12 @@
                  fs.mkdirSync(sails.config.odin.uploadFolder + '/' + pk);
              }
              output.on('close', function() {
-                 console.log(archive.pointer() + ' total bytes');
-                 console.log('archiver has been finalized and the output file descriptor has closed.');
+                 // console.log(archive.pointer() + ' total bytes');
+                 // console.log('archiver has been finalized and the output file descriptor has closed.');
              });
 
              archive.on('error', function(err) {
-                 console.log('\nerror archive.on ' + err)
+                 console.error('\nerror archive.on ' + err)
                      // if (!res.headersSent) return res.negotiate(err);
              });
 

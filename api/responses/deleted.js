@@ -7,12 +7,14 @@
  */
 
 module.exports = function(data, config) {
-    //
-    //     code: _.get(config, 'code', 'CREATED'),
-    //     message: _.get(config, 'message', 'The request has been fulfilled and resulted in a resource being created'),
-    //     data: data || {}
-    // }, _.get(config, 'root', {}));
+
+    LogService.winstonLog('verbose', 'Deleted', {
+        ip: this.req.ip
+    });
 
     this.res.status(204);
+
+    LogService.winstonLogResponse('Deleted', '', '', this.res.headers, '', this.req.ip)
+
     this.res.end();
 };

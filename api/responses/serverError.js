@@ -14,9 +14,20 @@ module.exports = function(data, config) {
         data: data || {}
     }, _.get(config, 'root', {}));
 
+    LogService.winstonLog('verbose', 'Server Error', {
+        ip: this.req.ip,
+        code: response.code,
+        message: response.message
+    });
+
+
     this.res.set({
         'Content-Type': 'application/json'
     });
     this.res.status(500);
+
+    LogService.winstonLogResponse('Server Error', response.code, response.message, this.res.headers, response, this.req.ip)
+
+
     this.res.send(response);
 };

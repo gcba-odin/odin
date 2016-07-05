@@ -25,6 +25,11 @@ module.exports = {
             //Create the log record
             LogService.log(req, undefined, 'delete');
 
+            LogService.winstonLog('info', model.adapter.identity + ' deleted', {
+                ip: req.ip,
+                resource: record[0].id
+            });
+
             return res.deleted();
         });
     },

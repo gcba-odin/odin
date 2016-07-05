@@ -50,3 +50,6 @@ nbproject
 
 # Editor
 .vscode
+
+# Executables
+*.node

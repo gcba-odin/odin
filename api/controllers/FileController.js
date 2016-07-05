@@ -20,12 +20,18 @@ module.exports = {
         File.findOne(pk).then(function(file) {
             if (!file) return res.notFound();
 
-            dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name;
+            var dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name;
+
             var fileAdapter = SkipperDisk();
 
             res.set('Content-Type', mime.lookup(file.name.split('.').pop()));
             res.set('Content-Disposition', 'attachment; filename=' + file.name);
-            console.dir(dirname)
+
+            LogService.winstonLog('verbose', 'file downloaded', {
+                ip: req.ip,
+                resource: pk
+            });
+
             fileAdapter.read(dirname).on('error', function(err) {
                 console.dir(err)
                 return res.serverError(err);
@@ -37,7 +43,6 @@ module.exports = {
         });
     },
     contents: function(req, res) {
-
         const pk = actionUtil.requirePk(req);
 
         File.findOne(pk).then(function(file) {

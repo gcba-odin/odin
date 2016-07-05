@@ -52,7 +52,7 @@ module.exports = {
     getHeaders: function(method) {
         var headers = {
             'Authorization': 'JWT [token]',
-            'Accepts': 'json'
+            'Accept': 'application/json'
         };
         return headers;
     }

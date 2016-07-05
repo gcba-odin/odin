@@ -50,6 +50,13 @@ class ResponseBuilder {
                 target[value[0]] = value[1];
             }
         }
+        LogService.winstonLog('silly', 'Request', {
+            ip: req.ip,
+            headers: req.headers,
+            body: req.body,
+            parameters: req.params
+        });
+
     }
 
     /**
@@ -305,7 +312,7 @@ class ResponseGET extends ResponseBuilder {
         if (!_.isUndefined(records)) {
 
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this.params.pages === this.params.page) {
+            if (_.isUndefined(this.params.pages) || this.params.pages <= this.params.page) {
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
@@ -713,7 +720,7 @@ class ResponseOPTIONS extends ResponseBuilder {
             methodsArray.push({
                 "headers": headers,
                 "verb": methodVerb,
-                "url": this.req.path,
+                "endpoint": this.req.path,
                 "parameters": key(this._model)
             });
         }.bind(this));

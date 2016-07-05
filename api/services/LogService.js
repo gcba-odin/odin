@@ -1,4 +1,5 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+var winston = require('winston');
 
 module.exports = {
 
@@ -39,5 +40,33 @@ module.exports = {
                 throw new Error(err)
             });
         }
+    },
+
+    winstonLog: function(type, message, content) {
+        // Attach context to the content
+        var finalContent = {
+            timestamp: Date.now()
+        };
+        for (var attribute in content) {
+            if (content[attribute])
+                finalContent[attribute] = content[attribute];
+        }
+        // Send the log
+        winston.log(type, message, finalContent);
+    },
+    winstonLogResponse: function(message, metaCode, metaMessage, headers, body, ip) {
+
+        LogService.winstonLog('verbose', message, {
+            ip: ip,
+            code: metaCode,
+            message: metaMessage
+        });
+
+        LogService.winstonLog('silly', message, {
+            ip: ip,
+            headers: headers,
+            body: body
+        });
+
     }
 };

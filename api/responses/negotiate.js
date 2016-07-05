@@ -6,7 +6,7 @@
  * Calls the appropriate custom response for a given error
  */
 
-module.exports = function (error) {
+module.exports = function(error) {
     const res = this.res;
     const code = _.get(error, 'code');
     const message = _.get(error, 'reason') || _.get(error, 'message');
@@ -18,8 +18,11 @@ module.exports = function (error) {
         message,
         root
     };
-    console.log(error);
-
+    LogService.winstonLog('error', 'error: ' + code, {
+        code: code,
+        message: message,
+        ip: this.req.ip
+    })
     if (statusCode === 401) return res.unauthorized(data, config);
     if (statusCode === 403) return res.forbidden(data, config);
     if (statusCode === 404) return res.notFound(data, config);

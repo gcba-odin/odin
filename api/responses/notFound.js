@@ -16,10 +16,12 @@ module.exports = function(data, config) {
         links: _.get(config, 'links', {})
     }, _.get(config, 'root', {}));
 
-
     this.res.set({
         'Content-Type': 'application/json'
     });
     this.res.status(404);
+
+    LogService.winstonLogResponse('Not Found', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip)
+
     this.res.json(response);
 };
