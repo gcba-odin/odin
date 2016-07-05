@@ -501,9 +501,9 @@ describe('All Datasets', function() {
 
     // Search
 
-    describe('- GET /datasets?search?query=1', function() {
+    describe('- GET /datasets/search?query=1', function() {
         it('- Should get one dataset', function(done) {
-            request.get('/datasets?search?query=1')
+            request.get('/datasets/search?query=1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -539,9 +539,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?search?query=1,2', function() {
+    describe('- GET /datasets/search?query=1,2', function() {
         it('- Should get two datasets', function(done) {
-            request.get('/datasets?search?query=1,2')
+            request.get('/datasets/search?query=1,2')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -586,9 +586,38 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?search?query=1,2&condition=AND', function() {
+    describe('- GET /datasets/search?query=1,2&condition=AND', function() {
         it('- Should get no results', function(done) {
-            request.get('/datasets?search?query=1,2&condition=AND')
+            request.get('/datasets/search?query=1,2&condition=AND')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    // Meta
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'OK');
+
+                    // Data
+                    assert.property(result.body, 'data');
+                    assert.isArray(result.body.data);
+                    assert.lengthOf(result.body.data, 0);
+
+                    // Links
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    describe('- GET /datasets/search?query=arandomstring', function() {
+        it('- Should get no results', function(done) {
+            request.get('/datasets/search?query=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
