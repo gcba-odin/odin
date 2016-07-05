@@ -22,11 +22,23 @@ module.exports = (req, res) => {
                 ip: req.ip,
                 resource: record.id
             });
+            var associations = [];
 
-            res.created(record, {
-                meta: builder.meta(record),
-                links: builder.links(record)
+            _.forEach(builder._model.definition, function (value, key) {
+                if (value.foreignKey) {
+                    associations.push(key)
+                }
             });
+            //populate the response
+
+            builder._model.find(record.id).populate(associations).exec(function (err, record) {
+                res.created(record, {
+                    meta: builder.meta(record),
+                    links: builder.links(record)
+                });
+
+            });
+
         })
         .catch(res.negotiate);
 };

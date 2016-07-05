@@ -32,11 +32,25 @@ module.exports = (req, res) => {
             LogService.winstonLog('info', model + ' updated', {
                 ip: req.ip,
                 resource: record[0].id
-            })
-            res.updated(record[0], {
-                meta: builder.meta(record[0]),
-                links: builder.links(record[0])
-            })
+            });
+
+            var associations = [];
+
+            _.forEach(builder._model.definition, function (value, key) {
+                if (value.foreignKey) {
+                    associations.push(key)
+                }
+            });
+
+            //populate the response
+            builder._model.find(record[0].id).populate(associations).exec(function (err, record) {
+                res.updated(record, {
+                    meta: builder.meta(record),
+                    links: builder.links(record)
+                })
+
+            });
+
         })
         .catch(res.negotiate);
 };
