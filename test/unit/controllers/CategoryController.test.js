@@ -489,7 +489,7 @@ describe('All Categories', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'mWRhpR4');
+                    assert.equal(result.body.data[0].id, 'mWRhpR3');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
@@ -498,7 +498,7 @@ describe('All Categories', function() {
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, 'mWRhpR3');
+                    assert.equal(result.body.data[1].id, 'mWRhpR4');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
