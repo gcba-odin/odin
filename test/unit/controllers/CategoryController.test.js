@@ -1,4 +1,4 @@
-//-- test/unit/controllers/ChartController.test.js
+//-- test/unit/controllers/CategoryController.test.js
 'use strict';
 
 require('sails-test-helper');
@@ -6,20 +6,20 @@ require('sails-test-helper');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
-var chartId;
+var categoryId;
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
 
 
 /*
- * All Charts
+ * All Categories
  */
 
-describe('All Charts', function() {
-    describe('- GET /charts', function() {
-        it('- Should get all charts', function(done) {
-            request.get('/charts')
+describe('All Categories', function() {
+    describe('- GET /categories', function() {
+        it('- Should get all categories', function(done) {
+            request.get('/categories')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -63,11 +63,11 @@ describe('All Charts', function() {
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/charts/first');
+                    assert.endsWith(result.body.links.firstItem, '/categories/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/charts/last');
+                    assert.endsWith(result.body.links.lastItem, '/categories/last');
 
                     if (result.body.data.length > 0) {
                         result.body.data.forEach(function(element) {
@@ -80,15 +80,6 @@ describe('All Charts', function() {
 
                             assert.property(element, 'description');
                             if (element.description) assert.isString(element.description);
-
-                            assert.property(element, 'notes');
-                            if (element.notes) assert.isString(element.notes);
-
-                            assert.property(element, 'embedCode');
-                            if (element.embedCode) assert.isString(element.embedCode);
-
-                            assert.property(element, 'url');
-                            if (element.url) assert.isString(element.url);
 
                             assert.property(element, 'createdBy');
                             // assert.isObject(element.createdBy);
@@ -105,9 +96,9 @@ describe('All Charts', function() {
 
     // Pagination
 
-    describe('- GET /charts?limit=2', function() {
-        it('- Should get the first two charts', function(done) {
-            request.get('/charts?limit=2')
+    describe('- GET /categories?limit=2', function() {
+        it('- Should get the first two categories', function(done) {
+            request.get('/categories?limit=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -156,28 +147,28 @@ describe('All Charts', function() {
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'charts?limit=2&skip=2');
+                    assert.endsWith(result.body.links.next, 'categories?limit=2&skip=2');
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'charts?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=4');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/charts/first');
+                    assert.endsWith(result.body.links.firstItem, '/categories/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/charts/last');
+                    assert.endsWith(result.body.links.lastItem, '/categories/last');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    describe('- GET /charts?limit=2&skip=2', function() {
+    describe('- GET /categories?limit=2&skip=2', function() {
         it('- Should get the next page', function(done) {
-            request.get('/charts?limit=2&skip=2')
+            request.get('/categories?limit=2&skip=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -225,36 +216,36 @@ describe('All Charts', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'charts?limit=2&skip=0');
+                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=0');
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'charts?limit=2&skip=4');
+                    assert.endsWith(result.body.links.next, 'categories?limit=2&skip=4');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
-                    assert.endsWith(result.body.links.first, 'charts?limit=2&skip=0');
+                    assert.endsWith(result.body.links.first, 'categories?limit=2&skip=0');
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'charts?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=8');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/charts/first');
+                    assert.endsWith(result.body.links.firstItem, '/categories/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/charts/last');
+                    assert.endsWith(result.body.links.lastItem, '/categories/last');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    describe('- GET /charts?limit=2&skip=4', function() {
-        it('- Should get the last charts', function(done) {
-            request.get('/charts?limit=2&skip=4')
+    describe('- GET /categories?limit=2&skip=8', function() {
+        it('- Should get the last category', function(done) {
+            request.get('/categories?limit=2&skip=8')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -276,15 +267,15 @@ describe('All Charts', function() {
 
                     assert.property(result.body.meta, 'start');
                     assert.isNumber(result.body.meta.start);
-                    assert.equal(result.body.meta.start, 5);
+                    assert.equal(result.body.meta.start, 9);
 
                     assert.property(result.body.meta, 'end');
                     assert.isNumber(result.body.meta.end);
-                    assert.equal(result.body.meta.end, 5);
+                    assert.equal(result.body.meta.end, 9);
 
                     assert.property(result.body.meta, 'page');
                     assert.isNumber(result.body.meta.page);
-                    assert.equal(result.body.meta.page, 3);
+                    assert.equal(result.body.meta.page, 5);
 
                     assert.property(result.body.meta, 'pages');
                     assert.isNumber(result.body.meta.pages);
@@ -302,19 +293,19 @@ describe('All Charts', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'charts?limit=2&skip=2');
+                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=2');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
-                    assert.endsWith(result.body.links.first, 'charts?limit=2&skip=0');
+                    assert.endsWith(result.body.links.first, 'categories?limit=2&skip=0');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/charts/first');
+                    assert.endsWith(result.body.links.firstItem, '/categories/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/charts/last');
+                    assert.endsWith(result.body.links.lastItem, '/categories/last');
 
                     err ? done(err) : done();
                 });
@@ -323,9 +314,9 @@ describe('All Charts', function() {
 
     // Filters
 
-    describe('- GET /charts?name=Chart 1', function() {
-        it('- Should get the first chart', function(done) {
-            request.get('/charts?name=Chart 1')
+    describe('- GET /categories?name=Urbanismo e Infraestructura', function() {
+        it('- Should get the first category', function(done) {
+            request.get('/categories?name=Urbanismo e Infraestructura')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -346,11 +337,11 @@ describe('All Charts', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogPbIz9');
+                    assert.equal(result.body.data[0].id, 'mWRhpR4');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Chart 1');
+                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -361,9 +352,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- GET /charts?name=Chart 1&createdBy.username=admin', function() {
-        it('- Should get one chart', function(done) {
-            request.get('/charts?name=Chart 1&createdBy.username=admin')
+    describe('- GET /categories?name=Urbanismo e Infraestructura&createdBy.username=admin', function() {
+        it('- Should get one category', function(done) {
+            request.get('/categories?name=Urbanismo e Infraestructura&createdBy.username=admin')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -384,11 +375,11 @@ describe('All Charts', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogPbIz9');
+                    assert.equal(result.body.data[0].id, 'mWRhpR4');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Chart 1');
+                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
 
                     assert.property(result.body.data[0], 'createdBy');
                     assert.isObject(result.body.data[0].createdBy);
@@ -403,9 +394,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- GET /charts?name=Chart 1&createdBy.username=arandomstring', function() {
+    describe('- GET /categories?name=Urbanismo e Infraestructura&createdBy.username=arandomstring', function() {
         it('- Should get no record', function(done) {
-            request.get('/charts?name=Chart 1&createdBy.username=arandomstring')
+            request.get('/categories?name=Urbanismo e Infraestructura&createdBy.username=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -437,9 +428,9 @@ describe('All Charts', function() {
 
     // Search
 
-    describe('- GET /charts/search?query=1', function() {
-        it('- Should get one chart', function(done) {
-            request.get('/charts/search?query=1')
+    describe('- GET /categories/search?query=Urbanismo', function() {
+        it('- Should get one category', function(done) {
+            request.get('/categories/search?query=Urbanismo')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -460,11 +451,11 @@ describe('All Charts', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogPbIz9');
+                    assert.equal(result.body.data[0].id, 'mWRhpR4');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Chart 1');
+                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -475,9 +466,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- GET /charts/search?query=1,2', function() {
-        it('- Should get two charts', function(done) {
-            request.get('/charts/search?query=1,2')
+    describe('- GET /categories/search?query=Urbanismo,Transporte', function() {
+        it('- Should get two categories', function(done) {
+            request.get('/categories/search?query=Urbanismo,Transporte')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -498,20 +489,20 @@ describe('All Charts', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogPbIz9');
+                    assert.equal(result.body.data[0].id, 'mWRhpR4');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Chart 1');
+                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
 
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, '2ogPbIz9');
+                    assert.equal(result.body.data[1].id, 'mWRhpR3');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
-                    assert.equal(result.body.data[1].name, 'Chart 2');
+                    assert.equal(result.body.data[1].name, 'Transporte');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -522,9 +513,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- GET /charts/search?query=1,2&condition=AND', function() {
+    describe('- GET /categories/search?query=Urbanismo,Transporte&condition=AND', function() {
         it('- Should get no results', function(done) {
-            request.get('/charts/search?query=1,2&condition=AND')
+            request.get('/categories/search?query=Urbanismo,Transporte&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -551,9 +542,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- GET /charts/search?query=arandomstring', function() {
+    describe('- GET /categories/search?query=arandomstring', function() {
         it('- Should get no results', function(done) {
-            request.get('/charts/search?query=arandomstring')
+            request.get('/categories/search?query=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -582,9 +573,9 @@ describe('All Charts', function() {
 
     // 501 Not Implemented Errors
 
-    describe('- DELETE /charts', function() {
+    describe('- DELETE /categories', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.del('/charts')
+            request.del('/categories')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -607,9 +598,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- PATCH /charts', function() {
+    describe('- PATCH /categories', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.patch('/charts')
+            request.patch('/categories')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -632,9 +623,9 @@ describe('All Charts', function() {
         });
     });
 
-    describe('- PUT /charts', function() {
+    describe('- PUT /categories', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.put('/charts')
+            request.put('/categories')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -660,18 +651,17 @@ describe('All Charts', function() {
 
 
 /*
- * Single Chart
+ * Single Category
  */
 
-describe('Single Chart', function() {
-    // Create chart
-    describe('- POST /charts', function() {
-        it('- Should create a new chart', function(done) {
-            request.post('/charts')
+describe('Single Category', function() {
+    // Create category
+    describe('- POST /categories', function() {
+        it('- Should create a new category', function(done) {
+            request.post('/categories')
                 .set('Accept', 'application/json')
-                .field('name', 'Chart')
-                .field('description', 'An example chart')
-                .field('notes', 'Lorem ipsum dolor sit amet...')
+                .field('name', 'Category')
+                .field('description', 'An example category')
                 .field('createdBy', 'dogPzIz9')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -701,31 +691,27 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'notes');
-                    assert.isString(result.body.data.notes);
-
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Chart');
-                    assert.equal(result.body.data.description, 'An example chart');
-                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.equal(result.body.data.name, 'Category');
+                    assert.equal(result.body.data.description, 'An example category');
 
                     if (!err) {
-                        chartId = result.body.data.id;
+                        categoryId = result.body.data.id;
                         done();
                     } else done(err);
                 });
         });
     });
 
-    // Get chart
-    describe('- GET /charts/:id', function() {
-        it('- Should get the chart', function(done) {
-            request.get(`/charts/${chartId}`)
+    // Get category
+    describe('- GET /categories/:id', function() {
+        it('- Should get the category', function(done) {
+            request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -740,31 +726,27 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'notes');
-                    assert.isString(result.body.data.notes);
-
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Chart');
-                    assert.equal(result.body.data.description, 'An example chart');
-                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.equal(result.body.data.name, 'Category');
+                    assert.equal(result.body.data.description, 'An example category');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    // Edit chart
-    describe('- PATCH /charts/:id', function() {
-        it('- Should edit the chart', function(done) {
-            request.patch(`/charts/${chartId}`)
+    // Edit category
+    describe('- PATCH /categories/:id', function() {
+        it('- Should edit the category', function(done) {
+            request.patch(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
-                .field('name', 'Edited Chart')
-                .field('description', 'An example edited chart')
+                .field('name', 'Edited Category')
+                .field('description', 'An example edited category')
                 .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -794,9 +776,6 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'notes');
-                    assert.isString(result.body.data.notes);
-
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
@@ -810,22 +789,21 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Edited Chart');
-                    assert.equal(result.body.data.description, 'An example edited chart');
-                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.equal(result.body.data.name, 'Edited Category');
+                    assert.equal(result.body.data.description, 'An example edited category');
 
                     if (!err) {
-                        chartId = result.body.data.id;
+                        categoryId = result.body.data.id;
                         done();
                     } else done(err);
                 });
         });
     });
 
-    // Get edited chart
-    describe('- GET /charts/:id', function() {
-        it('- Should get the edited chart', function(done) {
-            request.get(`/charts/${chartId}`)
+    // Get edited category
+    describe('- GET /categories/:id', function() {
+        it('- Should get the edited category', function(done) {
+            request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -840,9 +818,6 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'notes');
-                    assert.isString(result.body.data.notes);
-
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
@@ -856,19 +831,18 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Edited Chart');
-                    assert.equal(result.body.data.description, 'An example edited chart');
-                    assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
+                    assert.equal(result.body.data.name, 'Edited Category');
+                    assert.equal(result.body.data.description, 'An example edited category');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    // Delete chart
-    describe('- DELETE /charts/:id', function() {
-        it('- Should delete the chart', function(done) {
-            request.del(`/charts/${chartId}`)
+    // Delete category
+    describe('- DELETE /categories/:id', function() {
+        it('- Should delete the category', function(done) {
+            request.del(`/categories/${categoryId}`)
                 .expect(204)
                 .end(function(err, result) {
                     err ? done(err) : done();
@@ -876,10 +850,10 @@ describe('Single Chart', function() {
         });
     });
 
-    // Check deleted chart
-    describe('- GET /charts/:id', function() {
+    // Check deleted category
+    describe('- GET /categories/:id', function() {
         it('- Should get error 404', function(done) {
-            request.get(`/charts/${chartId}`)
+            request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
                 .expect('Content-Type', 'application/json; charset=utf-8')

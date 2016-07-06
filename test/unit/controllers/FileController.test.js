@@ -249,7 +249,7 @@ describe('All Files', function() {
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'files?limit=2&skip=2');
+                    assert.endsWith(result.body.links.next, 'files?limit=2&skip=4');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);

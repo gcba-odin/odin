@@ -223,7 +223,7 @@ describe('All Views', function() {
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'views?limit=2&skip=2');
+                    assert.endsWith(result.body.links.next, 'views?limit=2&skip=4');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
@@ -747,8 +747,6 @@ describe('Single view', function() {
                     assert.equal(result.body.data.name, 'View');
                     assert.equal(result.body.data.description, 'An example view');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.visible, false);
-                    assert.equal(result.body.data.starred, false);
 
                     err ? done(err) : done();
                 });
@@ -816,7 +814,7 @@ describe('Single view', function() {
                 .set('Accept', 'application/json')
                 .field('name', 'Edited View')
                 .field('description', 'An example edited view')
-                .field('createdBy', 'qWRhpRV')
+                .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -864,7 +862,6 @@ describe('Single view', function() {
                     assert.equal(result.body.data.name, 'Edited View');
                     assert.equal(result.body.data.description, 'An example edited view');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.visible, true);
 
                     if (!err) {
                         viewId = result.body.data.id;
@@ -911,7 +908,6 @@ describe('Single view', function() {
                     assert.equal(result.body.data.name, 'Edited View');
                     assert.equal(result.body.data.description, 'An example edited view');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.starred, false);
 
                     err ? done(err) : done();
                 });
