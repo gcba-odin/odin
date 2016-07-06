@@ -46,7 +46,7 @@ module.exports = {
                 'OPTIONS': function(model) {
                     return {};
                 }
-            }
+            };
         }
     },
     getHeaders: function(method) {

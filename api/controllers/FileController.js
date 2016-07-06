@@ -64,6 +64,6 @@ module.exports = {
                     return res.forbidden();
                 }
             });
-        })
+        });
     }
 };
