@@ -3,8 +3,6 @@
 
 require('sails-test-helper');
 
-const sails = require('sails');
-const config = require('../../../config/env/test');
 const chai = require('chai');
 const assert = chai.assert;
 const fs = require('fs');
