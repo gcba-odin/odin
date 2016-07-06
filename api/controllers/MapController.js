@@ -37,17 +37,18 @@ module.exports = {
                     });
                     //geojson data
                     var point = {
-                            geometry: {
-                                type: "Point",
-                                coordinates: [value[latitude], value[longitude]]
-                            },
-                            type: 'Feature',
-                            id: index + 1,
-                            properties: propertiesMap
-                        }
-                        // console.dir(point.geometry)
+                        geometry: {
+                            type: "Point",
+                            coordinates: [value[latitude], value[longitude]]
+                        },
+                        type: 'Feature',
+                        id: index + 1,
+                        properties: propertiesMap
+                    };
+                    // console.dir(point.geometry)
                     geoJson.features.push(point);
-                })
+                });
+
                 values.geojson = geoJson;
                 // Once the geoJson is created, we create the map
                 _Map.create(values).exec(function created(err, newInstance) {

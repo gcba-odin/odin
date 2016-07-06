@@ -63,7 +63,7 @@ module.exports = {
                 } else {
                     return res.forbidden();
                 }
-            })
+            });
         })
     }
 };

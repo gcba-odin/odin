@@ -33,7 +33,7 @@ module.exports = {
                 'OPTIONS': function(model) {
                     return {};
                 }
-            }
+            };
         },
         queryMethods: function() {
             return {
