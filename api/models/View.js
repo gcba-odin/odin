@@ -33,6 +33,9 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        publishedAt: {
+            type: 'datetime'
+        },
         createdBy: {
             model: 'user'
                 // required: true
@@ -55,6 +58,9 @@ module.exports = {
         },
         notes: {
             type: 'string'
+        },
+        publishedAt: {
+            type: 'datetime'
         },
         createdBy: {
             type: 'object'
