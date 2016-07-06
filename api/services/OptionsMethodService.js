@@ -54,6 +54,7 @@ module.exports = {
             'Authorization': 'JWT [token]',
             'Accept': 'application/json'
         };
+
         return headers;
     }
 };

@@ -178,13 +178,10 @@ class ResponseGET extends ResponseBuilder {
         var collectionsFilter = {};
 
         _.forEach(this._model.associations, function(association) {
-
             if (association.type === 'collection') collections.push(association.alias);
         });
 
         if (!_.isEmpty(this.params.where)) {
-
-
             this.params.where = _.transform(this.params.where, function(result, val, key) {
 
                 if (collections.indexOf(key) === -1) {
@@ -203,14 +200,19 @@ class ResponseGET extends ResponseBuilder {
                 or: []
             });
         }
+
         if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
             this.params.where = {};
         }
+
         if (this._many) {
             // Only find not deleted records
             _.merge(this.params.where, {
                 deletedAt: null
             });
+
+            console.dir(this.params.where);
+
             this._query = this._model.find()
                 .where(this.params.where)
                 .limit(this.params.limit)
@@ -229,6 +231,7 @@ class ResponseGET extends ResponseBuilder {
         // this._query = this.select(this._query, this.params.fields);
 
         this._query = this.populate(this._query, this._model, this.params.include);
+
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter);
         }
@@ -274,6 +277,7 @@ class ResponseGET extends ResponseBuilder {
         this._query = this._model.find({
             sort: 'updatedAt DESC'
         });
+
         return this._query;
     }
 
@@ -281,6 +285,7 @@ class ResponseGET extends ResponseBuilder {
         DataStorageService.mongoCount(dataset, file, this.res, function(count) {
             this._count = count;
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+
             FileContentsService.mongoContents(dataset, file, this.params.limit, this.params.skip, this.res, cb);
         }.bind(this));
     }
@@ -310,7 +315,6 @@ class ResponseGET extends ResponseBuilder {
         }
 
         if (!_.isUndefined(records)) {
-
             //if link to next page is not defined, the content is not paginated
             if (_.isUndefined(this.params.pages) || this.params.pages <= this.params.page) {
                 _.assign(this._meta, {
@@ -395,30 +399,26 @@ class ResponseGET extends ResponseBuilder {
 
         return this._links;
     }
+
     filter(query, filters) {
         query.then(function(records) {
-
             // Variable where we'll save all the indexes to be removed
             var toRemove = [];
+
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
-
                     if (!_.isUndefined(filters[key])) {
-
                         // get the ids of the collection filtered
                         var elementsId = _.map(element[key], function(item) {
                             return item.id;
                         });
-
                         var filter = _.split(filters[key], ',');
 
                         // if it doesnt fulfill the filter, we add it to the array which will remove the element from the response
-
                         if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
                             toRemove.push(j);
                         }
                     }
-
                 }, element);
             });
             // pull out of the final records all the records which didnt fulfill the filter
@@ -426,6 +426,7 @@ class ResponseGET extends ResponseBuilder {
             // with some of the records deleted, we need to update the count
             this._count = _.size(records);
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+
             return records;
         }.bind(this));
 
@@ -437,16 +438,12 @@ class ResponseGET extends ResponseBuilder {
             // Filter out the partials
             // Each result item
             records.forEach(function(element, j) {
-
                 records[j] = _.transform(element, function(result, value, key) {
                     // Each granular field
-
                     _.forEach(fields.partials, function(partialValue, partialKey) {
-
                         if (key === partialKey && _.isObject(element[partialKey])) {
                             // Each object in the collection
                             _.forEach(element[partialKey], function(resultValue, resultKey) {
-
                                 // If it's not listed in the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
@@ -529,6 +526,7 @@ class ResponsePOST extends ResponseBuilder {
         super(req, res);
 
         const _values = actionUtil.parseValues(this.req);
+
         this.create = this._model.create(_.omit(_values, 'id'));
     }
 
@@ -571,6 +569,7 @@ class ResponsePATCH extends ResponseBuilder {
 
         // Validate blacklist to provide a more helpful error msg.
         var blacklist = req.options.values.blacklist;
+
         if (blacklist && !_.isArray(blacklist)) {
             throw new Error('Invalid `req.options.values.blacklist`. Should be an array of strings (parameter names.)');
         }
@@ -670,6 +669,7 @@ class ResponseDELETE extends ResponseBuilder {
         super(req, res);
 
         const _pk = actionUtil.requirePk(this.req);
+
         this.destroy = this._model.destroy(_pk);
     }
 
@@ -710,13 +710,13 @@ class ResponseOPTIONS extends ResponseBuilder {
             this._query = this._model.find(this._pk);
         }
     }
+
     getMethods(methods, headers, count) {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
 
         _.forEach(methods, function(key, methodVerb) {
-
             var headers = OptionsMethodService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -779,9 +779,7 @@ class ResponseSearch extends ResponseGET {
             message: 'You should specify a "query" parameter!'
         });
 
-
         this.model = model;
-
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {

@@ -68,9 +68,11 @@ class ParamsProcessor {
 
     parseCondition(req) {
         var condition = req.param('condition');
+
         if (condition === 'AND') {
             return 'and';
         }
+
         return 'or';
     }
 
