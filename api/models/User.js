@@ -142,9 +142,9 @@ module.exports = {
                     password: {
                         type: 'string'
                     }
-                }
+                };
             }
-        }
+        };
     },
 
     searchables: ['username', 'email', 'firstName', 'lastName'],

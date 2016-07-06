@@ -6,7 +6,6 @@
 // const populateAlias = (model, alias) => model.populate(alias);
 
 const Response = require('../services/ResponseBuilderService');
-const Promise = require('bluebird');
 
 /**
  * Find Records

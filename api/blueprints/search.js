@@ -7,11 +7,9 @@
 
 const _ = require('lodash');
 const Response = require('../services/ResponseBuilderService');
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-const toLowerCase = _.partial(_.result, _, 'toLowerCase');
 
 module.exports = (req, res) => {
-    var builder = new Response.ResponseSearch( req, res, true );
+    var builder = new Response.ResponseSearch(req, res, true);
 
     builder.searchQuery()
         .then(records => {

@@ -6,7 +6,6 @@
  */
 
 var shortId = require('shortid');
-const fs = require('fs');
 
 module.exports = {
     schema: true,

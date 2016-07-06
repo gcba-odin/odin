@@ -16,7 +16,6 @@
  *
  */
 
-const shortid = require('shortid');
 const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
@@ -49,7 +48,8 @@ class ResponseBuilder {
                 if (!_.isPlainObject(target)) return new Error('Target is not an object.');
                 target[value[0]] = value[1];
             }
-        }
+        };
+
         LogService.winstonLog('silly', 'Request', {
             ip: req.ip,
             headers: req.headers,
@@ -230,7 +230,7 @@ class ResponseGET extends ResponseBuilder {
 
         this._query = this.populate(this._query, this._model, this.params.include);
         if (!_.isEmpty(collectionsFilter)) {
-            this._query = this.filter(this._query, collectionsFilter)
+            this._query = this.filter(this._query, collectionsFilter);
         }
 
         this._query = this.select(this._query, this.params.fields);
@@ -702,7 +702,9 @@ class ResponseOPTIONS extends ResponseBuilder {
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, many) {
         super(req, res);
-        this._many = many
+
+        this._many = many;
+
         if (!this._many) {
             this._pk = actionUtil.requirePk(this.req);
             this._query = this._model.find(this._pk);
@@ -770,7 +772,7 @@ class ResponseSearch extends ResponseGET {
     constructor(req, res, many) {
         super(req, res, many);
 
-        var model = sails.models[req.options['model']];
+        var model = sails.models[req.options.model];
         var query = req.param('query');
 
         if (!query) return res.badRequest(null, {

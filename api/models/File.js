@@ -136,7 +136,7 @@ module.exports = {
         }
     },
     setAttributes() {
-        return this.baseAttributes
+        return this.baseAttributes;
     },
     getAttributes() {
         return _.merge({
@@ -157,7 +157,7 @@ module.exports = {
     beforeCreate: (values, next) => {
         values.url = _.replace(values.url, 'model', 'files');
         values.url = _.replace(values.url, 'id', values.id);
-        values.url = values.url + '/download'
+        values.url = values.url + '/download';
         next();
     },
     afterUpdate: (values, next) => {
@@ -172,7 +172,7 @@ module.exports = {
         if (!_.isEmpty(destroyedRecords)) {
             destroyedRecords = destroyedRecords[0];
             var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
-            console.log(path)
+            console.log(path);
             fs.unlink(path, function() {
                 DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
                 ZipService.createZip(destroyedRecords.dataset);
