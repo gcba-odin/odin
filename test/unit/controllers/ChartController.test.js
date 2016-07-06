@@ -1,4 +1,4 @@
-//-- test/unit/controllers/ViewController.test.js
+//-- test/unit/controllers/ChartController.test.js
 'use strict';
 
 require('sails-test-helper');
@@ -6,20 +6,20 @@ require('sails-test-helper');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
-var viewId;
+var chartId;
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
 
 
 /*
- * All Views
+ * All Charts
  */
 
-describe('All Views', function() {
-    describe('- GET /views', function() {
-        it('- Should get all views', function(done) {
-            request.get('/views')
+describe('All Charts', function() {
+    describe('- GET /charts', function() {
+        it('- Should get all charts', function(done) {
+            request.get('/charts')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -63,11 +63,11 @@ describe('All Views', function() {
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/views/first');
+                    assert.endsWith(result.body.links.firstItem, '/charts/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/views/last');
+                    assert.endsWith(result.body.links.lastItem, '/charts/last');
 
                     if (result.body.data.length > 0) {
                         result.body.data.forEach(function(element) {
@@ -84,6 +84,12 @@ describe('All Views', function() {
                             assert.property(element, 'notes');
                             if (element.notes) assert.isString(element.notes);
 
+                            assert.property(element, 'embedCode');
+                            if (element.embedCode) assert.isString(element.embedCode);
+
+                            assert.property(element, 'url');
+                            if (element.url) assert.isString(element.url);
+
                             assert.property(element, 'createdBy');
                             // assert.isObject(element.createdBy);
 
@@ -99,9 +105,9 @@ describe('All Views', function() {
 
     // Pagination
 
-    describe('- GET /views?limit=2', function() {
-        it('- Should get the first two views', function(done) {
-            request.get('/views?limit=2')
+    describe('- GET /charts?limit=2', function() {
+        it('- Should get the first two charts', function(done) {
+            request.get('/charts?limit=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -150,28 +156,28 @@ describe('All Views', function() {
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'views?limit=2&skip=2');
+                    assert.endsWith(result.body.links.next, 'charts?limit=2&skip=2');
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'views?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'charts?limit=2&skip=4');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/views/first');
+                    assert.endsWith(result.body.links.firstItem, '/charts/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/views/last');
+                    assert.endsWith(result.body.links.lastItem, '/charts/last');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    describe('- GET /views?limit=2&skip=2', function() {
+    describe('- GET /charts?limit=2&skip=2', function() {
         it('- Should get the next page', function(done) {
-            request.get('/views?limit=2&skip=2')
+            request.get('/charts?limit=2&skip=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -219,36 +225,36 @@ describe('All Views', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'views?limit=2&skip=0');
+                    assert.endsWith(result.body.links.previous, 'charts?limit=2&skip=0');
 
                     assert.property(result.body.links, 'next');
                     assert.isString(result.body.links.next);
-                    assert.endsWith(result.body.links.next, 'views?limit=2&skip=2');
+                    assert.endsWith(result.body.links.next, 'charts?limit=2&skip=2');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
-                    assert.endsWith(result.body.links.first, 'views?limit=2&skip=0');
+                    assert.endsWith(result.body.links.first, 'charts?limit=2&skip=0');
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'views?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'charts?limit=2&skip=4');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/views/first');
+                    assert.endsWith(result.body.links.firstItem, '/charts/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/views/last');
+                    assert.endsWith(result.body.links.lastItem, '/charts/last');
 
                     err ? done(err) : done();
                 });
         });
     });
 
-    describe('- GET /views?limit=2&skip=4', function() {
-        it('- Should get the last views', function(done) {
-            request.get('/views?limit=2&skip=4')
+    describe('- GET /charts?limit=2&skip=4', function() {
+        it('- Should get the last charts', function(done) {
+            request.get('/charts?limit=2&skip=4')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -296,19 +302,19 @@ describe('All Views', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'views?limit=2&skip=2');
+                    assert.endsWith(result.body.links.previous, 'charts?limit=2&skip=2');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
-                    assert.endsWith(result.body.links.first, 'views?limit=2&skip=0');
+                    assert.endsWith(result.body.links.first, 'charts?limit=2&skip=0');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
-                    assert.endsWith(result.body.links.firstItem, '/views/first');
+                    assert.endsWith(result.body.links.firstItem, '/charts/first');
 
                     assert.property(result.body.links, 'lastItem');
                     assert.isString(result.body.links.lastItem);
-                    assert.endsWith(result.body.links.lastItem, '/views/last');
+                    assert.endsWith(result.body.links.lastItem, '/charts/last');
 
                     err ? done(err) : done();
                 });
@@ -317,9 +323,9 @@ describe('All Views', function() {
 
     // Filters
 
-    describe('- GET /views?name=View 1', function() {
-        it('- Should get the first view', function(done) {
-            request.get('/views?name=View 1')
+    describe('- GET /charts?name=Chart 1', function() {
+        it('- Should get the first chart', function(done) {
+            request.get('/charts?name=Chart 1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -340,11 +346,11 @@ describe('All Views', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.equal(result.body.data[0].id, '1ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.equal(result.body.data[0].name, 'Chart 1');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -355,9 +361,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- GET /views?name=View 1&createdBy.username=admin', function() {
-        it('- Should get one view', function(done) {
-            request.get('/views?name=View 1&createdBy.username=admin')
+    describe('- GET /charts?name=Chart 1&createdBy.username=admin', function() {
+        it('- Should get one chart', function(done) {
+            request.get('/charts?name=Chart 1&createdBy.username=admin')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -378,11 +384,11 @@ describe('All Views', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.equal(result.body.data[0].id, '1ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.equal(result.body.data[0].name, 'Chart 1');
 
                     assert.property(result.body.data[0], 'createdBy');
                     assert.isObject(result.body.data[0].createdBy);
@@ -397,9 +403,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- GET /views?name=View 1&createdBy.username=arandomstring', function() {
+    describe('- GET /charts?name=Chart 1&createdBy.username=arandomstring', function() {
         it('- Should get no record', function(done) {
-            request.get('/views?name=View 1&createdBy.username=arandomstring')
+            request.get('/charts?name=Chart 1&createdBy.username=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -431,9 +437,9 @@ describe('All Views', function() {
 
     // Search
 
-    describe('- GET /views/search?query=1', function() {
-        it('- Should get one view', function(done) {
-            request.get('/views/search?query=1')
+    describe('- GET /charts/search?query=1', function() {
+        it('- Should get one chart', function(done) {
+            request.get('/charts/search?query=1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -454,11 +460,11 @@ describe('All Views', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.equal(result.body.data[0].id, '1ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.equal(result.body.data[0].name, 'Chart 1');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -469,9 +475,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- GET /views/search?query=1,2', function() {
-        it('- Should get two views', function(done) {
-            request.get('/views/search?query=1,2')
+    describe('- GET /charts/search?query=1,2', function() {
+        it('- Should get two charts', function(done) {
+            request.get('/charts/search?query=1,2')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -492,20 +498,20 @@ describe('All Views', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.equal(result.body.data[0].id, '1ogPbIz9');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.equal(result.body.data[0].name, 'Chart 1');
 
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, '2ogP2Iz9');
+                    assert.equal(result.body.data[1].id, '2ogPbIz9');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
-                    assert.equal(result.body.data[1].name, 'View 2');
+                    assert.equal(result.body.data[1].name, 'Chart 2');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -516,9 +522,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- GET /views/search?query=1,2&condition=AND', function() {
+    describe('- GET /charts/search?query=1,2&condition=AND', function() {
         it('- Should get no results', function(done) {
-            request.get('/views/search?query=1,2&condition=AND')
+            request.get('/charts/search?query=1,2&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -545,9 +551,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- GET /views/search?query=arandomstring', function() {
+    describe('- GET /charts/search?query=arandomstring', function() {
         it('- Should get no results', function(done) {
-            request.get('/views/search?query=arandomstring')
+            request.get('/charts/search?query=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -576,9 +582,9 @@ describe('All Views', function() {
 
     // 501 Not Implemented Errors
 
-    describe('- DELETE /views', function() {
+    describe('- DELETE /charts', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.del('/views')
+            request.del('/charts')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -601,9 +607,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- PATCH /views', function() {
+    describe('- PATCH /charts', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.patch('/views')
+            request.patch('/charts')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -626,9 +632,9 @@ describe('All Views', function() {
         });
     });
 
-    describe('- PUT /views', function() {
+    describe('- PUT /charts', function() {
         it('- Should get 501 Method Not Implemented error', function(done) {
-            request.put('/views')
+            request.put('/charts')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -654,17 +660,17 @@ describe('All Views', function() {
 
 
 /*
- * Single view
+ * Single Chart
  */
 
-describe('Single view', function() {
-    // Create view
-    describe('- POST /views', function() {
-        it('- Should create a new view', function(done) {
-            request.post('/views')
+describe('Single Chart', function() {
+    // Create chart
+    describe('- POST /charts', function() {
+        it('- Should create a new chart', function(done) {
+            request.post('/charts')
                 .set('Accept', 'application/json')
-                .field('name', 'View')
-                .field('description', 'An example view')
+                .field('name', 'Chart')
+                .field('description', 'An example chart')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('tags', 'tWRhpz2,uWRhpz2,vWRhpz2')
                 .field('createdBy', 'dogPzIz9')
@@ -699,28 +705,34 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
 
+                    assert.property(result.body.data, 'embedCode');
+                    assert.isString(result.body.data.embedCode);
+
+                    assert.property(result.body.data, 'url');
+                    assert.isString(result.body.data.url);
+
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'View');
-                    assert.equal(result.body.data.description, 'An example view');
+                    assert.equal(result.body.data.name, 'Chart');
+                    assert.equal(result.body.data.description, 'An example chart');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
                     if (!err) {
-                        viewId = result.body.data.id;
+                        chartId = result.body.data.id;
                         done();
                     } else done(err);
                 });
         });
     });
 
-    // Get view
-    describe('- GET /views/:id', function() {
-        it('- Should get the view', function(done) {
-            request.get(`/views/${viewId}`)
+    // Get chart
+    describe('- GET /charts/:id', function() {
+        it('- Should get the chart', function(done) {
+            request.get(`/charts/${chartId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -738,14 +750,20 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
 
+                    assert.property(result.body.data, 'embedCode');
+                    assert.isString(result.body.data.embedCode);
+
+                    assert.property(result.body.data, 'url');
+                    assert.isString(result.body.data.url);
+
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'View');
-                    assert.equal(result.body.data.description, 'An example view');
+                    assert.equal(result.body.data.name, 'Chart');
+                    assert.equal(result.body.data.description, 'An example chart');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.equal(result.body.data.visible, false);
                     assert.equal(result.body.data.starred, false);
@@ -755,67 +773,13 @@ describe('Single view', function() {
         });
     });
 
-    // Granular Populate
-
-    describe('- GET /views/:id?include=tags.name', function() {
-        it('- Should get just the tag names', function(done) {
-            request.get('/views/1ogP1Iz9?include=tags.name')
+    // Edit chart
+    describe('- PATCH /charts/:id', function() {
+        it('- Should edit the chart', function(done) {
+            request.patch(`/charts/${chartId}`)
                 .set('Accept', 'application/json')
-                .expect(200)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    // Meta
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'OK');
-
-                    // Data
-                    assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
-
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
-
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
-
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
-
-                    result.body.data[0].tags.forEach(function(element) {
-                        assert.isObject(element);
-
-                        assert.property(element, 'name');
-                        assert.isString(element.name);
-
-                        assert.notProperty(element, 'id');
-                        assert.notProperty(element, 'createdAt');
-                        assert.notProperty(element, 'updatedAt');
-                    }, this);
-
-                    // Links
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
-
-    // Edit view
-    describe('- PATCH /views/:id', function() {
-        it('- Should edit the view', function(done) {
-            request.patch(`/views/${viewId}`)
-                .set('Accept', 'application/json')
-                .field('name', 'Edited View')
-                .field('description', 'An example edited view')
+                .field('name', 'Edited Chart')
+                .field('description', 'An example edited chart')
                 .field('createdBy', 'qWRhpRV')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -848,6 +812,12 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
 
+                    assert.property(result.body.data, 'embedCode');
+                    assert.isString(result.body.data.embedCode);
+
+                    assert.property(result.body.data, 'url');
+                    assert.isString(result.body.data.url);
+
                     assert.property(result.body.data, 'createdBy');
                     assert.isObject(result.body.data.createdBy);
 
@@ -861,23 +831,23 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Edited View');
-                    assert.equal(result.body.data.description, 'An example edited view');
+                    assert.equal(result.body.data.name, 'Edited Chart');
+                    assert.equal(result.body.data.description, 'An example edited chart');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.equal(result.body.data.visible, true);
 
                     if (!err) {
-                        viewId = result.body.data.id;
+                        chartId = result.body.data.id;
                         done();
                     } else done(err);
                 });
         });
     });
 
-    // Get edited view
-    describe('- GET /views/:id', function() {
-        it('- Should get the edited view', function(done) {
-            request.get(`/views/${viewId}`)
+    // Get edited chart
+    describe('- GET /charts/:id', function() {
+        it('- Should get the edited chart', function(done) {
+            request.get(`/charts/${chartId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -895,6 +865,12 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
 
+                    assert.property(result.body.data, 'embedCode');
+                    assert.isString(result.body.data.embedCode);
+
+                    assert.property(result.body.data, 'url');
+                    assert.isString(result.body.data.url);
+
                     assert.property(result.body.data, 'createdBy');
                     assert.isObject(result.body.data.createdBy);
 
@@ -908,8 +884,8 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
 
-                    assert.equal(result.body.data.name, 'Edited View');
-                    assert.equal(result.body.data.description, 'An example edited view');
+                    assert.equal(result.body.data.name, 'Edited Chart');
+                    assert.equal(result.body.data.description, 'An example edited chart');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.equal(result.body.data.starred, false);
 
@@ -918,10 +894,10 @@ describe('Single view', function() {
         });
     });
 
-    // Delete view
-    describe('- DELETE /views/:id', function() {
-        it('- Should delete the view', function(done) {
-            request.del(`/views/${viewId}`)
+    // Delete chart
+    describe('- DELETE /charts/:id', function() {
+        it('- Should delete the chart', function(done) {
+            request.del(`/charts/${chartId}`)
                 .expect(204)
                 .end(function(err, result) {
                     err ? done(err) : done();
@@ -929,10 +905,10 @@ describe('Single view', function() {
         });
     });
 
-    // Check deleted view
-    describe('- GET /views/:id', function() {
+    // Check deleted chart
+    describe('- GET /charts/:id', function() {
         it('- Should get error 404', function(done) {
-            request.get(`/views/${viewId}`)
+            request.get(`/charts/${chartId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
                 .expect('Content-Type', 'application/json; charset=utf-8')
