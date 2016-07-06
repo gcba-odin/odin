@@ -151,7 +151,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=8');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
