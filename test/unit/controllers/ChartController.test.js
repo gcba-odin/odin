@@ -672,7 +672,6 @@ describe('Single Chart', function() {
                 .field('name', 'Chart')
                 .field('description', 'An example chart')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
-                .field('tags', 'tWRhpz2,uWRhpz2,vWRhpz2')
                 .field('createdBy', 'dogPzIz9')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -704,12 +703,6 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
-
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
-
-                    assert.property(result.body.data, 'url');
-                    assert.isString(result.body.data.url);
 
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
@@ -749,12 +742,6 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
-
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
-
-                    assert.property(result.body.data, 'url');
-                    assert.isString(result.body.data.url);
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -815,12 +802,6 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data, 'url');
-                    assert.isString(result.body.data.url);
-
-                    assert.property(result.body.data, 'createdBy');
-                    assert.isObject(result.body.data.createdBy);
-
                     assert.property(result.body.data.createdBy, 'name');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
@@ -867,12 +848,6 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
-
-                    assert.property(result.body.data, 'url');
-                    assert.isString(result.body.data.url);
-
-                    assert.property(result.body.data, 'createdBy');
-                    assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data.createdBy, 'name');
                     assert.isString(result.body.data.createdBy.username);
