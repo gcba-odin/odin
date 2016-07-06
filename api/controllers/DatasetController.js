@@ -65,7 +65,8 @@ module.exports = {
                         // long: '',
                         // custom_elements: '',
                         // enclosure: '',
-                }
+                };
+
                 feed.item(itemOption);
             });
             var xml = feed.xml();

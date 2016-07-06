@@ -39,7 +39,7 @@ module.exports = {
     custom(req, res) {
         var builder = new Response.ResponseOPTIONS(req, res, true);
         var methodName = _.split(req.path, '/').pop() + 'Method';
-        var methods = builder._model[methodName]()
+        var methods = builder._model[methodName]();
         var meta = builder._meta;
         var data = builder.getMethods(methods);
         return res.options(data, meta);

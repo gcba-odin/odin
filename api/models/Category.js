@@ -77,6 +77,6 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        next()
+        next();
     }
 };

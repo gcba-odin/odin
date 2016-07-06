@@ -47,7 +47,7 @@ class ParamsProcessor {
             this.result = {
                 include: this.include,
                 fields: this.fields
-            }
+            };
         }
 
         return this.result;

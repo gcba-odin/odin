@@ -1064,7 +1064,7 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.data.name, 'Edited Dataset');
                     assert.equal(result.body.data.description, 'An example edited dataset');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.visible, true)
+                    assert.equal(result.body.data.visible, true);
 
                     if (!err) {
                         datasetId = result.body.data.id;
@@ -1127,7 +1127,7 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.data.name, 'Edited Dataset');
                     assert.equal(result.body.data.description, 'An example edited dataset');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.equal(result.body.data.starred, false)
+                    assert.equal(result.body.data.starred, false);
 
                     err ? done(err) : done();
                 });
