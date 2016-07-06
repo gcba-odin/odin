@@ -14,7 +14,7 @@ module.exports = {
                 'OPTIONS': function(model) {
                     return {};
                 }
-            }
+            };
         },
         instanceMethods: function() {
             return {

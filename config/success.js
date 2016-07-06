@@ -28,6 +28,6 @@ module.exports = {
             code: 'PARTIAL_CONTENT',
             message: 'The requested resource was delivered partially.',
             status: 206
-        },
+        }
     }
-}
+};

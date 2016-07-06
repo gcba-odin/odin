@@ -8,5 +8,5 @@ module.exports.odin = {
         host: 'localhost',
         port: '27017'
     },
-    logWhitelist: ['category', 'dataset', 'fileType', 'file', 'organization', 'status', 'tag', 'updateFrequency', 'user'],
+    logWhitelist: ['category', 'dataset', 'fileType', 'file', 'organization', 'status', 'tag', 'updateFrequency', 'user']
 };

@@ -78,7 +78,7 @@ module.exports = {
             address: 'Example Ave. 254',
             active: true,
             parent: null,
-            createdBy: 'dogPzIz9',
+            createdBy: 'dogPzIz9'
         }, {
             id: 'dWRhpRV',
             name: 'Umbrella Corp',
@@ -86,7 +86,7 @@ module.exports = {
             address: 'Example Ave. 255',
             active: true,
             parent: null,
-            createdBy: 'dogPzIz9',
+            createdBy: 'dogPzIz9'
         }, {
             id: 'fWRhpRV',
             name: 'Star Labs',
@@ -94,7 +94,7 @@ module.exports = {
             address: 'Example Ave. 256',
             active: true,
             parent: null,
-            createdBy: 'dogPzIz9',
+            createdBy: 'dogPzIz9'
         }, {
             id: 'gWRhpRV',
             name: 'Aperture Labs',
@@ -102,7 +102,7 @@ module.exports = {
             address: 'Example Ave. 257',
             active: true,
             parent: null,
-            createdBy: 'dogPzIz9',
+            createdBy: 'dogPzIz9'
         }, {
             id: 'hWRhpRV',
             name: 'Oscorp',
@@ -110,7 +110,7 @@ module.exports = {
             address: 'Example Ave. 258',
             active: true,
             parent: null,
-            createdBy: 'dogPzIz9',
+            createdBy: 'dogPzIz9'
         }],
         Category: [{
             id: 'iWRhpRV',
@@ -1346,4 +1346,4 @@ module.exports = {
             }
         }]
     }
-}
+};

@@ -50,16 +50,19 @@ module.exports = {
         },
         latitudeKey: {
             type: 'string',
-            size: 100,
-            // required: true
+            size: 100
+                // required: true
         },
         longitudeKey: {
             type: 'string',
-            size: 100,
-            // required: true
+            size: 100
+                // required: true
         },
         geojson: {
             type: 'json'
+        },
+        publishedAt: {
+            type: 'datetime'
         },
         file: {
             model: 'file',
@@ -101,16 +104,19 @@ module.exports = {
         geojson: {
             type: 'json'
         },
+        publishedAt: {
+            type: 'datetime'
+        },
         file: {
             type: 'string'
         },
         createdBy: {
             type: 'string'
-        },
+        }
 
     },
     setAttributes() {
-        return this.baseAttributes
+        return this.baseAttributes;
     },
     getAttributes() {
         return _.merge({
@@ -123,7 +129,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name', 'description'],
 
@@ -134,7 +140,7 @@ module.exports = {
         next();
     },
     afterUpdate: (values, next) => {
-        next()
+        next();
     },
     afterCreate: (values, next) => {
         next();

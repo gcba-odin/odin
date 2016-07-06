@@ -16,7 +16,6 @@
  *
  */
 
-const shortid = require('shortid');
 const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
@@ -49,7 +48,8 @@ class ResponseBuilder {
                 if (!_.isPlainObject(target)) return new Error('Target is not an object.');
                 target[value[0]] = value[1];
             }
-        }
+        };
+
         LogService.winstonLog('silly', 'Request', {
             ip: req.ip,
             headers: req.headers,
@@ -197,14 +197,14 @@ class ResponseGET extends ResponseBuilder {
                 //if it is a collection  we add it to the include object, and store it in the collection filter array.
                 else {
                     this.params.include.full.push(key);
-                    collectionsFilter[key] = val
+                    collectionsFilter[key] = val;
                 }
             }.bind(this), {
                 or: []
             });
         }
         if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
-            this.params.where = {}
+            this.params.where = {};
         }
         if (this._many) {
             // Only find not deleted records
@@ -230,7 +230,7 @@ class ResponseGET extends ResponseBuilder {
 
         this._query = this.populate(this._query, this._model, this.params.include);
         if (!_.isEmpty(collectionsFilter)) {
-            this._query = this.filter(this._query, collectionsFilter)
+            this._query = this.filter(this._query, collectionsFilter);
         }
 
         this._query = this.select(this._query, this.params.fields);
@@ -274,7 +274,7 @@ class ResponseGET extends ResponseBuilder {
         this._query = this._model.find({
             sort: 'updatedAt DESC'
         });
-        return this._query
+        return this._query;
     }
 
     contentsQuery(dataset, file, cb) {
@@ -385,7 +385,7 @@ class ResponseGET extends ResponseBuilder {
                     }
                 }.bind(this));
 
-                if (!_.isEmpty(relations)) this._links['collections'] = relations;
+                if (!_.isEmpty(relations)) this._links.collections = relations;
             }
 
             this._links = _.assign(this._links, {
@@ -407,7 +407,7 @@ class ResponseGET extends ResponseBuilder {
 
                         // get the ids of the collection filtered
                         var elementsId = _.map(element[key], function(item) {
-                            return item.id
+                            return item.id;
                         });
 
                         var filter = _.split(filters[key], ',');
@@ -702,7 +702,9 @@ class ResponseOPTIONS extends ResponseBuilder {
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, many) {
         super(req, res);
-        this._many = many
+
+        this._many = many;
+
         if (!this._many) {
             this._pk = actionUtil.requirePk(this.req);
             this._query = this._model.find(this._pk);
@@ -770,7 +772,7 @@ class ResponseSearch extends ResponseGET {
     constructor(req, res, many) {
         super(req, res, many);
 
-        var model = sails.models[req.options['model']];
+        var model = sails.models[req.options.model];
         var query = req.param('query');
 
         if (!query) return res.badRequest(null, {
@@ -791,7 +793,7 @@ class ResponseSearch extends ResponseGET {
 
                     result.or.push(_.set({}, key, {
                         'contains': query
-                    }))
+                    }));
 
                 }
                 // The condition is OR
@@ -802,15 +804,15 @@ class ResponseSearch extends ResponseGET {
                     // if (_.isArray(query)) {
 
                     _.forEach(query, function(value) {
-                            result.or.push(_.set({}, key, {
-                                [this.params.match]: value
-                            }));
-                        }.bind(this))
-                        // } else {
-                        // result.or.push(_.set({}, key, {
-                        // [this.params.match]: query
-                        // }))
-                        // }
+                        result.or.push(_.set({}, key, {
+                            [this.params.match]: value
+                        }));
+                    }.bind(this));
+                    // } else {
+                    // result.or.push(_.set({}, key, {
+                    // [this.params.match]: query
+                    // }))
+                    // }
                 }
             }
         }.bind(this), {

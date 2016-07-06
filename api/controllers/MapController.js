@@ -21,20 +21,21 @@ module.exports = {
         if (fileId === '') return res.notFound();
         // look for the file with given id
         File.findOne(fileId).exec(function(err, record) {
-            if (err) return res.negotiate(err)
-                // fetch the collection data of the file
+            if (err) return res.negotiate(err);
+            // fetch the collection data of the file
             FileContentsService.mongoContents(record.dataset, record.name, 0, 0, res, function(data) {
                 var geoJson = {
                     type: "FeatureCollection",
                     features: []
-                }
+                };
+
                 _.forEach(data, function(value, index) {
                     var propertiesMap = {};
                     // for each property sent we add it to the map
                     _.forEach(propertiesArray, function(property) {
-                            propertiesMap[property] = value[property];
-                        })
-                        //geojson data
+                        propertiesMap[property] = value[property];
+                    });
+                    //geojson data
                     var point = {
                             geometry: {
                                 type: "Point",
@@ -45,10 +46,10 @@ module.exports = {
                             properties: propertiesMap
                         }
                         // console.dir(point.geometry)
-                    geoJson.features.push(point)
+                    geoJson.features.push(point);
                 })
-                values.geojson = geoJson
-                    // Once the geoJson is created, we create the map
+                values.geojson = geoJson;
+                // Once the geoJson is created, we create the map
                 _Map.create(values).exec(function created(err, newInstance) {
                     if (err) return res.negotiate(err);
 

@@ -14,7 +14,7 @@ module.exports = function(data, config) {
 
     this.res.status(204);
 
-    LogService.winstonLogResponse('Deleted', '', '', this.res.headers, '', this.req.ip)
+    LogService.winstonLogResponse('Deleted', '', '', this.res.headers, '', this.req.ip);
 
     this.res.end();
 };

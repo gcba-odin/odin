@@ -15,5 +15,5 @@ module.exports = {
   models: {
     connection: 'postgres'
   },
-  appUrl: 'http://127.0.0.1' + (sails.config.port !== 80) ? ':' + sails.config.port : '',
+  appUrl: 'http://127.0.0.1' + (sails.config.port !== 80) ? ':' + sails.config.port : ''
 };

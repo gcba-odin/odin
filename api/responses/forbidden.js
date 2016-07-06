@@ -26,7 +26,7 @@ module.exports = function(data, config) {
   });
   this.res.status(403);
 
-  LogService.winstonLogResponse('Forbidden', response.code, response.message, this.res.headers, response, this.req.ip)
+  LogService.winstonLogResponse('Forbidden', response.code, response.message, this.res.headers, response, this.req.ip);
 
   this.res.send(response);
 };

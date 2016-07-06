@@ -33,7 +33,7 @@ module.exports = {
             });
 
             fileAdapter.read(dirname).on('error', function(err) {
-                console.dir(err)
+                console.dir(err);
                 return res.serverError(err);
             }).pipe(res);
         }).fail(function(err) {
@@ -58,7 +58,7 @@ module.exports = {
                         return res.ok(data, {
                             meta: builder.meta(' '),
                             links: builder.links(' ')
-                        })
+                        });
                     });
                 } else {
                     return res.forbidden();
