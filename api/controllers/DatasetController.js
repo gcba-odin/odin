@@ -6,7 +6,6 @@
  */
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
-const pluralize = require('pluralize');
 var RSS = require('rss');
 var SkipperDisk = require('skipper-disk');
 
@@ -69,10 +68,13 @@ module.exports = {
 
                 feed.item(itemOption);
             });
+
             var xml = feed.xml();
+
             res.set({
                 'Content-Type': 'application/rss+xml'
             });
+
             return res.send(xml);
         });
     }

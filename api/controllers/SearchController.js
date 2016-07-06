@@ -14,7 +14,6 @@ const parseModels = _.flow(toLowerCase, _.method('split', ','));
 module.exports = {
     index(req, res) {
         const q = req.param('query');
-        const pageParam = req.param('page') || 1;
         const models = parseModels(req.param('resources')) || _.keys(sails.models);
 
         if (!q) return res.badRequest(null, {

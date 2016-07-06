@@ -16,7 +16,6 @@
  *
  */
 
-const shortid = require('shortid');
 const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
@@ -773,7 +772,7 @@ class ResponseSearch extends ResponseGET {
     constructor(req, res, many) {
         super(req, res, many);
 
-        var model = sails.models[req.options['model']];
+        var model = sails.models[req.options.model];
         var query = req.param('query');
 
         if (!query) return res.badRequest(null, {

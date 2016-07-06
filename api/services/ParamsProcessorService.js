@@ -1,6 +1,5 @@
 "use strict";
 
-const pluralize = require('pluralize');
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ParamsProcessor {
@@ -105,7 +104,6 @@ class ParamsProcessor {
      */
     parseInclude(req) {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
-        var splits = [];
         var results = {
             full: [], // Here go the models that will be included with all their attributes
             partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
