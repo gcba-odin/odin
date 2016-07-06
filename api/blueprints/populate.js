@@ -42,7 +42,6 @@ module.exports = function expand(req, res) {
     // specified primary key of the child record, or with no
     // filter at all.
     var childPk = actionUtil.parsePk(req);
-
     // Coerce the child PK to an integer if necessary
     if (childPk) {
         if (Model.attributes[Model.primaryKey].type === 'integer') {
@@ -83,7 +82,7 @@ module.exports = function expand(req, res) {
                     message: 'The operation was executed successfully.'
                 },
                 links: {
-                    parent: req.host + ':' + req.port + '/' + modelName
+                    parent: req.host + ':' + req.port + '/' + modelName + '/' + parentPk
                 }
             });
         });
