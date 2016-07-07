@@ -65,6 +65,12 @@ module.exports = {
       status: 415
     },
 
+    UNPROCESSABLE_ENTITY: {
+      code: 'E_UNPROCESSABLE_ENTITY',
+      message: 'One or more of the provided parameters are invalid.',
+      status: 422
+    },
+
 
     // Server Errors
 
