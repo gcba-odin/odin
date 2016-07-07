@@ -3,10 +3,15 @@ module.exports = {
         collectionMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes()
                 },
                 'POST': function(model) {
-                    return model.setAttributes();
+                    if (_.isUndefined(model.setAttributes))
+                        return AttributesService.setAttributes(model);
+                    else return model.setAttributes()
+
                 },
                 'HEAD': function(model) {
                     return {};
@@ -19,10 +24,15 @@ module.exports = {
         instanceMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes()
                 },
                 'PATCH': function(model) {
-                    return model.setAttributes();
+                    if (_.isUndefined(model.setAttributes))
+                        return AttributesService.setAttributes(model);
+                    else return model.setAttributes()
+
                 },
                 'DELETE': function(model) {
                     return {};
@@ -38,7 +48,9 @@ module.exports = {
         queryMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes()
                 },
                 'HEAD': function(model) {
                     return {};

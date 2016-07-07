@@ -76,61 +76,7 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'string'
-        },
-        notes: {
-            type: 'string'
-        },
-        basemap: {
-            type: 'string'
-        },
-        url: {
-            type: 'string'
-        },
-        embedCode: {
-            type: 'string'
-        },
-        latitudeKey: {
-            type: 'string'
-        },
-        longitudeKey: {
-            type: 'string'
-        },
-        geojson: {
-            type: 'json'
-        },
-        publishedAt: {
-            type: 'datetime'
-        },
-        file: {
-            type: 'string'
-        },
-        createdBy: {
-            type: 'string'
-        }
 
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),

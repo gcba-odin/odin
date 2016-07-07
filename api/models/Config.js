@@ -48,39 +48,7 @@ module.exports = {
       return this.toObject();
     }
   },
-  baseAttributes: {
-    description: {
-      type: 'email'
-    },
-    type: {
-      type: 'string'
-    },
-    key: {
-      type: 'string'
-    },
-    value: {
-      type: 'string'
-    },
-    updatedBy: {
-      type: 'object'
-    }
-  },
-  setAttributes() {
-    return this.baseAttributes;
-  },
-  getAttributes() {
-    return _.merge({
-      id: {
-        type: 'string'
-      },
-      createdAt: {
-        type: 'datetime'
-      },
-      updatedAt: {
-        type: 'datetime'
-      }
-    }, this.baseAttributes);
-  },
+
   searchables: ['description'],
 
   beforeCreate(values, next) {
