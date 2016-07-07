@@ -443,13 +443,16 @@ class ResponseGET extends ResponseBuilder {
             _.forEach(this.params.where.deep, function(value, key) {
                 var splittedKey = _.split(key, '.');
                 var model = splittedKey[0];
-
+                console.log(value)
                 deepFilters[model] = {
                     attribute: splittedKey[1],
-                    value: value
-                }
+                    // values: _.split(value, '",')
 
-                // deepFilters = { category: { attribute: 'name', value: 'Gobierno' } }
+                    // values: _.split(value, /(\\'[ a-zA-Z,1-9 ]+\\'|[ a-zA-Z1-9 ]+)/g)
+                    values: value.match(/('[ a-zA-Z,1-9 ]+'|[ a-zA-Z1-9 ]+)/g)
+                }
+                console.dir(deepFilters[model])
+                    // deepFilters = { category: { attribute: 'name', value: 'Gobierno' } }
             })
             records.forEach(function(element, j) {
 
@@ -458,12 +461,12 @@ class ResponseGET extends ResponseBuilder {
                     if (!_.isUndefined(deepFilters[key])) {
 
                         // if the value filtered is undefined, or its different than the filter we remove it from query
-                        if (_.isUndefined(value) || deepFilters[key].value !== value[deepFilters[key].attribute]) {
+                        if (_.isUndefined(value) || this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
                             toRemove.push(j)
                         }
                     }
-                }, element);
-            });
+                }.bind(this), element);
+            }.bind(this));
             // pull out of the final records all the records which didnt fulfill the filter
             _.pullAt(records, toRemove);
             // with some of the records deleted, we need to update the count
@@ -474,6 +477,15 @@ class ResponseGET extends ResponseBuilder {
         }.bind(this));
 
         return query;
+    }
+    compareFilters(filters, value) {
+        console.log(filters)
+        console.log(value)
+        _.forEach(filters, function(filterValue) {
+
+            if (filterValue === value) return true
+        })
+        return false;
     }
     select(query, fields) {
         query.then(function(records) {
