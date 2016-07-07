@@ -825,12 +825,8 @@ class ResponseSearch extends ResponseGET {
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
-
-
                 if (this.params.condition === 'and') {
-
                     query = _.replace(query, ',', ' ');
-
                     result.or.push(_.set({}, key, {
                         'contains': query
                     }));
@@ -838,11 +834,8 @@ class ResponseSearch extends ResponseGET {
                 }
                 // The condition is OR
                 else {
-
                     query = _.split(query, ',');
-
                     // if (_.isArray(query)) {
-
                     _.forEach(query, function(value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
