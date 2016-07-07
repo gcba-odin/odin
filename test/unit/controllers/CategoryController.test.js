@@ -493,7 +493,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
+                    assert.equal(result.body.data[0].name, 'Transporte');
 
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
@@ -502,7 +502,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
-                    assert.equal(result.body.data[1].name, 'Transporte');
+                    assert.equal(result.body.data[1].name, 'Urbanismo e Infraestructura');
 
                     // Links
                     assert.property(result.body, 'links');
