@@ -30,7 +30,6 @@ class ParamsProcessor {
             // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
-
             this.result = {
                 include: this.include,
                 fields: this.fields,
@@ -77,12 +76,7 @@ class ParamsProcessor {
     }
 
     parseCriteria(req, model) {
-        var criteria = _actionUtil.parseCriteria(req);
-
-        // _.forEach(criteria, function(value, key) {
-        //     if (!model.schema[key]) delete criteria[key];
-        // });
-
+        var criteria = this.parseCriteriaComplete(req);
         return criteria;
     }
 
@@ -168,6 +162,69 @@ class ParamsProcessor {
     toString() {
         return this.req.query;
     }
+
+    parseCriteriaComplete(req) {
+
+        // Allow customizable blacklist for params NOT to include as criteria.
+        req.options.criteria = req.options.criteria || {};
+        req.options.criteria.blacklist = req.options.criteria.blacklist || ['limit', 'skip', 'sort', 'populate'];
+
+        // Validate blacklist to provide a more helpful error msg.
+        var blacklist = req.options.criteria && req.options.criteria.blacklist;
+        if (blacklist && !_.isArray(blacklist)) {
+            throw new Error('Invalid `req.options.criteria.blacklist`. Should be an array of strings (parameter names.)');
+        }
+
+        // Look for explicitly specified `where` parameter.
+        var where = req.params.all().where;
+        // If `where` parameter is a string, try to interpret it as JSON
+        if (_.isString(where)) {
+            where = tryToParseJSON(where);
+        }
+
+        // If `where` has not been specified, but other unbound parameter variables
+        // **ARE** specified, build the `where` option using them.
+        if (!where) {
+
+            // Prune params which aren't fit to be used as `where` criteria
+            // to build a proper where query
+            where = req.params.all();
+            var deep = {};
+            _.forEach(where, function(key, val) {
+                    if (_.indexOf(val, '.') !== -1) {
+                        deep[val] = key
+                        delete where[val]
+                    }
+                })
+                // Omit built-in runtime config (like query modifiers)
+            where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
+
+            // Omit any params w/ undefined values
+            where = _.omit(where, function(p) {
+                if (isUndefined(p)) {
+                    return true;
+                }
+            });
+
+            // Omit jsonp callback param (but only if jsonp is enabled)
+            var jsonpOpts = req.options.jsonp && !req.isSocket;
+            jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
+                callback: 'callback'
+            };
+            if (jsonpOpts) {
+                where = _.omit(where, [jsonpOpts.callback]);
+            }
+        }
+
+        // Merge w/ req.options.where and return
+        where = _.merge({}, req.options.where || {}, where) || undefined;
+
+        return {
+            full: where,
+            deep: deep
+        };
+    }
+
 }
 
 module.exports = {

@@ -181,8 +181,8 @@ class ResponseGET extends ResponseBuilder {
             if (association.type === 'collection') collections.push(association.alias);
         });
 
-        if (!_.isEmpty(this.params.where)) {
-            this.params.where = _.transform(this.params.where, function(result, val, key) {
+        if (!_.isEmpty(this.params.where.full)) {
+            this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
 
                 if (collections.indexOf(key) === -1) {
                     val = _.split(val, ',');
@@ -201,25 +201,25 @@ class ResponseGET extends ResponseBuilder {
             });
         }
 
-        if (_.isUndefined(this.params.where) || _.isEmpty(this.params.where.or)) {
-            this.params.where = {};
+        if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full.or)) {
+            this.params.where.full = {};
         }
 
         if (this._many) {
             // Only find not deleted records
-            _.merge(this.params.where, {
+            _.merge(this.params.where.full, {
                 deletedAt: null
             });
 
-            console.dir(this.params.where);
+            console.dir(this.params.where.full);
 
             this._query = this._model.find()
-                .where(this.params.where)
+                .where(this.params.where.full)
                 .limit(this.params.limit)
                 .skip(this.params.skip)
                 .sort(this.params.sort);
 
-            this._model.count().where(this.params.where)
+            this._model.count().where(this.params.where.full)
                 .then(function(cant) {
                     this._count = cant;
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
@@ -235,7 +235,7 @@ class ResponseGET extends ResponseBuilder {
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter);
         }
-
+        this._query = this.deepFilter(this._query, this.params.where.deep)
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
@@ -407,6 +407,8 @@ class ResponseGET extends ResponseBuilder {
 
             records.forEach(function(element, j) {
                 records[j] = _.transform(element, function(result, value, key) {
+                    console.dir(value)
+                    console.dir(key)
                     if (!_.isUndefined(filters[key])) {
                         // get the ids of the collection filtered
                         var elementsId = _.map(element[key], function(item) {
@@ -432,7 +434,47 @@ class ResponseGET extends ResponseBuilder {
 
         return query;
     }
+    deepFilter(query, filter) {
+        query.then(function(records) {
+            // Variable where we'll save all the indexes to be removed
+            var toRemove = [];
+            var deepFilters = {};
+            // ?category.name=Gobierno
+            _.forEach(this.params.where.deep, function(value, key) {
+                var splittedKey = _.split(key, '.');
+                var model = splittedKey[0];
 
+                deepFilters[model] = {
+                    attribute: splittedKey[1],
+                    value: value
+                }
+
+                // deepFilters = { category: { attribute: 'name', value: 'Gobierno' } }
+            })
+            records.forEach(function(element, j) {
+
+                records[j] = _.transform(element, function(result, value, key) {
+                    // If the field is on the filters object, we check if it fullfill the filter
+                    if (!_.isUndefined(deepFilters[key])) {
+
+                        // if the value filtered is undefined, or its different than the filter we remove it from query
+                        if (_.isUndefined(value) || deepFilters[key].value !== value[deepFilters[key].attribute]) {
+                            toRemove.push(j)
+                        }
+                    }
+                }, element);
+            });
+            // pull out of the final records all the records which didnt fulfill the filter
+            _.pullAt(records, toRemove);
+            // with some of the records deleted, we need to update the count
+            this._count = _.size(records);
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+
+            return records;
+        }.bind(this));
+
+        return query;
+    }
     select(query, fields) {
         query.then(function(records) {
             // Filter out the partials
