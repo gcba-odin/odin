@@ -38,7 +38,8 @@
     "url-assembler": "^1.2.4",
     "waterline": "^0.12.1",
     "xlsx": "^0.8.0",
-    "xlsx-style": "^0.8.13"
+    "xlsx-style": "^0.8.13",
+    "snyk": "^1.17.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -59,6 +60,9 @@
     "debug": "node debug app.js",
     "docs": "esdoc -c esdoc.json",
     "start": "node app.js",
-    "test": "make test"
-  }
+    "test": "make test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
