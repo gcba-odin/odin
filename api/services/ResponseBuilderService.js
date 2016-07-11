@@ -228,13 +228,14 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find(this._pk);
         }
         // this._query = this.select(this._query, this.params.fields);
-
         this._query = this.populate(this._query, this._model, this.params.include);
 
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter);
         }
-        this._query = this.deepFilter(this._query, this.params.where.deep);
+        if (!_.isUndefined(this.params.where.deep) && !_.isEmpty(this.params.where.deep)) {
+            this._query = this.deepFilter(this._query, this.params.where.deep);
+        }
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
@@ -300,7 +301,7 @@ class ResponseGET extends ResponseBuilder {
                 count: this._count,
                 limit: this.params.limit,
                 start: this.params.skip + 1,
-                end: this.params.skip + this.params.limit,
+                end: this.params.skip + this._count,
                 page: this.params.page,
                 pages: this.params.pages
             });
@@ -488,16 +489,16 @@ class ResponseGET extends ResponseBuilder {
     compareFilters(filters, value) {
 
         //Removed spaces to compare filter with value
-        value = _.replace(value,/ /g, '');
+        value = _.replace(value, / /g, '');
 
         var found = (_.find(filters, function (filterValue) {
 
-            filterValue = _.replace(filterValue,/ /g, '');
+            filterValue = _.replace(filterValue, / /g, '');
 
             return filterValue == value;
         }));
 
-        return (found === undefined) ? true : false ;
+        return (found === undefined) ? true : false;
     }
 
     select(query, fields) {
