@@ -234,7 +234,7 @@ class ResponseGET extends ResponseBuilder {
         if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter);
         }
-        this._query = this.deepFilter(this._query, this.params.where.deep)
+        this._query = this.deepFilter(this._query, this.params.where.deep);
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
@@ -443,18 +443,18 @@ class ResponseGET extends ResponseBuilder {
                 var model = splittedKey[0];
 
                 //Split every filter on an array
-                value = value.match(/('[ áéíóúa-zA-Z,1-9 ]+'|[ áéíóúa-zA-Z1-9 ]+)/g)
+                value = value.match(/('[ áéíóúa-zA-Z,1-9 ]+'|[ áéíóúa-zA-Z1-9 ]+)/g);
 
                 //Sanitize the escaped \'
-                var sanitizedValue = this.sanitizeSimpleComma(value)
+                var sanitizedValue = this.sanitizeSimpleComma(value);
 
                 deepFilters[model] = {
                     attribute: splittedKey[1],
 
                     values: sanitizedValue
-                }
+                };
                 // deepFilters = { category: { attribute: 'name', value: '[Filter1, Filter2]' } }
-            }.bind(this))
+            }.bind(this));
             records.forEach(function (element, j) {
 
                 records[j] = _.transform(element, function (result, value, key) {
@@ -462,7 +462,7 @@ class ResponseGET extends ResponseBuilder {
                     if (!_.isUndefined(deepFilters[key])) {
                         // if the value filtered is undefined, or its different than the filter we remove it from query
                         if (_.isUndefined(value) || this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
-                            toRemove.push(j)
+                            toRemove.push(j);
                         }
                     }
                 }.bind(this), element);
@@ -482,22 +482,22 @@ class ResponseGET extends ResponseBuilder {
     sanitizeSimpleComma(array) {
         return _.map(array, function (each) {
             return _.replace(each, new RegExp("\'", "g"), '');
-        })
+        });
     }
 
     compareFilters(filters, value) {
 
         //Removed spaces to compare filter with value
-        value = _.replace(value,/ /g, '')
+        value = _.replace(value,/ /g, '');
 
         var found = (_.find(filters, function (filterValue) {
 
-            filterValue = _.replace(filterValue,/ /g, '')
+            filterValue = _.replace(filterValue,/ /g, '');
 
             return filterValue == value;
         }));
 
-        return (found == undefined) ? true : false
+        return (found === undefined) ? true : false ;
     }
 
     select(query, fields) {
@@ -778,7 +778,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         }
     }
 
-    getMethods(methods, headers, count) {
+    getMethods(methods, headers) {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb

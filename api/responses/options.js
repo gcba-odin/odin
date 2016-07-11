@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function(data, meta) {
+module.exports = function(data) {
     const response = _.assign({
         meta: {
             code: 'OK',

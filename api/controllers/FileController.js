@@ -52,7 +52,6 @@ module.exports = {
                 if (filetype.api) {
 
                     var builder = new Response.ResponseGET(req, res, true);
-                    var data;
                     builder.contentsQuery(file.dataset, file.name, function(data) {
 
                         return res.ok(data, {

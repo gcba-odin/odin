@@ -32,6 +32,7 @@ module.exports = (req, res) => {
             //populate the response
 
             builder._model.find(record.id).populate(associations).exec(function(err, record) {
+                if (err) res.negotiate(err);
                 res.created(record, {
                     meta: builder.meta(record),
                     links: builder.links(record)

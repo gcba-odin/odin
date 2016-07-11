@@ -4,11 +4,11 @@
 module.exports = {
     baseAttributes: function(model) {
         var attributes = _.reduce(model.definition, function(accumulator, key, name) {
-            accumulator[name] = _.pick(key, ['type', 'size', 'model'])
-            return accumulator
+            accumulator[name] = _.pick(key, ['type', 'size', 'model']);
+            return accumulator;
         }, {});
-        _.unset(attributes, ['id', 'createdAt', 'updatedAt'])
-        return attributes
+        _.unset(attributes, ['id', 'createdAt', 'updatedAt']);
+        return attributes;
     },
     getAttributes: function(model) {
 
@@ -25,6 +25,6 @@ module.exports = {
         }, AttributesService.baseAttributes(model));
     },
     setAttributes: function(model) {
-        return AttributesService.baseAttributes(model)
+        return AttributesService.baseAttributes(model);
     }
 };

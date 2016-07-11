@@ -18,6 +18,7 @@ module.exports = {
     instance(req, res) {
         var builder = new Response.ResponseOPTIONS(req, res, false);
         builder._query.then(function(record, err) {
+            if (err) return res.negotiate(err);
             if (_.isEmpty(record)) {
                 return res.notFound();
             } else {

@@ -14,12 +14,12 @@ class ParamsProcessor {
     parse() {
         // this.query = '';
         this.fields = this.parseFields(this.req);
-        this.include = this.parseInclude(this.req);
+        this.include = this.parseInclude();
 
         if (this._many) {
             this.match = this.parseMatch(this.req);
             this.condition = this.parseCondition(this.req);
-            this.where = this.parseCriteria(this.req, this._model);
+            this.where = this.parseCriteria(this.req);
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
 
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
@@ -75,7 +75,7 @@ class ParamsProcessor {
         return 'or';
     }
 
-    parseCriteria(req, model) {
+    parseCriteria(req) {
         var criteria = this.parseCriteriaComplete(req);
         return criteria;
     }
@@ -98,7 +98,7 @@ class ParamsProcessor {
     /*
      * Parses the 'include' query param and builds an object with it, to be consumed by populate()
      */
-    parseInclude(req) {
+    parseInclude() {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var results = {
             full: [], // Here go the models that will be included with all their attributes
@@ -106,7 +106,7 @@ class ParamsProcessor {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element, i) {
+            _.forEach(includes, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -127,7 +127,6 @@ class ParamsProcessor {
 
     parseFields(req) {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        var splits = [];
         var results = {
             full: [], // Here go the models that will be included with all their attributes
             partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
@@ -138,7 +137,7 @@ class ParamsProcessor {
         }
 
         if (fields.length > 0) {
-            _.forEach(fields, function(element, i) {
+            _.forEach(fields, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -192,10 +191,10 @@ class ParamsProcessor {
             var deep = {};
             _.forEach(where, function(key, val) {
                     if (_.indexOf(val, '.') !== -1) {
-                        deep[val] = key
-                        delete where[val]
+                        deep[val] = key;
+                        delete where[val];
                     }
-                })
+                });
                 // Omit built-in runtime config (like query modifiers)
             where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
 

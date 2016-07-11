@@ -5,18 +5,18 @@ module.exports = {
                 'GET': function(model) {
                     if (_.isUndefined(model.getAttributes))
                         return AttributesService.getAttributes(model);
-                    else return model.getAttributes()
+                    else return model.getAttributes();
                 },
                 'POST': function(model) {
                     if (_.isUndefined(model.setAttributes))
                         return AttributesService.setAttributes(model);
-                    else return model.setAttributes()
+                    else return model.setAttributes();
 
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
             };
@@ -26,21 +26,21 @@ module.exports = {
                 'GET': function(model) {
                     if (_.isUndefined(model.getAttributes))
                         return AttributesService.getAttributes(model);
-                    else return model.getAttributes()
+                    else return model.getAttributes();
                 },
                 'PATCH': function(model) {
                     if (_.isUndefined(model.setAttributes))
                         return AttributesService.setAttributes(model);
-                    else return model.setAttributes()
+                    else return model.setAttributes();
 
                 },
-                'DELETE': function(model) {
+                'DELETE': function() {
                     return {};
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
             };
@@ -50,18 +50,18 @@ module.exports = {
                 'GET': function(model) {
                     if (_.isUndefined(model.getAttributes))
                         return AttributesService.getAttributes(model);
-                    else return model.getAttributes()
+                    else return model.getAttributes();
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
             };
         }
     },
-    getHeaders: function(method) {
+    getHeaders: function() {
         var headers = {
             'Authorization': 'JWT [token]',
             'Accept': 'application/json'
