@@ -43,7 +43,7 @@ class ResponseBuilder {
         this._takeAlias = _.partial(_.map, _, item => item.alias);
         this._populateAlias = (model, alias) => model.populate(alias);
 
-        this._addValue = function(value, target) {
+        this._addValue = function (value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
                 if (!_.isPlainObject(target)) return new Error('Target is not an object.');
                 target[value[0]] = value[1];
@@ -177,12 +177,12 @@ class ResponseGET extends ResponseBuilder {
         var collections = [];
         var collectionsFilter = {};
 
-        _.forEach(this._model.associations, function(association) {
+        _.forEach(this._model.associations, function (association) {
             if (association.type === 'collection') collections.push(association.alias);
         });
 
         if (!_.isEmpty(this.params.where.full)) {
-            this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
+            this.params.where.full = _.transform(this.params.where.full, function (result, val, key) {
 
                 if (collections.indexOf(key) === -1) {
                     val = _.split(val, ',');
@@ -211,7 +211,6 @@ class ResponseGET extends ResponseBuilder {
                 deletedAt: null
             });
 
-            console.dir(this.params.where.full);
 
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -220,7 +219,7 @@ class ResponseGET extends ResponseBuilder {
                 .sort(this.params.sort);
 
             this._model.count().where(this.params.where.full)
-                .then(function(cant) {
+                .then(function (cant) {
                     this._count = cant;
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
@@ -282,7 +281,7 @@ class ResponseGET extends ResponseBuilder {
     }
 
     contentsQuery(dataset, file, cb) {
-        DataStorageService.mongoCount(dataset, file, this.res, function(count) {
+        DataStorageService.mongoCount(dataset, file, this.res, function (count) {
             this._count = count;
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
 
@@ -383,7 +382,7 @@ class ResponseGET extends ResponseBuilder {
             if (!_.isUndefined(records)) {
                 var relations = {};
 
-                _.forEach(this._model.associations, function(association) {
+                _.forEach(this._model.associations, function (association) {
                     if (association.type === 'collection') {
                         relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
                     }
@@ -401,17 +400,15 @@ class ResponseGET extends ResponseBuilder {
     }
 
     filter(query, filters) {
-        query.then(function(records) {
+        query.then(function (records) {
             // Variable where we'll save all the indexes to be removed
             var toRemove = [];
 
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
-                    console.dir(value)
-                    console.dir(key)
+            records.forEach(function (element, j) {
+                records[j] = _.transform(element, function (result, value, key) {
                     if (!_.isUndefined(filters[key])) {
                         // get the ids of the collection filtered
-                        var elementsId = _.map(element[key], function(item) {
+                        var elementsId = _.map(element[key], function (item) {
                             return item.id;
                         });
                         var filter = _.split(filters[key], ',');
@@ -434,32 +431,35 @@ class ResponseGET extends ResponseBuilder {
 
         return query;
     }
+
     deepFilter(query, filter) {
-        query.then(function(records) {
+        query.then(function (records) {
             // Variable where we'll save all the indexes to be removed
             var toRemove = [];
             var deepFilters = {};
             // ?category.name=Gobierno
-            _.forEach(this.params.where.deep, function(value, key) {
+            _.forEach(this.params.where.deep, function (value, key) {
                 var splittedKey = _.split(key, '.');
                 var model = splittedKey[0];
-                console.log(value)
+
+                //Split every filter on an array
+                value = value.match(/('[ áéíóúa-zA-Z,1-9 ]+'|[ áéíóúa-zA-Z1-9 ]+)/g)
+
+                //Sanitize the escaped \'
+                var sanitizedValue = this.sanitizeSimpleComma(value)
+
                 deepFilters[model] = {
                     attribute: splittedKey[1],
-                    // values: _.split(value, '",')
 
-                    // values: _.split(value, /(\\'[ a-zA-Z,1-9 ]+\\'|[ a-zA-Z1-9 ]+)/g)
-                    values: value.match(/('[ a-zA-Z,1-9 ]+'|[ a-zA-Z1-9 ]+)/g)
+                    values: sanitizedValue
                 }
-                console.dir(deepFilters[model])
-                    // deepFilters = { category: { attribute: 'name', value: 'Gobierno' } }
-            })
-            records.forEach(function(element, j) {
+                // deepFilters = { category: { attribute: 'name', value: '[Filter1, Filter2]' } }
+            }.bind(this))
+            records.forEach(function (element, j) {
 
-                records[j] = _.transform(element, function(result, value, key) {
+                records[j] = _.transform(element, function (result, value, key) {
                     // If the field is on the filters object, we check if it fullfill the filter
                     if (!_.isUndefined(deepFilters[key])) {
-
                         // if the value filtered is undefined, or its different than the filter we remove it from query
                         if (_.isUndefined(value) || this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
                             toRemove.push(j)
@@ -478,26 +478,39 @@ class ResponseGET extends ResponseBuilder {
 
         return query;
     }
-    compareFilters(filters, value) {
-        console.log(filters)
-        console.log(value)
-        _.forEach(filters, function(filterValue) {
 
-            if (filterValue === value) return true
+    sanitizeSimpleComma(array) {
+        return _.map(array, function (each) {
+            return _.replace(each, new RegExp("\'", "g"), '');
         })
-        return false;
     }
+
+    compareFilters(filters, value) {
+
+        //Removed spaces to compare filter with value
+        value = _.replace(value,/ /g, '')
+
+        var found = (_.find(filters, function (filterValue) {
+
+            filterValue = _.replace(filterValue,/ /g, '')
+
+            return filterValue == value;
+        }));
+
+        return (found == undefined) ? true : false
+    }
+
     select(query, fields) {
-        query.then(function(records) {
+        query.then(function (records) {
             // Filter out the partials
             // Each result item
-            records.forEach(function(element, j) {
-                records[j] = _.transform(element, function(result, value, key) {
+            records.forEach(function (element, j) {
+                records[j] = _.transform(element, function (result, value, key) {
                     // Each granular field
-                    _.forEach(fields.partials, function(partialValue, partialKey) {
+                    _.forEach(fields.partials, function (partialValue, partialKey) {
                         if (key === partialKey && _.isObject(element[partialKey])) {
                             // Each object in the collection
-                            _.forEach(element[partialKey], function(resultValue, resultKey) {
+                            _.forEach(element[partialKey], function (resultValue, resultKey) {
                                 // If it's not listed in the granular fields, delete it
                                 if (partialValue.indexOf(resultKey) === -1) {
                                     delete element[partialKey][resultKey];
@@ -519,7 +532,7 @@ class ResponseGET extends ResponseBuilder {
      */
     populate(query, model, includes) {
         // Fully populate non collection items
-        _.forEach(model.definition, function(value, key) {
+        _.forEach(model.definition, function (value, key) {
             if (value.foreignKey) {
                 query.populate(key);
             }
@@ -528,7 +541,7 @@ class ResponseGET extends ResponseBuilder {
         if (includes) {
             // Fully populate collections
             if (includes.full) {
-                _.forEach(includes.full, function(element) {
+                _.forEach(includes.full, function (element) {
                     query.populate(element);
                 }, this);
             }
@@ -539,22 +552,22 @@ class ResponseGET extends ResponseBuilder {
 
             // Fully populate included partials (will be filtered out later)
             if (includes.partials) {
-                _.forEach(includes.partials, function(value, key) {
+                _.forEach(includes.partials, function (value, key) {
                     query.populate(key);
                 }, this);
 
-                return query.then(function(records) {
+                return query.then(function (records) {
                     // Filter out the partials
                     // Each result item
-                    records.forEach(function(element, j) {
-                        records[j] = _.transform(element, function(result, value, key) {
+                    records.forEach(function (element, j) {
+                        records[j] = _.transform(element, function (result, value, key) {
                             // Each granular include, gruped by model
-                            _.forEach(includes.partials, function(partialValue, partialKey) {
+                            _.forEach(includes.partials, function (partialValue, partialKey) {
                                 if (key === partialKey && _.isArray(element[partialKey])) {
                                     // Each collection of included objects
-                                    element[partialKey].forEach(function(item, k) {
+                                    element[partialKey].forEach(function (item, k) {
                                         // Each included object in the collection
-                                        _.forEach(item, function(resultValue, resultKey) {
+                                        _.forEach(item, function (resultValue, resultKey) {
                                             // If it's not listed in the granular includes, delete it
                                             if (partialValue.indexOf(resultKey) === -1) {
                                                 delete element[partialKey][k][resultKey];
@@ -638,14 +651,14 @@ class ResponsePATCH extends ResponseBuilder {
 
 
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
-        var valuesArray = _.map(bodyData, function(element) {
+        var valuesArray = _.map(bodyData, function (element) {
             var values;
             // Merge properties of the element into req.options.value, omitting the blacklist
             values = mergeDefaults(element, _.omit(req.options.values, 'blacklist'));
             // Omit properties that are in the blacklist (like query modifiers)
             values = _.omit(values, blacklist || []);
             // Omit any properties w/ undefined values
-            values = _.omit(values, function(p) {
+            values = _.omit(values, function (p) {
                 if (_.isUndefined(p)) {
                     return true;
                 }
@@ -655,7 +668,7 @@ class ResponsePATCH extends ResponseBuilder {
             // If key is a model collection, should transform comma separated to array.
             // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
-            _.forEach(values, function(value, key) {
+            _.forEach(values, function (value, key) {
                 var collection = _.find(this._model.associations, [
                     'alias', key
                 ]);
@@ -770,7 +783,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb
 
-        _.forEach(methods, function(key, methodVerb) {
+        _.forEach(methods, function (key, methodVerb) {
             var headers = OptionsMethodService.getHeaders(methodVerb);
 
             methodsArray.push({
@@ -787,7 +800,8 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._meta = {
@@ -834,7 +848,7 @@ class ResponseSearch extends ResponseGET {
         });
 
         this.model = model;
-        this.params.where = _.transform(model.definition, function(result, val, key) {
+        this.params.where = _.transform(model.definition, function (result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
                 if (this.params.condition === 'and') {
@@ -848,7 +862,7 @@ class ResponseSearch extends ResponseGET {
                 else {
                     query = _.split(query, ',');
                     // if (_.isArray(query)) {
-                    _.forEach(query, function(value) {
+                    _.forEach(query, function (value) {
                         result.or.push(_.set({}, key, {
                             [this.params.match]: value
                         }));
@@ -876,11 +890,11 @@ class ResponseSearch extends ResponseGET {
             .sort(this.params.sort);
 
         this.model.count().where(this.params.where)
-            .then(function(cant) {
+            .then(function (cant) {
                 this._count = cant;
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this))
-            .catch(function(err) {
+            .catch(function (err) {
                 console.error(err);
             });
 
