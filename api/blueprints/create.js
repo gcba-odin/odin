@@ -33,9 +33,9 @@ module.exports = (req, res) => {
 
             builder._model.find(record.id).populate(associations).exec(function(err, record) {
                 if (err) res.negotiate(err);
-                res.created(record, {
-                    meta: builder.meta(record),
-                    links: builder.links(record)
+                res.created(record[0], {
+                    meta: builder.meta(record[0]),
+                    links: builder.links(record[0])
                 });
 
             });
