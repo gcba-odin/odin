@@ -167,6 +167,24 @@ module.exports = {
 
 
         // Categories
+
+        'DELETE /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+
+        'PATCH /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+        'PUT /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+
         'DELETE /categories/:id': {
             controller: 'Delete',
             model: 'category',
@@ -368,6 +386,26 @@ module.exports = {
 
         // Files
 
+
+        'DELETE /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+
+        'PATCH /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+        'PUT /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+
+
+
         'POST /files': 'File.upload',
         'GET /files/:id/download': 'File.download',
 
@@ -492,6 +530,25 @@ module.exports = {
 
 
         // Datasets
+
+        'DELETE /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+
+        'PATCH /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+        'PUT /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+
+
         'GET /datasets/:id/download': 'Dataset.download',
         'GET /datasets/feed/rss': 'Dataset.feedRss',
         'GET /datasets/first': {
@@ -800,6 +857,25 @@ module.exports = {
 
         // Maps
 
+
+        'DELETE /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+
+        'PATCH /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+        'PUT /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+
+
         'GET /maps/first': {
             blueprint: 'first',
             model: 'map'
@@ -855,6 +931,24 @@ module.exports = {
 
         // Charts
 
+        'DELETE /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+
+        'PATCH /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+        'PUT /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+
+
         'GET /charts/first': {
             blueprint: 'first',
             model: 'chart'
@@ -909,6 +1003,25 @@ module.exports = {
         },
 
         // Views
+
+
+        'DELETE /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+
+        'PATCH /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+        'PUT /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+
 
         'GET /views/first': {
             blueprint: 'first',
