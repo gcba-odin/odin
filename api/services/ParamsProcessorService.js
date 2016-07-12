@@ -63,6 +63,8 @@ class ParamsProcessor {
                 return 'endsWith';
             case '':
                 return 'contains';
+            case 'contains':
+                return 'contains';
             default:
                 return this.res.unprocessableEntity();
         }
@@ -92,9 +94,12 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
-        console.dir(sort)
-
+        if (sort != 'ASC' && sort != 'DESC') {
+            return this.res.unprocessableEntity();
+        }
         var orderBy = req.param('orderBy') || req.options.orderBy;
+        console.log('orderby');
+        console.dir(orderBy);
 
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
             return undefined;
