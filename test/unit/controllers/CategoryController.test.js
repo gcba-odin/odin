@@ -855,7 +855,7 @@ describe('Single Category', function() {
         it('- Should get error 401', function(done) {
             request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
-                .expect(401)
+                .expect(410)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
