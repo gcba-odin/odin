@@ -293,7 +293,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=2');
+                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=6');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
@@ -779,7 +779,7 @@ describe('Single Category', function() {
                     // assert.property(result.body.data, 'embedCode');
                     // assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
 
@@ -818,10 +818,10 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    // assert.property(result.body.data, 'embedCode');
+                    // assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
 
@@ -861,9 +861,13 @@ describe('Single Category', function() {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
+                    // assert.property(result.body.meta, 'code');
+                    // assert.isString(result.body.meta.code);
+                    // assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'E_GONE');
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);

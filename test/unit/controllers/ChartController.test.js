@@ -765,6 +765,7 @@ describe('Single Chart', function() {
                 .set('Accept', 'application/json')
                 .field('name', 'Edited Chart')
                 .field('description', 'An example edited chart')
+                .field('embedCode', '<div></div>')
                 .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')

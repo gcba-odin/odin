@@ -7,10 +7,12 @@
  *
  */
 
-module.exports = function(data, config) {
+module.exports = function (data, config) {
     const response = _.assign({
-        code: _.get(config, 'code', 'E_GONE'),
-        message: _.get(config, 'message', 'The requested resource is not available anymore.')
+        meta: {
+            code: _.get(config, 'code', 'E_GONE'),
+            message: _.get(config, 'message', 'The requested resource is not available anymore.')
+        }
     }, _.get(config, 'root', {}));
 
     this.res.set({
