@@ -149,7 +149,7 @@ class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
 
-        this.params = new Processor.ParamsProcessor(req, many).parse();
+        this.params = new Processor.ParamsProcessor(req,res, many).parse();
         this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);

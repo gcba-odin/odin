@@ -3,8 +3,9 @@
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ParamsProcessor {
-    constructor(req, many) {
+    constructor(req, res, many) {
         this.req = req;
+        this.res = res;
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
         this._model = _actionUtil.parseModel(this.req);
@@ -60,19 +61,25 @@ class ParamsProcessor {
                 return 'startsWith';
             case 'ends':
                 return 'endsWith';
-            default:
+            case '':
                 return 'contains';
+            default:
+                return this.res.unprocessableEntity();
         }
     }
 
     parseCondition(req) {
         var condition = req.param('condition');
-
-        if (condition === 'AND') {
-            return 'and';
+        switch (condition) {
+            case 'AND':
+                return 'and';
+            case undefined:
+                return 'or';
+            case 'OR':
+                return 'or';
+            default:
+                return this.res.unprocessableEntity();
         }
-
-        return 'or';
     }
 
     parseCriteria(req) {
@@ -85,6 +92,8 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
+        console.dir(sort)
+
         var orderBy = req.param('orderBy') || req.options.orderBy;
 
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
@@ -106,7 +115,7 @@ class ParamsProcessor {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element) {
+            _.forEach(includes, function (element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -125,7 +134,7 @@ class ParamsProcessor {
         return results;
     }
 
-    parseFields(req) {
+    parseFields() {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         var results = {
             full: [], // Here go the models that will be included with all their attributes
@@ -137,7 +146,7 @@ class ParamsProcessor {
         }
 
         if (fields.length > 0) {
-            _.forEach(fields, function(element) {
+            _.forEach(fields, function (element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -189,17 +198,17 @@ class ParamsProcessor {
             // to build a proper where query
             where = req.params.all();
             var deep = {};
-            _.forEach(where, function(key, val) {
-                    if (_.indexOf(val, '.') !== -1) {
-                        deep[val] = key;
-                        delete where[val];
-                    }
-                });
-                // Omit built-in runtime config (like query modifiers)
+            _.forEach(where, function (key, val) {
+                if (_.indexOf(val, '.') !== -1) {
+                    deep[val] = key;
+                    delete where[val];
+                }
+            });
+            // Omit built-in runtime config (like query modifiers)
             where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
 
             // Omit any params w/ undefined values
-            where = _.omit(where, function(p) {
+            where = _.omit(where, function (p) {
                 if (isUndefined(p)) {
                     return true;
                 }
@@ -226,6 +235,7 @@ class ParamsProcessor {
 
 }
 
-module.exports = {
+module
+    .exports = {
     ParamsProcessor
 };

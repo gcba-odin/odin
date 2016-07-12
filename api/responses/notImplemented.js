@@ -1,10 +1,7 @@
 "use strict";
 
 /**
- * 415 (Unsuported media type) Response
- *
- * A generic error message, given when no more specific message is suitable.
- * The general catch-all error when the server-side throws an exception.
+ * 501 (Not Implemented) Response
  */
 
 module.exports = function(links) {
