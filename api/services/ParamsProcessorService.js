@@ -94,12 +94,10 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
-        if (sort != 'ASC' && sort != 'DESC') {
+        if (sort != 'ASC' && sort != 'DESC' && sort != undefined) {
             return this.res.unprocessableEntity();
         }
         var orderBy = req.param('orderBy') || req.options.orderBy;
-        console.log('orderby');
-        console.dir(orderBy);
 
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
             return undefined;
