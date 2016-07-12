@@ -4,10 +4,13 @@
  * 501 (Not Implemented) Response
  */
 
-module.exports = function(links) {
+module.exports = function (links) {
+
     const response = _.assign({
-        code: 'E_NOT_IMPLEMENTED',
-        message: 'The attempted operation is not supported.',
+        meta: {
+            code: 'E_NOT_IMPLEMENTED',
+            message: 'The attempted operation is not supported.'
+        },
         links: links
     });
 

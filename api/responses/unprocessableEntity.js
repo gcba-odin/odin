@@ -1,4 +1,3 @@
-
 "use strict";
 
 /**
@@ -6,10 +5,12 @@
  *
  */
 
-module.exports = function() {
+module.exports = function () {
     const response = _.assign({
-        code: 'E_UNPROCESSABLE_ENTITY',
-        message: 'One or more of the provided parameters are invalid.'
+        meta: {
+            code: 'E_UNPROCESSABLE_ENTITY',
+            message: 'One or more of the provided parameters are invalid.'
+        }
     });
 
     this.res.set({

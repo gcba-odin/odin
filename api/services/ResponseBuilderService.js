@@ -303,7 +303,7 @@ class ResponseGET extends ResponseBuilder {
                 count: this._count,
                 limit: this.params.limit,
                 start: this.params.skip + 1,
-                end: this.params.skip + this._count,
+                end: this.params.skip + this.params.limit,
                 page: this.params.page,
                 pages: this.params.pages
             });

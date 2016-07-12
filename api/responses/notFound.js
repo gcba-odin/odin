@@ -9,8 +9,6 @@
  */
 
 module.exports = function(data, config) {
-    console.log(config);
-
     const response = _.assign({
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {})
