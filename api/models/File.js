@@ -109,8 +109,8 @@ module.exports = {
     afterDestroy: (destroyedRecords, next) => {
         if (!_.isEmpty(destroyedRecords)) {
             destroyedRecords = destroyedRecords[0];
+            UnpublishService.unpublish(destroyedRecords);
             var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
-            console.log(path);
             fs.unlink(path, function() {
                 DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
                 ZipService.createZip(destroyedRecords.dataset);
