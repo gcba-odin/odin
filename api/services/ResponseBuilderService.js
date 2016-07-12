@@ -613,7 +613,8 @@ class ResponsePOST extends ResponseBuilder {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._links = {
-            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
+            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id,
+            all: this.req.host + ':' + this.req.port + '/' + modelName
         };
 
         return this._links;
