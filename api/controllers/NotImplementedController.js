@@ -6,14 +6,15 @@
  */
 
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const pluralize = require('pluralize');
 
 module.exports = {
     notImplemented(req, res) {
         var model = actionUtil.parseModel(req);
         var modelName = pluralize(model.identity);
-        links = {
+        var links = {
             all: req.host + ':' + req.port + '/' + modelName
         };
-        return res.notImplemented();
+        return res.notImplemented(links);
     }
 };

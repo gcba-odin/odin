@@ -9,10 +9,10 @@
 
 module.exports = function(links) {
     const response = _.assign({
-        code: _.get(config, 'code', 'E_NOT_IMPLEMENTED'),
-        message: _.get(config, 'message', 'The attempted operation is not supported.'),
+        code: 'E_NOT_IMPLEMENTED',
+        message: 'The attempted operation is not supported.',
         links: links
-    }, _.get(config, 'root', {}));
+    });
 
     this.res.set({
         'Content-Type': 'application/json'
