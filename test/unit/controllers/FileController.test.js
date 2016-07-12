@@ -727,6 +727,7 @@ describe('Single File', function () {
                 .field('description', 'An example file')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
+                .field('dataset', 'sWRhpRk')
                 .field('status', 'pWRhpRV')
                 .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
@@ -737,7 +738,6 @@ describe('Single File', function () {
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function (err, result) {
-                    console.dir(result)
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -818,6 +818,7 @@ describe('Single File', function () {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
+                .field('dataset', 'sWRhpRk')
                 .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')
@@ -907,6 +908,7 @@ describe('Single File', function () {
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
                 .field('status', 'pWRhpRV')
+                .field('dataset', 'sWRhpRk')
                 .field('file', 'sWRhpRl')
                 .field('organization', 'hWRhpRV')
                 .field('updateFrequency', 'zWRhpR8')

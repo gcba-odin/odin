@@ -801,7 +801,7 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
 
@@ -847,7 +847,7 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
 
