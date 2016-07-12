@@ -375,7 +375,7 @@ class ResponseGET extends ResponseBuilder {
 
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
             const _last = (this.params.page < this.params.pages ?
-                _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
+            _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
@@ -402,9 +402,8 @@ class ResponseGET extends ResponseBuilder {
         }
         // If the client is requesting a single item, we'll show other links
         else {
-            if (!_.isUndefined(records)) {
+            if (!_.isUndefined(records) && records.deletedAt === null) {
                 var relations = {};
-
                 _.forEach(this._model.associations, function (association) {
                     if (association.type === 'collection') {
                         relations[association.alias] =

@@ -803,7 +803,7 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -849,7 +849,7 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
