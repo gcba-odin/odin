@@ -28,4 +28,4 @@ module.exports = {
             if (err) console.error('There was an error updating the chart!', err);
         });
     }
-}
+};

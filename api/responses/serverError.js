@@ -25,7 +25,8 @@ module.exports = function(data, config) {
     });
     this.res.status(500);
 
-    LogService.winstonLogResponse('Server Error', response.code, response.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Server Error', response.code, response.message,
+        this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

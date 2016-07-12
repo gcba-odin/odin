@@ -27,7 +27,8 @@ module.exports = {
         target: {
             type: 'string',
             required: true,
-            enum: ['category', 'dataset', 'fileType', 'file', 'organization', 'status', 'tag', 'updateFrequency', 'user']
+            enum: ['category', 'dataset', 'fileType', 'file',
+                'organization', 'status', 'tag', 'updateFrequency', 'user']
         },
         resource: {
             type: 'string',

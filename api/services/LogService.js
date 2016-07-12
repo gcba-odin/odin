@@ -35,7 +35,7 @@ module.exports = {
                 target: target,
                 resource: id,
                 user: user
-            }).then(function created(created) {}).catch(function(err) {
+            }).then(function created() {}).catch(function(err) {
                 throw new Error(err);
             });
         }

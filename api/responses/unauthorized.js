@@ -26,7 +26,8 @@ module.exports = function(data, config) {
     });
     this.res.status(401);
 
-    LogService.winstonLogResponse('Unauthorized', response.code, response.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Unauthorized', response.code, response.message,
+        this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

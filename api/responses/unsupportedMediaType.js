@@ -7,7 +7,7 @@
  * The general catch-all error when the server-side throws an exception.
  */
 
-module.exports = function(data, config) {
+module.exports = function (data, config) {
     const response = _.assign({
         code: _.get(config, 'code', 'E_UNSUPPORTED_MEDIA_TYPE'),
         message: _.get(config, 'message', 'Filetype not allowed')
@@ -18,7 +18,8 @@ module.exports = function(data, config) {
     });
     this.res.status(415);
 
-    LogService.winstonLogResponse('Unsupported Media Type', response.code, response.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Unsupported Media Type', response.code,
+        response.message, this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

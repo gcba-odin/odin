@@ -404,8 +404,6 @@ module.exports = {
             action: 'notImplemented'
         },
 
-
-
         'POST /files': 'File.upload',
         'GET /files/:id/download': 'File.download',
 

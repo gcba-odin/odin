@@ -4,13 +4,15 @@
  * This is a class that builds a response. It takes in the metadata and data that should go in the response and
  * outputs a properly structured response body (as an object).
  *
- * Can be extended to support setting the response headers and returning the whole response object instead of just the
- * body, thus turning it into a proper response builder (rather than a mere response body builder, like it is now).
+ * Can be extended to support setting the response headers and returning the whole response object
+ * instead of just the body, thus turning it into a proper response builder
+ * (rather than a mere response body builder, like it is now).
  *
- * This class is not meant to be instantiated as is; it's an abstract class. A subclass should provide the missing inputs
- * and configurations needed for a specific use case (eg, a response to a GET request may be nothing like a response to a
- * DELETE request), in order to build an automatically customized response body. The subclass is the one that should be
- * made available for use, via the module.exports object.
+ * This class is not meant to be instantiated as is; it's an abstract class.
+ * A subclass should provide the missing inputs and configurations needed for a specific use case
+ * (eg, a response to a GET request may be nothing like a response to a DELETE request),
+ * in order to build an automatically customized response body.
+ * The subclass is the one that should be made available for use, via the module.exports object.
  *
  * See also lodash documentation: https://lodash.com/docs
  *
@@ -89,10 +91,12 @@ class ResponseBuilder {
          */
 
         if (_.isEmpty(error)) {
-            if (!_.isPlainObject(this._data) && !_.isArray(this._data)) return new Error('Data is not an object or an array.');
+            if (!_.isPlainObject(this._data) && !_.isArray(this._data))
+                return new Error('Data is not an object or an array.');
             body = _.omit(elements, 'error');
         } else {
-            if (!_.isPlainObject(this.error)) return new Error('Error is not an object.');
+            if (!_.isPlainObject(this.error))
+                return new Error('Error is not an object.');
             body = _.omit(elements, 'data');
         }
 
@@ -111,7 +115,8 @@ class ResponseBuilder {
      */
 
     /**
-     * Add one key/value pair to the meta object. To set the entire object at once, do it directly: builder._meta = meta
+     * Add one key/value pair to the meta object.
+     * To set the entire object at once, do it directly: builder._meta = meta
      */
     addMeta(value) {
         this._addValue(value, this._meta);
@@ -119,7 +124,8 @@ class ResponseBuilder {
     }
 
     /**
-     * Add one key/value pair to the _links object. To set the entire object at once, do it directly: builder._links = link
+     * Add one key/value pair to the _links object.
+     * To set the entire object at once, do it directly: builder._links = link
      */
     addLink(value) {
         this._addValue(value, this._links);
@@ -354,8 +360,12 @@ class ResponseGET extends ResponseBuilder {
 
             const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '?' : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
-            const _previous = (this.params.page > 1 ? _linkToModel + (this.params.limit * (this.params.page - 2)) : undefined);
-            const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
+            const _previous = (this.params.page > 1 ? _linkToModel +
+            (this.params.limit * (this.params.page - 2)) : undefined);
+
+            const _next = ((this.params.pages === 1 && this._count > this.params.limit) ||
+            this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
+
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
             const _last = (this.params.page < this.params.pages ? _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
@@ -388,7 +398,8 @@ class ResponseGET extends ResponseBuilder {
 
                 _.forEach(this._model.associations, function (association) {
                     if (association.type === 'collection') {
-                        relations[association.alias] = this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
+                        relations[association.alias] =
+                            this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
                     }
                 }.bind(this));
 
@@ -465,7 +476,9 @@ class ResponseGET extends ResponseBuilder {
                     // If the field is on the filters object, we check if it fullfill the filter
                     if (!_.isUndefined(deepFilters[key])) {
                         // if the value filtered is undefined, or its different than the filter we remove it from query
-                        if (_.isUndefined(value) || this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
+                        if (_.isUndefined(value) ||
+                            this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
+                            
                             toRemove.push(j);
                         }
                     }
@@ -601,7 +614,7 @@ class ResponsePOST extends ResponseBuilder {
         this.create = this._model.create(_.omit(_values, 'id'));
     }
 
-    meta(record) {
+    meta() {
         _.assign(this._meta = {
             code: sails.config.success.CREATED.code,
             message: sails.config.success.CREATED.message
@@ -725,7 +738,7 @@ class ResponsePATCH extends ResponseBuilder {
         return this._meta;
     }
 
-    links(record) {
+    links() {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._links = {
@@ -783,7 +796,7 @@ class ResponseOPTIONS extends ResponseBuilder {
         }
     }
 
-    getMethods(methods, headers) {
+    getMethods(methods) {
         // This will be the array containing all the HTTP verbs, eg. [ { GET : { id : { type:string } } } ]
         var methodsArray = [];
         // Key has the function that returns the parameters & value has the HTTP verb

@@ -52,7 +52,6 @@ class ParamsProcessor {
         return this.result;
     }
 
-    //parse match and parse condition should return error if different condition is given, or just return default value ?
     parseMatch(req) {
         var match = req.param('match');
 
@@ -94,7 +93,7 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
-        if (sort != 'ASC' && sort != 'DESC' && sort != undefined) {
+        if (sort !== 'ASC' && sort !== 'DESC' && sort !== undefined) {
             return this.res.unprocessableEntity();
         }
         var orderBy = req.param('orderBy') || req.options.orderBy;
@@ -113,8 +112,11 @@ class ParamsProcessor {
     parseInclude() {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (includes.length > 0) {
@@ -183,7 +185,8 @@ class ParamsProcessor {
         // Validate blacklist to provide a more helpful error msg.
         var blacklist = req.options.criteria && req.options.criteria.blacklist;
         if (blacklist && !_.isArray(blacklist)) {
-            throw new Error('Invalid `req.options.criteria.blacklist`. Should be an array of strings (parameter names.)');
+            throw new Error('Invalid `req.options.criteria.blacklist`. ' +
+                'Should be an array of strings (parameter names.)');
         }
 
         // Look for explicitly specified `where` parameter.
