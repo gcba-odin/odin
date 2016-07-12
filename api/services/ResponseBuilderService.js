@@ -374,7 +374,8 @@ class ResponseGET extends ResponseBuilder {
             (this.params.limit * this.params.page) : undefined);
 
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
-            const _last = (this.params.page < this.params.pages ? _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
+            const _last = (this.params.page < this.params.pages ?
+                _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
@@ -752,7 +753,7 @@ class ResponsePATCH extends ResponseBuilder {
 
         this._links = {
             all: this.req.host + ':' + this.req.port + '/' + modelName,
-            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id,
+            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
 
         };
 

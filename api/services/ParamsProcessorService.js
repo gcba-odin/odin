@@ -144,7 +144,8 @@ class ParamsProcessor {
         var results = {
             // Here go the models that will be included with all their attributes
             full: [],
-            // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
             partials: {}
         };
 
@@ -179,7 +180,7 @@ class ParamsProcessor {
     }
 
     parseCriteriaComplete(req) {
-        var deep = {}
+        var deep = {};
         // Allow customizable blacklist for params NOT to include as criteria.
         req.options.criteria = req.options.criteria || {};
         req.options.criteria.blacklist = req.options.criteria.blacklist || ['limit', 'skip', 'sort', 'populate'];
