@@ -162,16 +162,27 @@ module.exports = {
                                 Model.publishCreate(publishData, !req.options.mirror && req);
                             }
 
-                            // Send JSONP-friendly response if it's supported
-                            res.created(newInstance, {
-                                meta: {
-                                    code: sails.config.success.CREATED.code,
-                                    message: sails.config.success.CREATED.message
-                                },
-                                links: {
-                                    record: req.host + ':' + req.port + '/files/' + newInstance.id,
-                                    all: req.host + ':' + req.port + '/files'
+                            var associations = [];
+
+                            _.forEach(File.definition, function (value, key) {
+                                if (value.foreignKey) {
+                                    associations.push(key);
                                 }
+                            });
+
+                            File.find(newInstance.id).populate(associations).exec(function (err, record) {
+                                if (err) res.negotiate(err);
+                                res.created(record[0], {
+                                    meta: {
+                                        code: sails.config.success.CREATED.code,
+                                        message: sails.config.success.CREATED.message
+                                    },
+                                    links: {
+                                        record: req.host + ':' + req.port + '/files/' + newInstance.id,
+                                        all: req.host + ':' + req.port + '/files'
+                                    }
+                                });
+
                             });
                         });
                     });

@@ -852,10 +852,10 @@ describe('Single Category', function() {
 
     // Check deleted category
     describe('- GET /categories/:id', function() {
-        it('- Should get error 404', function(done) {
+        it('- Should get error 401', function(done) {
             request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(401)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
