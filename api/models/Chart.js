@@ -25,6 +25,10 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        file: {
+            model: 'file'
+                // required: true
+        },
         description: {
             type: 'string',
             size: 350

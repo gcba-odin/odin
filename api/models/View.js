@@ -19,6 +19,10 @@ module.exports = {
             primaryKey: true,
             size: 15
         },
+        file: {
+            model: 'file'
+                // required: true
+        },
         name: {
             type: 'string',
             required: true,
