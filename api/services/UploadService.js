@@ -1,5 +1,6 @@
 /*
- * This service handles the file uploads. Performs validation and encodes text files with the encoding specified in config/odin.js.
+ * This service handles the file uploads.
+ * Performs validation and encodes text files with the encoding specified in config/odin.js.
  * And, if the file contents can be exposed via the API, inserts them into the non relational database.
  */
 

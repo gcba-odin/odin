@@ -142,8 +142,10 @@ class ParamsProcessor {
     parseFields() {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (this.req.query.fields) {
@@ -177,7 +179,7 @@ class ParamsProcessor {
     }
 
     parseCriteriaComplete(req) {
-
+        var deep = {}
         // Allow customizable blacklist for params NOT to include as criteria.
         req.options.criteria = req.options.criteria || {};
         req.options.criteria.blacklist = req.options.criteria.blacklist || ['limit', 'skip', 'sort', 'populate'];
@@ -203,7 +205,6 @@ class ParamsProcessor {
             // Prune params which aren't fit to be used as `where` criteria
             // to build a proper where query
             where = req.params.all();
-            var deep = {};
             _.forEach(where, function (key, val) {
                 if (_.indexOf(val, '.') !== -1) {
                     deep[val] = key;

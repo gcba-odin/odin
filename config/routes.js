@@ -1047,10 +1047,10 @@ module.exports = {
             model: 'view'
                 // policy: 'isAuthenticated'
         },
-        blueprint: 'update',
         'PATCH /views/:id': {
+            blueprint: 'update',
             model: 'view'
-                // policy: 'isAuthenticated'
+            // policy: 'isAuthenticated'
         },
 
         'HEAD /views/*': {

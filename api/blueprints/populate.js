@@ -68,8 +68,8 @@ module.exports = function expand(req, res) {
         .exec(function found(err, matchingRecord) {
             if (err) return res.serverError(err);
             if (!matchingRecord) return res.notFound('No record found with the specified id.');
-            if (!matchingRecord[relation]) return res.notFound
-            (util.format('Specified record (%s) is missing relation `%s`', parentPk, relation));
+            if (!matchingRecord[relation])
+                return res.notFound(util.format('Specified record (%s) is missing relation `%s`', parentPk, relation));
 
             // Subcribe to instance, if relevant
             // TODO: only subscribe to populated attribute- not the entire model

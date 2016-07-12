@@ -104,9 +104,6 @@ describe('All Files', function() {
                             assert.property(element, 'organization');
                             assert.isObject(element.organization);
 
-                            assert.property(element, 'file');
-                            assert.isObject(element.file);
-
                             assert.property(element, 'owner');
                             assert.isObject(element.owner);
 

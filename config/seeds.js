@@ -800,6 +800,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -811,6 +812,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -822,6 +824,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -833,6 +836,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -844,6 +848,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'

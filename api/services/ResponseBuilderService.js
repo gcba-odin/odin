@@ -147,8 +147,10 @@ class ResponseBuilder {
 
 
 /**
- * A class that builds a response to a GET request. Subclasses ResponseBuilder, providing its own meta and _links objects.
- * Data will be set externally (eg, builder.data = data) in the corresponding response file (eg, responses/ok.js).
+ * A class that builds a response to a GET request.
+ * Subclasses ResponseBuilder, providing its own meta and _links objects.
+ * Data will be set externally (eg, builder.data = data)
+ * in the corresponding response file (eg, responses/ok.js).
  */
 
 class ResponseGET extends ResponseBuilder {
@@ -197,7 +199,8 @@ class ResponseGET extends ResponseBuilder {
                             [key]: val
                         });
                     }
-                    //if it is a collection  we add it to the include object, and store it in the collection filter array.
+                    //if it is a collection  we add it to the include object,
+                    // and store it in the collection filter array.
                     else {
                         this.params.include.full.push(key);
                         collectionsFilter[key] = val;
@@ -304,7 +307,7 @@ class ResponseGET extends ResponseBuilder {
     meta(records) {
         // If the client is requesting a collection, we'll include the criteria plus pagination data
         if (this._many) {
-            var skipLimit = this.params.skip + this.params.limit
+            var skipLimit = this.params.skip + this.params.limit;
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
@@ -325,7 +328,9 @@ class ResponseGET extends ResponseBuilder {
 
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this._count < this.params.limit /*this.params.pages <= this.params.page*/) {
+            if (_.isUndefined(this.params.pages) ||
+                this._count < this.params.limit /*this.params.pages <= this.params.page*/) {
+
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
@@ -364,7 +369,9 @@ class ResponseGET extends ResponseBuilder {
             (this.params.limit * (this.params.page - 2)) : undefined);
 
             const _next = ((this.params.pages === 1 && this._count > this.params.limit) ||
-            this.params.page < this.params.pages ? _linkToModel + (this.params.limit * this.params.page) : undefined);
+
+            this.params.page < this.params.pages ? _linkToModel +
+            (this.params.limit * this.params.page) : undefined);
 
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
             const _last = (this.params.page < this.params.pages ? _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
@@ -376,7 +383,8 @@ class ResponseGET extends ResponseBuilder {
 
             this._links = _.assign(this._links, {
                 firstItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
-                lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last'
+                lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
+                all: this.req.host + ':' + this.req.port + '/' + this.modelName
             });
 
             if (!_.isUndefined(records) && records.length > 0) {
@@ -399,7 +407,8 @@ class ResponseGET extends ResponseBuilder {
                 _.forEach(this._model.associations, function (association) {
                     if (association.type === 'collection') {
                         relations[association.alias] =
-                            this.req.host + ':' + this.req.port + '/' + this.modelName + '/' + this._pk + '/' + association.alias;
+                            this.req.host + ':' + this.req.port + '/' +
+                            this.modelName + '/' + this._pk + '/' + association.alias;
                     }
                 }.bind(this));
 
@@ -428,7 +437,8 @@ class ResponseGET extends ResponseBuilder {
                         });
                         var filter = _.split(filters[key], ',');
 
-                        // if it doesnt fulfill the filter, we add it to the array which will remove the element from the response
+                        // if it doesnt fulfill the filter,
+                        // we add it to the array which will remove the element from the response
                         if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
                             toRemove.push(j);
                         }
@@ -447,7 +457,7 @@ class ResponseGET extends ResponseBuilder {
         return query;
     }
 
-    deepFilter(query, filter) {
+    deepFilter(query) {
         query.then(function (records) {
             // Variable where we'll save all the indexes to be removed
             var toRemove = [];
@@ -478,7 +488,7 @@ class ResponseGET extends ResponseBuilder {
                         // if the value filtered is undefined, or its different than the filter we remove it from query
                         if (_.isUndefined(value) ||
                             this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
-                            
+
                             toRemove.push(j);
                         }
                     }
@@ -625,7 +635,6 @@ class ResponsePOST extends ResponseBuilder {
 
     links(record) {
         const modelName = pluralize(this._model.adapter.identity);
-
         this._links = {
             record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id,
             all: this.req.host + ':' + this.req.port + '/' + modelName
@@ -738,11 +747,13 @@ class ResponsePATCH extends ResponseBuilder {
         return this._meta;
     }
 
-    links() {
+    links(record) {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._links = {
-            all: this.req.host + ':' + this.req.port + '/' + modelName
+            all: this.req.host + ':' + this.req.port + '/' + modelName,
+            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id,
+
         };
 
         return this._links;

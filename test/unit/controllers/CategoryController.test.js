@@ -776,8 +776,8 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    // assert.property(result.body.data, 'embedCode');
+                    // assert.isString(result.body.data.embedCode);
 
                     assert.property(result.body.data.createdBy, 'name');
                     assert.isString(result.body.data.createdBy.username);
