@@ -892,6 +892,12 @@ module.exports = {
                 // policy: 'isAuthenticated'
         },
 
+        'PATCH /maps/:id': {
+            blueprint: 'update',
+            model: 'map'
+                // policy: 'isAuthenticated'
+        },
+
         'HEAD /maps/*': {
             controller: 'Head',
             action: 'Head',
@@ -961,6 +967,11 @@ module.exports = {
         },
         'GET /charts/search': {
             blueprint: 'search',
+            model: 'chart'
+                // policy: 'isAuthenticated'
+        },
+        'PATCH /charts/:id': {
+            blueprint: 'update',
             model: 'chart'
                 // policy: 'isAuthenticated'
         },
@@ -1035,6 +1046,11 @@ module.exports = {
         },
         'GET /views/search': {
             blueprint: 'search',
+            model: 'view'
+                // policy: 'isAuthenticated'
+        },
+        blueprint: 'update',
+        'PATCH /views/:id': {
             model: 'view'
                 // policy: 'isAuthenticated'
         },
