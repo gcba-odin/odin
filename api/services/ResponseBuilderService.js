@@ -298,12 +298,13 @@ class ResponseGET extends ResponseBuilder {
     meta(records) {
         // If the client is requesting a collection, we'll include the criteria plus pagination data
         if (this._many) {
+            var skipLimit = this.params.skip + this.params.limit
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
                 limit: this.params.limit,
                 start: this.params.skip + 1,
-                end: this.params.skip + this.params.limit,
+                end: skipLimit > this._count ? this._count : skipLimit,
                 page: this.params.page,
                 pages: this.params.pages
             });
@@ -318,7 +319,7 @@ class ResponseGET extends ResponseBuilder {
 
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) || this.params.pages <= this.params.page) {
+            if (_.isUndefined(this.params.pages) || this._count < this.params.limit /*this.params.pages <= this.params.page*/) {
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
                     message: sails.config.success.OK.message
