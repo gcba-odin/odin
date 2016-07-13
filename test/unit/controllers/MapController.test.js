@@ -720,9 +720,9 @@ describe('Single Map', function() {
     var fileId, mapId;
 
     // Upload geodata CSV file
-    describe('- POST /maps [csv]', function() {
+    describe('- POST /files [csv]', function() {
         it('- Should upload a new file [csv]', function(done) {
-            request.post('/maps')
+            request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'CSV File')
                 .field('description', 'An example file')

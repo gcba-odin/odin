@@ -849,7 +849,7 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'createdBy');
                     assert.isObject(result.body.data.createdBy);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'admin');
 
