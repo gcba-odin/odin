@@ -19,14 +19,14 @@ chai.use(require('chai-string'));
  * All Files
  */
 
-describe('All Files', function () {
-    describe('- GET /files', function () {
-        it('- Should get all the files', function (done) {
+describe('All Files', function() {
+    describe('- GET /files', function() {
+        it('- Should get all the files', function(done) {
             request.get('/files')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -72,7 +72,7 @@ describe('All Files', function () {
                     assert.endsWith(result.body.links.lastItem, '/files/last');
 
                     if (result.body.data.length > 0) {
-                        result.body.data.forEach(function (element) {
+                        result.body.data.forEach(function(element) {
                             assert.property(element, 'id');
                             assert.isString(element.id);
                             assert.ok(shortid.isValid(element.id));
@@ -125,13 +125,13 @@ describe('All Files', function () {
 
     // Pagination
 
-    describe('- GET /files?limit=2', function () {
-        it('- Should get the first two files', function (done) {
+    describe('- GET /files?limit=2', function() {
+        it('- Should get the first two files', function(done) {
             request.get('/files?limit=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -193,13 +193,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files?limit=2&skip=2', function () {
-        it('- Should get the next page', function (done) {
+    describe('- GET /files?limit=2&skip=2', function() {
+        it('- Should get the next page', function(done) {
             request.get('/files?limit=2&skip=2')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -269,13 +269,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files?limit=2&skip=4', function () {
-        it('- Should get the first two files', function (done) {
+    describe('- GET /files?limit=2&skip=4', function() {
+        it('- Should get the first two files', function(done) {
             request.get('/files?limit=2&skip=4')
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -339,13 +339,13 @@ describe('All Files', function () {
 
     // Filters
 
-    describe('- GET /files?name=file 1', function () {
-        it('- Should get the first file', function (done) {
+    describe('- GET /files?name=file 1', function() {
+        it('- Should get the first file', function(done) {
             request.get('/files?name=file 1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -377,13 +377,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files?name=file 1&status.name=Draft', function () {
-        it('- Should get one file', function (done) {
+    describe('- GET /files?name=file 1&status.name=Draft', function() {
+        it('- Should get one file', function(done) {
             request.get('/files?name=file 1&status.name=Draft')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -419,13 +419,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files?name=file 1&status.name=Published', function () {
-        it('- Should get no record', function (done) {
+    describe('- GET /files?name=file 1&status.name=Published', function() {
+        it('- Should get no record', function(done) {
             request.get('/files?name=file 1&status.name=Published')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     //Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -451,13 +451,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files?status.name=Published', function () {
-        it('- Should get one file', function (done) {
+    describe('- GET /files?status.name=Published', function() {
+        it('- Should get one file', function(done) {
             request.get('/files?status.name=Published')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -491,13 +491,13 @@ describe('All Files', function () {
 
     // Search
 
-    describe('- GET /files/search?query=1', function () {
-        it('- Should get one file', function (done) {
+    describe('- GET /files/search?query=1', function() {
+        it('- Should get one file', function(done) {
             request.get('/files/search?query=1')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -529,13 +529,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files/search?query=1,2', function () {
-        it('- Should get two files', function (done) {
+    describe('- GET /files/search?query=1,2', function() {
+        it('- Should get two files', function(done) {
             request.get('/files/search?query=1,2')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -576,13 +576,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files/search?query=1,2&condition=AND', function () {
-        it('- Should get no results', function (done) {
+    describe('- GET /files/search?query=1,2&condition=AND', function() {
+        it('- Should get no results', function(done) {
             request.get('/files/search?query=1,2&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -605,13 +605,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- GET /files/search?query=arandomstring', function () {
-        it('- Should get no results', function (done) {
+    describe('- GET /files/search?query=arandomstring', function() {
+        it('- Should get no results', function(done) {
             request.get('/files/search?query=arandomstring')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -636,13 +636,13 @@ describe('All Files', function () {
 
     // 501 Not Implemented Errors
 
-    describe('- DELETE /files', function () {
-        it('- Should get 501 Method Not Implemented error', function (done) {
+    describe('- DELETE /files', function() {
+        it('- Should get 501 Method Not Implemented error', function(done) {
             request.del('/files')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -661,13 +661,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- PATCH /files', function () {
-        it('- Should get 501 Method Not Implemented error', function (done) {
+    describe('- PATCH /files', function() {
+        it('- Should get 501 Method Not Implemented error', function(done) {
             request.patch('/files')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -686,13 +686,13 @@ describe('All Files', function () {
         });
     });
 
-    describe('- PUT /files', function () {
-        it('- Should get 501 Method Not Implemented error', function (done) {
+    describe('- PUT /files', function() {
+        it('- Should get 501 Method Not Implemented error', function(done) {
             request.put('/files')
                 .set('Accept', 'application/json')
                 .expect(501)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -717,10 +717,10 @@ describe('All Files', function () {
  * Single File
  */
 
-describe('Single File', function () {
+describe('Single File', function() {
     // upload CSV
-    describe('- POST /files [csv]', function () {
-        it('- Should upload a new file [csv]', function (done) {
+    describe('- POST /files [csv]', function() {
+        it('- Should upload a new file [csv]', function(done) {
             request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'CSV File')
@@ -737,7 +737,7 @@ describe('Single File', function () {
                 .attach('uploadFile', 'test/assets/example.csv')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -809,8 +809,8 @@ describe('Single File', function () {
     });
 
     // upload XLS
-    describe('- POST /file [xls]', function () {
-        it('- Should upload a new file [xls]', function (done) {
+    describe('- POST /file [xls]', function() {
+        it('- Should upload a new file [xls]', function(done) {
             request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'XLS File')
@@ -827,7 +827,7 @@ describe('Single File', function () {
                 .attach('uploadFile', 'test/assets/example.xls')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -899,8 +899,8 @@ describe('Single File', function () {
     });
 
     // upload XLSX
-    describe('- POST /file [xlsx]', function () {
-        it('- Should upload a new file [xlsx]', function (done) {
+    describe('- POST /file [xlsx]', function() {
+        it('- Should upload a new file [xlsx]', function(done) {
             request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'XLSX File')
@@ -917,7 +917,7 @@ describe('Single File', function () {
                 .attach('uploadFile', 'test/assets/example.xlsx')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -989,16 +989,16 @@ describe('Single File', function () {
     });
 
     // Check CSV file encoding
-    describe('- File encoding', function () {
-        it('- Should check that the folder exists', function (done) {
+    describe('- File encoding', function() {
+        it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
         });
 
-        it('- Should check that the file exists', function (done) {
+        it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${FileId}/${csvName}.csv`);
         });
 
-        it('- Should check that the file is UTF-8 encoded', function (done) {
+        it('- Should check that the file is UTF-8 encoded', function(done) {
             let fileBuffer = fs.readFileSync(`/tmp/odin/${FileId}/${csvName}.csv`);
             let charsetMatch = detectCharacterEncoding(fileBuffer);
 
@@ -1007,35 +1007,35 @@ describe('Single File', function () {
     });
 
     // Check XLS file existence
-    describe('- XLS file check', function () {
-        it('- Should check that the folder exists', function (done) {
+    describe('- XLS file check', function() {
+        it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
         });
 
-        it('- Should check that the file exists', function (done) {
+        it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${FileId}/${xlsName}.xls`);
         });
     });
 
     // Check XLSX file existence
-    describe('- XLSX file check', function () {
-        it('- Should check that the folder exists', function (done) {
+    describe('- XLSX file check', function() {
+        it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
         });
 
-        it('- Should check that the file exists', function (done) {
+        it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${FileId}/${xlsxName}.xlsx`);
         });
     });
 
     // Check CSV file
-    describe('- GET /file/:id [csv]', function () {
-        it('- Should get the file', function (done) {
+    describe('- GET /file/:id [csv]', function() {
+        it('- Should get the file', function(done) {
             request.get(`/files/${csvId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1100,13 +1100,13 @@ describe('Single File', function () {
     });
 
     // Check XLS file
-    describe('- GET /file/:id [xls]', function () {
-        it('- Should get the file', function (done) {
+    describe('- GET /file/:id [xls]', function() {
+        it('- Should get the file', function(done) {
             request.get(`/files/${xlsId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1171,13 +1171,13 @@ describe('Single File', function () {
     });
 
     // Check XLSX file
-    describe('- GET /file/:id [xlsx]', function () {
-        it('- Should get the file', function (done) {
+    describe('- GET /file/:id [xlsx]', function() {
+        it('- Should get the file', function(done) {
             request.get(`/files/${xlsxId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1243,13 +1243,13 @@ describe('Single File', function () {
 
     // Granular Populate
 
-    describe('- GET /files/:id?include=tags.name', function () {
-        it('- Should get just the tag names', function (done) {
+    describe('- GET /files/:id?include=tags.name', function() {
+        it('- Should get just the tag names', function(done) {
             request.get('/files/sWRhpRk?include=tags.name')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     // Meta
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
@@ -1275,7 +1275,7 @@ describe('Single File', function () {
                     assert.property(result.body.data[0], 'tags');
                     assert.isArray(result.body.data[0].tags);
 
-                    result.body.data[0].tags.forEach(function (element) {
+                    result.body.data[0].tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -1296,18 +1296,18 @@ describe('Single File', function () {
     });
 
     // Check CSV file contents
-    describe('- GET /file/:id/contents [csv]', function () {
-        it('- Should get the file contents from the DB', function (done) {
+    describe('- GET /file/:id/contents [csv]', function() {
+        it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${csvId}/contents`)
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
                     assert.property(result.body, 'data');
-                    assert.isObject(result.body.data);
+                    assert.isArray(result.body.data);
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
@@ -1321,18 +1321,18 @@ describe('Single File', function () {
     });
 
     // Check XLS file contents
-    describe('- GET /file/:id/contents [xls]', function () {
-        it('- Should get the file contents from the DB', function (done) {
+    describe('- GET /file/:id/contents [xls]', function() {
+        it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${xlsId}/contents`)
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
                     assert.property(result.body, 'data');
-                    assert.isObject(result.body.data);
+                    assert.isArray(result.body.data);
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
@@ -1346,18 +1346,18 @@ describe('Single File', function () {
     });
 
     // XLSX file contents check
-    describe('- GET /file/:id/contents [xlsx]', function () {
-        it('- Should get the file contents from the DB', function (done) {
+    describe('- GET /file/:id/contents [xlsx]', function() {
+        it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${xlsxId}/contents`)
                 .set('Accept', 'application/json')
                 .expect(206)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
                     assert.property(result.body, 'data');
-                    assert.isObject(result.body.data);
+                    assert.isArray(result.body.data);
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
@@ -1371,82 +1371,82 @@ describe('Single File', function () {
     });
 
     // CSV file download
-    describe('- GET /file/:id/download [csv]', function () {
-        it('- Should download the file', function (done) {
+    describe('- GET /file/:id/download [csv]', function() {
+        it('- Should download the file', function(done) {
             request.get(`/files/${csvId}/download`)
                 .expect(200)
                 .expect('Content-Disposition', /attachment/)
-                .end(function (err) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // XLS file download
-    describe('- GET /file/:id/download [xls]', function () {
-        it('- Should download the file', function (done) {
+    describe('- GET /file/:id/download [xls]', function() {
+        it('- Should download the file', function(done) {
             request.get(`/files/${xlsId}/download`)
                 .expect(200)
                 .expect('Content-Disposition', /attachment/)
-                .end(function (err, result) {
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // XLSX file download
-    describe('- GET /file/:id/download [xlsx]', function () {
-        it('- Should download the file', function (done) {
+    describe('- GET /file/:id/download [xlsx]', function() {
+        it('- Should download the file', function(done) {
             request.get(`/files/${xlsxId}/download`)
                 .expect(200)
                 .expect('Content-Disposition', /attachment/)
-                .end(function (err, result) {
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // Delete the CSV file
-    describe('- DELETE /files/:id [csv]', function () {
-        it('- Should delete the file', function (done) {
+    describe('- DELETE /files/:id [csv]', function() {
+        it('- Should delete the file', function(done) {
             request.del(`/files/${csvId}`)
                 .expect(204)
-                .end(function (err, result) {
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // Delete the XLS file
-    describe('- DELETE /files/:id [xls]', function () {
-        it('- Should delete the file', function (done) {
+    describe('- DELETE /files/:id [xls]', function() {
+        it('- Should delete the file', function(done) {
             request.del(`/files/${xlsId}`)
                 .expect(204)
-                .end(function (err, result) {
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // Delete the XLSX file
-    describe('- DELETE /files/:id [xlsx]', function () {
-        it('- Should delete the file', function (done) {
+    describe('- DELETE /files/:id [xlsx]', function() {
+        it('- Should delete the file', function(done) {
             request.del(`/files/${xlsxId}`)
                 .expect(204)
-                .end(function (err, result) {
+                .end(function(err, result) {
                     err ? done(err) : done();
                 });
         });
     });
 
     // Check deleted CSV file
-    describe('- GET /file/:id [csv]', function () {
-        it('- Should get error 404', function (done) {
+    describe('- GET /file/:id [csv]', function() {
+        it('- Should get error 404', function(done) {
             request.get(`/files/${csvId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1466,13 +1466,13 @@ describe('Single File', function () {
     });
 
     // Check deletd XLS file
-    describe('- GET /file/:id [xls]', function () {
-        it('- Should get error 404', function (done) {
+    describe('- GET /file/:id [xls]', function() {
+        it('- Should get error 404', function(done) {
             request.get(`/files/${xlsId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1492,13 +1492,13 @@ describe('Single File', function () {
     });
 
     // Check deleted XLSX file
-    describe('- GET /file/:id [xlsx]', function () {
-        it('- Should get error 404', function (done) {
+    describe('- GET /file/:id [xlsx]', function() {
+        it('- Should get error 404', function(done) {
             request.get(`/files/${xlsxId}`)
                 .set('Accept', 'application/json')
                 .expect(404)
                 .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function (err, result) {
+                .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
