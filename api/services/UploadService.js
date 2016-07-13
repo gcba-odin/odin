@@ -47,8 +47,6 @@ module.exports = {
                         } else {
                             //if name param is not defined, we put the file name as filename.
                             if (_.isUndefined(data.name)) {
-                                console.dir(extension)
-                                console.dir(mimetype)
                                 filename = file.filename;
                                 return cb(null, file.filename);
                                 //else, we use name param

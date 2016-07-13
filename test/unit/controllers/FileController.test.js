@@ -8,7 +8,7 @@ const assert = chai.assert;
 const fs = require('fs');
 const detectCharacterEncoding = require('detect-character-encoding');
 const shortid = require('shortid');
-const FileId = 'sWRhpRl';
+const DatasetId = 'sWRhpRk';
 var csvId, csvName, xlsId, xlsName, xlsxId, xlsxName;
 
 chai.use(require('chai-fs'));
@@ -995,11 +995,11 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${FileId}/${csvName}.csv`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${csvName}.csv`);
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
-            let fileBuffer = fs.readFileSync(`/tmp/odin/${FileId}/${csvName}.csv`);
+            let fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}.csv`);
             let charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
@@ -1013,7 +1013,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${FileId}/${xlsName}.xls`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${xlsName}.xls`);
         });
     });
 
@@ -1024,7 +1024,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${FileId}/${xlsxName}.xlsx`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${xlsxName}.xlsx`);
         });
     });
 
