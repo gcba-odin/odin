@@ -992,10 +992,13 @@ describe('Single File', function() {
     describe('- File encoding', function() {
         it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
+            done();
         });
 
         it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${DatasetId}/${csvName}.csv`);
+            done();
+
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
@@ -1003,6 +1006,8 @@ describe('Single File', function() {
             let charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
+            done();
+
         });
     });
 
@@ -1010,10 +1015,14 @@ describe('Single File', function() {
     describe('- XLS file check', function() {
         it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
+            done();
+
         });
 
         it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${DatasetId}/${xlsName}.xls`);
+            done();
+
         });
     });
 
@@ -1021,10 +1030,14 @@ describe('Single File', function() {
     describe('- XLSX file check', function() {
         it('- Should check that the folder exists', function(done) {
             assert.isDirectory('/tmp/odin');
+            done();
+
         });
 
         it('- Should check that the file exists', function(done) {
             assert.isFile(`/tmp/odin/${DatasetId}/${xlsxName}.xlsx`);
+            done();
+
         });
     });
 
