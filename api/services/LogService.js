@@ -7,38 +7,44 @@ module.exports = {
         //whiteliste check
         var model = actionUtil.parseModel(req);
         var target = model.adapter.identity;
+        Config.find({
+            key: 'logWhitelist'
+        }).exec(function(err, whitelist) {
+            if (err) throw new Error(err);
+            whitelistArray = _.split(whitelist[0].value, ',');
 
-        if (sails.config.odin.logWhitelist.indexOf(target) !== -1) {
-            var user;
-            user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
+            if (whitelistArray.indexOf(target) !== -1) {
+                var user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
 
-            if (_.isUndefined(id)) id = actionUtil.requirePk(req);
-            var httpMethod = req.method;
+                if (_.isUndefined(id)) id = actionUtil.requirePk(req);
+                var httpMethod = req.method;
 
-            // on soft delete, must send method = delete.
-            if (_.isUndefined(method)) {
-                switch (httpMethod) {
-                    case 'POST':
-                        method = "create";
-                        break;
-                    case 'PATCH':
-                        method = "update";
-                        break;
-                    case 'DELETE':
-                        method = "delete";
-                        break;
+                // on soft delete, must send method = delete.
+                if (_.isUndefined(method)) {
+                    switch (httpMethod) {
+                        case 'POST':
+                            method = "create";
+                            break;
+                        case 'PATCH':
+                            method = "update";
+                            break;
+                        case 'DELETE':
+                            method = "delete";
+                            break;
+                    }
                 }
-            }
 
-            Log.create({
-                action: method,
-                target: target,
-                resource: id,
-                user: user
-            }).then(function created() {}).catch(function(err) {
-                throw new Error(err);
-            });
-        }
+                Log.create({
+                    action: method,
+                    target: target,
+                    resource: id,
+                    user: user
+                }).then(function created() {}).catch(function(err) {
+                    throw new Error(err);
+                });
+            }
+        })
+
     },
 
     winstonLog: function(type, message, content) {

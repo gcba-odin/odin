@@ -1226,9 +1226,10 @@ module.exports = {
             id: '1ogPzIz9',
             description: 'Models that will be logged',
             type: 'string',
-            key: 'whitelist',
+            key: 'logWhitelist',
             value: ['category', 'dataset', 'fileType', 'file',
-            'organization', 'status', 'tag', 'updateFrequency', 'user'],
+                'organization', 'status', 'tag', 'updateFrequency', 'user'
+            ],
             models: {
                 updatedBy: {
                     username: 'admin'
