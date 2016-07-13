@@ -404,8 +404,6 @@ module.exports = {
             action: 'notImplemented'
         },
 
-
-
         'POST /files': 'File.upload',
         'GET /files/:id/download': 'File.download',
 
@@ -1049,10 +1047,10 @@ module.exports = {
             model: 'view'
                 // policy: 'isAuthenticated'
         },
-        blueprint: 'update',
         'PATCH /views/:id': {
+            blueprint: 'update',
             model: 'view'
-                // policy: 'isAuthenticated'
+            // policy: 'isAuthenticated'
         },
 
         'HEAD /views/*': {

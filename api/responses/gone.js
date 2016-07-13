@@ -7,11 +7,14 @@
  *
  */
 
-module.exports = function(data, config) {
+module.exports = function (links) {
     const response = _.assign({
-        code: _.get(config, 'code', 'E_GONE'),
-        message: _.get(config, 'message', 'The requested resource is not available anymore.')
-    }, _.get(config, 'root', {}));
+        meta: {
+            code: 'E_GONE',
+            message: 'The requested resource is not available anymore.'
+        },
+        links: links
+    });
 
     this.res.set({
         'Content-Type': 'application/json'

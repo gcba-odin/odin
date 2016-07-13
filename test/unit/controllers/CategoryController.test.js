@@ -293,7 +293,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=2');
+                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=6');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
@@ -776,12 +776,12 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    // assert.property(result.body.data, 'embedCode');
+                    // assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -818,12 +818,12 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    // assert.property(result.body.data, 'embedCode');
+                    // assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -852,18 +852,22 @@ describe('Single Category', function() {
 
     // Check deleted category
     describe('- GET /categories/:id', function() {
-        it('- Should get error 404', function(done) {
+        it('- Should get error 401', function(done) {
             request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(410)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
+                    // assert.property(result.body.meta, 'code');
+                    // assert.isString(result.body.meta.code);
+                    // assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'E_GONE');
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);

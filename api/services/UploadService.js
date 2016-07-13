@@ -1,5 +1,6 @@
 /*
- * This service handles the file uploads. Performs validation and encodes text files with the encoding specified in config/odin.js.
+ * This service handles the file uploads.
+ * Performs validation and encodes text files with the encoding specified in config/odin.js.
  * And, if the file contents can be exposed via the API, inserts them into the non relational database.
  */
 
@@ -14,13 +15,13 @@ const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
 
 module.exports = {
-    uploadFile: function(req, res) {
+    uploadFile: function (req, res) {
         var mimetype = '';
         var extension = '';
         var filename = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
-        var uploadFile = req.file('uploadFile').on('error', function(err) {
+        var uploadFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
 
@@ -30,7 +31,7 @@ module.exports = {
 
         if (!uploadFile.isNoop) {
             uploadFile.upload({
-                    saveAs: function(file, cb) {
+                    saveAs: function (file, cb) {
 
                         //Get the mime and the extension of the file
 
@@ -71,7 +72,7 @@ module.exports = {
                     // Get the id of the filetype based on mime of the file
                     sails.models.filetype.findOne({
                         name: extension
-                    }).exec(function(err, record) {
+                    }).exec(function (err, record) {
                         if (err) return res.negotiate(err);
                         if (!record) {
                             return res.serverError('Could not find the filetype uploaded: ' + extension);
@@ -85,55 +86,56 @@ module.exports = {
                         // Read the file
                         fs.createReadStream(filePath)
                             // Encode it
-                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
-                                if (err) return res.negotiate(err);
-                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                            if (err) return res.negotiate(err);
+                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                // If the file is consumable via the API
-                                if (record.api) {
+                            // If the file is consumable via the API
+                            if (record.api) {
 
 
-                                    //Should check which type the file is and convert it .
+                                //Should check which type the file is and convert it .
 
-                                    var json = [];
-                                    if (extension === 'xls' || extension === 'xlsx') {
-                                        //Convert XLS to json, to store on nosql database
+                                var json = [];
+                                if (extension === 'xls' || extension === 'xlsx') {
+                                    //Convert XLS to json, to store on nosql database
 
-                                        var workbook = XLSX.readFile(files[0].fd);
+                                    var workbook = XLSX.readFile(files[0].fd);
 
-                                        //Join all the worksheets on one json
-                                        json = _.reduce(workbook.SheetNames, function(result, sheetName) {
-                                            var worksheet = workbook.Sheets[sheetName];
+                                    //Join all the worksheets on one json
+                                    json = _.reduce(workbook.SheetNames, function (result, sheetName) {
+                                        var worksheet = workbook.Sheets[sheetName];
 
-                                            var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                            result = _.concat(result, currentJson);
-                                            return result;
-                                        }, []);
+                                        var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                        result = _.concat(result, currentJson);
+                                        return result;
+                                    }, []);
 
+                                    DataStorageService.mongoSave(dataset, filename, json, res);
+
+
+                                } else {
+                                    // Convert to JSON
+
+                                    var converter = new Converter({
+                                        delimiter: 'auto'
+                                    });
+
+                                    converter.fromString(result, function (err, json) {
+                                        if (err) {
+                                            return res.negotiate(err);
+                                        }
+                                        if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+
+                                        // Connect to the db
                                         DataStorageService.mongoSave(dataset, filename, json, res);
-
-
-                                    } else {
-                                        // Convert to JSON
-
-                                        var converter = new Converter({
-                                            delimiter: 'auto'
-                                        });
-
-                                        converter.fromString(result, function(err, json) {
-                                            if (err) {
-                                                return res.negotiate(err);
-                                            }
-                                            if (json.length === 0) return res.badRequest("Invalid or empty csv.");
-
-                                            // Connect to the db
-                                            DataStorageService.mongoSave(dataset, filename, json, res);
-                                        });
-                                    }
+                                    });
                                 }
+                            }
 
-                                fs.writeFile(filePath, result, function() {});
+                            fs.writeFile(filePath, result, function () {
                             });
+                        });
                         // }
                         // Save the file metadata to the relational DB
                         sails.models.file.create(data).exec(function created(err, newInstance) {
@@ -153,22 +155,34 @@ module.exports = {
 
                                 // Make sure data is JSON-serializable before publishing
                                 var publishData = _.isArray(newInstance) ?
-                                    _.map(newInstance, function(instance) {
+                                    _.map(newInstance, function (instance) {
                                         return instance.toJSON();
                                     }) :
                                     newInstance.toJSON();
                                 Model.publishCreate(publishData, !req.options.mirror && req);
                             }
 
-                            // Send JSONP-friendly response if it's supported
-                            res.created(newInstance, {
-                                meta: {
-                                    code: sails.config.success.CREATED.code,
-                                    message: sails.config.success.CREATED.message
-                                },
-                                links: {
-                                    record: req.host + ':' + req.port + '/files/' + newInstance.id
+                            var associations = [];
+
+                            _.forEach(File.definition, function (value, key) {
+                                if (value.foreignKey) {
+                                    associations.push(key);
                                 }
+                            });
+
+                            File.find(newInstance.id).populate(associations).exec(function (err, record) {
+                                if (err) res.negotiate(err);
+                                res.created(record[0], {
+                                    meta: {
+                                        code: sails.config.success.CREATED.code,
+                                        message: sails.config.success.CREATED.message
+                                    },
+                                    links: {
+                                        record: req.host + ':' + req.port + '/files/' + newInstance.id,
+                                        all: req.host + ':' + req.port + '/files'
+                                    }
+                                });
+
                             });
                         });
                     });

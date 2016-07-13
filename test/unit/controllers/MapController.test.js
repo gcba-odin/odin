@@ -90,8 +90,8 @@ describe('All Maps', function() {
                             assert.property(element, 'url');
                             if (element.url) assert.isString(element.url);
 
-                            assert.property(element, 'embedCode');
-                            if (element.embedCode) assert.isString(element.embedCode);
+                            // assert.property(element, 'embedCode');
+                            // if (element.embedCode) assert.isString(element.embedCode);
 
                             assert.property(element, 'latitudeKey');
                             assert.isString(element.latitudeKey);

@@ -765,6 +765,7 @@ describe('Single Chart', function() {
                 .set('Accept', 'application/json')
                 .field('name', 'Edited Chart')
                 .field('description', 'An example edited chart')
+                .field('embedCode', '<div></div>')
                 .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -800,9 +801,9 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -846,9 +847,9 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);

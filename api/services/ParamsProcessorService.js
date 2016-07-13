@@ -3,8 +3,9 @@
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ParamsProcessor {
-    constructor(req, many) {
+    constructor(req, res, many) {
         this.req = req;
+        this.res = res;
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
         this._model = _actionUtil.parseModel(this.req);
@@ -51,7 +52,6 @@ class ParamsProcessor {
         return this.result;
     }
 
-    //parse match and parse condition should return error if different condition is given, or just return default value ?
     parseMatch(req) {
         var match = req.param('match');
 
@@ -60,19 +60,27 @@ class ParamsProcessor {
                 return 'startsWith';
             case 'ends':
                 return 'endsWith';
-            default:
+            case '':
                 return 'contains';
+            case 'contains':
+                return 'contains';
+            default:
+                return this.res.unprocessableEntity();
         }
     }
 
     parseCondition(req) {
         var condition = req.param('condition');
-
-        if (condition === 'AND') {
-            return 'and';
+        switch (condition) {
+            case 'AND':
+                return 'and';
+            case undefined:
+                return 'or';
+            case 'OR':
+                return 'or';
+            default:
+                return this.res.unprocessableEntity();
         }
-
-        return 'or';
     }
 
     parseCriteria(req) {
@@ -85,6 +93,9 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
+        if (sort !== 'ASC' && sort !== 'DESC' && sort !== undefined) {
+            return this.res.unprocessableEntity();
+        }
         var orderBy = req.param('orderBy') || req.options.orderBy;
 
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
@@ -101,12 +112,15 @@ class ParamsProcessor {
     parseInclude() {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element) {
+            _.forEach(includes, function (element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -125,11 +139,14 @@ class ParamsProcessor {
         return results;
     }
 
-    parseFields(req) {
+    parseFields() {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (this.req.query.fields) {
@@ -137,7 +154,7 @@ class ParamsProcessor {
         }
 
         if (fields.length > 0) {
-            _.forEach(fields, function(element) {
+            _.forEach(fields, function (element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -163,7 +180,7 @@ class ParamsProcessor {
     }
 
     parseCriteriaComplete(req) {
-
+        var deep = {};
         // Allow customizable blacklist for params NOT to include as criteria.
         req.options.criteria = req.options.criteria || {};
         req.options.criteria.blacklist = req.options.criteria.blacklist || ['limit', 'skip', 'sort', 'populate'];
@@ -171,7 +188,8 @@ class ParamsProcessor {
         // Validate blacklist to provide a more helpful error msg.
         var blacklist = req.options.criteria && req.options.criteria.blacklist;
         if (blacklist && !_.isArray(blacklist)) {
-            throw new Error('Invalid `req.options.criteria.blacklist`. Should be an array of strings (parameter names.)');
+            throw new Error('Invalid `req.options.criteria.blacklist`. ' +
+                'Should be an array of strings (parameter names.)');
         }
 
         // Look for explicitly specified `where` parameter.
@@ -188,18 +206,17 @@ class ParamsProcessor {
             // Prune params which aren't fit to be used as `where` criteria
             // to build a proper where query
             where = req.params.all();
-            var deep = {};
-            _.forEach(where, function(key, val) {
-                    if (_.indexOf(val, '.') !== -1) {
-                        deep[val] = key;
-                        delete where[val];
-                    }
-                });
-                // Omit built-in runtime config (like query modifiers)
+            _.forEach(where, function (key, val) {
+                if (_.indexOf(val, '.') !== -1) {
+                    deep[val] = key;
+                    delete where[val];
+                }
+            });
+            // Omit built-in runtime config (like query modifiers)
             where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
 
             // Omit any params w/ undefined values
-            where = _.omit(where, function(p) {
+            where = _.omit(where, function (p) {
                 if (isUndefined(p)) {
                     return true;
                 }
@@ -226,6 +243,7 @@ class ParamsProcessor {
 
 }
 
-module.exports = {
+module
+    .exports = {
     ParamsProcessor
 };
