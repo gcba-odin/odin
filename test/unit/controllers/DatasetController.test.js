@@ -889,23 +889,49 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+                    // assert.property(result.body, 'data');
+                    // assert.isArray(result.body.data);
+                    // assert.lengthOf(result.body.data, 1);
+
+                    // assert.property(result.body.data[0], 'id');
+                    // assert.isString(result.body.data[0].id);
+                    // assert.ok(shortid.isValid(result.body.data[0].id));
+                    // assert.equal(result.body.data[0].id, 'sWRhpRk');
+
+                    // assert.property(result.body.data[0], 'name');
+                    // assert.isString(result.body.data[0].name);
+                    // assert.equal(result.body.data[0].name, 'Dataset 1');
+
+                    // assert.property(result.body.data[0], 'tags');
+                    // assert.isArray(result.body.data[0].tags);
+
+                    // result.body.data[0].tags.forEach(function(element) {
+                    //     assert.isObject(element);
+
+                    //     assert.property(element, 'name');
+                    //     assert.isString(element.name);
+
+                    //     assert.notProperty(element, 'id');
+                    //     assert.notProperty(element, 'createdAt');
+                    //     assert.notProperty(element, 'updatedAt');
+                    // }, this);
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, 'sWRhpRk');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Dataset 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'Dataset 1');
 
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
+                    assert.property(result.body.data, 'tags');
+                    assert.isArray(result.body.data.tags);
 
-                    result.body.data[0].tags.forEach(function(element) {
+                    result.body.data.tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -915,6 +941,7 @@ describe('Single Dataset', function() {
                         assert.notProperty(element, 'createdAt');
                         assert.notProperty(element, 'updatedAt');
                     }, this);
+
 
                     // Links
                     assert.property(result.body, 'links');

@@ -793,7 +793,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'CSV File');
+                    assert.equal(result.body.data.name, 'CSV File.csv');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -809,7 +809,7 @@ describe('Single File', function() {
     });
 
     // upload XLS
-    describe('- POST /file [xls]', function() {
+    describe('- POST /files [xls]', function() {
         it('- Should upload a new file [xls]', function(done) {
             request.post('/files')
                 .set('Accept', 'application/json')
@@ -883,7 +883,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLS File');
+                    assert.equal(result.body.data.name, 'XLS File.xls');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -899,7 +899,7 @@ describe('Single File', function() {
     });
 
     // upload XLSX
-    describe('- POST /file [xlsx]', function() {
+    describe('- POST /files [xlsx]', function() {
         it('- Should upload a new file [xlsx]', function(done) {
             request.post('/files')
                 .set('Accept', 'application/json')
@@ -973,7 +973,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLSX File');
+                    assert.equal(result.body.data.name, 'XLSX File.xlsx');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -1042,7 +1042,7 @@ describe('Single File', function() {
     });
 
     // Check CSV file
-    describe('- GET /file/:id [csv]', function() {
+    describe('- GET /files/:id [csv]', function() {
         it('- Should get the file', function(done) {
             request.get(`/files/${csvId}`)
                 .set('Accept', 'application/json')
@@ -1101,7 +1101,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'CSV File');
+                    assert.equal(result.body.data.name, 'CSV File.csv');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -1113,7 +1113,7 @@ describe('Single File', function() {
     });
 
     // Check XLS file
-    describe('- GET /file/:id [xls]', function() {
+    describe('- GET /files/:id [xls]', function() {
         it('- Should get the file', function(done) {
             request.get(`/files/${xlsId}`)
                 .set('Accept', 'application/json')
@@ -1172,7 +1172,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLS File');
+                    assert.equal(result.body.data.name, 'XLS File.xls');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -1184,7 +1184,7 @@ describe('Single File', function() {
     });
 
     // Check XLSX file
-    describe('- GET /file/:id [xlsx]', function() {
+    describe('- GET /files/:id [xlsx]', function() {
         it('- Should get the file', function(done) {
             request.get(`/files/${xlsxId}`)
                 .set('Accept', 'application/json')
@@ -1243,7 +1243,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLSX File');
+                    assert.equal(result.body.data.name, 'XLSX File.xlsx');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://127.0.0.1`);
@@ -1273,22 +1273,45 @@ describe('Single File', function() {
 
                     // Data
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    // assert.isArray(result.body.data);
+                    // assert.lengthOf(result.body.data, 1);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRa');
+                    // assert.property(result.body.data[0], 'id');
+                    // assert.isString(result.body.data[0].id);
+                    // assert.ok(shortid.isValid(result.body.data[0].id));
+                    // assert.equal(result.body.data[0].id, 'sWRhpRa');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'File 1');
+                    // assert.property(result.body.data[0], 'name');
+                    // assert.isString(result.body.data[0].name);
+                    // assert.equal(result.body.data[0].name, 'File 1');
 
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
+                    // assert.property(result.body.data[0], 'tags');
+                    // assert.isArray(result.body.data[0].tags);
 
-                    result.body.data[0].tags.forEach(function(element) {
+                    // result.body.data[0].tags.forEach(function(element) {
+                    //     assert.isObject(element);
+
+                    //     assert.property(element, 'name');
+                    //     assert.isString(element.name);
+
+                    //     assert.notProperty(element, 'id');
+                    //     assert.notProperty(element, 'createdAt');
+                    //     assert.notProperty(element, 'updatedAt');
+                    // }, this);
+
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, 'sWRhpRa');
+
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'File 1');
+
+                    assert.property(result.body.data, 'tags');
+                    assert.isArray(result.body.data.tags);
+
+                    result.body.data.tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -1298,6 +1321,7 @@ describe('Single File', function() {
                         assert.notProperty(element, 'createdAt');
                         assert.notProperty(element, 'updatedAt');
                     }, this);
+
 
                     // Links
                     assert.property(result.body, 'links');
@@ -1309,7 +1333,7 @@ describe('Single File', function() {
     });
 
     // Check CSV file contents
-    describe('- GET /file/:id/contents [csv]', function() {
+    describe('- GET /files/:id/contents [csv]', function() {
         it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${csvId}/contents`)
                 .set('Accept', 'application/json')
@@ -1334,7 +1358,7 @@ describe('Single File', function() {
     });
 
     // Check XLS file contents
-    describe('- GET /file/:id/contents [xls]', function() {
+    describe('- GET /files/:id/contents [xls]', function() {
         it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${xlsId}/contents`)
                 .set('Accept', 'application/json')
@@ -1359,7 +1383,7 @@ describe('Single File', function() {
     });
 
     // XLSX file contents check
-    describe('- GET /file/:id/contents [xlsx]', function() {
+    describe('- GET /files/:id/contents [xlsx]', function() {
         it('- Should get the file contents from the DB', function(done) {
             request.get(`/files/${xlsxId}/contents`)
                 .set('Accept', 'application/json')
@@ -1384,7 +1408,7 @@ describe('Single File', function() {
     });
 
     // CSV file download
-    describe('- GET /file/:id/download [csv]', function() {
+    describe('- GET /files/:id/download [csv]', function() {
         it('- Should download the file', function(done) {
             request.get(`/files/${csvId}/download`)
                 .expect(200)
@@ -1396,7 +1420,7 @@ describe('Single File', function() {
     });
 
     // XLS file download
-    describe('- GET /file/:id/download [xls]', function() {
+    describe('- GET /files/:id/download [xls]', function() {
         it('- Should download the file', function(done) {
             request.get(`/files/${xlsId}/download`)
                 .expect(200)
@@ -1408,7 +1432,7 @@ describe('Single File', function() {
     });
 
     // XLSX file download
-    describe('- GET /file/:id/download [xlsx]', function() {
+    describe('- GET /files/:id/download [xlsx]', function() {
         it('- Should download the file', function(done) {
             request.get(`/files/${xlsxId}/download`)
                 .expect(200)
@@ -1453,7 +1477,7 @@ describe('Single File', function() {
     });
 
     // Check deleted CSV file
-    describe('- GET /file/:id [csv]', function() {
+    describe('- GET /files/:id [csv]', function() {
         it('- Should get error 404', function(done) {
             request.get(`/files/${csvId}`)
                 .set('Accept', 'application/json')
@@ -1479,7 +1503,7 @@ describe('Single File', function() {
     });
 
     // Check deletd XLS file
-    describe('- GET /file/:id [xls]', function() {
+    describe('- GET /files/:id [xls]', function() {
         it('- Should get error 404', function(done) {
             request.get(`/files/${xlsId}`)
                 .set('Accept', 'application/json')
@@ -1505,7 +1529,7 @@ describe('Single File', function() {
     });
 
     // Check deleted XLSX file
-    describe('- GET /file/:id [xlsx]', function() {
+    describe('- GET /files/:id [xlsx]', function() {
         it('- Should get error 404', function(done) {
             request.get(`/files/${xlsxId}`)
                 .set('Accept', 'application/json')
