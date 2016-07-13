@@ -51,7 +51,8 @@ module.exports = {
                                 return cb(null, file.filename);
                                 //else, we use name param
                             } else {
-                                filename = data.name + '.' + extension;
+                                data.name += '.' + extension;
+                                filename = data.name
                                 return cb(null, filename);
 
                             }
