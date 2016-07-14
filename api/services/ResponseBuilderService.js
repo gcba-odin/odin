@@ -583,7 +583,9 @@ class ResponseGET extends ResponseBuilder {
                     try {
                         query.populate(key);
                     } catch (err) {
-                        return this.res.badRequest();
+                        return this.res.badRequest({
+                            all: req.host + ':' + req.port + '/maps'
+                        });
                     }
                 }.bind(this), this);
 
@@ -890,7 +892,6 @@ class ResponseSearch extends ResponseGET {
                     result.or.push(_.set({}, key, {
                         'contains': query
                     }));
-
                 }
                 // The condition is OR
                 else {

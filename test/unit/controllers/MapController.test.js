@@ -739,7 +739,6 @@ describe('Single Map', function() {
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
-                    console.dir(result)
                     if (!err) {
                         fileId = result.body.data.id;
                         done();
