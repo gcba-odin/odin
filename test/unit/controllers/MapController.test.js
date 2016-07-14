@@ -849,13 +849,13 @@ describe('Single Map', function() {
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.property(result.body.data.geojson, 'type');
 
@@ -966,13 +966,13 @@ describe('Single Map', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.equal(result.body.data.name, 'Edited Map');
                     assert.equal(result.body.data.description, 'An edited map');
@@ -1023,13 +1023,13 @@ describe('Single Map', function() {
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.property(result.body.data.geojson, 'type');
 
