@@ -763,6 +763,7 @@ describe('Single Map', function() {
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
+                    console.dir(result.body.data.geodata)
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
@@ -1060,6 +1061,7 @@ describe('Single Map', function() {
 
                             assert.property(element.geometry, 'coordinates');
                             assert.isArray(element.geometry.coordinates);
+                            console.dir(element.geometry.coordinates)
                             assert.isNumber(element.geometry.coordinates[0]);
                             assert.isNumber(element.geometry.coordinates[1]);
 
