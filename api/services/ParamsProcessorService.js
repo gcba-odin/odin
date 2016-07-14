@@ -43,9 +43,12 @@ class ParamsProcessor {
                 condition: this.condition
             };
         } else {
+            this.pk = _actionUtil.requirePk(this.req);
+
             this.result = {
                 include: this.include,
-                fields: this.fields
+                fields: this.fields,
+                pk: this.pk
             };
         }
 
@@ -120,7 +123,7 @@ class ParamsProcessor {
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function (element) {
+            _.forEach(includes, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -154,7 +157,7 @@ class ParamsProcessor {
         }
 
         if (fields.length > 0) {
-            _.forEach(fields, function (element) {
+            _.forEach(fields, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -206,7 +209,7 @@ class ParamsProcessor {
             // Prune params which aren't fit to be used as `where` criteria
             // to build a proper where query
             where = req.params.all();
-            _.forEach(where, function (key, val) {
+            _.forEach(where, function(key, val) {
                 if (_.indexOf(val, '.') !== -1) {
                     deep[val] = key;
                     delete where[val];
@@ -216,7 +219,7 @@ class ParamsProcessor {
             where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
 
             // Omit any params w/ undefined values
-            where = _.omit(where, function (p) {
+            where = _.omit(where, function(p) {
                 if (isUndefined(p)) {
                     return true;
                 }
@@ -245,5 +248,5 @@ class ParamsProcessor {
 
 module
     .exports = {
-    ParamsProcessor
-};
+        ParamsProcessor
+    };

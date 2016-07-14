@@ -226,8 +226,7 @@ class ResponseGET extends ResponseBuilder {
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
         } else {
-            this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk);
+            this._query = this._model.find(this.params.pk);
         }
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
@@ -402,7 +401,7 @@ class ResponseGET extends ResponseBuilder {
                     if (association.type === 'collection') {
                         relations[association.alias] =
                             this.req.host + ':' + this.req.port + '/' +
-                            this.modelName + '/' + this._pk + '/' + association.alias;
+                            this.modelName + '/' + this.params.pk + '/' + association.alias;
                     }
                 }.bind(this));
 
@@ -577,9 +576,14 @@ class ResponseGET extends ResponseBuilder {
                     try {
                         query.populate(key);
                     } catch (err) {
-                        return this.res.badRequest({
-                            all: this.req.host + ':' + this.req.port + '/maps'
-                        });
+                        var links = {
+                            all: this.req.host + ':' + this.req.port + '/' + this.modelName
+                        }
+                        if (!_.isUndefined(this.params.pk)) {
+                            links.record = this.req.host + ':' + this.req.port + '/' + this.modelName +
+                                '/' + this.params.pk;
+                        }
+                        return this.res.badRequest(links);
                     }
                 }.bind(this), this);
 
@@ -648,11 +652,10 @@ class ResponsePOST extends ResponseBuilder {
 class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-
-        const _pk = actionUtil.requirePk(this.req);
         const _values = this.parseValues(this.req);
+        var pk = actionUtil.requirePk(this.req);
 
-        this.update = this._model.update(_pk, _.omit(_values, 'id'));
+        this.update = this._model.update(pk, _.omit(_values, 'id'));
     }
 
     parseValues(req) {
@@ -764,10 +767,8 @@ class ResponsePATCH extends ResponseBuilder {
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
-
-        const _pk = actionUtil.requirePk(this.req);
-
-        this.destroy = this._model.destroy(_pk);
+        var pk = actionUtil.requirePk(this.req);
+        this.destroy = this._model.destroy(pk);
     }
 
     meta(record) {
@@ -801,10 +802,10 @@ class ResponseOPTIONS extends ResponseBuilder {
         super(req, res);
 
         this._many = many;
+        var pk = actionUtil.requirePk(this.req);
 
         if (!this._many) {
-            this._pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this._pk);
+            this._query = this._model.find(pk);
         }
     }
 
