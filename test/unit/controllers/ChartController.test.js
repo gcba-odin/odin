@@ -91,7 +91,6 @@ describe('All Charts', function() {
                             if (element.url) assert.isString(element.url);
 
                             assert.property(element, 'createdBy');
-                            // assert.isObject(element.createdBy);
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
@@ -705,7 +704,6 @@ describe('Single Chart', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'createdBy');
-                    //assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -744,7 +742,6 @@ describe('Single Chart', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -806,7 +803,6 @@ describe('Single Chart', function() {
                     assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -852,7 +848,6 @@ describe('Single Chart', function() {
                     assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');

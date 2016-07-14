@@ -82,7 +82,6 @@ describe('All Categories', function() {
                             if (element.description) assert.isString(element.description);
 
                             assert.property(element, 'createdBy');
-                            // assert.isObject(element.createdBy);
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
@@ -776,15 +775,12 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    // assert.property(result.body.data, 'embedCode');
-                    // assert.isString(result.body.data.embedCode);
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
                     assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');

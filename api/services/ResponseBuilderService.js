@@ -194,7 +194,7 @@ class ResponseGET extends ResponseBuilder {
 
                     if (collections.indexOf(key) === -1) {
                         val = _.split(val, ',');
-                        result[key] = val
+                        result[key] = val;
                     }
                     //if it is a collection  we add it to the include object,
                     // and store it in the collection filter array.
