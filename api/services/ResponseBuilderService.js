@@ -194,10 +194,7 @@ class ResponseGET extends ResponseBuilder {
 
                     if (collections.indexOf(key) === -1) {
                         val = _.split(val, ',');
-
-                        result.or.push({
-                            [key]: val
-                        });
+                        result[key] = val
                     }
                     //if it is a collection  we add it to the include object,
                     // and store it in the collection filter array.
@@ -205,12 +202,9 @@ class ResponseGET extends ResponseBuilder {
                         this.params.include.full.push(key);
                         collectionsFilter[key] = val;
                     }
-                }.bind(this), {
-                    or: []
-                });
+                }.bind(this), {});
             }
-
-            if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full.or)) {
+            if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full)) {
                 this.params.where.full = {};
             }
 
@@ -584,7 +578,7 @@ class ResponseGET extends ResponseBuilder {
                         query.populate(key);
                     } catch (err) {
                         return this.res.badRequest({
-                            all: req.host + ':' + req.port + '/maps'
+                            all: this.req.host + ':' + this.req.port + '/maps'
                         });
                     }
                 }.bind(this), this);
@@ -887,6 +881,7 @@ class ResponseSearch extends ResponseGET {
         this.params.where = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
+
                 if (this.params.condition === 'and') {
                     query = _.replace(query, ',', ' ');
                     result.or.push(_.set({}, key, {
