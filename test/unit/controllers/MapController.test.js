@@ -728,6 +728,7 @@ describe('Single Map', function() {
                 .field('description', 'An example file')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
+                .field('dataset', 'sWRhpRk')
                 .field('status', 'pWRhpRV')
                 .field('map', 'sWRhpRkh')
                 .field('organization', 'hWRhpRV')
