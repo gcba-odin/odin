@@ -333,22 +333,39 @@ describe('All Views', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+                    // assert.property(result.body, 'data');
+                    // assert.isArray(result.body.data);
+                    // assert.lengthOf(result.body.data, 1);
+
+                    // assert.property(result.body.data[0], 'id');
+                    // assert.isString(result.body.data[0].id);
+                    // assert.ok(shortid.isValid(result.body.data[0].id));
+                    // assert.equal(result.body.data[0].id, '1ogP1Iz9');
+
+                    // assert.property(result.body.data[0], 'name');
+                    // assert.isString(result.body.data[0].name);
+                    // assert.equal(result.body.data[0].name, 'View 1');
+
+                    // // Links
+                    // assert.property(result.body, 'links');
+                    // assert.isObject(result.body.links);
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, '1ogP1Iz9');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'View 1');
 
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
+
 
                     err ? done(err) : done();
                 });
@@ -371,22 +388,38 @@ describe('All Views', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+                    // assert.property(result.body, 'data');
+                    // assert.isArray(result.body.data);
+                    // assert.lengthOf(result.body.data, 1);
+
+                    // assert.property(result.body.data[0], 'id');
+                    // assert.isString(result.body.data[0].id);
+                    // assert.ok(shortid.isValid(result.body.data[0].id));
+                    // assert.equal(result.body.data[0].id, '1ogP1Iz9');
+
+                    // assert.property(result.body.data[0], 'name');
+                    // assert.isString(result.body.data[0].name);
+                    // assert.equal(result.body.data[0].name, 'View 1');
+
+                    // assert.property(result.body.data[0], 'createdBy');
+                    // assert.isObject(result.body.data[0].createdBy);
+                    // assert.equal(result.body.data[0].createdBy.username, 'admin');
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, '1ogP1Iz9');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'View 1');
 
-                    assert.property(result.body.data[0], 'createdBy');
-                    assert.isObject(result.body.data[0].createdBy);
-                    assert.equal(result.body.data[0].createdBy.username, 'admin');
+                    assert.property(result.body.data, 'createdBy');
+                    assert.isObject(result.body.data.createdBy);
+                    assert.equal(result.body.data.createdBy.username, 'admin');
 
                     // Links
                     assert.property(result.body, 'links');

@@ -996,13 +996,13 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${csvName}.csv`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${csvName}`);
             done();
 
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
-            let fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}.csv`);
+            let fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}`);
             let charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
@@ -1020,7 +1020,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${xlsName}.xls`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${xlsName}`);
             done();
 
         });
@@ -1035,7 +1035,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${xlsxName}.xlsx`);
+            assert.isFile(`/tmp/odin/${DatasetId}/${xlsxName}`);
             done();
 
         });
@@ -1258,7 +1258,7 @@ describe('Single File', function() {
 
     describe('- GET /files/:id?include=tags.name', function() {
         it('- Should get just the tag names', function(done) {
-            request.get('/files/sWRhpRk?include=tags.name')
+            request.get('/files/sWRhpRa?include=tags.name')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
