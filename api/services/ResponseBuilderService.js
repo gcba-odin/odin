@@ -580,8 +580,12 @@ class ResponseGET extends ResponseBuilder {
             // Fully populate included partials (will be filtered out later)
             if (includes.partials) {
                 _.forEach(includes.partials, function(value, key) {
-                    query.populate(key);
-                }, this);
+                    try {
+                        query.populate(key);
+                    } catch (err) {
+                        return this.res.badRequest();
+                    }
+                }.bind(this), this);
 
                 return query.then(function(records) {
                     // Filter out the partials
@@ -589,12 +593,15 @@ class ResponseGET extends ResponseBuilder {
                     records.forEach(function(element, j) {
                         records[j] = _.transform(element, function(result, value, key) {
                             // Each granular include, gruped by model
+
                             _.forEach(includes.partials, function(partialValue, partialKey) {
                                 if (key === partialKey && _.isArray(element[partialKey])) {
                                     // Each collection of included objects
+
                                     element[partialKey].forEach(function(item, k) {
                                         // Each included object in the collection
                                         _.forEach(item, function(resultValue, resultKey) {
+
                                             // If it's not listed in the granular includes, delete it
                                             if (partialValue.indexOf(resultKey) === -1) {
                                                 delete element[partialKey][k][resultKey];
@@ -609,7 +616,6 @@ class ResponseGET extends ResponseBuilder {
                 });
             } else return query;
         }
-
         return query;
     }
 }
