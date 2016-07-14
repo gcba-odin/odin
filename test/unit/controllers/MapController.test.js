@@ -798,7 +798,7 @@ describe('Single Map', function() {
                     assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.equal(result.body.data.name, 'Example Map');
                     assert.equal(result.body.data.description, 'An example map');
