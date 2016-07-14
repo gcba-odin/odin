@@ -763,6 +763,7 @@ describe('Single Map', function() {
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
+                    console.dir(result.body.data)
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 

@@ -957,7 +957,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 2'
                 },
                 createdBy: {
                     username: 'admin'
@@ -1011,7 +1011,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 3'
                 },
                 createdBy: {
                     username: 'admin'
@@ -1065,7 +1065,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 4'
                 },
                 createdBy: {
                     username: 'admin'
@@ -1119,7 +1119,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 5'
                 },
                 createdBy: {
                     username: 'admin'
