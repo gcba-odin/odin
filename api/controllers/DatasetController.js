@@ -24,7 +24,6 @@ module.exports = {
         }).pipe(res);
     },
     feedRss: function(req, res) {
-
         var feedOptions = {
             title: 'Datasets',
             description: 'Feed de datasets',
@@ -49,7 +48,6 @@ module.exports = {
         // const modelName = pluralize(buiilder._model.adapter.identity);
 
         builder.getDataForFeedQuery().then(function(records) {
-            // console.dir(records[0]);
             _.forEach(records, function(record) {
 
                 var itemOption = {

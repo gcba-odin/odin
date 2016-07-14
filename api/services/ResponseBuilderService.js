@@ -156,7 +156,6 @@ class ResponseBuilder {
 class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
-
         this.params = new Processor.ParamsProcessor(req, res, many).parse();
         this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
@@ -226,6 +225,8 @@ class ResponseGET extends ResponseBuilder {
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
         } else {
+            this.params.pk = actionUtil.requirePk(this.req);
+
             this._query = this._model.find(this.params.pk);
         }
         // this._query = this.select(this._query, this.params.fields);

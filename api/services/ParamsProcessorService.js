@@ -43,8 +43,6 @@ class ParamsProcessor {
                 condition: this.condition
             };
         } else {
-            this.pk = _actionUtil.requirePk(this.req);
-
             this.result = {
                 include: this.include,
                 fields: this.fields,
