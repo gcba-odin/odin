@@ -793,10 +793,10 @@ describe('Single Map', function() {
                     if (result.body.data.notes) assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
                     assert.isObject(result.body.geojson);
