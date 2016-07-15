@@ -30,6 +30,10 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        mimetype: {
+            type: 'string',
+            size: 200
+        },
         files: {
             collection: 'file',
             via: 'type'

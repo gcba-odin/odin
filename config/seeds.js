@@ -248,42 +248,52 @@ module.exports = {
         Filetype: [{
             id: 'sWRhpRV',
             name: 'csv',
+            mimetype: 'text/csv',
             api: true
         }, {
             id: 'tWRhpRV',
             name: 'html',
+            mimetype: 'text/html',
             api: false
         }, {
             id: 'uWRhpRV',
             name: 'ics',
+            mimetype: 'text/calendar',
             api: false
         }, {
             id: 'vWRhpRV',
             name: 'pdf',
+            mimetype: 'application/pdf',
             api: false
         }, {
             id: 'wWRhpRV',
             name: 'rar',
+            mimetype: 'application/x-rar-compressed',
             api: false
         }, {
             id: 'xWRhpRV',
             name: 'shp',
+            mimetype: 'application/octet-stream',
             api: false
         }, {
             id: 'yWRhpRV',
             name: 'xls',
+            mimetype: 'application/xls',
             api: true
         }, {
             id: '1WRhpRV',
             name: 'xlsx',
+            mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             api: true
         }, {
             id: 'zWRhpRV',
             name: 'xml',
+            mimetype: 'application/xml',
             api: false
         }, {
             id: '0WRhpRV',
             name: 'zip',
+            mimetype: 'application/zip',
             api: false
         }],
         UpdateFrequency: [{
