@@ -21,6 +21,8 @@ class ParamsProcessor {
             this.match = this.parseMatch(this.req);
             this.condition = this.parseCondition(this.req);
             this.where = this.parseCriteria(this.req);
+            delete this.where.full.match;
+            delete this.where.full.condition;
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
 
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;

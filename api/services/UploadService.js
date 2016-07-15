@@ -52,7 +52,7 @@ module.exports = {
                                 //else, we use name param
                             } else {
                                 data.name += '.' + extension;
-                                filename = data.name
+                                filename = data.name;
                                 return cb(null, filename);
 
                             }

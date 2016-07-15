@@ -191,9 +191,14 @@ class ResponseGET extends ResponseBuilder {
             if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
                 this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
 
+                    console.dir(this.params)
+                    console.dir(val)
+                    console.dir(key)
                     if (collections.indexOf(key) === -1) {
                         val = _.split(val, ',');
-                        result[key] = val;
+                        result[key] = {
+                            [this.params.match]: val
+                        };
                     }
                     //if it is a collection  we add it to the include object,
                     // and store it in the collection filter array.
@@ -579,7 +584,7 @@ class ResponseGET extends ResponseBuilder {
                     } catch (err) {
                         var links = {
                             all: this.req.host + ':' + this.req.port + '/' + this.modelName
-                        }
+                        };
                         if (!_.isUndefined(this.params.pk)) {
                             links.record = this.req.host + ':' + this.req.port + '/' + this.modelName +
                                 '/' + this.params.pk;
