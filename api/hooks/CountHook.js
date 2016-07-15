@@ -5,7 +5,6 @@
  */
 const Response = require('../services/ResponseBuilderService');
 const _ = require('lodash');
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const pluralize = require('pluralize');
 
 const defaultCountBlueprint = (req, res) => {
@@ -47,5 +46,5 @@ module.exports = sails => {
 
             cb();
         }
-    }
+    };
 };

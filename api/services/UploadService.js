@@ -12,17 +12,17 @@ const mime = require('mime');
 const Converter = require("csvtojson").Converter;
 const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
+
 module.exports = {
     uploadFile: function(req, res) {
         var mimetype = '';
         var extension = '';
         var filename = '';
+        var dataset = req.param('dataset');
+        var data = actionUtil.parseValues(req);
         var uploadFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
-        var dataset = req.param('dataset');
-
-        var data = actionUtil.parseValues(req);
 
         // Check if the dataset ID is valid
         if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
@@ -95,7 +95,7 @@ module.exports = {
 
                                     //Should check which type the file is and convert it .
 
-
+                                    var json = [];
                                     if (extension === 'xls' || extension === 'xlsx') {
                                         //Convert XLS to json, to store on nosql database
 
@@ -104,11 +104,11 @@ module.exports = {
                                         //Join all the worksheets on one json
                                         json = _.reduce(workbook.SheetNames, function(result, sheetName) {
                                             var worksheet = workbook.Sheets[sheetName];
-                                            var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                            _.merge(result, currentJson);
-                                            return result;
-                                        }, {});
 
+                                            var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                            result = _.concat(result, currentJson);
+                                            return result;
+                                        }, []);
 
                                         DataStorageService.mongoSave(dataset, filename, json, res);
 
@@ -139,11 +139,18 @@ module.exports = {
                         sails.models.file.create(data).exec(function created(err, newInstance) {
                             if (err) return res.negotiate(err);
 
+                            // Log to winston
+                            LogService.winstonLog('info', 'file created', {
+                                ip: req.ip,
+                                resource: newInstance.id
+                            });
+
                             if (req._sails.hooks.pubsub) {
                                 if (req.isSocket) {
                                     Model.subscribe(req, newInstance);
                                     Model.introduce(newInstance);
                                 }
+
                                 // Make sure data is JSON-serializable before publishing
                                 var publishData = _.isArray(newInstance) ?
                                     _.map(newInstance, function(instance) {
@@ -164,8 +171,8 @@ module.exports = {
                                 }
                             });
                         });
-                    })
-                })
+                    });
+                });
         } else {
             return res.badRequest('No file was uploaded.');
         }

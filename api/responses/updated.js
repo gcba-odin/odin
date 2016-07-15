@@ -14,15 +14,14 @@ module.exports = function(data, config) {
         meta: _.get(config, 'meta', {}),
         links: _.get(config, 'links', {}),
         data: data || {}
-            // statusCode: '200',
-            // statusMessage:'OK',
-            // code: _.get(config, 'code', 'UPDATED'),
-            // message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
     });
 
     this.res.set({
         'Content-Type': 'application/json'
     });
     this.res.status(200);
+
+    LogService.winstonLogResponse('Updated', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip);
+
     this.res.send(response);
 };

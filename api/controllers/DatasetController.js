@@ -6,7 +6,6 @@
  */
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
-const pluralize = require('pluralize');
 var RSS = require('rss');
 var SkipperDisk = require('skipper-disk');
 
@@ -43,9 +42,8 @@ module.exports = {
                 // hub: '',
                 // custom_namespaces: '',
                 // custom_elements: '',
-        }
+        };
         var feed = new RSS(feedOptions);
-
         var builder = new Response.ResponseGET(req, res, false);
 
         // const modelName = pluralize(buiilder._model.adapter.identity);
@@ -66,14 +64,18 @@ module.exports = {
                         // long: '',
                         // custom_elements: '',
                         // enclosure: '',
-                }
+                };
+
                 feed.item(itemOption);
             });
+
             var xml = feed.xml();
+
             res.set({
                 'Content-Type': 'application/rss+xml'
             });
+
             return res.send(xml);
-        })
+        });
     }
 };

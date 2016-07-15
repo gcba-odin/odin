@@ -1,6 +1,7 @@
 "use strict";
 
 const Response = require('../services/ResponseBuilderService');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 /**
  * Create Record
@@ -12,12 +13,32 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePOST(req, res);
 
     builder.create
-        .then( record => {
+        .then(record => {
+            var model = (actionUtil.parseModel(req)).adapter.identity;
+
             LogService.log(req, record.id);
-            res.created( record, {
-                meta: builder.meta( record ),
-                links: builder.links( record )
+
+            LogService.winstonLog('info', model + ' created', {
+                ip: req.ip,
+                resource: record.id
             });
+            var associations = [];
+
+            _.forEach(builder._model.definition, function(value, key) {
+                if (value.foreignKey) {
+                    associations.push(key);
+                }
+            });
+            //populate the response
+
+            builder._model.find(record.id).populate(associations).exec(function(err, record) {
+                res.created(record, {
+                    meta: builder.meta(record),
+                    links: builder.links(record)
+                });
+
+            });
+
         })
         .catch(res.negotiate);
 };

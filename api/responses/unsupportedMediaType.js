@@ -17,5 +17,8 @@ module.exports = function(data, config) {
         'Content-Type': 'application/json'
     });
     this.res.status(415);
+
+    LogService.winstonLogResponse('Unsupported Media Type', response.code, response.message, this.res.headers, response, this.req.ip);
+
     this.res.send(response);
 };

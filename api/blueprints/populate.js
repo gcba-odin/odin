@@ -6,7 +6,7 @@
  * Expand response with populated data from relations in models.
  */
 
-const util = require('util')
+const util = require('util');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const pluralize = require('pluralize');
 

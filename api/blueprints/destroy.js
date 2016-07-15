@@ -1,6 +1,7 @@
 "use strict";
 
 const Response = require('../services/ResponseBuilderService');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 /**
  * Destroy One Record
@@ -13,15 +14,28 @@ module.exports = (req, res) => {
 
     builder.destroy
         .then(record => {
-            if (_.isUndefined(record[0])) return res.notFound(null, {
-                meta: builder.meta(undefined),
-                links: builder.links(undefined)
+            var model = (actionUtil.parseModel(req)).adapter.identity;
+
+            if (_.isUndefined(record[0])) {
+                LogService.winstonLog('error', model + ' not found', {
+                    ip: req.ip
+                });
+                return res.notFound(null, {
+                    meta: builder.meta(undefined),
+                    links: builder.links(undefined)
+                });
+            }
+            LogService.log(req, record[0].id);
+
+            LogService.winstonLog('info', model + ' deleted', {
+                ip: req.ip,
+                resource: record[0].id
             });
-            LogService.log(req, record[0].id)
+
             res.deleted(record[0], {
                 meta: builder.meta(),
                 links: builder.links()
-            })
+            });
         })
         .catch(res.negotiate);
 };

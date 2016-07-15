@@ -14,7 +14,6 @@ const parseModels = _.flow(toLowerCase, _.method('split', ','));
 module.exports = {
     index(req, res) {
         const q = req.param('query');
-        const pageParam = req.param('page') || 1;
         const models = parseModels(req.param('resources')) || _.keys(sails.models);
 
         if (!q) return res.badRequest(null, {
@@ -27,7 +26,7 @@ module.exports = {
                     if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
                         result.or.push(_.set({}, key, {
                             contains: q
-                        }))
+                        }));
                     }
                 }, {
                     or: []
@@ -39,7 +38,7 @@ module.exports = {
                 return [records, {
                     // records is an array of models, within each one, the result of the search
                     // meta: {count: _.size(records)}
-                }]
+                }];
             }).spread(res.ok)
             .catch(res.negotiate);
     }

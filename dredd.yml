@@ -8,6 +8,8 @@ init: false
 reporter: apiary
 color: true
 level: info
+timestamp: false
+silent: false
 path: []
 hooks-worker-timeout: 5000
 hooks-worker-connect-timeout: 1500

@@ -62,7 +62,7 @@ module.exports = {
         }
     },
     setAttributes() {
-        return this.baseAttributes
+        return this.baseAttributes;
     },
     getAttributes() {
         return _.merge({
@@ -75,7 +75,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name']
 };

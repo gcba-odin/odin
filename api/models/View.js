@@ -33,9 +33,12 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        publishedAt: {
+            type: 'datetime'
+        },
         createdBy: {
             model: 'user'
-            // required: true
+                // required: true
         },
         tags: {
             collection: 'tag',
@@ -56,12 +59,15 @@ module.exports = {
         notes: {
             type: 'string'
         },
+        publishedAt: {
+            type: 'datetime'
+        },
         createdBy: {
             type: 'object'
         }
     },
     setAttributes() {
-        return this.baseAttributes
+        return this.baseAttributes;
     },
     getAttributes() {
         return _.merge({
@@ -74,7 +80,7 @@ module.exports = {
             updatedAt: {
                 type: 'datetime'
             }
-        }, this.baseAttributes)
+        }, this.baseAttributes);
     },
     searchables: ['name', 'description'],
 
@@ -83,7 +89,7 @@ module.exports = {
         next();
     },
     afterUpdate: (values, next) => {
-        next()
+        next();
     },
     afterCreate: (values, next) => {
         next();
