@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "5.12"
+  - '5.12'
 env:
   - CXX=g++-4.8
 sudo: required
@@ -18,13 +18,15 @@ before_install:
   - npm update -g npm
   - npm install -g dredd@stable
 script:
-    - make test
+  - make test
 services:
   - mongodb
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+before_script:
+  - dredd

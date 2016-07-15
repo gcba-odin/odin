@@ -1,36 +1,21 @@
-reporter: apiary
-custom:
-  apiaryApiKey: 065280ba8b01fdbcbe986cd4602bb01f
-  apiaryApiName: odin2
-dry-run: null
+
 hookfiles: dredd.js
 language: nodejs
-blueprint: odin.apib
-endpoint: 'http://127.0.0.1:3000'
 sandbox: false
-server: npm start
+server: null
 server-wait: 7
 init: false
-names: false
-only: []
-output: []
-header: []
-sorted: false
-user: null
-inline-errors: false
-details: false
-method: []
+reporter: apiary
 color: true
-level: silly
-timestamp: false
-silent: false
+level: info
 path: []
-hooks-worker-timeout: 200
-hooks-worker-connect-timeout: 200
-hooks-worker-connect-retry: 200
+hooks-worker-timeout: 5000
+hooks-worker-connect-timeout: 1500
+hooks-worker-connect-retry: 500
 hooks-worker-after-connect-wait: 100
-hooks-worker-term-timeout: 200
-hooks-worker-term-retry: 200
+hooks-worker-term-timeout: 5000
+hooks-worker-term-retry: 500
 hooks-worker-handler-host: localhost
 hooks-worker-handler-port: 61321
-
+blueprint: odin.apib
+endpoint: 'http://127.0.0.1:3000/'
