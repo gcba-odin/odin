@@ -82,6 +82,10 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        disclaimer: {
+            type: 'string',
+            size: 500
+        },
         publishedAt: {
             type: 'datetime'
         },

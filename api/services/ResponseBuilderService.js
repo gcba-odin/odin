@@ -190,10 +190,6 @@ class ResponseGET extends ResponseBuilder {
 
             if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
                 this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
-
-                    console.dir(this.params)
-                    console.dir(val)
-                    console.dir(key)
                     if (collections.indexOf(key) === -1) {
                         val = _.split(val, ',');
                         result[key] = {
@@ -208,6 +204,16 @@ class ResponseGET extends ResponseBuilder {
                     }
                 }.bind(this), {});
             }
+            if (this.params.condition === 'or') {
+                this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
+                    return result.or.push({
+                        [value]: key
+                    });
+                }, {
+                    or: []
+                })
+            }
+
             if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full)) {
                 this.params.where.full = {};
             }
