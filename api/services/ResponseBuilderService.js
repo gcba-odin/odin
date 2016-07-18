@@ -213,8 +213,7 @@ class ResponseGET extends ResponseBuilder {
                     or: []
                 });
             }
-
-            if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full)) {
+            if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full[0])) {
                 this.params.where.full = {};
             }
 
@@ -222,7 +221,6 @@ class ResponseGET extends ResponseBuilder {
             _.merge(this.params.where.full, {
                 deletedAt: null
             });
-
 
             this._query = this._model.find()
                 .where(this.params.where.full)
