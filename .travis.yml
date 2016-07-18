@@ -7,7 +7,6 @@ sudo: required
 before_install:
   - psql -c 'create database odin;' -U postgres
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
-  - sudo chmod 777 -R /tmp/odin
   - npm update -g npm
   - npm install -g dredd@stable
   - npm install -g node-gyp
