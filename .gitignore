@@ -53,3 +53,5 @@ nbproject
 
 # Executables
 *.node
+*.o
+*.so
