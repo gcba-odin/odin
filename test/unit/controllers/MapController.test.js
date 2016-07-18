@@ -886,6 +886,9 @@ describe('Single Map', function() {
 
                             assert.property(element.geometry, 'coordinates');
                             assert.isArray(element.geometry.coordinates);
+                            console.dir(element.geometry);
+                            console.log("Coordenadas:");
+                            console.log(element.geometry.coordinates);
                             assert.isNumber(element.geometry.coordinates[0]);
                             assert.isNumber(element.geometry.coordinates[1]);
 
