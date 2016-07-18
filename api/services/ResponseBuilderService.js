@@ -204,7 +204,9 @@ class ResponseGET extends ResponseBuilder {
                     }
                 }.bind(this), {});
             }
-            if (this.params.condition === 'or') {
+
+            if (this.params.condition === 'or' && !_.isEmpty(this.params.where.full)) {
+
                 this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
                     return result.or.push({
                         [value]: key
@@ -213,14 +215,16 @@ class ResponseGET extends ResponseBuilder {
                     or: []
                 });
             }
-            if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full[0])) {
+            if (_.isEmpty(this.params.where.full)) {
                 this.params.where.full = {};
             }
+            console.dir(this.params.where.full)
 
             // Only find not deleted records
             _.merge(this.params.where.full, {
                 deletedAt: null
             });
+            console.dir(this.params.where.full)
 
             this._query = this._model.find()
                 .where(this.params.where.full)

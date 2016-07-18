@@ -372,9 +372,9 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?name=map 1&basemap=roadmap', function() {
+    describe('- GET /maps?name=map 1&basemap=roadmap&condition=AND', function() {
         it('- Should get one map', function(done) {
-            request.get('/maps?name=map 1&basemap=roadmap')
+            request.get('/maps?name=map 1&basemap=roadmap&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -414,9 +414,9 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?name=map 1&basemap=terrain', function() {
+    describe('- GET /maps?name=map 1&basemap=terrain&condition=AND', function() {
         it('- Should get no record', function(done) {
-            request.get('/maps?name=map 1&basemap=terrain')
+            request.get('/maps?name=map 1&basemap=terrain&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
