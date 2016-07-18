@@ -13,7 +13,9 @@ module.exports = (req, res) => {
     var builder = new Response.ResponsePATCH(req, res);
     builder.update
         .then(record => {
+
             var model = (actionUtil.parseModel(req)).adapter.identity;
+
             if (_.isUndefined(record[0])) {
                 LogService.winstonLog('error', model + ' not found', {
                     ip: req.ip
@@ -39,7 +41,6 @@ module.exports = (req, res) => {
                     associations.push(key);
                 }
             });
-
             //populate the response
             builder._model.find(record[0].id).populate(associations).exec(function(err, record) {
                 if (err) return res.negotiate(err);

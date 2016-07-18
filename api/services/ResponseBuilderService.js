@@ -218,13 +218,11 @@ class ResponseGET extends ResponseBuilder {
             if (_.isEmpty(this.params.where.full)) {
                 this.params.where.full = {};
             }
-            console.dir(this.params.where.full)
 
             // Only find not deleted records
             _.merge(this.params.where.full, {
                 deletedAt: null
             });
-            console.dir(this.params.where.full)
 
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -668,7 +666,6 @@ class ResponsePATCH extends ResponseBuilder {
         super(req, res);
         const _values = this.parseValues(this.req);
         var pk = actionUtil.requirePk(this.req);
-
         this.update = this._model.update(pk, _.omit(_values, 'id'));
     }
 
@@ -717,8 +714,8 @@ class ResponsePATCH extends ResponseBuilder {
                 var collection = _.find(this._model.associations, [
                     'alias', key
                 ]);
+                if (!_.isUndefined(collection) && collection.type === 'collection') {
 
-                if (!_.isUndefined(collection)) {
                     if (value.indexOf(',') !== -1) {
                         value = _.split(value, ',');
                         values[key] = value;
@@ -745,7 +742,6 @@ class ResponsePATCH extends ResponseBuilder {
         if (jsonpOpts) {
             values = _.omit(values, [jsonpOpts.callback]);
         }
-
         return values;
     }
 
