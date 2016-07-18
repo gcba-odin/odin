@@ -3,8 +3,16 @@ node_js:
   - "5.12"
 env:
   - CXX=g++-4.8
+  global:
+    - PGPORT=5432
+    - PGHOST=localhost
+    - DATABASE_URL=postgres://localhost:5432/odin
 sudo: required
-before_install:
+before_script:
+  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
+  - psql -c 'CREATE DATABASE odin;' -U postgres
+  - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
   - mkdir /tmp/odin
   - mkdir /tmp/odin/sWRhpRk
   - mkdir /tmp/odin/sWRhpRm
@@ -18,11 +26,6 @@ before_install:
   - cd /home/travis/build/gcba-odin/odin/node_modules/detect-character-encoding
   - node-gyp rebuild
   - cd /home/travis/build/gcba-odin/odin
-before_script:
-  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
-  - sudo /etc/init.d/postgresql restart
-  - psql -c 'create database odin;' -U postgres
-  - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
 script:
   - make test
 services:
