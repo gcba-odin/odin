@@ -20,14 +20,21 @@ before_install:
   - cd /home/travis/build/gcba-odin/odin/node_modules/detect-character-encoding
   - node-gyp rebuild
   - cd /home/travis/build/gcba-odin/odin
+before_script:
+  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
 script:
-    - make test
+  - make test
 services:
   - mongodb
+  - postgresql
 addons:
-  postgresql: "9.4"
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - precise-pgdg-9.5
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
+    - postgresql-9.5
+    - postgresql-contrib-9.5
+    - g++-4.8
+  postgresql: 9.5
