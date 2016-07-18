@@ -89,8 +89,10 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
-        category: {
-            model: 'category'
+        categories: {
+            collection: 'category',
+            via: 'datasets',
+            dominant: true
         },
         status: {
             model: 'status'

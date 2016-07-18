@@ -36,7 +36,7 @@ module.exports = {
         },
         datasets: {
             collection: 'dataset',
-            via: 'category'
+            via: 'categories'
         },
 
         toJSON() {

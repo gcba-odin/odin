@@ -416,9 +416,6 @@ module.exports = {
             optional10: null,
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
-                category: {
-                    name: 'Cultura, Recreación y Turismo'
-                },
                 status: {
                     name: 'Draft'
                 },
@@ -436,6 +433,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 1', 'Tag 2', 'Tag 3']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -457,9 +457,6 @@ module.exports = {
             optional10: null,
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
-                category: {
-                    name: 'Economía, negocio y comercio'
-                },
                 status: {
                     name: 'Under Review'
                 },
@@ -477,6 +474,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 4', 'Tag 5', 'Tag 6']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -498,9 +498,6 @@ module.exports = {
             optional10: null,
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
-                category: {
-                    name: 'Educación'
-                },
                 status: {
                     name: 'Rejected'
                 },
@@ -518,6 +515,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 7', 'Tag 8', 'Tag 9']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -539,9 +539,6 @@ module.exports = {
             optional10: null,
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
-                category: {
-                    name: 'Gobierno y administración pública'
-                },
                 status: {
                     name: 'Published'
                 },
@@ -559,6 +556,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 1', 'Tag 2', 'Tag 3']
+                },
+                category: {
+                    name: ['Gobierno y administración pública', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -580,9 +580,6 @@ module.exports = {
             optional10: null,
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
-                category: {
-                    name: 'Medio ambiente'
-                },
                 status: {
                     name: 'Unpublished'
                 },
@@ -600,6 +597,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 4', 'Tag 5', 'Tag 6']
+                },
+                category: {
+                    name: ['Gobierno y administración pública', 'Economía, negocio y comercio', 'Medio ambiente']
                 }
             }
         }],
