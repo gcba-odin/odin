@@ -875,8 +875,10 @@ describe('Single Map', function() {
 
                         assert.property(result.body.data.geojson, 'features');
                         assert.isArray(result.body.data.geojson.features);
+                        console.dir(result.body.data.geojson);
 
                         result.body.data.geojson.features.forEach(function(element) {
+                            console.dir(element);
                             assert.property(element, 'id');
                             assert.isNumber(element.id);
 
