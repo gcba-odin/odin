@@ -884,10 +884,10 @@ describe('Single Map', function() {
                             assert.property(element.geometry, 'type');
                             assert.equal(element.geometry.type, 'Point');
 
-                            // assert.property(element.geometry, 'coordinates');
-                            // assert.isArray(element.geometry.coordinates);
-                            // assert.isNumber(element.geometry.coordinates[0]);
-                            // assert.isNumber(element.geometry.coordinates[1]);
+                            assert.property(element.geometry, 'coordinates');
+                            assert.isArray(element.geometry.coordinates);
+                            assert.isNumber(element.geometry.coordinates[0]);
+                            assert.isNumber(element.geometry.coordinates[1]);
 
                             assert.property(element, 'properties');
                         }, this);
@@ -1058,10 +1058,10 @@ describe('Single Map', function() {
                             assert.property(element.geometry, 'type');
                             assert.equal(element.geometry.type, 'Point');
 
-                            // assert.property(element.geometry, 'coordinates');
-                            // assert.isArray(element.geometry.coordinates);
-                            // assert.isNumber(element.geometry.coordinates[0]);
-                            // assert.isNumber(element.geometry.coordinates[1]);
+                            assert.property(element.geometry, 'coordinates');
+                            assert.isArray(element.geometry.coordinates);
+                            assert.isNumber(element.geometry.coordinates[0]);
+                            assert.isNumber(element.geometry.coordinates[1]);
 
                             assert.property(element, 'properties');
                         }, this);
