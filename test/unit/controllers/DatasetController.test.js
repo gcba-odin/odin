@@ -983,8 +983,6 @@ describe('Single Dataset', function() {
                         assert.notProperty(element, 'updatedAt');
                     }, this);
 
-
-
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);

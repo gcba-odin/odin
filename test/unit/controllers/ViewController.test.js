@@ -390,8 +390,6 @@ describe('All Views', function() {
                     assert.isObject(result.body.data[0].createdBy);
                     assert.equal(result.body.data[0].createdBy.username, 'admin');
 
-
-
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);

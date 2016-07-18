@@ -211,7 +211,7 @@ class ResponseGET extends ResponseBuilder {
                     });
                 }, {
                     or: []
-                })
+                });
             }
 
             if (_.isUndefined(this.params.where.full) || _.isEmpty(this.params.where.full)) {
