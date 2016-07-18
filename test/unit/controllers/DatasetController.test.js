@@ -103,9 +103,6 @@ describe('All Datasets', function() {
                             assert.property(element, 'optional9');
                             assert.property(element, 'optional10');
 
-                            assert.property(element, 'category');
-                            assert.isObject(element.category);
-
                             assert.property(element, 'status');
                             assert.isObject(element.status);
 
@@ -791,9 +788,6 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
-
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
 
@@ -821,7 +815,7 @@ describe('Single Dataset', function() {
     // Get dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the dataset', function(done) {
-            request.get(`/datasets/${datasetId}`)
+            request.get(`/datasets/${datasetId}?include=categories`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -845,8 +839,8 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
+                    assert.property(result.body.data, 'categories');
+                    assert.isArray(result.body.data.categories);
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
@@ -1000,7 +994,7 @@ describe('Single Dataset', function() {
                 .field('name', 'Edited Dataset')
                 .field('description', 'An example edited dataset')
                 .field('visible', 'true')
-                .field('category', 'kWRhpRV')
+                .field('categories', 'kWRhpRV')
                 .field('status', 'qWRhpRV')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1039,13 +1033,6 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
-
-                    assert.property(result.body.data.category, 'name');
-                    assert.isString(result.body.data.category.name);
-                    assert.equal(result.body.data.category.name, 'Educación');
-
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
 
@@ -1078,7 +1065,7 @@ describe('Single Dataset', function() {
     // Get edited dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the edited dataset', function(done) {
-            request.get(`/datasets/${datasetId}`)
+            request.get(`/datasets/${datasetId}?include=categories`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1102,12 +1089,12 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
+                    assert.property(result.body.data, 'categories');
+                    assert.isArray(result.body.data.categories);
 
-                    assert.property(result.body.data.category, 'name');
-                    assert.isString(result.body.data.category.name);
-                    assert.equal(result.body.data.category.name, 'Educación');
+                    assert.property(result.body.data.categories[0], 'name');
+                    assert.isString(result.body.data.categories[0].name);
+                    assert.equal(result.body.data.categories[0].name, 'Educación');
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
