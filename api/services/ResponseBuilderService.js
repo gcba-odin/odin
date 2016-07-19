@@ -367,8 +367,6 @@ class ResponseGET extends ResponseBuilder {
         // If the client is requesting a collection, we'll show certain links plus pagination
 
         if (this._many) {
-            // Check if no parameters given
-            var params = !_.isEmpty(this.req.query);
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
