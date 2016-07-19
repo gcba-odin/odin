@@ -7,7 +7,7 @@ ODIN is an API first open source DMS (data management system) developed to help 
 
 It takes in CSV, XLS and XLSX files and exposes them in a paginated REST API. The associated metadata is also available, with search and filter capabilities.
 
-The UI is kept in two separated projects (Angular 1.x clients):
+The UI is kept in two separated projects (Angular.js 1.x clients):
 
 1.  [Admin](https://github.com/gcba-odin/odin-admin)
 2.  [Frontend](https://github.com/gcba-odin/odin-frontend)
@@ -43,7 +43,6 @@ ODIN has not been tested with earlier versions of Node and MongoDB.
     ``` 
     $ cd odin
     $ npm install
-    
     ```
 3. Start the app
 
