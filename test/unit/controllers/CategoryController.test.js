@@ -662,6 +662,8 @@ describe('Single Category', function() {
                 .field('name', 'Category')
                 .field('description', 'An example category')
                 .field('createdBy', 'dogPzIz9')
+                .field('color', 'FFFFFF')
+                .attach('uploadImage', 'test/assets/icon.svg')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -689,6 +691,13 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
+
+                    assert.property(result.body.data, 'color');
+                    assert.isString(result.body.data.color);
+
+                    assert.property(result.body.data, 'image');
+                    assert.isString(result.body.data.image);
+                    assert.endsWith(result.body.data.image, '.svg');
 
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
