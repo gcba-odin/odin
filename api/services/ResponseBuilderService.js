@@ -369,11 +369,12 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             // Check if no parameters given
             var params = !_.isEmpty(this.req.query);
-            console.log(params);
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = sails.config.odin.baseUrl + url + (params && url.indexOf('?') === -1 ? '?' : '&');
+            const _baseLinkToModel = sails.config.odin.baseUrl + url + (url.indexOf('?') === -1 ? '?' : '&');
+            console.log(url);
+            console.log(url.indexOf('?') === -1);
 
             const _linkToModel = _baseLinkToModel + 'skip=';
 
