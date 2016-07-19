@@ -167,6 +167,7 @@ module.exports = {
 
 
         // Categories
+        'POST /categories': 'Cateogry.upload',
 
         'DELETE /categories': {
             controller: 'NotImplemented',
@@ -1050,7 +1051,7 @@ module.exports = {
         'PATCH /views/:id': {
             blueprint: 'update',
             model: 'view'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
 
         'HEAD /views/*': {
