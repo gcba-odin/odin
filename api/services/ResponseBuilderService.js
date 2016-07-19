@@ -372,8 +372,9 @@ class ResponseGET extends ResponseBuilder {
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = sails.config.odin.baseUrl + url + (params ? '?' : '&');
-            console.log('params: ' + params);
+            const _baseLinkToModel = sails.config.odin.baseUrl + url +
+                ((params || this.params.page <= this.params.pages) ? '?' : '&');
+
             const _linkToModel = _baseLinkToModel + 'skip=';
 
             const _previous = (this.params.page > 1 ? _linkToModel +
