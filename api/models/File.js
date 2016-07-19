@@ -93,10 +93,14 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'model', 'files');
-        values.url = _.replace(values.url, 'id', values.id);
-        values.url = values.url + '/download';
+        if (_.endsWith(values.url, '/id')) {
+
+            values.url = _.replace(values.url, 'model', 'files');
+            values.url = _.replace(values.url, 'id', values.id);
+            values.url = values.url + '/download';
+        }
         next();
+
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
