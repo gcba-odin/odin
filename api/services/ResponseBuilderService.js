@@ -706,9 +706,7 @@ class ResponsePATCH extends ResponseBuilder {
                 }
             });
 
-            // WORKS: values is{"tags":["aWRhpz1","tWRhpz2"],"id":"sWRhpRk"}
-            // If key is a model collection, should transform comma separated to array.
-            // TBD: values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
+            //  values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
             _.forEach(values, function(value, key) {
                 var collection = _.find(this._model.associations, [
