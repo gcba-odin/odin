@@ -1,7 +1,7 @@
 module.exports = {
     fixtures: {
         order: [
-            'Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency',
+            'Organization', 'User', 'Category', 'Status', 'Database', 'FileType', 'UpdateFrequency',
             'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log'
         ],
         User: [{
@@ -245,7 +245,7 @@ module.exports = {
             collection: 'ExampleCollection',
             url: 'http://i.imgur.com/u7CUz6v.png'
         }],
-        Filetype: [{
+        FileType: [{
             id: 'sWRhpRV',
             name: 'csv',
             mimetype: 'text/csv',
