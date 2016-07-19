@@ -1,6 +1,6 @@
 "use strict";
 
-var path = require( "path" );
+var path = require("path");
 
 /**
  * HTTP Server Settings
@@ -33,6 +33,7 @@ module.exports = {
     customMiddleware: function(app) {
       app.use('/var', require('../node_modules/sails/node_modules/express')['static'](path.normalize(__dirname + '/../var')));
     },
+
     /**
      * This is the options object for the `createServer` method, as discussed here:
      * http://nodejs.org/api/https.html#https_class_https_server
@@ -73,6 +74,7 @@ module.exports = {
         next();
       },
 
+
       /**
        * The order in which middleware should be run for HTTP request
        * @type {Array}
@@ -82,6 +84,7 @@ module.exports = {
         'keepAlive',
         'bodyParser',
         '$custom',
+        'statistics',
         'router',
         '404',
         '500'

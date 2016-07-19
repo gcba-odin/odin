@@ -6,5 +6,6 @@ module.exports.odin = {
     dataStorage: {
         host: 'localhost',
         port: '27017'
-    }
+    },
+    baseUrl: 'http://localhost:3000'
 };

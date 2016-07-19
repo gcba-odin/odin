@@ -24,13 +24,6 @@ module.exports = {
             required: true,
             enum: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']
         },
-        target: {
-            type: 'string',
-            required: true,
-            enum: ['category', 'dataset', 'fileType', 'file',
-                'organization', 'status', 'tag', 'updateFrequency', 'user'
-            ]
-        },
         resource: {
             type: 'string',
             required: true,
@@ -47,7 +40,7 @@ module.exports = {
         },
         client: {
             type: 'string',
-            required: true,
+            // required: true,
             size: 100
         },
         useragent: {
