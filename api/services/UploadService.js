@@ -13,6 +13,7 @@ const mime = require('mime');
 const Converter = require("csvtojson").Converter;
 const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
+const pluralize = require('pluralize');
 
 module.exports = {
     uploadFile: function(req, res) {
@@ -138,57 +139,62 @@ module.exports = {
                             });
                         // }
                         // Save the file metadata to the relational DB
-                        sails.models.file.create(data).exec(function created(err, newInstance) {
-                            if (err) return res.negotiate(err);
+                        UploadService.metadataSave(File, data, '/files', req, res);
 
-                            // Log to winston
-                            LogService.winstonLog('info', 'file created', {
-                                ip: req.ip,
-                                resource: newInstance.id
-                            });
-
-                            if (req._sails.hooks.pubsub) {
-                                if (req.isSocket) {
-                                    Model.subscribe(req, newInstance);
-                                    Model.introduce(newInstance);
-                                }
-
-                                // Make sure data is JSON-serializable before publishing
-                                var publishData = _.isArray(newInstance) ?
-                                    _.map(newInstance, function(instance) {
-                                        return instance.toJSON();
-                                    }) :
-                                    newInstance.toJSON();
-                                Model.publishCreate(publishData, !req.options.mirror && req);
-                            }
-
-                            var associations = [];
-
-                            _.forEach(File.definition, function(value, key) {
-                                if (value.foreignKey) {
-                                    associations.push(key);
-                                }
-                            });
-
-                            File.find(newInstance.id).populate(associations).exec(function(err, record) {
-                                if (err) res.negotiate(err);
-                                res.created(record[0], {
-                                    meta: {
-                                        code: sails.config.success.CREATED.code,
-                                        message: sails.config.success.CREATED.message
-                                    },
-                                    links: {
-                                        record: sails.config.odin.baseUrl + '/files/' + newInstance.id,
-                                        all: sails.config.odin.baseUrl + '/files'
-                                    }
-                                });
-
-                            });
-                        });
                     });
                 });
         } else {
             return res.badRequest('No file was uploaded.');
         }
+    },
+    metadataSave: function(model, data, modelName, req, res) {
+        model.create(data).exec(function created(err, newInstance) {
+            if (err) return res.negotiate(err);
+
+            // Log to winston
+            LogService.winstonLog('info', modelName + ' created', {
+                ip: req.ip,
+                resource: newInstance.id
+            });
+
+            if (req._sails.hooks.pubsub) {
+                if (req.isSocket) {
+                    Model.subscribe(req, newInstance);
+                    Model.introduce(newInstance);
+                }
+
+                // Make sure data is JSON-serializable before publishing
+                var publishData = _.isArray(newInstance) ?
+                    _.map(newInstance, function(instance) {
+                        return instance.toJSON();
+                    }) :
+                    newInstance.toJSON();
+                Model.publishCreate(publishData, !req.options.mirror && req);
+            }
+
+            var associations = [];
+
+            _.forEach(model.definition, function(value, key) {
+                if (value.foreignKey) {
+                    associations.push(key);
+                }
+            });
+
+            model.find(newInstance.id).populate(associations).exec(function(err, record) {
+                if (err) res.negotiate(err);
+                res.created(record[0], {
+                    meta: {
+                        code: sails.config.success.CREATED.code,
+                        message: sails.config.success.CREATED.message
+                    },
+                    links: {
+                        record: sails.config.odin.baseUrl + '/' + pluralize(modelName) + ' /' + newInstance.id,
+                        all: sails.config.odin.baseUrl + '/' + pluralize(modelName)
+                    }
+                });
+
+            });
+        });
+
     }
 };
