@@ -4,9 +4,8 @@ node_js:
 env:
   global:
     - CXX=g++-4.8
-    - PGPORT=5432
+    - PGPORT=5433
     - PGHOST=localhost
-    - DATABASE_URL=postgres://localhost:5432/odin
 sudo: required
 before_script:
   - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
