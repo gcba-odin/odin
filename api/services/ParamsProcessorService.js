@@ -174,8 +174,6 @@ class ParamsProcessor {
         }
 
         return results;
-
-        //return fields;
     }
 
     toString() {
@@ -190,6 +188,7 @@ class ParamsProcessor {
 
         // Validate blacklist to provide a more helpful error msg.
         var blacklist = req.options.criteria && req.options.criteria.blacklist;
+
         if (blacklist && !_.isArray(blacklist)) {
             throw new Error('Invalid `req.options.criteria.blacklist`. ' +
                 'Should be an array of strings (parameter names.)');
@@ -205,7 +204,6 @@ class ParamsProcessor {
         // If `where` has not been specified, but other unbound parameter variables
         // **ARE** specified, build the `where` option using them.
         if (!where) {
-
             // Prune params which aren't fit to be used as `where` criteria
             // to build a proper where query
             where = req.params.all();
@@ -227,9 +225,11 @@ class ParamsProcessor {
 
             // Omit jsonp callback param (but only if jsonp is enabled)
             var jsonpOpts = req.options.jsonp && !req.isSocket;
+
             jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
                 callback: 'callback'
             };
+
             if (jsonpOpts) {
                 where = _.omit(where, [jsonpOpts.callback]);
             }
@@ -246,7 +246,6 @@ class ParamsProcessor {
 
 }
 
-module
-    .exports = {
-        ParamsProcessor
-    };
+module.exports = {
+    ParamsProcessor
+};
