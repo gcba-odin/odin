@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "5.12"
 env:
-  - CXX=g++-4.8
   global:
+    - CXX=g++-4.8
     - PGPORT=5432
     - PGHOST=localhost
     - DATABASE_URL=postgres://localhost:5432/odin
