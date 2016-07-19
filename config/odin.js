@@ -14,5 +14,8 @@ module.exports.odin = {
     },
 
     logWhitelist: ['category', 'dataset', 'fileType', 'file',
-        'organization', 'status', 'tag', 'updateFrequency', 'user']
+        'organization', 'status', 'tag', 'updateFrequency', 'user'
+    ],
+    baseUrl: 'http://localhost:3000'
+
 };
