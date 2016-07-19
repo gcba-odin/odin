@@ -368,7 +368,7 @@ class ResponseGET extends ResponseBuilder {
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = this.req.host + ':' + this.req.port + url + (params ? '?' : '&');
+            const _baseLinkToModel = sails.config.odin.baseUrl + url + (params ? '?' : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
             const _previous = (this.params.page > 1 ? _linkToModel +
                 (this.params.limit * (this.params.page - 2)) : undefined);
@@ -388,9 +388,9 @@ class ResponseGET extends ResponseBuilder {
             if (_last) this._links.last = _last;
 
             this._links = _.assign(this._links, {
-                firstItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/first',
-                lastItem: this.req.host + ':' + this.req.port + '/' + this.modelName + '/last',
-                all: this.req.host + ':' + this.req.port + '/' + this.modelName
+                firstItem: sails.config.odin.baseUrl + '/' + this.modelName + '/first',
+                lastItem: sails.config.odin.baseUrl + '/' + this.modelName + '/last',
+                all: sails.config.odin.baseUrl + '/' + this.modelName
             });
 
             if (!_.isUndefined(records) && records.length > 0) {
@@ -412,7 +412,7 @@ class ResponseGET extends ResponseBuilder {
                 _.forEach(this._model.associations, function(association) {
                     if (association.type === 'collection') {
                         relations[association.alias] =
-                            this.req.host + ':' + this.req.port + '/' +
+                            sails.config.odin.baseUrl + '/' +
                             this.modelName + '/' + this.params.pk + '/' + association.alias;
                     }
                 }.bind(this));
@@ -421,7 +421,7 @@ class ResponseGET extends ResponseBuilder {
             }
 
             this._links = _.assign(this._links, {
-                all: this.req.host + ':' + this.req.port + '/' + this.modelName
+                all: sails.config.odin.baseUrl + '/' + this.modelName
             });
         }
 
@@ -589,10 +589,10 @@ class ResponseGET extends ResponseBuilder {
                         query.populate(key);
                     } catch (err) {
                         var links = {
-                            all: this.req.host + ':' + this.req.port + '/' + this.modelName
+                            all: sails.config.odin.baseUrl + '/' + this.modelName
                         };
                         if (!_.isUndefined(this.params.pk)) {
-                            links.record = this.req.host + ':' + this.req.port + '/' + this.modelName +
+                            links.record = sails.config.odin.baseUrl + '/' + this.modelName +
                                 '/' + this.params.pk;
                         }
                         return this.res.badRequest(links);
@@ -653,8 +653,8 @@ class ResponsePOST extends ResponseBuilder {
     links(record) {
         const modelName = pluralize(this._model.adapter.identity);
         this._links = {
-            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id,
-            all: this.req.host + ':' + this.req.port + '/' + modelName
+            record: sails.config.odin.baseUrl + '/' + modelName + '/' + record.id,
+            all: sails.config.odin.baseUrl + '/' + modelName
         };
 
         return this._links;
@@ -763,8 +763,8 @@ class ResponsePATCH extends ResponseBuilder {
         const modelName = pluralize(this._model.adapter.identity);
 
         this._links = {
-            all: this.req.host + ':' + this.req.port + '/' + modelName,
-            record: this.req.host + ':' + this.req.port + '/' + modelName + '/' + record.id
+            all: sails.config.odin.baseUrl + '/' + modelName,
+            record: sails.config.odin.baseUrl + '/' + modelName + '/' + record.id
 
         };
 
@@ -795,7 +795,7 @@ class ResponseDELETE extends ResponseBuilder {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + modelName
+                all: sails.config.odin.baseUrl + '/' + modelName
             };
 
             return this._links;
@@ -847,7 +847,7 @@ class ResponseQuery extends ResponseBuilder {
                 message: sails.config.success.OK.message
             };
             this._links = {
-                all: this.req.host + ':' + this.req.port + '/' + modelName
+                all: sails.config.odin.baseUrl + '/' + modelName
             };
             this.findQuery = this._model.find({
                 limit: 1,
@@ -868,7 +868,7 @@ class ResponseCount extends ResponseBuilder {
             message: sails.config.success.OK.message
         };
         this._links = {
-            all: this.req.host + ':' + this.req.port + '/' + modelName
+            all: sails.config.odin.baseUrl + '/' + modelName
         };
         this.countQuery = this._model.count();
     }

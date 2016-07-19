@@ -791,7 +791,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'CSV File.csv');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     if (!err) {
@@ -878,7 +878,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLS File.xls');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     if (!err) {
@@ -965,7 +965,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLSX File.xlsx');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     if (!err) {
@@ -1090,7 +1090,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'CSV File.csv');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
@@ -1158,7 +1158,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLS File.xls');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();
@@ -1226,7 +1226,7 @@ describe('Single File', function() {
                     assert.equal(result.body.data.name, 'XLSX File.xlsx');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
-                    assert.startsWith(result.body.data.url, `http://127.0.0.1`);
+                    assert.startsWith(result.body.data.url, `http://localhost`);
                     assert.endsWith(result.body.data.url, `/files/${result.body.data.id}/download`);
 
                     err ? done(err) : done();

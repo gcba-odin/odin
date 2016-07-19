@@ -28,7 +28,7 @@ module.exports = {
             title: 'Datasets',
             description: 'Feed de datasets',
             generator: 'ODIN',
-            feed_url: req.host + ':' + req.port + '/datasets'
+            feed_url: sails.config.odin.baseUrl + '/datasets'
                 // site_url: '',
                 // image_url: '',
                 // docs: '',
@@ -53,7 +53,7 @@ module.exports = {
                 var itemOption = {
                     title: record.name,
                     description: record.description,
-                    url: req.host + ':' + req.port + '/' + builder.modelName + '/' + record.id,
+                    url: sails.config.odin.baseUrl + '/' + builder.modelName + '/' + record.id,
                     // guid: '',
                     // categories: '',
                     // author: '',

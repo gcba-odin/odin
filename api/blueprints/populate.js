@@ -84,7 +84,7 @@ module.exports = function expand(req, res) {
                     message: 'The operation was executed successfully.'
                 },
                 links: {
-                    parent: req.host + ':' + req.port + '/' + modelName + '/' + parentPk
+                    parent: sails.config.odin.baseUrl + '/' + modelName + '/' + parentPk
                 }
             });
         });

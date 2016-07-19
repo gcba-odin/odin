@@ -178,8 +178,8 @@ module.exports = {
                                         message: sails.config.success.CREATED.message
                                     },
                                     links: {
-                                        record: req.host + ':' + req.port + '/files/' + newInstance.id,
-                                        all: req.host + ':' + req.port + '/files'
+                                        record: sails.config.odin.baseUrl + '/files/' + newInstance.id,
+                                        all: sails.config.odin.baseUrl + '/files'
                                     }
                                 });
 

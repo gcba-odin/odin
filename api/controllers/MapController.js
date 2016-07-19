@@ -75,8 +75,8 @@ module.exports = {
                             message: sails.config.success.CREATED.message
                         },
                         links: {
-                            record: req.host + ':' + req.port + '/maps/' + newInstance.id,
-                            all: req.host + ':' + req.port + '/maps'
+                            record: sails.config.odin.baseUrl + '/maps/' + newInstance.id,
+                            all: sails.config.odin.baseUrl + '/maps'
                         }
                     });
                 });

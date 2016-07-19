@@ -13,7 +13,7 @@ module.exports = {
         var model = actionUtil.parseModel(req);
         var modelName = pluralize(model.identity);
         var links = {
-            all: req.host + ':' + req.port + '/' + modelName
+            all: sails.config.odin.baseUrl + '/' + modelName
         };
         return res.notImplemented(links);
     }
