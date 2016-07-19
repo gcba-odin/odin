@@ -30,6 +30,16 @@ module.exports = {
             type: 'string',
             size: 350
         },
+
+        image: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
+        color: {
+            type: 'string',
+            size: 6
+        },
         createdBy: {
             model: 'user',
             required: true
