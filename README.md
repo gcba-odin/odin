@@ -3,7 +3,7 @@
 
 # ODIN: Open Data INitiative
 
-ODIN is an API first open-source DMS (data management system) developed to help governments publish and share their data. 
+ODIN is an API first open source DMS (data management system) developed to help governments publish and share their data. 
 
 It takes in CSV, XLS and XLSX files and exposes them in a paginated REST API. The associated metadata is also available, with search and filter capabilities.
 
@@ -14,7 +14,7 @@ The UI is kept in two separated projects (Angular 1.x clients):
 
 The authentication, ACL, rate-limiting, CORS and related features must be handled by a [Kong](https://getkong.org/) instance.
 
-ODIN is currently under heavy development, and is not recommended for production use. You are welcome to contribute.
+**ODIN is currently under heavy development, and is not recommended for production use. You are welcome to contribute.**
 
 ## Requirements
 
@@ -52,6 +52,7 @@ ODIN has not been tested with earlier versions of Node and MongoDB.
 ## License
 
 The MIT License (MIT)
+
 Copyright (c) 2016 Buenos Aires City Government
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
