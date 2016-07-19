@@ -37,6 +37,7 @@
     "shortid": "^2.2.6",
     "url-assembler": "^1.2.4",
     "waterline": "^0.12.1",
+    "winston": "^2.2.0",
     "xlsx": "^0.8.0",
     "xlsx-style": "^0.8.13"
   },

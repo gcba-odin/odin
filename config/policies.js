@@ -13,6 +13,7 @@
 
 module.exports = {
     policies: {
+        '*': 'statistics',
         // '*': 'isAuthenticated',
         // UserController: {
         //    'login': true
