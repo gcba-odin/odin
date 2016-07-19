@@ -373,7 +373,6 @@ class ResponseGET extends ResponseBuilder {
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
             const _baseLinkToModel = sails.config.odin.baseUrl + url + (url.indexOf('?') === -1 ? '?' : '&');
-
             const _linkToModel = _baseLinkToModel + 'skip=';
 
             const _previous = (this.params.page > 1 ? _linkToModel +
