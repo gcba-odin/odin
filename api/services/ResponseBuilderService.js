@@ -184,45 +184,78 @@ class ResponseGET extends ResponseBuilder {
         var collections = [];
         var collectionsFilter = {};
         _.forEach(this._model.associations, function(association) {
-            if (association.type === 'collection') collections.push(association.alias);
+            if (association.type === 'collection')
+                collections.push(association.alias);
         });
         if (this._many) {
 
             if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
-                this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
-                    if (collections.indexOf(key) === -1) {
-                        val = _.split(val, ',');
-                        result[key] = {
-                            [this.params.match]: val
-                        };
-                    }
-                    //if it is a collection  we add it to the include object,
-                    // and store it in the collection filter array.
-                    else {
-                        this.params.include.full.push(key);
-                        collectionsFilter[key] = val;
-                    }
-                }.bind(this), {});
-            }
 
-            if (this.params.condition === 'or' && !_.isEmpty(this.params.where.full)) {
+                if (this.params.condition === 'or') {
 
-                this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
-                    return result.or.push({
-                        [value]: key
+                    this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
+                        if (collections.indexOf(key) === -1) {
+                            // If the condition is or we split the values given with comma
+                            // And then add it each one of the values as an element of the OR query
+                            var values = _.split(val, ',');
+                            _.forEach(values, function(value) {
+                                result.or.push(_.set({}, key, {
+                                    [this.params.match]: value
+                                }));
+                            }.bind(this));
+                        }
+                        //if it is a collection  we add it to the include object,
+                        // and store it in the collection filter array.
+                        else {
+                            this.params.include.full.push(key);
+                            collectionsFilter[key] = val;
+                        }
+
+                    }.bind(this), {
+                        or: []
                     });
-                }, {
-                    or: []
-                });
+                } else {
+                    // Condition is AND
+                    this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
+
+                        if (collections.indexOf(key) === -1) {
+
+                            var value = _.replace(val, ',', ' ');
+
+                            result[key] = {
+                                [this.params.match]: value
+                            };
+                        }
+                        //if it is a collection  we add it to the include object,
+                        // and store it in the collection filter array.
+                        else {
+                            this.params.include.full.push(key);
+                            collectionsFilter[key] = val;
+                        }
+                    }.bind(this), {});
+                }
             }
-            if (_.isEmpty(this.params.where.full)) {
+
+
+            // if (this.params.condition === 'or' && !_.isEmpty(this.params.where.full)) {
+
+            //     this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
+            //         return result.or.push({
+            //             [value]: key
+            //         });
+            //     }, {
+            //         or: []
+            //     });
+            // }
+            if (_.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};
             }
-
-            // Only find not deleted records
+            console.dir(this.params.where.full)
+                // Only find not deleted records
             _.merge(this.params.where.full, {
                 deletedAt: null
             });
+            console.dir(this.params.where.full)
 
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -441,15 +474,23 @@ class ResponseGET extends ResponseBuilder {
                             return item.id;
                         });
                         var filter = _.split(filters[key], ',');
-
                         // if it doesnt fulfill the filter,
                         // we add it to the array which will remove the element from the response
-                        if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
-                            toRemove.push(j);
+
+                        // With the or condition, we only need one match
+                        if (this.params.condition === 'or') {
+                            if (_.size(_.intersection(elementsId, filter)) === 0) {
+                                toRemove.push(j);
+                            }
+                            // with the AND condition, we need that all matches
+                        } else {
+                            if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
+                                toRemove.push(j);
+                            }
                         }
                     }
-                }, element);
-            });
+                }.bind(this), element);
+            }.bind(this));
             // pull out of the final records all the records which didnt fulfill the filter
             _.pullAt(records, toRemove);
             // with some of the records deleted, we need to update the count
@@ -916,6 +957,7 @@ class ResponseSearch extends ResponseGET {
         }.bind(this), {
             or: []
         });
+        console.dir(this.params.where);
     }
 
     /*
