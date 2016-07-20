@@ -193,7 +193,6 @@ class ResponseGET extends ResponseBuilder {
         if (this._many) {
             if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
 
-                << << << < HEAD
                 if (this.params.condition === 'or') {
 
                     this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
@@ -252,12 +251,10 @@ class ResponseGET extends ResponseBuilder {
             if (_.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};
             }
-            console.dir(this.params.where.full)
-                // Only find not deleted records
+            // Only find not deleted records
             _.merge(this.params.where.full, {
                 deletedAt: null
             });
-            console.dir(this.params.where.full)
 
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -968,7 +965,6 @@ class ResponseSearch extends ResponseGET {
         }.bind(this), {
             or: []
         });
-        console.dir(this.params.where);
     }
 
     /*
