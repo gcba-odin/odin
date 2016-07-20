@@ -877,7 +877,6 @@ describe('Single Map', function() {
                         assert.isArray(result.body.data.geojson.features);
 
                         result.body.data.geojson.features.forEach(function(element) {
-                            console.dir(element);
                             assert.property(element, 'id');
                             assert.isNumber(element.id);
 
@@ -887,9 +886,6 @@ describe('Single Map', function() {
 
                             assert.property(element.geometry, 'coordinates');
                             assert.isArray(element.geometry.coordinates);
-                            console.dir(element.geometry);
-                            console.log("Coordenadas:");
-                            console.log(element.geometry.coordinates);
                             assert.isNumber(element.geometry.coordinates[0]);
                             assert.isNumber(element.geometry.coordinates[1]);
 
