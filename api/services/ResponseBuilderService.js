@@ -156,6 +156,7 @@ class ResponseBuilder {
 class ResponseGET extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
+
         this.params = new Processor.ParamsProcessor(req, res, many).parse();
         this.modelName = pluralize(this._model.adapter.identity);
         this._query = '';
@@ -183,14 +184,16 @@ class ResponseGET extends ResponseBuilder {
     findQuery() {
         var collections = [];
         var collectionsFilter = {};
+
         _.forEach(this._model.associations, function(association) {
             if (association.type === 'collection')
                 collections.push(association.alias);
         });
-        if (this._many) {
 
+        if (this._many) {
             if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
 
+                << << << < HEAD
                 if (this.params.condition === 'or') {
 
                     this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
@@ -236,7 +239,6 @@ class ResponseGET extends ResponseBuilder {
                 }
             }
 
-
             // if (this.params.condition === 'or' && !_.isEmpty(this.params.where.full)) {
 
             //     this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
@@ -273,6 +275,7 @@ class ResponseGET extends ResponseBuilder {
 
             this._query = this._model.find(this.params.pk);
         }
+
         // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
 
@@ -346,6 +349,7 @@ class ResponseGET extends ResponseBuilder {
         // If the client is requesting a collection, we'll include the criteria plus pagination data
         if (this._many) {
             var skipLimit = this.params.skip + this.params.limit;
+
             this._meta = _.assign(this._meta, {
                 // criteria: this._where,
                 count: this._count,
@@ -396,22 +400,21 @@ class ResponseGET extends ResponseBuilder {
         // If the client is requesting a collection, we'll show certain links plus pagination
 
         if (this._many) {
-            // Check if no parameters given
-            var params = (!_.isEmpty(this.requestQuery));
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = sails.config.odin.baseUrl + url + (params ? '?' : '&');
+            const _baseLinkToModel = sails.config.odin.baseUrl + url + (url.indexOf('?') === -1 ? '?' : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
+
             const _previous = (this.params.page > 1 ? _linkToModel +
                 (this.params.limit * (this.params.page - 2)) : undefined);
 
             const _next = ((this.params.pages === 1 && this._count > this.params.limit) ||
-
                 this.params.page < this.params.pages ? _linkToModel +
                 (this.params.limit * this.params.page) : undefined);
 
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
+
             const _last = (this.params.page < this.params.pages ?
                 _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
@@ -442,6 +445,7 @@ class ResponseGET extends ResponseBuilder {
         else {
             if (!_.isUndefined(records) && records.deletedAt === null) {
                 var relations = {};
+
                 _.forEach(this._model.associations, function(association) {
                     if (association.type === 'collection') {
                         relations[association.alias] =
@@ -521,11 +525,11 @@ class ResponseGET extends ResponseBuilder {
 
                 deepFilters[model] = {
                     attribute: splittedKey[1],
-
                     values: sanitizedValue
                 };
                 // deepFilters = { category: { attribute: 'name', value: '[Filter1, Filter2]' } }
             }.bind(this));
+
             records.forEach(function(element, j) {
 
                 records[j] = _.transform(element, function(result, value, key) {
@@ -534,7 +538,6 @@ class ResponseGET extends ResponseBuilder {
                         // if the value filtered is undefined, or its different than the filter we remove it from query
                         if (_.isUndefined(value) ||
                             this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
-
                             toRemove.push(j);
                         }
                     }
@@ -559,12 +562,10 @@ class ResponseGET extends ResponseBuilder {
     }
 
     compareFilters(filters, value) {
-
         //Removed spaces to compare filter with value
         value = _.replace(value, / /g, '');
 
         var found = (_.find(filters, function(filterValue) {
-
             filterValue = _.replace(filterValue, / /g, '');
 
             return filterValue === value;
@@ -593,6 +594,7 @@ class ResponseGET extends ResponseBuilder {
                     });
                 }, element);
             });
+
             return records;
         });
 
@@ -603,7 +605,6 @@ class ResponseGET extends ResponseBuilder {
      * Handles the population of related items and collections
      */
     populate(query, model, includes) {
-
         // Fully populate non collection items
         _.forEach(model.definition, function(value, key) {
             if (value.foreignKey) {
@@ -632,10 +633,12 @@ class ResponseGET extends ResponseBuilder {
                         var links = {
                             all: sails.config.odin.baseUrl + '/' + this.modelName
                         };
+
                         if (!_.isUndefined(this.params.pk)) {
                             links.record = sails.config.odin.baseUrl + '/' + this.modelName +
                                 '/' + this.params.pk;
                         }
+
                         return this.res.badRequest(links);
                     }
                 }.bind(this), this);
@@ -693,6 +696,7 @@ class ResponsePOST extends ResponseBuilder {
 
     links(record) {
         const modelName = pluralize(this._model.adapter.identity);
+
         this._links = {
             record: sails.config.odin.baseUrl + '/' + modelName + '/' + record.id,
             all: sails.config.odin.baseUrl + '/' + modelName
@@ -705,8 +709,10 @@ class ResponsePOST extends ResponseBuilder {
 class ResponsePATCH extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
+
         const _values = this.parseValues(this.req);
         var pk = actionUtil.requirePk(this.req);
+
         this.update = this._model.update(pk, _.omit(_values, 'id'));
     }
 
@@ -732,7 +738,6 @@ class ResponsePATCH extends ResponseBuilder {
         // that we process singular entities.
         var bodyData = _.isArray(req.body) ? req.body : [req.allParams()];
 
-
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
         var valuesArray = _.map(bodyData, function(element) {
             var values;
@@ -753,6 +758,7 @@ class ResponsePATCH extends ResponseBuilder {
                 var collection = _.find(this._model.associations, [
                     'alias', key
                 ]);
+
                 if (!_.isUndefined(collection) && collection.type === 'collection') {
 
                     if (value.indexOf(',') !== -1) {
@@ -775,12 +781,15 @@ class ResponsePATCH extends ResponseBuilder {
 
         // Omit jsonp callback param (but only if jsonp is enabled)
         var jsonpOpts = req.options.jsonp && !req.isSocket;
+
         jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
             callback: JSONP_CALLBACK_PARAM
         };
+
         if (jsonpOpts) {
             values = _.omit(values, [jsonpOpts.callback]);
         }
+
         return values;
     }
 
@@ -806,7 +815,6 @@ class ResponsePATCH extends ResponseBuilder {
         this._links = {
             all: sails.config.odin.baseUrl + '/' + modelName,
             record: sails.config.odin.baseUrl + '/' + modelName + '/' + record.id
-
         };
 
         return this._links;
@@ -816,7 +824,9 @@ class ResponsePATCH extends ResponseBuilder {
 class ResponseDELETE extends ResponseBuilder {
     constructor(req, res) {
         super(req, res);
+
         var pk = actionUtil.requirePk(this.req);
+
         this.destroy = this._model.destroy(pk);
     }
 
@@ -850,8 +860,9 @@ class ResponseOPTIONS extends ResponseBuilder {
     constructor(req, res, many) {
         super(req, res);
 
-        this._many = many;
         var pk = actionUtil.requirePk(this.req);
+
+        this._many = many;
 
         if (!this._many) {
             this._query = this._model.find(pk);

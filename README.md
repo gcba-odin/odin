@@ -3,7 +3,7 @@
 
 # ODIN: Open Data INitiative
 
-ODIN is an API first open source DMS (data management system) developed to help governments publish and share their data. 
+ODIN is an API first open source DMS (data management system) created to help governments publish and share their data. 
 
 It takes in CSV, XLS and XLSX files and exposes them in a paginated REST API. The associated metadata is also available, with search and filter capabilities.
 
@@ -18,7 +18,7 @@ The authentication, ACL, rate-limiting, CORS and related features must be handle
 
 ## Requirements
 
-ODIN is a Node.js app, built on top the [Sails.js](http://sailsjs.org/) framework.
+ODIN is a Node.js app, built on top of the [Sails.js](http://sailsjs.org/) framework.
 
 It uses two databases: a relational one for storing metadata, and a NoSQL database (MongoDB) for storing the file contents. As with any Sails app, you can use whatever relational database you wish, as long as there's a [Waterline](https://github.com/balderdashy/waterline) connector for it. The default is PostgreSQL, and its Waterline connector comes preinstalled.
 
@@ -27,10 +27,10 @@ Currently there's no support for other NoSQL databases.
 So, all in all you'll need:
 
 - Node.js 5.12
-- A relational database (Postgres 9.5)
+- A relational database (PostgreSQL 9.5)
 - MongoDB 3.2.x
 
-ODIN has not been tested with earlier versions of Node and MongoDB.
+ODIN has not been tested with earlier versions of Node.js and MongoDB.
 
 ## How to install
 
