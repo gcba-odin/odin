@@ -117,6 +117,8 @@ module.exports = {
             name: 'Cultura, Recreación y Turismo',
             description: 'An example category.',
             active: true,
+            color: 'F5B69E',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -127,6 +129,8 @@ module.exports = {
             name: 'Economía, Negocio y Comercio',
             description: 'An example category.',
             active: true,
+            color: 'FBCDB7',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -137,6 +141,8 @@ module.exports = {
             name: 'Educación',
             description: 'An example category.',
             active: true,
+            color: 'FFF4D2',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -147,6 +153,8 @@ module.exports = {
             name: 'Gobierno y Administración pública',
             description: 'An example category.',
             active: false,
+            color: 'D4F1E6',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -157,6 +165,8 @@ module.exports = {
             name: 'Medio Ambiente',
             description: 'An example category.',
             active: false,
+            color: 'BFF0E7',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -167,6 +177,8 @@ module.exports = {
             name: 'Salud',
             description: 'An example category.',
             active: false,
+            color: 'F5B69E',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -177,6 +189,8 @@ module.exports = {
             name: 'Seguridad',
             description: 'An example category.',
             active: false,
+            color: 'FBCDB7',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -187,6 +201,8 @@ module.exports = {
             name: 'Transporte',
             description: 'An example category.',
             active: false,
+            color: 'FFF4D2',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -197,6 +213,8 @@ module.exports = {
             name: 'Urbanismo e Infraestructura',
             description: 'An example category.',
             active: false,
+            color: 'D4F1E6',
+            image: 'http://i.imgur.com/ce4K2ON.png',
             models: {
                 createdBy: {
                     username: 'admin'
