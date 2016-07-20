@@ -31,7 +31,7 @@ services:
 addons:
   apt:
     sources:
-    - mongodb-3.0-precise
+    - mongodb-3.2-precise
     - precise-pgdg-9.5
     - ubuntu-toolchain-r-test
     packages:
