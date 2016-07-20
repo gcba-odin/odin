@@ -238,17 +238,7 @@ class ResponseGET extends ResponseBuilder {
                 }
             }
 
-            // if (this.params.condition === 'or' && !_.isEmpty(this.params.where.full)) {
-
-            //     this.params.where.full = _.transform(this.params.where.full, function(result, key, value) {
-            //         return result.or.push({
-            //             [value]: key
-            //         });
-            //     }, {
-            //         or: []
-            //     });
-            // }
-            if (_.isEmpty(this.params.where.full.or)) {
+            if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};
             }
             // Only find not deleted records
