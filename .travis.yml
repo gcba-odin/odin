@@ -31,9 +31,11 @@ services:
 addons:
   apt:
     sources:
+    - mongodb-3.0-precise
     - precise-pgdg-9.5
     - ubuntu-toolchain-r-test
     packages:
+    - mongodb-org-server
     - postgresql-9.5
     - postgresql-contrib-9.5
     - g++-4.8
