@@ -59,8 +59,7 @@ module.exports = {
             required: true
         },
         status: {
-            model: 'status',
-            required: true
+            model: 'status'
         },
         organization: {
             model: 'organization',
