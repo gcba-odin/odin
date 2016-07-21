@@ -11,11 +11,12 @@ const shortid = require('shortid');
 module.exports = {
     upload: function(req, res) {
         var data = actionUtil.parseValues(req);
+        var path = sails.conifig.odin.uploadFolder + '/categories';
 
-        var uploadFile = req.file('uploadFile').on('error', function(err) {
+        var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
-
+        var filename = '';
         uploadFile.upload({
             saveAs: function(file, cb) {
                 mimetype = mime.lookup(file.filename.split('.').pop());
@@ -26,15 +27,17 @@ module.exports = {
                         message: 'filetype not allowed'
                     });
                 } else {
-                    return cb(null, _.snakeCase(data.name) + '.svg');
+                    filename = _.snakeCase(data.name) + '.svg'
+                    return cb(null, filename);
                 }
             },
-            dirname: path.resolve(sails.conifig.odin.uploadFolder + '/categories')
+            dirname: path
         }, function onUploadComplete(err, files) {
             if (err) return res.serverError(err);
             if (files.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
+            data.image = path + '/' + filename;
             UploadService.metadataSave(Category, data, 'category', req, res);
 
         });
