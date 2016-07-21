@@ -64,5 +64,31 @@ module.exports = {
                 }
             });
         });
+    },
+    resources: function(req, res) {
+        var resources = [];
+        const pk = actionUtil.requirePk(req);
+
+        this.findResource(_Map, pk)
+            .then(function(maps) {
+                if (!_.isEmpty(maps))
+                    resources = _.concat(resources, maps);
+                this.findResource(View, pk)
+                    .then(function(views) {
+                        if (!_.isEmpty(views))
+                            resources = _.concat(resources, maps);
+                        this.findResource(Chart, pk)
+                            .then(function(charts) {
+                                if (!_.isEmpty(charts))
+                                    resources.push(views);
+                                return res.ok(resources);
+                            })
+                    }.bind(this))
+            }.bind(this))
+    },
+    findResource(model, filePk) {
+        return model.find({
+            file: filePk
+        });
     }
 };
