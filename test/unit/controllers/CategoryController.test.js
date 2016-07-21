@@ -689,7 +689,7 @@ describe('Single Category', function() {
                 .field('description', 'An example category')
                 .field('createdBy', 'dogPzIz9')
                 .field('color', 'FFFFFF')
-                .attach('uploadImage', 'test/assets/icon.svg')
+                .attach('uploadImage', 'test/assets/icon/image')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -723,7 +723,7 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'image');
                     assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '.svg');
+                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
@@ -765,7 +765,7 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'image');
                     assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '.svg');
+                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -850,7 +850,7 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'image');
                     assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '.svg');
+                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
@@ -896,7 +896,7 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'image');
                     assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '.svg');
+                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
