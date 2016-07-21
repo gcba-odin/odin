@@ -1090,6 +1090,74 @@ module.exports = {
             controller: 'Options',
             model: 'view',
             action: 'query'
+        },
+
+        // Statistics
+
+        'DELETE /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
+        'PATCH /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+        'PUT /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
+
+        'GET /statistics/first': {
+            blueprint: 'first',
+            model: 'statistic'
+                // policy: 'isAuthenticated'
+        },
+        'GET /statistics/last': {
+            blueprint: 'last',
+            model: 'statistic'
+                // policy: 'isAuthenticated'
+        },
+
+        'HEAD /statistics/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'statistic'
+        },
+        'HEAD /statistics': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'statistic'
+        },
+
+        'OPTIONS /statistics': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'collection'
+        },
+        'OPTIONS /statistics/:id': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'instance'
+        },
+        'OPTIONS /statistics/first': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'query'
+        },
+        'OPTIONS /statistics/last': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'query'
+        },
+        'OPTIONS /statistics/count': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'query'
         }
     }
 };
