@@ -25,19 +25,17 @@ module.exports = {
       }
     });
 
-    var logPath = 'logs/' + sails.config.environment + '.log'
-
     // create the log file
-    fs.lstat(logPath, function(err, stats) {
+    fs.lstat(sails.config.odin.logPath, function(err, stats) {
       if (err || !stats.isFile()) {
-        var fd = fs.openSync(logPath, 'w');
+        var fd = fs.openSync(sails.config.odin.logPath, 'w');
       }
     });
 
     // Require and configure Winston with File
     winston.add(winston.transports.File, {
-      filename: 'logs/' + sails.config.environment + '.log',
-      level: 'silly'
+      filename: sails.config.odin.logPath,
+      level: sails.config.odin.logLevel
     });
     winston.remove(winston.transports.Console);
 

@@ -1,5 +1,5 @@
 const path = require('path');
-
+var sails = require('sails');
 module.exports.odin = {
     uploadFolder: path.join(process.cwd(), 'files'),
     defaultEncoding: 'utf8',
@@ -13,5 +13,7 @@ module.exports.odin = {
         'application/zip', 'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ],
-    baseUrl: 'http://localhost:3000'
+    baseUrl: 'http://localhost:3000',
+    logPath: 'logs/' + sails.config.environment + '.log',
+    logLevel: 'error'
 };
