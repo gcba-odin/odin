@@ -1484,7 +1484,7 @@ describe('Single File', function() {
             request.get(`/files/${xlsId}/download`)
                 .expect(200)
                 .expect('Content-Disposition', /attachment/)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });
