@@ -653,6 +653,32 @@ describe('All Datasets', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /datasets/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/datasets/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /datasets', function() {
@@ -815,7 +841,7 @@ describe('Single Dataset', function() {
     // Get dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the dataset', function(done) {
-            request.get(`/datasets/${datasetId}?include=categories`)
+            request.get(`/datasets/${datasetId}?include=datasets`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -839,8 +865,8 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'categories');
-                    assert.isArray(result.body.data.categories);
+                    assert.property(result.body.data, 'datasets');
+                    assert.isArray(result.body.data.datasets);
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
@@ -986,6 +1012,32 @@ describe('Single Dataset', function() {
         });
     });
 
+    // Get an inexistent relation
+    describe('- GET /datasets/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/datasets/${datasetId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // Edit dataset
     describe('- PATCH /datasets/:id', function() {
         it('- Should edit the dataset', function(done) {
@@ -994,7 +1046,7 @@ describe('Single Dataset', function() {
                 .field('name', 'Edited Dataset')
                 .field('description', 'An example edited dataset')
                 .field('visible', 'true')
-                .field('categories', 'kWRhpRV')
+                .field('datasets', 'kWRhpRV')
                 .field('status', 'qWRhpRV')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1065,7 +1117,7 @@ describe('Single Dataset', function() {
     // Get edited dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the edited dataset', function(done) {
-            request.get(`/datasets/${datasetId}?include=categories`)
+            request.get(`/datasets/${datasetId}?include=datasets`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1089,12 +1141,12 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'categories');
-                    assert.isArray(result.body.data.categories);
+                    assert.property(result.body.data, 'datasets');
+                    assert.isArray(result.body.data.datasets);
 
-                    assert.property(result.body.data.categories[0], 'name');
-                    assert.isString(result.body.data.categories[0].name);
-                    assert.equal(result.body.data.categories[0].name, 'Educación');
+                    assert.property(result.body.data.datasets[0], 'name');
+                    assert.isString(result.body.data.datasets[0].name);
+                    assert.equal(result.body.data.datasets[0].name, 'Educación');
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
