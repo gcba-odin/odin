@@ -19,7 +19,7 @@ module.exports = {
         //    'login': true
         // }
         CategoryController: {
-            create: ['addCreatedBy']
+            upload: ['addCreatedBy', 'addUrl']
         },
         FileController: {
             create: ['addCreatedBy', 'addUrl'],
@@ -42,6 +42,6 @@ module.exports = {
         },
         ChartController: {
             create: ['addCreatedBy', 'addUrl']
-        }
+        },
     }
 };

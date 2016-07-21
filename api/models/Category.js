@@ -33,7 +33,6 @@ module.exports = {
 
         image: {
             type: 'string',
-            url: true,
             size: 500
         },
         color: {
@@ -58,6 +57,9 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
+        values.image = _.replace(values.url, 'model', 'categories');
+        values.image = _.replace(values.image, 'id', values.id);
+        values.image = values.image + '/image';
         next();
     }
 };

@@ -167,8 +167,8 @@ module.exports = {
 
 
         // Categories
-        'POST /categories': 'Cateogry.upload',
-
+        'POST /categories': 'Category.upload',
+        'GET /categories/:id/image': 'Category.image',
         'DELETE /categories': {
             controller: 'NotImplemented',
             model: 'category',
@@ -387,6 +387,7 @@ module.exports = {
 
         // Files
 
+        'GET /files/:id/resources': 'File.resources',
 
         'DELETE /files': {
             controller: 'NotImplemented',
