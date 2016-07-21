@@ -11,7 +11,7 @@ const shortid = require('shortid');
 module.exports = {
     upload: function(req, res) {
         var data = actionUtil.parseValues(req);
-        var path = sails.conifig.odin.uploadFolder + '/categories';
+        var path = sails.config.odin.uploadFolder + '/categories';
 
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
@@ -19,8 +19,9 @@ module.exports = {
         var filename = '';
         uploadFile.upload({
             saveAs: function(file, cb) {
-                mimetype = mime.lookup(file.filename.split('.').pop());
-                if (mimetype === 'image/svg+xml') {
+                var mimetype = mime.lookup(file.filename.split('.').pop());
+
+                if (mimetype !== 'image/svg+xml') {
                     return res.negotiate({
                         status: 415,
                         code: 415,
@@ -37,7 +38,6 @@ module.exports = {
             if (files.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
-            data.image = path + '/' + filename;
             UploadService.metadataSave(Category, data, 'category', req, res);
 
         });
