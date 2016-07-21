@@ -594,8 +594,8 @@ describe('All Organizations', function() {
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
 
-                    assert.property(result.body.links, 'all');
-                    assert.isString(result.body.links.all);
+                    assert.property(result.body.links, 'entryPoint');
+                    assert.isString(result.body.links.entryPoint);
 
                     err ? done(err) : done();
                 });
