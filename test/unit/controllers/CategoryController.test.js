@@ -689,7 +689,7 @@ describe('Single Category', function() {
                 .field('description', 'An example category')
                 .field('createdBy', 'dogPzIz9')
                 .field('color', 'FFFFFF')
-                .attach('uploadImage', 'test/assets/icon/image')
+                .attach('uploadImage', 'test/assets/icon.svg')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
