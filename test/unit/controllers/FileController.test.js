@@ -1017,8 +1017,8 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
-            let fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}`);
-            let charsetMatch = detectCharacterEncoding(fileBuffer);
+            const fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}`);
+            const charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
             done();

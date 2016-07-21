@@ -921,7 +921,7 @@ describe('Single Category', function() {
         it('- Should delete the category', function(done) {
             request.del(`/categories/${categoryId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

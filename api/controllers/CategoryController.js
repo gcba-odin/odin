@@ -6,7 +6,6 @@
  */
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const mime = require('mime');
-const shortid = require('shortid');
 var SkipperDisk = require('skipper-disk');
 
 module.exports = {
@@ -29,7 +28,7 @@ module.exports = {
                         message: 'filetype not allowed'
                     });
                 } else {
-                    filename = _.snakeCase(data.name) + '.svg'
+                    filename = _.snakeCase(data.name) + '.svg';
                     return cb(null, filename);
                 }
             },
@@ -70,9 +69,6 @@ module.exports = {
 
             return res.negotiate();
         });
-
-
-
     }
 
 };

@@ -66,7 +66,7 @@ class ResponseBuilder {
      */
     build() {
         let body;
-        let elements = {
+        const elements = {
             meta: this._meta,
             error: this.error,
             data: this._data,

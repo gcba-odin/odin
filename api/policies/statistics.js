@@ -12,9 +12,9 @@ module.exports = (req, res, next) => {
         querystring: (_.isEmpty(req.query)) ? null : JSON.stringify(req.query),
         endpoint: req.path
     };
-    Statistic.create(data).exec(function created(err, newInstance) {
+    Statistic.create(data).exec(function created(err) {
         if (err) return res.negotiate(err);
     });
 
     next();
-}
+};

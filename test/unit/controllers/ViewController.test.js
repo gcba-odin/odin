@@ -973,7 +973,7 @@ describe('Single view', function() {
         it('- Should delete the view', function(done) {
             request.del(`/views/${viewId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

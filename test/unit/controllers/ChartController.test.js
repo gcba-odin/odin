@@ -918,7 +918,7 @@ describe('Single Chart', function() {
         it('- Should delete the chart', function(done) {
             request.del(`/charts/${chartId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

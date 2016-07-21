@@ -82,9 +82,9 @@ module.exports = {
                                 if (!_.isEmpty(charts))
                                     resources.push(views);
                                 return res.ok(resources);
-                            })
-                    }.bind(this))
-            }.bind(this))
+                            });
+                    }.bind(this));
+            }.bind(this));
     },
     findResource(model, filePk) {
         return model.find({

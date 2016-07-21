@@ -42,6 +42,6 @@ module.exports = {
         },
         ChartController: {
             create: ['addCreatedBy', 'addUrl']
-        },
+        }
     }
 };
