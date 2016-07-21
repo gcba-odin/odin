@@ -9,9 +9,15 @@
  */
 
 module.exports = function(data, config) {
+    var defaultNotFound = {
+        code: 'E_NOT_FOUND',
+        message: 'The requested resource could not be found.'
+    }
     const response = _.assign({
-        meta: _.get(config, 'meta', {}),
-        links: _.get(config, 'links', {})
+        meta: _.get(config, 'meta', defaultNotFound),
+        links: _.get(config, 'links', {
+            entryPoint: sails.config.odin.baseUrl
+        })
     }, _.get(config, 'root', {}));
 
     this.res.set({
