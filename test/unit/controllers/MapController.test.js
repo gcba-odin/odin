@@ -633,6 +633,32 @@ describe('All Maps', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /maps/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/maps/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /maps', function() {
@@ -720,9 +746,9 @@ describe('Single Map', function() {
     var fileId, mapId;
 
     // Upload geodata CSV file
-    describe('- POST /files [csv]', function() {
+    describe('- POST /maps [csv]', function() {
         it('- Should upload a new file [csv]', function(done) {
-            request.post('/files')
+            request.post('/maps')
                 .set('Accept', 'application/json')
                 .field('name', 'CSV File')
                 .field('description', 'An example file')
@@ -919,6 +945,32 @@ describe('Single Map', function() {
 
                     assert.property(result.body.links, 'record');
                     assert.isString(result.body.links.record);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Get an inexistent relation
+    describe('- GET /maps/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/maps/${mapId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
 
                     assert.property(result.body.links, 'all');
                     assert.isString(result.body.links.all);
