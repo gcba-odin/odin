@@ -973,7 +973,7 @@ describe('Single organization', function() {
         it('- Should delete the organization', function(done) {
             request.del(`/organizations/${organizationId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

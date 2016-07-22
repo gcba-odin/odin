@@ -31,7 +31,8 @@ module.exports = {
 
   http: {
     customMiddleware: function(app) {
-      app.use('/var', require('../node_modules/sails/node_modules/express')['static'](path.normalize(__dirname + '/../var')));
+      app.use('/var',
+          require('../node_modules/sails/node_modules/express')['static'](path.resolve(__dirname , '/../var')));
     },
 
     /**

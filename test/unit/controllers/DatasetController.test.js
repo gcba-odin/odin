@@ -3,8 +3,6 @@
 
 require('sails-test-helper');
 
-const sails = require('sails');
-const config = require('../../../config/env/test');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
@@ -1179,7 +1177,7 @@ describe('Single Dataset', function() {
         it('- Should delete the dataset', function(done) {
             request.del(`/datasets/${datasetId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });
