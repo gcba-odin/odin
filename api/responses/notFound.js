@@ -8,16 +8,41 @@
  * Used when the requested resource is not found, whether it doesn't exist.
  */
 
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const pluralize = require('pluralize');
+
 module.exports = function(data, config) {
+    if (_.isUndefined(config) || _.isUndefined(config.links)) {
+        config = {}
+        try {
+            // Find the name of all the models
+            // Check if any of the models match a part of the url
+            var exist = _.pickBy(_.keys(sails.models), function(val) {
+                val = pluralize(val);
+                return _.includes(this.req.path, val);
+            }.bind(this));
+
+            if (!_.isEmpty(exist)) {
+                config.links = {
+                    all: sails.config.odin.baseUrl + '/' + pluralize(_.values(exist)[0])
+                };
+            }
+        } catch (err) {
+            console.dir(err)
+
+            config.links = {
+                entryPoint: sails.config.odin.baseUrl
+            };
+        }
+
+    }
     var defaultNotFound = {
         code: 'E_NOT_FOUND',
         message: 'The requested resource could not be found.'
     };
     const response = _.assign({
         meta: _.get(config, 'meta', defaultNotFound),
-        links: _.get(config, 'links', {
-            entryPoint: sails.config.odin.baseUrl
-        })
+        links: _.get(config, 'links')
     }, _.get(config, 'root', {}));
 
     this.res.set({

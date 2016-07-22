@@ -94,6 +94,24 @@ module.exports = {
         },
 
         // Organizations
+
+        'DELETE /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+
+        'PATCH /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+        'PUT /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+
         'DELETE /organizations/:id': {
             controller: 'Delete',
             model: 'organization',
