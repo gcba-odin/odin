@@ -1,4 +1,4 @@
-module.exports = function(agenda) {
+module.exports = function() {
     var job = {
 
         // job name (optional) if not set,
@@ -28,4 +28,4 @@ module.exports = function(agenda) {
         }
     };
     return job;
-}
+};

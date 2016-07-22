@@ -8,12 +8,11 @@
  * Used when the requested resource is not found, whether it doesn't exist.
  */
 
-const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const pluralize = require('pluralize');
 
 module.exports = function(data, config) {
     if (_.isUndefined(config) || _.isUndefined(config.links)) {
-        config = {}
+        config = {};
         try {
             // Find the name of all the models
             // Check if any of the models match a part of the url
@@ -28,8 +27,6 @@ module.exports = function(data, config) {
                 };
             }
         } catch (err) {
-            console.dir(err)
-
             config.links = {
                 entryPoint: sails.config.odin.baseUrl
             };
