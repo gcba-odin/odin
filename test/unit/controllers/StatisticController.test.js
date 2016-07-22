@@ -6,7 +6,6 @@ require('sails-test-helper');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
-var statisticId;
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
@@ -75,13 +74,26 @@ describe('All Statistics', function() {
                             assert.isString(element.id);
                             assert.ok(shortid.isValid(element.id));
 
-                            assert.property(element, 'name');
-                            assert.isString(element.name);
+                            assert.property(element, 'method');
+                            assert.include(['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'], element.method);
 
-                            assert.property(element, 'description');
-                            if (element.description) assert.isString(element.description);
+                            assert.property(element, 'resource');
+                            assert.isString(element.resource);
 
-                            assert.property(element, 'createdBy');
+                            assert.property(element, 'endpoint');
+                            assert.isString(element.endpoint);
+
+                            assert.property(element, 'querystring');
+                            if (element.querystring) assert.isString(element.querystring);
+
+                            assert.property(element, 'client');
+                            if (element.client) assert.isString(element.client);
+
+                            assert.property(element, 'useragent');
+                            assert.isString(element.useragent);
+
+                            assert.property(element, 'ip');
+                            assert.isString(element.ip);
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
