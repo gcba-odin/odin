@@ -1,4 +1,8 @@
-module.exports = function() {
+var moment = require('moment');
+var jsonfile = require('jsonfile')
+const path = require('path');
+
+module.exports = function(agenda) {
     var job = {
 
         // job name (optional) if not set,
@@ -10,7 +14,7 @@ module.exports = function() {
 
         // method can be 'every <interval>', 'schedule <when>' or now
         //frequency supports cron strings
-        frequency: 'every 1 month',
+        frequency: 'every 5 seconds',
 
         // Jobs options
         //options: {
@@ -22,9 +26,41 @@ module.exports = function() {
         //data: {},
 
         // execute job
+
         run: function(job, done) {
-            console.dir(Statistic);
-            done();
+            Statistic.find().exec(function(err, records) {
+                if (err || _.isEmpty(records)) {
+                    console.log(err);
+                    done();
+                } else {
+                    firstRecord = _.head(records).createdAt;
+                    lastRecord = _.last(records).createdAt;
+                    json = {
+                        "from": firstRecord,
+                        "to": lastRecord,
+                        "createdAt": new Date(),
+                        "count": _.size(records),
+                        "records:": records
+                    };
+                    firstRecordFormatted = moment(firstRecord).format("MM.DD.YYYY");
+                    lastRecordFormatted = moment(lastRecord).format("MM.DD.YYYY");
+
+                    var filename = firstRecordFormatted + '-' + lastRecordFormatted + '.json';
+
+                    var file = path.join(sails.config.odin.statisticsPath, filename)
+
+                    console.log(file)
+
+                    jsonfile.writeFile(file, json, function(err) {
+                        console.log(err)
+                    })
+
+                    Statistic.destroy().exec(function(err) {
+                        if (err) console.log(err)
+                        done();
+                    });
+                }
+            });
         }
     };
     return job;
