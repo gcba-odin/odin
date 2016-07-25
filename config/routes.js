@@ -274,7 +274,6 @@ module.exports = {
 
         // Statuses
 
-        /*
         'GET /statuses/first': {
             blueprint: 'first',
             model: 'status'
@@ -333,7 +332,6 @@ module.exports = {
         },
 
         // 'OPTIONS /statuses/:id': { blueprinst: 'update', model: 'status' },
-        */
 
         // Filetypes
         'DELETE /filetypes/:id': {
