@@ -49,11 +49,12 @@ module.exports = {
                             //if name param is not defined, we put the file name as filename.
                             if (_.isUndefined(data.name)) {
                                 filename = file.filename;
+                                data.name = filename;
                                 return cb(null, file.filename);
                                 //else, we use name param
                             } else {
-                                data.name += '.' + extension;
-                                filename = data.name;
+                                filename = _.snakeCase(data.name) + '.' + extension;
+                                data.name = filename;
                                 return cb(null, filename);
 
                             }
@@ -80,20 +81,19 @@ module.exports = {
                             return res.serverError('Could not find the filetype uploaded: ' + extension);
                         }
                         data.type = record.id;
-                        // Check if the upload is a textfile (via mimetype)
 
-                        // if (/^text\/\w+$/.test(mimetype)) {
-                        var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
+                        if (record.api) {
+                            var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
 
-                        // Read the file
-                        fs.createReadStream(filePath)
-                            // Encode it
-                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
-                                if (err) return res.negotiate(err);
-                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                            // Read the file
+                            fs.createReadStream(filePath)
+                                // Encode it
+                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
+                                    if (err) return res.negotiate(err);
 
-                                // If the file is consumable via the API
-                                if (record.api) {
+                                    if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+
+                                    // If the file is consumable via the API
 
 
                                     //Should check which type the file is and convert it .
@@ -133,11 +133,11 @@ module.exports = {
                                             DataStorageService.mongoSave(dataset, filename, json, res);
                                         });
                                     }
-                                }
+                                    fs.writeFile(filePath, result, function() {});
 
-                                fs.writeFile(filePath, result, function() {});
-                            });
-                        // }
+
+                                });
+                        }
                         // Save the file metadata to the relational DB
                         UploadService.metadataSave(File, data, '/files', req, res);
 
