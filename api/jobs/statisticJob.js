@@ -47,16 +47,14 @@ module.exports = function(agenda) {
 
                     var filename = firstRecordFormatted + '-' + lastRecordFormatted + '.json';
 
-                    var file = path.join(sails.config.odin.statisticsPath, filename)
-
-                    console.log(file)
+                    var file = path.join(sails.config.odin.statisticsPath, filename);
 
                     jsonfile.writeFile(file, json, function(err) {
-                        console.log(err)
+                        console.log(err);
                     })
 
                     Statistic.destroy().exec(function(err) {
-                        if (err) console.log(err)
+                        if (err) console.log(err);
                         done();
                     });
                 }
