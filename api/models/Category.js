@@ -38,6 +38,9 @@ module.exports = {
             type: 'string',
             size: 6
         },
+        active: {
+            type: 'boolean'
+        },
         createdBy: {
             model: 'user',
             required: true

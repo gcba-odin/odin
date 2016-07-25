@@ -50,6 +50,16 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        gatheringDate: {
+            type: 'date'
+        },
+        updateDate: {
+            type: 'datetime'
+        },
+        updated: {
+            type: 'boolean',
+            defaultsTo: false
+        },
         type: {
             model: 'filetype'
                 // required: true
