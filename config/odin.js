@@ -1,7 +1,11 @@
 const path = require('path');
-var sails = require('sails');
+const sails = require('sails');
+
 module.exports.odin = {
-    uploadFolder: path.join(process.cwd(), 'files'),
+    baseUrl: 'http://localhost:3000',
+    kongHost: 'http://kongexample.com',
+
+    uploadFolder: 'files',
     defaultEncoding: 'utf8',
     dataStorage: {
         host: 'localhost',
@@ -14,9 +18,9 @@ module.exports.odin = {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'application/x-zip-compressed'
     ],
-    baseUrl: 'http://localhost:3000',
-    logPath: 'logs/' + sails.config.environment + '.log',
+
+    logPath: path.join('logs', sails.config.environment + '.log'),
     logLevel: 'error',
-    kongHost: 'http://kongexample.com',
+
     statisticsPath: 'stats'
 };
