@@ -902,7 +902,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -956,7 +956,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1010,7 +1010,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1064,7 +1064,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1118,7 +1118,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
