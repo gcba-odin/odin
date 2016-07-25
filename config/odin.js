@@ -17,5 +17,6 @@ module.exports.odin = {
     baseUrl: 'http://localhost:3000',
     logPath: 'logs/' + sails.config.environment + '.log',
     logLevel: 'error',
-    kongHost: 'http://kongexample.com'
+    kongHost: 'http://kongexample.com',
+    statisticsPath: 'stats'
 };
