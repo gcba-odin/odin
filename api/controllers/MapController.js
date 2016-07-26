@@ -26,7 +26,7 @@ module.exports = {
             if (err) return res.negotiate(err);
 
             if (link !== '') {
-                this.mapCreate(values)
+                this.mapCreate(values, req, res)
             } else {
 
                 // fetch the collection data of the file
@@ -58,13 +58,13 @@ module.exports = {
 
                     values.geojson = geoJson;
                     // Once the geoJson is created, we create the map
-                    this.mapCreate(values)
+                    this.mapCreate(values, req, res)
                 }.bind(this));
             }
         }.bind(this));
     },
 
-    mapCreate: function(values) {
+    mapCreate: function(values, req, res) {
         _Map.create(values).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
