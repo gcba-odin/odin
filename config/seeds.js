@@ -223,19 +223,19 @@ module.exports = {
         }],
         Status: [{
             id: 'nWRhpRV',
-            name: 'Draft'
+            name: 'Borrador'
         }, {
             id: 'oWRhpRV',
-            name: 'Under Review'
+            name: 'En revisión'
         }, {
             id: 'pWRhpRV',
-            name: 'Rejected'
+            name: 'Rechazado'
         }, {
             id: 'qWRhpRV',
-            name: 'Published'
+            name: 'Publicado'
         }, {
             id: 'rWRhpRV',
-            name: 'Unpublished'
+            name: 'Despublicado'
         }],
         Database: [{
             id: 'sWRhpRf',
@@ -435,7 +435,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 status: {
-                    name: 'Draft'
+                    name: 'Borrador'
                 },
                 owner: {
                     username: 'admin'
@@ -476,7 +476,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 status: {
-                    name: 'Under Review'
+                    name: 'En revisión'
                 },
                 owner: {
                     username: 'admin'
@@ -517,7 +517,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 status: {
-                    name: 'Rejected'
+                    name: 'Rechazado'
                 },
                 owner: {
                     username: 'admin'
@@ -558,7 +558,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 status: {
-                    name: 'Published'
+                    name: 'Publicado'
                 },
                 owner: {
                     username: 'admin'
@@ -599,7 +599,7 @@ module.exports = {
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 status: {
-                    name: 'Unpublished'
+                    name: 'Despublicado'
                 },
                 owner: {
                     username: 'admin'
@@ -634,7 +634,7 @@ module.exports = {
                     name: 'csv'
                 },
                 status: {
-                    name: 'Draft'
+                    name: 'Borrador'
                 },
                 organization: {
                     name: 'ACME'
@@ -674,7 +674,7 @@ module.exports = {
                     name: 'html'
                 },
                 status: {
-                    name: 'Under Review'
+                    name: 'En revisión'
                 },
                 organization: {
                     name: 'Umbrella Corp'
@@ -714,7 +714,7 @@ module.exports = {
                     name: 'ics'
                 },
                 status: {
-                    name: 'Rejected'
+                    name: 'Rechazado'
                 },
                 organization: {
                     name: 'Oscorp'
@@ -754,7 +754,7 @@ module.exports = {
                     name: 'rar'
                 },
                 status: {
-                    name: 'Published'
+                    name: 'Publicado'
                 },
                 organization: {
                     name: 'Aperture Labs'
@@ -794,7 +794,7 @@ module.exports = {
                     name: 'pdf'
                 },
                 status: {
-                    name: 'Unpublished'
+                    name: 'Despublicado'
                 },
                 organization: {
                     name: 'ACME'
