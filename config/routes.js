@@ -186,6 +186,7 @@ module.exports = {
 
         // Categories
         'POST /categories': 'Category.upload',
+        'PATCH /categories/:id': 'Category.update',
         'GET /categories/:id/image': 'Category.image',
         'DELETE /categories': {
             controller: 'NotImplemented',
@@ -229,11 +230,11 @@ module.exports = {
             model: 'category'
                 // policy: 'isAuthenticated'
         },
-        'PATCH /categories/:id': {
-            blueprint: 'update',
-            model: 'category'
-                // policy: 'isAuthenticated'
-        },
+        // 'PATCH /categories/:id': {
+        //     blueprint: 'update',
+        //     model: 'category'
+        //         // policy: 'isAuthenticated'
+        // },
         'HEAD /categories/*': {
             controller: 'Head',
             action: 'Head',

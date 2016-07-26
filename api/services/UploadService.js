@@ -151,29 +151,34 @@ module.exports = {
             if (!res.headersSent) return res.negotiate(err);
         });
         var filename = '';
-        uploadFile.upload({
-            saveAs: function(file, cb) {
-                var mimetype = mime.lookup(file.filename.split('.').pop());
+        if (!uploadFile.isNoop) {
 
-                if (mimetype !== 'image/svg+xml') {
-                    return res.negotiate({
-                        status: 415,
-                        code: 415,
-                        message: 'filetype not allowed'
-                    });
-                } else {
-                    filename = _.snakeCase(data.name) + '.svg';
-                    return cb(null, filename);
+            uploadFile.upload({
+                saveAs: function(file, cb) {
+                    var mimetype = mime.lookup(file.filename.split('.').pop());
+
+                    if (mimetype !== 'image/svg+xml') {
+                        return res.negotiate({
+                            status: 415,
+                            code: 415,
+                            message: 'filetype not allowed'
+                        });
+                    } else {
+                        filename = _.snakeCase(data.name) + '.svg';
+                        return cb(null, filename);
+                    }
+                },
+                dirname: path
+            }, function onUploadComplete(err, files) {
+                if (err) return res.serverError(err);
+                if (files.length === 0) {
+                    return res.badRequest('No file was uploaded');
                 }
-            },
-            dirname: path
-        }, function onUploadComplete(err, files) {
-            if (err) return res.serverError(err);
-            if (files.length === 0) {
-                return res.badRequest('No file was uploaded');
-            }
-            cb(data);
-        });
+                cb(data);
+            });
+        } else {
+            return cb(data);
+        }
     },
 
     metadataSave: function(model, data, modelName, req, res) {
@@ -306,7 +311,7 @@ module.exports = {
 
                 var associations = [];
 
-                _.forEach(builder._model.definition, function(value, key) {
+                _.forEach(model.definition, function(value, key) {
                     if (value.foreignKey) {
                         associations.push(key);
                     }
