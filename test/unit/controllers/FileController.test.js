@@ -814,7 +814,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'CSV File.csv');
+                    assert.equal(result.body.data.name, 'csv_file.csv');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
@@ -901,7 +901,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLS File.xls');
+                    assert.equal(result.body.data.name, 'xls_file.xls');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
@@ -988,7 +988,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLSX File.xlsx');
+                    assert.equal(result.body.data.name, 'xlsx_file.xlsx');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
