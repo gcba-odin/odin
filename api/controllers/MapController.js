@@ -59,9 +59,9 @@ module.exports = {
                     values.geojson = geoJson;
                     // Once the geoJson is created, we create the map
                     this.mapCreate(values)
-                });
+                }.bind(this));
             }
-        });
+        }.bind(this));
     },
 
     mapCreate: function(values) {
