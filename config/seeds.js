@@ -319,28 +319,28 @@ module.exports = {
             name: 'Eventual'
         }, {
             id: 'zWRhpR8',
-            name: 'Biannual'
+            name: 'Bianual'
         }, {
             id: 'sWRhpR1',
-            name: 'Annual'
+            name: 'Anual'
         }, {
             id: 'wWRhpR5',
             name: 'Semestral'
         }, {
             id: 'vWRhpR4',
-            name: 'Quarterly'
+            name: 'Trimestral'
         }, {
             id: '0WRhpR9',
-            name: 'Bimonthly'
+            name: 'Bimestral'
         }, {
             id: 'uWRhpR3',
-            name: 'Monthly'
+            name: 'Mensual'
         }, {
             id: 'yWRhpR7',
-            name: 'Weekly'
+            name: 'Semanal'
         }, {
             id: 'xWRhpR6',
-            name: 'Real Time'
+            name: 'Tiempo Real'
         }],
         Tag: [{
             id: 'tWRhpz2',
@@ -683,7 +683,7 @@ module.exports = {
                     name: 'Dataset 2'
                 },
                 updateFrequency: {
-                    name: 'Annual'
+                    name: 'Anual'
                 },
                 owner: {
                     username: 'admin'
@@ -723,7 +723,7 @@ module.exports = {
                     name: 'Dataset 3'
                 },
                 updateFrequency: {
-                    name: 'Monthly'
+                    name: 'Mensual'
                 },
                 owner: {
                     username: 'admin'
@@ -763,7 +763,7 @@ module.exports = {
                     name: 'Dataset 4'
                 },
                 updateFrequency: {
-                    name: 'Weekly'
+                    name: 'Semanal'
                 },
                 owner: {
                     username: 'admin'
@@ -803,7 +803,7 @@ module.exports = {
                     name: 'Dataset 5'
                 },
                 updateFrequency: {
-                    name: 'Quarterly'
+                    name: 'Trimestral'
                 },
                 owner: {
                     username: 'admin'
