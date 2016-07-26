@@ -14,7 +14,7 @@ module.exports = function(data, config) {
         data: data || {}
     }, _.get(config, 'root', {}));
 
-    if (!res.headersSent) {
+    if (!this.res.headersSent) {
         LogService.winstonLog('verbose', 'Server Error', {
             ip: this.req.ip,
             code: response.code,
