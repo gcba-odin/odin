@@ -46,7 +46,7 @@ module.exports = {
                         var point = {
                             geometry: {
                                 type: "Point",
-                                coordinates: [value[latitude], value[longitude]]
+                                coordinates: [value[longitude], value[latitude]]
                             },
                             type: 'Feature',
                             id: index + 1,
