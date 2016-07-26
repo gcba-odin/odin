@@ -20,12 +20,13 @@ module.exports = {
         File.findOne(pk).then(function(file) {
             if (!file) return res.notFound();
 
-            var dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.name;
+            var dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.fileName;
 
             var fileAdapter = SkipperDisk();
 
-            res.set('Content-Type', mime.lookup(file.name.split('.').pop()));
-            res.set('Content-Disposition', 'attachment; filename=' + file.name);
+            var extension = file.fileName.split('.').pop();
+            res.set('Content-Type', mime.lookup(extension));
+            res.set('Content-Disposition', 'attachment; filename=' + file.name + '.' + extension);
 
             LogService.winstonLog('verbose', 'file downloaded', {
                 ip: req.ip,

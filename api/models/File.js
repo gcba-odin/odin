@@ -20,6 +20,10 @@ module.exports = {
             primaryKey: true,
             size: 15
         },
+        fileName: {
+            type: 'string',
+            size: 15
+        },
         name: {
             type: 'string',
             required: true,

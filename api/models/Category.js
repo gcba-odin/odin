@@ -45,6 +45,10 @@ module.exports = {
             model: 'user',
             required: true
         },
+        fileName: {
+            type: 'string',
+            size: 15
+        },
         datasets: {
             collection: 'dataset',
             via: 'categories'

@@ -19,9 +19,10 @@ module.exports = {
     uploadFile: function(req, res) {
         var mimetype = '';
         var extension = '';
-        var filename = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
+        data.fileName = shortid.generate();
+
         var uploadFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
@@ -35,7 +36,6 @@ module.exports = {
                     saveAs: function(file, cb) {
 
                         //Get the mime and the extension of the file
-
                         mimetype = mime.lookup(file.filename.split('.').pop());
                         extension = file.filename.split('.').pop();
                         // If the mime is present on the array of allowed types we can save it
@@ -46,18 +46,8 @@ module.exports = {
                                 message: 'filetype not allowed'
                             });
                         } else {
-                            //if name param is not defined, we put the file name as filename.
-                            if (_.isUndefined(data.name)) {
-                                filename = file.filename;
-                                data.name = filename;
-                                return cb(null, file.filename);
-                                //else, we use name param
-                            } else {
-                                filename = _.snakeCase(data.name) + '.' + extension;
-                                data.name = filename;
-                                return cb(null, filename);
-
-                            }
+                            data.fileName += '.' + extension;
+                            return cb(null, data.fileName);
                         }
                     },
                     dirname: path.resolve(sails.config.odin.uploadFolder + '/' + dataset),
@@ -84,7 +74,7 @@ module.exports = {
 
                         // If the file is consumable via the API
                         if (record.api) {
-                            var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + filename;
+                            var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + data.fileName;
 
                             // Read the file
                             fs.createReadStream(filePath)
@@ -110,7 +100,7 @@ module.exports = {
                                             return result;
                                         }, []);
 
-                                        DataStorageService.mongoSave(dataset, filename, json, res);
+                                        DataStorageService.mongoSave(dataset, data.fileName, json, res);
 
 
                                     } else {
@@ -127,7 +117,7 @@ module.exports = {
                                             if (json.length === 0) return res.badRequest("Invalid or empty csv.");
 
                                             // Connect to the db
-                                            DataStorageService.mongoSave(dataset, filename, json, res);
+                                            DataStorageService.mongoSave(dataset, data.fileName, json, res);
                                         });
                                     }
                                     fs.writeFile(filePath, result, function() {});
@@ -146,11 +136,11 @@ module.exports = {
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
+        data.fileName = shortid.generate();
 
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
-        var filename = '';
         if (!uploadFile.isNoop) {
 
             uploadFile.upload({
@@ -164,8 +154,8 @@ module.exports = {
                             message: 'filetype not allowed'
                         });
                     } else {
-                        filename = _.snakeCase(data.name) + '.svg';
-                        return cb(null, filename);
+                        data.fileName += '.svg';
+                        return cb(null, data.fileName);
                     }
                 },
                 dirname: path

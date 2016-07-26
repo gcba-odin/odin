@@ -8,8 +8,6 @@ const Response = require('../services/ResponseBuilderService');
 
 module.exports = {
     collection(req, res) {
-        console.log('before builder1')
-
         var builder = new Response.ResponseOPTIONS(req, res, true);
 
         var methods = OptionsMethodService.getMethods.collectionMethods();
