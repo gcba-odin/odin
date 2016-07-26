@@ -73,7 +73,7 @@ module.exports = {
         'OPTIONS /users/count': {
             controller: 'Options',
             model: 'user',
-            action: 'query'
+            action: 'count'
         },
 
         'OPTIONS /users/:id': {
@@ -162,11 +162,6 @@ module.exports = {
             model: 'organization',
             action: 'collection'
         },
-        'OPTIONS /organizations/:id': {
-            controller: 'Options',
-            model: 'organization',
-            action: 'instance'
-        },
         'OPTIONS /organizations/first': {
             controller: 'Options',
             model: 'organization',
@@ -180,8 +175,14 @@ module.exports = {
         'OPTIONS /organizations/count': {
             controller: 'Options',
             model: 'organization',
-            action: 'query'
+            action: 'count'
         },
+        'OPTIONS /organizations/:id': {
+            controller: 'Options',
+            model: 'organization',
+            action: 'instance'
+        },
+
 
 
         // Categories
@@ -251,11 +252,6 @@ module.exports = {
             model: 'category',
             action: 'collection'
         },
-        'OPTIONS /categories/:id': {
-            controller: 'Options',
-            model: 'category',
-            action: 'instance'
-        },
         'OPTIONS /categories/first': {
             controller: 'Options',
             model: 'category',
@@ -269,7 +265,12 @@ module.exports = {
         'OPTIONS /categories/count': {
             controller: 'Options',
             model: 'category',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /categories/:id': {
+            controller: 'Options',
+            model: 'category',
+            action: 'instance'
         },
 
 
@@ -311,11 +312,6 @@ module.exports = {
             model: 'status',
             action: 'collection'
         },
-        'OPTIONS /statuses/:id': {
-            controller: 'Options',
-            model: 'status',
-            action: 'instance'
-        },
         'OPTIONS /statuses/first': {
             controller: 'Options',
             model: 'status',
@@ -329,10 +325,13 @@ module.exports = {
         'OPTIONS /statuses/count': {
             controller: 'Options',
             model: 'status',
-            action: 'query'
+            action: 'count'
         },
-
-        // 'OPTIONS /statuses/:id': { blueprinst: 'update', model: 'status' },
+        'OPTIONS /statuses/:id': {
+            controller: 'Options',
+            model: 'status',
+            action: 'instance'
+        },
 
         // Filetypes
         'DELETE /filetypes/:id': {
@@ -381,11 +380,6 @@ module.exports = {
             model: 'filetype',
             action: 'collection'
         },
-        'OPTIONS /filetypes/:id': {
-            controller: 'Options',
-            model: 'filetype',
-            action: 'instance'
-        },
         'OPTIONS /filetypes/first': {
             controller: 'Options',
             model: 'filetype',
@@ -399,9 +393,13 @@ module.exports = {
         'OPTIONS /filetypes/count': {
             controller: 'Options',
             model: 'filetype',
-            action: 'query'
+            action: 'count'
         },
-
+        'OPTIONS /filetypes/:id': {
+            controller: 'Options',
+            model: 'filetype',
+            action: 'instance'
+        },
 
         // Files
 
@@ -465,11 +463,6 @@ module.exports = {
             model: 'file',
             action: 'collection'
         },
-        'OPTIONS /files/:id': {
-            controller: 'Options',
-            model: 'file',
-            action: 'instance'
-        },
         'OPTIONS /files/first': {
             controller: 'Options',
             model: 'file',
@@ -483,9 +476,13 @@ module.exports = {
         'OPTIONS /files/count': {
             controller: 'Options',
             model: 'file',
-            action: 'query'
+            action: 'count'
         },
-
+        'OPTIONS /files/:id': {
+            controller: 'Options',
+            model: 'file',
+            action: 'instance'
+        },
 
         // Databases
 
@@ -525,11 +522,6 @@ module.exports = {
             model: 'database',
             action: 'collection'
         },
-        'OPTIONS /databases/:id': {
-            controller: 'Options',
-            model: 'database',
-            action: 'instance'
-        },
         'OPTIONS /databases/first': {
             controller: 'Options',
             model: 'database',
@@ -543,7 +535,12 @@ module.exports = {
         'OPTIONS /databases/count': {
             controller: 'Options',
             model: 'database',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /databases/:id': {
+            controller: 'Options',
+            model: 'database',
+            action: 'instance'
         },
 
 
@@ -605,11 +602,6 @@ module.exports = {
             model: 'dataset',
             action: 'collection'
         },
-        'OPTIONS /datasets/:id': {
-            controller: 'Options',
-            model: 'dataset',
-            action: 'instance'
-        },
         'OPTIONS /datasets/first': {
             controller: 'Options',
             model: 'dataset',
@@ -623,7 +615,12 @@ module.exports = {
         'OPTIONS /datasets/count': {
             controller: 'Options',
             model: 'dataset',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /datasets/:id': {
+            controller: 'Options',
+            model: 'dataset',
+            action: 'instance'
         },
 
 
@@ -676,11 +673,6 @@ module.exports = {
             model: 'tag',
             action: 'collection'
         },
-        'OPTIONS /tags/:id': {
-            controller: 'Options',
-            model: 'tag',
-            action: 'instance'
-        },
         'OPTIONS /tags/first': {
             controller: 'Options',
             model: 'tag',
@@ -694,7 +686,12 @@ module.exports = {
         'OPTIONS /tags/count': {
             controller: 'Options',
             model: 'tag',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /tags/:id': {
+            controller: 'Options',
+            model: 'tag',
+            action: 'instance'
         },
 
         // UpdateFrequencies
@@ -736,11 +733,6 @@ module.exports = {
             model: 'updatefrequency',
             action: 'collection'
         },
-        'OPTIONS /updatefrequencies/:id': {
-            controller: 'Options',
-            model: 'updatefrequency',
-            action: 'instance'
-        },
         'OPTIONS /updatefrequencies/first': {
             controller: 'Options',
             model: 'updatefrequency',
@@ -754,7 +746,12 @@ module.exports = {
         'OPTIONS /updatefrequencies/count': {
             controller: 'Options',
             model: 'updatefrequency',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /updatefrequencies/:id': {
+            controller: 'Options',
+            model: 'updatefrequency',
+            action: 'instance'
         },
 
         // Configs
@@ -796,11 +793,6 @@ module.exports = {
             model: 'config',
             action: 'collection'
         },
-        'OPTIONS /configs/:id': {
-            controller: 'Options',
-            model: 'config',
-            action: 'instance'
-        },
         'OPTIONS /configs/first': {
             controller: 'Options',
             model: 'config',
@@ -814,9 +806,13 @@ module.exports = {
         'OPTIONS /configs/count': {
             controller: 'Options',
             model: 'config',
-            action: 'query'
+            action: 'count'
         },
-
+        'OPTIONS /configs/:id': {
+            controller: 'Options',
+            model: 'config',
+            action: 'instance'
+        },
 
         // Logs
 
@@ -852,11 +848,6 @@ module.exports = {
             model: 'log',
             action: 'collection'
         },
-        'OPTIONS /logs/:id': {
-            controller: 'Options',
-            model: 'log',
-            action: 'instance'
-        },
         'OPTIONS /logs/first': {
             controller: 'Options',
             model: 'log',
@@ -870,7 +861,12 @@ module.exports = {
         'OPTIONS /logs/count': {
             controller: 'Options',
             model: 'log',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /logs/:id': {
+            controller: 'Options',
+            model: 'log',
+            action: 'instance'
         },
 
         // Maps
@@ -932,11 +928,6 @@ module.exports = {
             model: 'map',
             action: 'collection'
         },
-        'OPTIONS /maps/:id': {
-            controller: 'Options',
-            model: 'map',
-            action: 'instance'
-        },
         'OPTIONS /maps/first': {
             controller: 'Options',
             model: 'map',
@@ -950,7 +941,13 @@ module.exports = {
         'OPTIONS /maps/count': {
             controller: 'Options',
             model: 'map',
-            action: 'query'
+            action: 'count'
+        },
+
+        'OPTIONS /maps/:id': {
+            controller: 'Options',
+            model: 'map',
+            action: 'instance'
         },
 
         // Charts
@@ -1010,11 +1007,6 @@ module.exports = {
             model: 'chart',
             action: 'collection'
         },
-        'OPTIONS /charts/:id': {
-            controller: 'Options',
-            model: 'chart',
-            action: 'instance'
-        },
         'OPTIONS /charts/first': {
             controller: 'Options',
             model: 'chart',
@@ -1028,7 +1020,12 @@ module.exports = {
         'OPTIONS /charts/count': {
             controller: 'Options',
             model: 'chart',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /charts/:id': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'instance'
         },
 
         // Views
@@ -1089,11 +1086,6 @@ module.exports = {
             model: 'view',
             action: 'collection'
         },
-        'OPTIONS /views/:id': {
-            controller: 'Options',
-            model: 'view',
-            action: 'instance'
-        },
         'OPTIONS /views/first': {
             controller: 'Options',
             model: 'view',
@@ -1107,7 +1099,12 @@ module.exports = {
         'OPTIONS /views/count': {
             controller: 'Options',
             model: 'view',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /views/:id': {
+            controller: 'Options',
+            model: 'view',
+            action: 'instance'
         },
 
         // Statistics
@@ -1157,11 +1154,6 @@ module.exports = {
             model: 'statistic',
             action: 'collection'
         },
-        'OPTIONS /statistics/:id': {
-            controller: 'Options',
-            model: 'statistic',
-            action: 'instance'
-        },
         'OPTIONS /statistics/first': {
             controller: 'Options',
             model: 'statistic',
@@ -1175,7 +1167,12 @@ module.exports = {
         'OPTIONS /statistics/count': {
             controller: 'Options',
             model: 'statistic',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /statistics/:id': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'instance'
         }
     }
 };

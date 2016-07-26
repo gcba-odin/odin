@@ -59,6 +59,19 @@ module.exports = {
                     return {};
                 }
             };
+        },
+        countMethods: function() {
+            return {
+                'GET': function() {
+                    return AttributesService.countAttributes();
+                },
+                'HEAD': function() {
+                    return {};
+                },
+                'OPTIONS': function() {
+                    return {};
+                }
+            };
         }
     },
     getHeaders: function() {

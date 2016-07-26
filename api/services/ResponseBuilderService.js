@@ -846,12 +846,11 @@ class ResponseOPTIONS extends ResponseBuilder {
     // Count is jut for checking if the url is /model/count, and sets the response to integer instead of object
     constructor(req, res, many) {
         super(req, res);
-
-        var pk = actionUtil.requirePk(this.req);
-
         this._many = many;
 
         if (!this._many) {
+            var pk = actionUtil.requirePk(this.req);
+
             this._query = this._model.find(pk);
         }
     }

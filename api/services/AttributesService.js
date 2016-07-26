@@ -26,5 +26,10 @@ module.exports = {
     },
     setAttributes: function(model) {
         return AttributesService.baseAttributes(model);
+    },
+    countAttributes: function() {
+        return {
+            count: 'integer'
+        };
     }
 };
