@@ -25,9 +25,7 @@ module.exports = {
             if (!category) return res.notFound();
 
             var dirname = sails.config.odin.uploadFolder + '/categories/' + category.fileName;
-
             var fileAdapter = SkipperDisk();
-
             res.set('Content-Type', 'image/svg+xml');
             res.set('Content-Disposition', 'attachment; filename=' + _.snakeCase(category.name) + '.svg');
 

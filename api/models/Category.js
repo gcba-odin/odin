@@ -39,7 +39,8 @@ module.exports = {
             size: 6
         },
         active: {
-            type: 'boolean'
+            type: 'boolean',
+            defaultsTo: true
         },
         createdBy: {
             model: 'user',
@@ -47,7 +48,7 @@ module.exports = {
         },
         fileName: {
             type: 'string',
-            size: 15
+            size: 20
         },
         datasets: {
             collection: 'dataset',
@@ -61,7 +62,9 @@ module.exports = {
 
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+        next()
+    },
     beforeCreate: (values, next) => {
         values.image = _.replace(values.url, 'model', 'categories');
         values.image = _.replace(values.image, 'id', values.id);

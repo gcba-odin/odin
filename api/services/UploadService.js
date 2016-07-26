@@ -21,7 +21,6 @@ module.exports = {
         var extension = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
-        data.fileName = shortid.generate();
 
         var uploadFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
@@ -32,6 +31,7 @@ module.exports = {
         // If there is a file
 
         if (!uploadFile.isNoop) {
+            data.fileName = shortid.generate();
             uploadFile.upload({
                     saveAs: function(file, cb) {
 
@@ -136,12 +136,12 @@ module.exports = {
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
-        data.fileName = shortid.generate();
 
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
+            data.fileName = shortid.generate();
 
             uploadFile.upload({
                 saveAs: function(file, cb) {
@@ -223,108 +223,69 @@ module.exports = {
     },
 
     metadataUpdate: function(model, data, modelName, req, res) {
-
         // Look up the model
-        var Model = actionUtil.parseModel(req);
+        model.update(data.id, data).exec(function updated(err, records) {
 
-        // Locate and validate the required `id` parameter.
-        var pk = actionUtil.requirePk(req);
+            // Differentiate between waterline-originated validation errors
+            // and serious underlying issues. Respond with badRequest if a
+            // validation error is encountered, w/ validation info.
+            if (err) return res.negotiate(err);
 
-        // Default the value blacklist to just "id", so that models that have an
-        // "id" field that is _not_ the primary key don't have the id field
-        // updated mistakenly.  See https://github.com/balderdashy/sails/issues/3625
-        req.options.values = req.options.values || {};
-        req.options.values.blacklist = req.options.values.blacklist || ['id'];
 
-        // Create `values` object (monolithic combination of all parameters)
-        // But omit the blacklisted params (like JSONP callback param, etc.)
-        var values = actionUtil.parseValues(req);
+            // Because this should only update a single record and update
+            // returns an array, just use the first item.  If more than one
+            // record was returned, something is amiss.
+            if (!records || !records.length || records.length > 1) {
+                req._sails.log.warn(
+                    util.format('Unexpected output from `%s.update`.', Model.globalId)
+                );
+            }
 
-        // No matter what, don't allow changing the PK via the update blueprint
-        // (you should just drop and re-add the record if that's what you really want)
-        if (typeof values[Model.primaryKey] !== 'undefined' && values[Model.primaryKey] != pk) {
-            req._sails.log.warn('Cannot change primary key via update blueprint; ignoring value sent for `' + Model.primaryKey + '`');
-        }
-        // Make sure the primary key is unchanged
-        values[Model.primaryKey] = pk;
+            var updatedRecord = records[0];
 
-        // Find and update the targeted record.
-        //
-        // (Note: this could be achieved in a single query, but a separate `findOne`
-        //  is used first to provide a better experience for front-end developers
-        //  integrating with the blueprint API.)
-        var query = Model.findOne(pk);
-        // Populate the record according to the current "populate" settings
-        query = actionUtil.populateRequest(query, req);
+            // If we have the pubsub hook, use the Model's publish method
+            // to notify all subscribers about the update.
+            if (req._sails.hooks.pubsub) {
+                if (req.isSocket) {
+                    model.subscribe(req, records);
+                }
+                model.publishUpdate(updatedRecord.id, _.cloneDeep(data), !req.options.mirror && req, {
+                    previous: _.cloneDeep(matchingRecord.toJSON())
+                });
+            }
 
-        query.exec(function found(err, matchingRecord) {
+            LogService.log(req, updatedRecord.id);
 
-            if (err) return res.serverError(err);
-            if (!matchingRecord) return res.notFound();
+            LogService.winstonLog('info', modelName + ' updated', {
+                ip: req.ip,
+                resource: updatedRecord.id
+            });
 
-            Model.update(pk, values).exec(function updated(err, records) {
+            var associations = [];
 
-                // Differentiate between waterline-originated validation errors
-                // and serious underlying issues. Respond with badRequest if a
-                // validation error is encountered, w/ validation info.
+            _.forEach(model.definition, function(value, key) {
+                if (value.foreignKey) {
+                    associations.push(key);
+                }
+            });
+            //populate the response
+            model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
                 if (err) return res.negotiate(err);
 
-
-                // Because this should only update a single record and update
-                // returns an array, just use the first item.  If more than one
-                // record was returned, something is amiss.
-                if (!records || !records.length || records.length > 1) {
-                    req._sails.log.warn(
-                        util.format('Unexpected output from `%s.update`.', Model.globalId)
-                    );
-                }
-
-                var updatedRecord = records[0];
-
-                // If we have the pubsub hook, use the Model's publish method
-                // to notify all subscribers about the update.
-                if (req._sails.hooks.pubsub) {
-                    if (req.isSocket) {
-                        Model.subscribe(req, records);
-                    }
-                    Model.publishUpdate(pk, _.cloneDeep(values), !req.options.mirror && req, {
-                        previous: _.cloneDeep(matchingRecord.toJSON())
-                    });
-                }
-
-                LogService.log(req, updatedRecord.id);
-
-                LogService.winstonLog('info', modelName + ' updated', {
-                    ip: req.ip,
-                    resource: updatedRecord.id
-                });
-
-                var associations = [];
-
-                _.forEach(model.definition, function(value, key) {
-                    if (value.foreignKey) {
-                        associations.push(key);
+                return res.updated(updatedRecord, {
+                    meta: {
+                        code: sails.config.success.OK.code,
+                        message: sails.config.success.OK.message
+                    },
+                    links: {
+                        all: sails.config.odin.baseUrl + '/' + modelName,
+                        record: sails.config.odin.baseUrl + '/' + modelName + '/' + updatedRecord.id
                     }
                 });
-                //populate the response
-                model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
-                    if (err) return res.negotiate(err);
 
-                    res.updated(updatedRecord, {
-                        meta: {
-                            code: sails.config.success.OK.code,
-                            message: sails.config.success.OK.message
-                        },
-                        links: {
-                            all: sails.config.odin.baseUrl + '/' + modelName,
-                            record: sails.config.odin.baseUrl + '/' + modelName + '/' + updatedRecord.id
-                        }
-                    });
+            });
 
-                });
-
-            }); // </updated>
-        }); // </found>
+        }); // </updated>
 
     }
 
