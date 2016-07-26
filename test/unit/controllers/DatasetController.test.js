@@ -839,7 +839,7 @@ describe('Single Dataset', function() {
     // Get dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the dataset', function(done) {
-            request.get(`/datasets/${datasetId}?include=datasets`)
+            request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1115,7 +1115,7 @@ describe('Single Dataset', function() {
     // Get edited dataset
     describe('- GET /datasets/:id', function() {
         it('- Should get the edited dataset', function(done) {
-            request.get(`/datasets/${datasetId}?include=datasets`)
+            request.get(`/datasets/${datasetId}`)
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
