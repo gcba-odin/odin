@@ -651,8 +651,8 @@ describe('All Maps', function() {
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
 
-                    assert.property(result.body.links, 'entryPoint');
-                    assert.isString(result.body.links.entryPoint);
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
 
                     err ? done(err) : done();
                 });
