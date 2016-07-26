@@ -7,6 +7,7 @@
  */
 const fs = require('fs');
 var winston = require('winston');
+var path = require('path')
 
 module.exports = {
   bootstrap: cb => {
@@ -18,23 +19,27 @@ module.exports = {
       }
     });
 
+    var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
+
     // Create the logs folder
-    fs.lstat('logs', function(err, stats) {
+    fs.lstat(sails.config.odin.logFolder, function(err, stats) {
       if (err || !stats.isDirectory()) {
         fs.mkdirSync('logs');
+        // create the log file
+
+        fs.lstat(logCompletePath, function(err, stats) {
+          if (err || !stats.isFile()) {
+            var fd = fs.openSync(logCompletePath, 'w');
+          }
+        });
       }
     });
 
-    // create the log file
-    fs.lstat(sails.config.odin.logPath, function(err, stats) {
-      if (err || !stats.isFile()) {
-        var fd = fs.openSync(sails.config.odin.logPath, 'w');
-      }
-    });
+
 
     // Require and configure Winston with File
     winston.add(winston.transports.File, {
-      filename: sails.config.odin.logPath,
+      filename: logCompletePath,
       level: sails.config.odin.logLevel
     });
     winston.remove(winston.transports.Console);

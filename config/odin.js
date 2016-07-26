@@ -19,7 +19,9 @@ module.exports.odin = {
         'application/x-zip-compressed'
     ],
 
-    logPath: path.join('logs', sails.config.environment + '.log'),
+
+    logFile: sails.config.environment + '.log',
+    logFolder: 'logs',
     logLevel: 'error',
 
     statisticsPath: 'stats'
