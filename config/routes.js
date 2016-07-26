@@ -1109,6 +1109,12 @@ module.exports = {
 
         // Statistics
 
+        'POST /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
         'DELETE /statistics': {
             controller: 'NotImplemented',
             model: 'statistic',

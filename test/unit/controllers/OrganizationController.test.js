@@ -992,7 +992,7 @@ describe('Single organization', function() {
 
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'E_GONE');
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
