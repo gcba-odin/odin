@@ -863,8 +863,8 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'datasets');
-                    assert.isArray(result.body.data.datasets);
+                    // assert.property(result.body.data, 'datasets');
+                    // assert.isArray(result.body.data.datasets);
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
@@ -1139,12 +1139,12 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'datasets');
-                    assert.isArray(result.body.data.datasets);
+                    // assert.property(result.body.data, 'datasets');
+                    // assert.isArray(result.body.data.datasets);
 
-                    assert.property(result.body.data.datasets[0], 'name');
-                    assert.isString(result.body.data.datasets[0].name);
-                    assert.equal(result.body.data.datasets[0].name, 'Educación');
+                    // assert.property(result.body.data.datasets[0], 'name');
+                    // assert.isString(result.body.data.datasets[0].name);
+                    // assert.equal(result.body.data.datasets[0].name, 'Educación');
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
