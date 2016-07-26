@@ -1379,6 +1379,25 @@ module.exports = {
                     username: 'admin'
                 }
             }
+        }],
+        Statistic: [{
+            id: 'B12SrQH_',
+            method: 'OPTIONS',
+            resource: 'File',
+            endpoint: '/files/tWRhpRb',
+            querystring: '{ include: tags };',
+            client: 'logWhitelist',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
+        }, {
+            id: 'B12SrQH_',
+            method: 'OPTIONS',
+            resource: 'File',
+            endpoint: '/files/tWRhpRb',
+            querystring: '{ include: tags };',
+            client: 'logWhitelist',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
         }]
     }
 };
