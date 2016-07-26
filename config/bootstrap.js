@@ -8,25 +8,32 @@
 const fs = require('fs');
 var winston = require('winston');
 var path = require('path')
+var mkdirp = require('mkdirp');
 
 module.exports = {
   bootstrap: cb => {
 
     // Create the upload folder
-    fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
-      if (err || !stats.isDirectory()) {
-        fs.mkdirSync(sails.config.odin.uploadFolder);
-      }
+
+    mkdirp(sails.config.odin.uploadFolder, function(err) {
+      if (err) console.error(err)
+      else console.log('Upload folder created on: ' + sails.config.odin.uploadFolder)
     });
 
-    var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
+    // fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
+    //   if (err || !stats.isDirectory()) {
+    //     fs.mkdirSync(sails.config.odin.uploadFolder);
+    //   }
+    // });
+
 
     // Create the logs folder
-    fs.lstat(sails.config.odin.logFolder, function(err, stats) {
-      if (err || !stats.isDirectory()) {
-        fs.mkdirSync('logs');
-        // create the log file
+    var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
 
+    mkdirp(sails.config.odin.logFolder, function(err) {
+      if (err) console.error(err)
+      else {
+        console.log('Log folder created on: ' + sails.config.odin.logFolder)
         fs.lstat(logCompletePath, function(err, stats) {
           if (err || !stats.isFile()) {
             var fd = fs.openSync(logCompletePath, 'w');
@@ -36,6 +43,18 @@ module.exports = {
     });
 
 
+    // fs.lstat(sails.config.odin.logFolder, function(err, stats) {
+    //   if (err || !stats.isDirectory()) {
+    //     fs.mkdirSync(sails.config.odin.logFolder);
+    // create the log file
+
+
+    // create stats folder which will contain the statistics of the site
+
+    mkdirp(sails.config.odin.statisticsPath, function(err) {
+      if (err) console.error(err)
+      else console.log('Stats path created on: ' + sails.config.odin.statisticsPath)
+    });
 
     // Require and configure Winston with File
     winston.add(winston.transports.File, {
