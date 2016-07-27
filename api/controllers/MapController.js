@@ -21,6 +21,9 @@ module.exports = {
         var link = _.get(values, 'link', '');
 
         if (fileId === '') return res.notFound();
+
+        console.dir(propertiesArray);
+
         // look for the file with given id
         File.findOne(fileId).exec(function(err, record) {
             if (err) return res.negotiate(err);
@@ -30,7 +33,7 @@ module.exports = {
             } else {
 
                 // fetch the collection data of the file
-                FileContentsService.mongoContents(record.dataset, record.name, 0, 0, res, function(data) {
+                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
                     var geoJson = {
                         type: "FeatureCollection",
                         features: []
