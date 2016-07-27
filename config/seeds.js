@@ -2,7 +2,7 @@ module.exports = {
     fixtures: {
         order: [
             'Organization', 'User', 'Category', 'Status', 'Database', 'FileType', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log'
+            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -1390,7 +1390,7 @@ module.exports = {
             useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
             ip: '127.0.0.1'
         }, {
-            id: 'B12SrQH_',
+            id: 'B13SrQH_',
             method: 'OPTIONS',
             resource: 'File',
             endpoint: '/files/tWRhpRb',
