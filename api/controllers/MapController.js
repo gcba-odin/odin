@@ -7,7 +7,7 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-    create: function(req, res) {
+    create: function (req, res) {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
@@ -22,10 +22,8 @@ module.exports = {
 
         if (fileId === '') return res.notFound();
 
-        console.dir(propertiesArray);
-
         // look for the file with given id
-        File.findOne(fileId).exec(function(err, record) {
+        File.findOne(fileId).exec(function (err, record) {
             if (err) return res.negotiate(err);
 
             if (link !== '') {
@@ -33,41 +31,84 @@ module.exports = {
             } else {
 
                 // fetch the collection data of the file
-                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
-                    var geoJson = {
-                        type: "FeatureCollection",
-                        features: []
-                    };
+                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
 
-                    _.forEach(data, function(value, index) {
-                        var propertiesMap = {};
-                        // for each property sent we add it to the map
-                        _.forEach(propertiesArray, function(property) {
-                            propertiesMap[property] = value[property];
-                        });
-                        //geojson data
-                        var point = {
-                            geometry: {
-                                type: "Point",
-                                coordinates: [value[longitude], value[latitude]]
-                            },
-                            type: 'Feature',
-                            id: index + 1,
-                            properties: propertiesMap
-                        };
-                        // console.dir(point.geometry)
-                        geoJson.features.push(point);
-                    });
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function (geoJson) {
+                        values.geojson = geoJson;
+                        // Once the geoJson is created, we create the map
+                        this.mapCreate(values, req, res);
 
-                    values.geojson = geoJson;
-                    // Once the geoJson is created, we create the map
-                    this.mapCreate(values, req, res)
+                    }.bind(this));
                 }.bind(this));
             }
         }.bind(this));
     },
 
-    mapCreate: function(values, req, res) {
+    update: function (req, res) {
+        const values = actionUtil.parseValues(req);
+        // find the fileid within the parameters
+        var fileId = _.get(values, 'file', '');
+        var latitude = _.get(values, 'latitudeKey', '');
+        var longitude = _.get(values, 'longitudeKey', '');
+
+        var properties = _.get(values, 'properties', '');
+
+        var propertiesArray = _.split(properties, ',');
+
+        var link = _.get(values, 'link', '');
+
+        if (fileId === '') return res.notFound();
+
+        // look for the file with given id
+        File.findOne(fileId).exec(function (err, record) {
+            if (err) return res.negotiate(err);
+
+            if (link !== '') {
+                UploadService.metadataUpdate(Map, values, 'maps', req, res);
+            } else {
+                // fetch the collection data of the file
+                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
+
+                    this.generateGeoJson(latitude, longitude, propertiesArray, function (geoJson) {
+                        values.geojson = geoJson;
+                        // Once the geoJson is created, we create the map
+                        UploadService.metadataUpdate(Map, values, 'maps', req, res);
+                    });
+                }.bind(this));
+            }
+        }.bind(this));
+    },
+
+
+    generateGeoJson(data, latitude, longitude, propertiesArray, cb){
+        var geoJson = {
+            type: "FeatureCollection",
+            features: []
+        };
+
+        _.forEach(data, function (value, index) {
+            var propertiesMap = {};
+            // for each property sent we add it to the map
+            _.forEach(propertiesArray, function (property) {
+                propertiesMap[property] = value[property];
+            });
+            //geojson data
+            var point = {
+                geometry: {
+                    type: "Point",
+                    coordinates: [value[longitude], value[latitude]]
+                },
+                type: 'Feature',
+                id: index + 1,
+                properties: propertiesMap
+            };
+            // console.dir(point.geometry)
+            geoJson.features.push(point);
+        });
+        cb(geoJson);
+    },
+
+    mapCreate: function (values, req, res) {
         _Map.create(values).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -78,7 +119,7 @@ module.exports = {
                 }
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function(instance) {
+                    _.map(newInstance, function (instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
@@ -97,5 +138,6 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+
 };
