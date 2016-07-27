@@ -6,14 +6,13 @@ module.exports = {
     createZip: function(pk) {
 
         const path = sails.config.odin.uploadFolder + '/' + pk;
-
-        const output = fs.createWriteStream(sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip');
-
-
+        
         mkdirp(path, function(err) {
             if (err) console.error(err)
             else {
-                console.log('Dataset folder created on: ' + path)
+                const output = fs.createWriteStream(sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip');
+
+                console.log('Dataset folder created on: ' + path);
                 var archive = archiver('zip');
 
                 output.on('close', function() {
