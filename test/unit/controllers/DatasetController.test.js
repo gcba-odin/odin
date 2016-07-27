@@ -378,9 +378,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?name=Dataset 1&status.name=Draft', function() {
+    describe('- GET /datasets?name=Dataset 1&status.name=Borrador', function() {
         it('- Should get one dataset', function(done) {
-            request.get('/datasets?name=Dataset 1&status.name=Draft')
+            request.get('/datasets?name=Dataset 1&status.name=Borrador')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -409,7 +409,7 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Draft');
+                    assert.equal(result.body.data[0].status.name, 'Borrador');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -420,9 +420,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?name=Dataset 1&status.name=Published', function() {
+    describe('- GET /datasets?name=Dataset 1&status.name=Publicado', function() {
         it('- Should get no record', function(done) {
-            request.get('/datasets?name=Dataset 1&status.name=Published')
+            request.get('/datasets?name=Dataset 1&status.name=Publicado')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -452,9 +452,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?status.name=Published', function() {
+    describe('- GET /datasets?status.name=Publicado', function() {
         it('- Should get one dataset', function(done) {
-            request.get('/datasets?status.name=Published')
+            request.get('/datasets?status.name=Publicado')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -483,7 +483,7 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Published');
+                    assert.equal(result.body.data[0].status.name, 'Publicado');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -1088,7 +1088,7 @@ describe('Single Dataset', function() {
 
                     assert.property(result.body.data.status, 'name');
                     assert.isString(result.body.data.status.name);
-                    assert.equal(result.body.data.status.name, 'Published');
+                    assert.equal(result.body.data.status.name, 'Publicado');
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -1151,7 +1151,7 @@ describe('Single Dataset', function() {
 
                     assert.property(result.body.data.status, 'name');
                     assert.isString(result.body.data.status.name);
-                    assert.equal(result.body.data.status.name, 'Published');
+                    assert.equal(result.body.data.status.name, 'Publicado');
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);

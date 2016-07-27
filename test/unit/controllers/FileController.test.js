@@ -374,9 +374,9 @@ describe('All Files', function() {
         });
     });
 
-    describe('- GET /files?name=file 1&status.name=Draft', function() {
+    describe('- GET /files?name=file 1&status.name=Borrador', function() {
         it('- Should get one file', function(done) {
-            request.get('/files?name=file 1&status.name=Draft')
+            request.get('/files?name=file 1&status.name=Borrador')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -405,7 +405,7 @@ describe('All Files', function() {
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Draft');
+                    assert.equal(result.body.data[0].status.name, 'Borrador');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -448,9 +448,9 @@ describe('All Files', function() {
         });
     });
 
-    describe('- GET /files?status.name=Published', function() {
+    describe('- GET /files?status.name=Publicado', function() {
         it('- Should get one file', function(done) {
-            request.get('/files?status.name=Published')
+            request.get('/files?status.name=Publicado')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1113,7 +1113,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'CSV File.csv');
+                    assert.equal(result.body.data.name, 'CSV File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
@@ -1181,7 +1181,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLS File.xls');
+                    assert.equal(result.body.data.name, 'XLS File);
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
@@ -1249,7 +1249,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLSX File.xlsx');
+                    assert.equal(result.body.data.name, 'XLSX File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);

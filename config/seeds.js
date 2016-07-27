@@ -1386,7 +1386,7 @@ module.exports = {
             resource: 'File',
             endpoint: '/files/tWRhpRb',
             querystring: '{ include: tags };',
-            client: 'logWhitelist',
+            client: '',
             useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
             ip: '127.0.0.1'
         }, {
@@ -1395,9 +1395,19 @@ module.exports = {
             resource: 'File',
             endpoint: '/files/tWRhpRb',
             querystring: '{ include: tags };',
-            client: 'logWhitelist',
+            client: '',
             useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
             ip: '127.0.0.1'
-        }]
+        },
+            {
+                id: 'B225rQH_',
+                method: 'GET',
+                resource: 'File',
+                endpoint: '/files/first',
+                querystring: '',
+                client: '',
+                useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+                ip: '127.0.0.1'
+            }]
     }
 };

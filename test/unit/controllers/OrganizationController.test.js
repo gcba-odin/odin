@@ -984,7 +984,7 @@ describe('Single organization', function() {
         it('- Should get error 404', function(done) {
             request.get(`/organizations/${organizationId}`)
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(410)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
