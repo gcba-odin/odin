@@ -53,7 +53,7 @@ module.exports = {
                 if (filetype.api) {
 
                     var builder = new Response.ResponseGET(req, res, true);
-                    builder.contentsQuery(file.dataset, file.name, function(data) {
+                    builder.contentsQuery(file.dataset, file.fileName, function(data) {
 
                         return res.ok(data, {
                             meta: builder.meta(' '),
