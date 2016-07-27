@@ -1181,7 +1181,7 @@ describe('Single File', function() {
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
-                    assert.equal(result.body.data.name, 'XLS File);
+                    assert.equal(result.body.data.name, 'XLS File');
                     assert.equal(result.body.data.description, 'An example file');
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
                     assert.startsWith(result.body.data.url, `http://localhost`);
