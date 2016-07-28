@@ -907,8 +907,9 @@ module.exports = {
         },
 
         'PATCH /maps/:id': {
-            blueprint: 'update',
-            model: 'map'
+            controller: 'Map',
+            model: 'map',
+            action: 'update'
                 // policy: 'isAuthenticated'
         },
 
