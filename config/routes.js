@@ -907,7 +907,7 @@ module.exports = {
         },
 
         'PATCH /maps/:id': {
-            controller: 'Maps',
+            controller: 'Map',
             model: 'map',
             action: 'update'
                 // policy: 'isAuthenticated'
