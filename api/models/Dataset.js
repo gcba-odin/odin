@@ -40,7 +40,8 @@ module.exports = {
         },
         starred: {
             type: 'boolean',
-            defaultsTo: false
+            defaultsTo: false,
+            boolean: true
         },
         optional1: {
             type: 'string',

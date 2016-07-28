@@ -197,14 +197,21 @@ class ResponseGET extends ResponseBuilder {
 
                     this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
                         if (collections.indexOf(key) === -1) {
-                            // If the condition is or we split the values given with comma
-                            // And then add it each one of the values as an element of the OR query
-                            var values = _.split(val, ',');
-                            _.forEach(values, function(value) {
-                                result.or.push(_.set({}, key, {
-                                    [this.params.match]: value
-                                }));
-                            }.bind(this));
+
+                            if (this._model.definition[key].type === 'boolean') {
+                                result.or.push({
+                                    [key]: val
+                                })
+                            } else {
+                                // If the condition is or we split the values given with comma
+                                // And then add it each one of the values as an element of the OR query
+                                var values = _.split(val, ',');
+                                _.forEach(values, function(value) {
+                                    result.or.push(_.set({}, key, {
+                                        [this.params.match]: value
+                                    }));
+                                }.bind(this));
+                            }
                         }
                         //if it is a collection  we add it to the include object,
                         // and store it in the collection filter array.
@@ -217,6 +224,7 @@ class ResponseGET extends ResponseBuilder {
                         or: []
                     });
                 } else {
+
                     // Condition is AND
                     this.params.where.full = _.transform(this.params.where.full, function(result, val, key) {
 
@@ -258,6 +266,7 @@ class ResponseGET extends ResponseBuilder {
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
         } else {
+
             this.params.pk = actionUtil.requirePk(this.req);
 
             this._query = this._model.find(this.params.pk);
