@@ -64,7 +64,7 @@ module.exports = {
             if (err) return res.negotiate(err);
 
             if (link !== '') {
-                UploadService.metadataUpdate(Map, values, 'maps', req, res);
+                UploadService.metadataUpdate(_Map, values, 'maps', req, res);
             } else {
                 // fetch the collection data of the file
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
@@ -72,7 +72,7 @@ module.exports = {
                     this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson) {
                         values.geojson = geoJson;
                         // Once the geoJson is created, we create the map
-                        UploadService.metadataUpdate(Map, values, 'maps', req, res);
+                        UploadService.metadataUpdate(_Map, values, 'maps', req, res);
                     });
                 }.bind(this));
             }
