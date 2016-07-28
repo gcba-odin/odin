@@ -4,6 +4,9 @@ var ipaddr = require('ipaddr.js');
 module.exports = (req, res, next) => {
     //TBD: Client with KONG!
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log('\n\n\nx-forwared-for = ' + req.headers['x-forwarded-for']);
+    console.log('req ip = ' + req.ip)
+    console.log('req.connection.remoteaddres = ' + req.connection.remoteAddress)
 
     // automatically parse and converts to ipv4
     var addr = ipaddr.process(ip);
