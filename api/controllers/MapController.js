@@ -7,7 +7,7 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-    create: function (req, res) {
+    create: function(req, res) {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
@@ -23,7 +23,7 @@ module.exports = {
         if (fileId === '') return res.notFound();
 
         // look for the file with given id
-        File.findOne(fileId).exec(function (err, record) {
+        File.findOne(fileId).exec(function(err, record) {
             if (err) return res.negotiate(err);
 
             if (link !== '') {
@@ -31,9 +31,9 @@ module.exports = {
             } else {
 
                 // fetch the collection data of the file
-                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
+                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
 
-                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function (geoJson) {
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson) {
                         values.geojson = geoJson;
                         // Once the geoJson is created, we create the map
                         this.mapCreate(values, req, res);
@@ -44,7 +44,7 @@ module.exports = {
         }.bind(this));
     },
 
-    update: function (req, res) {
+    update: function(req, res) {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
@@ -60,16 +60,16 @@ module.exports = {
         if (fileId === '') return res.notFound();
 
         // look for the file with given id
-        File.findOne(fileId).exec(function (err, record) {
+        File.findOne(fileId).exec(function(err, record) {
             if (err) return res.negotiate(err);
 
             if (link !== '') {
                 UploadService.metadataUpdate(Map, values, 'maps', req, res);
             } else {
                 // fetch the collection data of the file
-                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
+                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
 
-                    this.generateGeoJson(latitude, longitude, propertiesArray, function (geoJson) {
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson) {
                         values.geojson = geoJson;
                         // Once the geoJson is created, we create the map
                         UploadService.metadataUpdate(Map, values, 'maps', req, res);
@@ -80,16 +80,16 @@ module.exports = {
     },
 
 
-    generateGeoJson(data, latitude, longitude, propertiesArray, cb){
+    generateGeoJson(data, latitude, longitude, propertiesArray, cb) {
         var geoJson = {
             type: "FeatureCollection",
             features: []
         };
 
-        _.forEach(data, function (value, index) {
+        _.forEach(data, function(value, index) {
             var propertiesMap = {};
             // for each property sent we add it to the map
-            _.forEach(propertiesArray, function (property) {
+            _.forEach(propertiesArray, function(property) {
                 propertiesMap[property] = value[property];
             });
             //geojson data
@@ -108,7 +108,7 @@ module.exports = {
         cb(geoJson);
     },
 
-    mapCreate: function (values, req, res) {
+    mapCreate: function(values, req, res) {
         _Map.create(values).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -119,7 +119,7 @@ module.exports = {
                 }
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function (instance) {
+                    _.map(newInstance, function(instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
