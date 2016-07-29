@@ -13,15 +13,19 @@ module.exports = {
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
 
-        var path = sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip';
-        var fileAdapter = SkipperDisk();
+        Dataset.findOne(pk).then(function(dataset) {
 
-        res.set('Content-Type', 'application/zip');
-        res.set('Content-Disposition', 'attachment; filename=dataset-' + pk + '.zip');
+            var path = sails.config.odin.datasetZipFolder + '/' + dataset.id + '.zip';
 
-        fileAdapter.read(path).on('error', function(err) {
-            return res.serverError(err);
-        }).pipe(res);
+            var fileAdapter = SkipperDisk();
+
+            res.set('Content-Type', 'application/zip');
+            res.set('Content-Disposition', 'attachment; filename=' + dataset.name + '.zip');
+
+            fileAdapter.read(path).on('error', function(err) {
+                return res.serverError(err);
+            }).pipe(res);
+        })
     },
     feedRss: function(req, res) {
         var feedOptions = {

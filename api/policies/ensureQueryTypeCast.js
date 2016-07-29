@@ -6,9 +6,7 @@
             typeCast = new Cast();
 
         typeCast.initialize(Model._attributes);
-        console.dir(req.query)
         req.query = typeCast.run(req.query);
-        console.dir(req.query)
 
         next();
     }

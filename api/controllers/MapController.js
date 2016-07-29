@@ -102,7 +102,6 @@ module.exports = {
                 id: index + 1,
                 properties: propertiesMap
             };
-            // console.dir(point.geometry)
             geoJson.features.push(point);
         });
         cb(geoJson);

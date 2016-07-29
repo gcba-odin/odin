@@ -13,12 +13,20 @@ var mkdirp = require('mkdirp');
 module.exports = {
   bootstrap: cb => {
 
+    console.dir('Inside bootstrap function');
+
     // Create the upload folder
 
     mkdirp(sails.config.odin.uploadFolder, function(err) {
       if (err) console.error(err)
       else console.log('Upload folder created on: ' + sails.config.odin.uploadFolder)
     });
+
+    mkdirp(sails.config.odin.datasetZipFolder, function(err) {
+      if (err) console.error(err)
+      else console.log('Zip folder created on: ' + sails.config.odin.datasetZipFolder)
+    });
+
 
     // fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
     //   if (err || !stats.isDirectory()) {

@@ -6,6 +6,8 @@ module.exports.odin = {
     kongHost: 'http://kongexample.com',
 
     uploadFolder: 'files',
+    datasetZipFolder: 'datasets',
+
     defaultEncoding: 'utf8',
     dataStorage: {
         host: 'localhost',
