@@ -25,10 +25,6 @@ module.exports = {
             size: 150,
             minLength: 1
         },
-        file: {
-            model: 'file'
-                // required: true
-        },
         description: {
             type: 'string',
             size: 350
@@ -36,6 +32,11 @@ module.exports = {
         notes: {
             type: 'string',
             size: 500
+        },
+        type: {
+            type: 'string',
+            required: true,
+            enum: ['bar', 'pie', 'line', 'stackedbar', 'heatmap']
         },
         url: {
             type: 'string',
@@ -48,6 +49,10 @@ module.exports = {
         },
         publishedAt: {
             type: 'datetime'
+        },
+        file: {
+            model: 'file'
+                // required: true
         },
         createdBy: {
             model: 'user'
