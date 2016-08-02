@@ -35,7 +35,6 @@ module.exports = {
         },
         type: {
             type: 'string',
-            required: true,
             enum: ['bar', 'pie', 'line', 'stackedbar', 'heatmap']
         },
         url: {
