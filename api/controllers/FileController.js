@@ -73,15 +73,15 @@ module.exports = {
         this.findResource(_Map, pk)
             .then(function(maps) {
                 if (!_.isEmpty(maps))
-                    resources[maps] = maps;
+                    resources['maps'] = maps;
                 this.findResource(View, pk)
                     .then(function(views) {
                         if (!_.isEmpty(views))
-                            resources[views] = views;
+                            resources['views'] = views;
                         this.findResource(Chart, pk)
                             .then(function(charts) {
                                 if (!_.isEmpty(charts))
-                                    resources[charts] = charts;
+                                    resources['charts'] = charts;
                                 return res.ok(resources);
                             });
                     }.bind(this));
