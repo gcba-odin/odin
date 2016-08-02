@@ -45,6 +45,11 @@ module.exports = {
             url: true,
             size: 500
         },
+        link: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
         embedCode: {
             type: 'string',
             size: 500

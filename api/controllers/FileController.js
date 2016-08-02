@@ -67,21 +67,21 @@ module.exports = {
         });
     },
     resources: function(req, res) {
-        var resources = [];
+        var resources = {};
         const pk = actionUtil.requirePk(req);
 
         this.findResource(_Map, pk)
             .then(function(maps) {
                 if (!_.isEmpty(maps))
-                    resources = _.concat(resources, maps);
+                    resources[maps] = maps;
                 this.findResource(View, pk)
                     .then(function(views) {
                         if (!_.isEmpty(views))
-                            resources = _.concat(resources, maps);
+                            resources[views] = views;
                         this.findResource(Chart, pk)
                             .then(function(charts) {
                                 if (!_.isEmpty(charts))
-                                    resources.push(views);
+                                    resources[charts] = charts;
                                 return res.ok(resources);
                             });
                     }.bind(this));
