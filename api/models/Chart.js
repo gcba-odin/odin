@@ -50,6 +50,13 @@ module.exports = {
         data: {
             type: 'json'
         },
+        dataSeries: {
+            type: 'string'
+        },
+        dataType: {
+            type: 'string',
+            enum: ['quantitative', 'qualitative']
+        },
         embedCode: {
             type: 'string',
             size: 500
