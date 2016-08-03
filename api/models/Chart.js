@@ -47,6 +47,9 @@ module.exports = {
             url: true,
             size: 500
         },
+        data: {
+            type: 'json'
+        },
         embedCode: {
             type: 'string',
             size: 500

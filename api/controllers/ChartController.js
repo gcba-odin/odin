@@ -9,44 +9,55 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
 
-    create: function(req, res) {
+    create: function (req, res) {
 
         const values = actionUtil.parseValues(req);
 
         var fileId = _.get(values, 'file', '');
         var type = _.get(values, 'type', '');
         var subtype = _.get(values, 'subtype', '');
+
+        var element = _.get(values, 'element', '');
         var element1 = _.get(values, 'element1', '');
         var element2 = _.get(values, 'element2', '');
 
+        element1 = element;
 
-        File.findOne(fileId).exec(function(err, record) {
+        // var serie = [element1];
+
+        File.findOne(fileId).exec(function (err, record) {
             if (err) return res.negotiate(err);
-            FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(table) {
+            FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (table) {
 
-                if (subtype === 'qualitative') {
-                    console.log('qualitative chart');
-                    var chartData = _.groupBy(table, function(value) {
+                if (subtype === 'quantitative') {
+                    console.log('quantitative chart');
+
+                    //if the map is qualitative we group all the data referenced by the element asked
+
+                    var chartData = _.groupBy(table, function (value) {
                         return value[element1];
                     });
-                    _.each(chartData, function(val, key) {
-                        console.log('\nkey = ' + key)
-                        console.log('val = ' + _.size(val))
-                    })
-                    var serie = _.keys(chartData);
-                    var labels = _.values(chartData);
                 } else {
-                    if (subtype === 'quantitative') {
-                        console.log('quantitative chart');
-                        chartData = _.transform(data, function(result, value) {
-                            var key = value[element1]
-                            var val = value[element2]
+                    if (subtype === 'qualitative') {
+                        console.log('qualitative chart');
+                        //if the chart is quantitative return associative array
+                        var chartData = _.transform(table, function (result, value) {
+                            var key = value[element1];
+                            var val = value[element2];
                             result[key] = val;
                         }, {});
                         console.log('chart data = ' + chartData);
                     }
 
                 }
+                values.data = {
+                    labels: _.keys(chartData),
+                    data: _.map(_.values(chartData),_.size)
+                };
+                console.dir(values.data)
+
+                UploadService.metadataSave(Chart, values, 'chart', req, res);
+
             });
         });
     }
