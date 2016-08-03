@@ -40,8 +40,6 @@ module.exports = {
 
             var element1 = dataSeries[0];
             var element2 = dataSeries[1];
-            console.dir(element1)
-            console.dir(element2)
             // var serie = [element1];
 
             File.findOne(fileId).exec(function (err, record) {
@@ -49,7 +47,6 @@ module.exports = {
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (table) {
 
                     if (dataType === 'quantitative') {
-                        console.log('quantitative chart');
 
                         //if the map is qualitative we group all the data referenced by the element asked
 
@@ -58,12 +55,10 @@ module.exports = {
                         });
                     } else {
                         if (dataType === 'qualitative') {
-                            console.log('qualitative chart');
                             //if the chart is quantitative return associative array
                             var chartData = _.transform(table, function (result, value) {
                                 var key = value[element1];
                                 var val = value[element2];
-                                console.dir(val)
                                 result[key] = val;
                             }, {});
                         }
