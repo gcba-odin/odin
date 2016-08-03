@@ -46,15 +46,13 @@ module.exports = {
                             var val = value[element2];
                             result[key] = val;
                         }, {});
-                        console.log('chart data = ' + chartData);
                     }
-
                 }
                 values.data = {
                     labels: _.keys(chartData),
                     data: _.map(_.values(chartData),_.size)
                 };
-                console.dir(values.data)
+                console.dir(values.data);
 
                 UploadService.metadataSave(Chart, values, 'chart', req, res);
 
