@@ -51,7 +51,7 @@ module.exports = {
             type: 'json'
         },
         dataSeries: {
-            type: 'string'
+            type: 'array'
         },
         dataType: {
             type: 'string',
