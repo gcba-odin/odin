@@ -953,6 +953,9 @@ module.exports = {
 
         // Charts
 
+        'POST /chart': 'Chart.create',
+
+
         'DELETE /charts': {
             controller: 'NotImplemented',
             model: 'chart',

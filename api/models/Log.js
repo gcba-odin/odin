@@ -28,7 +28,8 @@ module.exports = {
             type: 'string',
             required: true,
             enum: ['category', 'dataset', 'fileType', 'file',
-                'organization', 'status', 'tag', 'updateFrequency', 'user']
+                'organization', 'status', 'tag', 'updateFrequency', 'user'
+            ]
         },
         resource: {
             type: 'string',
@@ -45,7 +46,7 @@ module.exports = {
         }
     },
 
-    searchables: [],
+    searchables: ['action', 'target', 'resource'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => next()
