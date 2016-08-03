@@ -123,6 +123,11 @@ module.exports = {
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next(),
+    beforeCreate: (values, next) => {
+        Config.findOne({key: 'defaultStatus'}).exec(function (err, record) {
+            values.status = record.value;
+            next();
+        });
+    },
     afterCreate: (values, next) => next()
 };

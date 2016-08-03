@@ -1264,6 +1264,17 @@ module.exports = {
                 }
             }
         }, {
+            id: '0ogPzIz9',
+            description: 'Estado por defecto',
+            type: 'string',
+            key: 'defaultStatus',
+            value: 'nWRhpRV',
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
             id: '2ogPzIz9',
             description: 'An example config.',
             type: 'string',
