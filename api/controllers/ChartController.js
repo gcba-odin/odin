@@ -35,11 +35,10 @@ module.exports = {
             var fileId = _.get(values, 'file', '');
             var type = _.get(values, 'type', '');
             var dataType = _.get(values, 'dataType', '');
+            values.dataSeries = _.split(_.get(values, 'dataSeries', ''), ',');
 
-            var dataSeries = _.split(_.get(values, 'dataSeries', ''), ',');
-
-            var element1 = dataSeries[0];
-            var element2 = dataSeries[1];
+            var element1 = values.dataSeries[0];
+            var element2 = values.dataSeries[1];
             // var serie = [element1];
 
             File.findOne(fileId).exec(function (err, record) {
