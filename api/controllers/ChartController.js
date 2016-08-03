@@ -44,15 +44,15 @@ module.exports = {
                         var chartData = _.transform(table, function (result, value) {
                             var key = value[element1];
                             var val = value[element2];
+                            console.dir(val)
                             result[key] = val;
                         }, {});
                     }
                 }
                 values.data = {
                     labels: _.keys(chartData),
-                    data: _.map(_.values(chartData),_.size)
+                    data: (subtype === 'qualitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
                 };
-                console.dir(values.data);
 
                 UploadService.metadataSave(Chart, values, 'chart', req, res);
 
