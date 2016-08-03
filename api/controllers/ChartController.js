@@ -10,25 +10,25 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 module.exports = {
 
     create: function (req, res) {
-        this.createChart(req, res,function (values) {
+        this.createChart(req, res, function (values) {
             UploadService.metadataSave(Chart, values, 'chart', req, res);
         });
     },
     update: function (req, res) {
-        this.createChart(req,res, function (values) {
+        this.createChart(req, res, function (values) {
             UploadService.metadataUpdate(Chart, values, 'chart', req, res);
         });
     },
 
-    createChart: function (req,res, cb) {
+    createChart: function (req, res, cb) {
 
 
         const values = actionUtil.parseValues(req);
+        
+        var link = _.get(values, 'link', null);
 
-        var link = _.get(values, 'link', '');
-
-        if (link !== '') {
-            cb(values)
+        if (link !== null) {
+            cb(values);
         }
         else {
 
@@ -40,8 +40,8 @@ module.exports = {
             var element1 = values.dataSeries[0];
             var element2 = values.dataSeries[1];
             // var serie = [element1];
-
             File.findOne(fileId).exec(function (err, record) {
+
                 if (err) return res.negotiate(err);
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (table) {
 
@@ -67,7 +67,7 @@ module.exports = {
                         data: (dataType === 'qualitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
                     };
 
-                    cb(values)
+                    cb(values);
 
                 });
             });
