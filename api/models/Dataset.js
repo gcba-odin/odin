@@ -124,7 +124,9 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        Config.findOne({key: 'defaultStatus'}).exec(function (err, record) {
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function(err, record) {
             values.status = record.value;
             next();
         });

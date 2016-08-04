@@ -40,6 +40,10 @@ module.exports = {
       type: 'string',
       size: 250
     },
+    model: {
+      type: 'string',
+      size: 50
+    },
     updatedBy: {
       model: 'user'
     },

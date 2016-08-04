@@ -1,8 +1,8 @@
 module.exports = {
     fixtures: {
         order: [
-            'Organization', 'User', 'Category', 'Status', 'Database', 'FileType', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log', 'Statistic'
+            'Organization', 'User', 'Category', 'Status', 'FileType', 'Config', 'UpdateFrequency',
+            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -1252,7 +1252,7 @@ module.exports = {
         }],
         Config: [{
             id: '1ogPzIz9',
-            description: 'Models that will be logged',
+            description: 'Modelos logueados',
             type: 'string',
             key: 'logWhitelist',
             value: ['category', 'dataset', 'fileType', 'file',
@@ -1267,6 +1267,7 @@ module.exports = {
             id: '0ogPzIz9',
             description: 'Estado por defecto',
             type: 'string',
+            model: 'Statuses',
             key: 'defaultStatus',
             value: 'nWRhpRV',
             models: {
@@ -1276,10 +1277,11 @@ module.exports = {
             }
         }, {
             id: '2ogPzIz9',
-            description: 'An example config.',
+            description: 'Estado publicado',
             type: 'string',
-            key: 'key',
-            value: 'value',
+            model: 'Statuses',
+            key: 'publishStatus',
+            value: 'nWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1287,43 +1289,11 @@ module.exports = {
             }
         }, {
             id: '3ogPzIz9',
-            description: 'An example config.',
+            description: 'Estado despublicado',
             type: 'string',
-            key: 'key',
-            value: 'value',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: '4ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: '5ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: '6ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            model: 'Statuses',
+            key: 'unpublishStatus',
+            value: 'nWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1409,16 +1379,15 @@ module.exports = {
             client: '',
             useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
             ip: '127.0.0.1'
-        },
-            {
-                id: 'B225rQH_',
-                method: 'GET',
-                resource: 'File',
-                endpoint: '/files/first',
-                querystring: '',
-                client: '',
-                useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
-                ip: '127.0.0.1'
-            }]
+        }, {
+            id: 'B225rQH_',
+            method: 'GET',
+            resource: 'File',
+            endpoint: '/files/first',
+            querystring: '',
+            client: '',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
+        }]
     }
 };
