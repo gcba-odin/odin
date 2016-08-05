@@ -43,45 +43,48 @@ module.exports = {
             defaultsTo: false,
             boolean: true
         },
-        optional1: {
-            type: 'string',
-            size: 500
-        },
-        optional2: {
-            type: 'string',
-            size: 500
-        },
-        optional3: {
-            type: 'string',
-            size: 500
-        },
-        optional4: {
-            type: 'string',
-            size: 500
-        },
-        optional5: {
-            type: 'string',
-            size: 500
-        },
-        optional6: {
-            type: 'string',
-            size: 500
-        },
-        optional7: {
-            type: 'string',
-            size: 500
-        },
-        optional8: {
-            type: 'string',
-            size: 500
-        },
-        optional9: {
-            type: 'string',
-            size: 500
-        },
-        optional10: {
-            type: 'string',
-            size: 500
+        // optional1: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional2: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional3: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional4: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional5: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional6: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional7: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional8: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional9: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        // optional10: {
+        //     type: 'string',
+        //     size: 500
+        // },
+        optionals: {
+            type: 'json'
         },
         disclaimer: {
             type: 'string',

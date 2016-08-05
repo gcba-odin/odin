@@ -422,16 +422,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 status: {
@@ -463,16 +454,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 status: {
@@ -504,16 +486,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 status: {
@@ -545,16 +518,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 status: {
@@ -586,16 +550,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 status: {
@@ -628,6 +583,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 type: {
@@ -668,6 +624,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 type: {
@@ -708,6 +665,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 type: {
@@ -748,6 +706,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 type: {
@@ -788,6 +747,7 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: null,
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 type: {

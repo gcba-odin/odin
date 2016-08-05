@@ -26,7 +26,6 @@ module.exports = {
         },
         resource: {
             type: 'string',
-            required: true,
             size: 50
         },
         endpoint: {
