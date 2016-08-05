@@ -118,7 +118,7 @@ module.exports = {
             description: 'An example category.',
             active: true,
             color: 'F5B69E',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/9B.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -130,7 +130,7 @@ module.exports = {
             description: 'An example category.',
             active: true,
             color: 'FBCDB7',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/8e.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -142,7 +142,7 @@ module.exports = {
             description: 'An example category.',
             active: true,
             color: 'FFF4D2',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/7f.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -150,11 +150,11 @@ module.exports = {
             }
         }, {
             id: 'lWRhpRV',
-            name: 'Gobierno y Administración pública',
+            name: 'Gobierno y Administración Pública',
             description: 'An example category.',
             active: false,
             color: 'D4F1E6',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/7x.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -166,7 +166,7 @@ module.exports = {
             description: 'An example category.',
             active: false,
             color: 'BFF0E7',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/7y.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -178,7 +178,7 @@ module.exports = {
             description: 'An example category.',
             active: false,
             color: 'F5B69E',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/8C.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -190,7 +190,7 @@ module.exports = {
             description: 'An example category.',
             active: false,
             color: 'FBCDB7',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/9N.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -202,7 +202,7 @@ module.exports = {
             description: 'An example category.',
             active: false,
             color: 'FFF4D2',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/8Y.svg',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -214,7 +214,7 @@ module.exports = {
             description: 'An example category.',
             active: false,
             color: 'D4F1E6',
-            image: 'http://i.imgur.com/ce4K2ON.png',
+            image: 'http://svgur.com/i/7K.svg',
             models: {
                 createdBy: {
                     username: 'admin'
