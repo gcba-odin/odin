@@ -36,9 +36,9 @@ module.exports = {
             size: 500
         },
         basemap: {
-            type: 'string',
+            model: 'basemap',
             required: true,
-            enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
+            // enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
         },
         url: {
             type: 'string',
