@@ -12,6 +12,8 @@
     "gulp-shell": "^0.5.2",
     "iconv-lite": "^0.4.13",
     "ipaddr.js": "^1.2.0",
+    "json2csv": "^3.6.2",
+    "json2xls": "^0.1.2",
     "jsonfile": "^2.3.1",
     "kerberos": "0.0.21",
     "lodash": "^4.13.1",

@@ -7,6 +7,9 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const mime = require('mime');
+var json2csv = require('json2csv');
+var json2xls = require('json2xls');
+
 // var dirname = require('path')
 var SkipperDisk = require('skipper-disk');
 
@@ -65,6 +68,46 @@ module.exports = {
                 }
             });
         });
+    },
+    formattedDownload: function(req, res) {
+        const values = actionUtil.parseValues(req);
+        const pk = actionUtil.requirePk(req);
+
+        // find the fileid within the parameters
+        var format = _.get(values, 'format', '');
+        format = mime.lookup(format);
+
+        // available downlaod formats are: csv,xls,xlsx
+        var availableFormats = ['text/csv', 'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+
+        if (availableFormats.indexOf(format) === -1) {
+            return res.badRequest();
+        } else {
+            File.findOne(pk).populate(['type', 'dataset']).exec(function(err, file) {
+                if (err) return res.negotiate(err)
+                if (file.type.mimetype === format) {
+                    this.download(req, res)
+                }
+                var result;
+                FileContentsService.mongoContents(file.dataset.id, file.fileName, 0, 0, res, function(data) {
+                    console.log('data = ')
+                    console.dir(data)
+                    if (format === 'text/csv') {
+                        // TBD
+                        result = json2csv({
+                            data: data
+                        });
+                    } else {
+                        result = json2xls(data);
+                    }
+
+                });
+
+            }.bind(this));
+        }
+
     },
     resources: function(req, res) {
         var resources = {};
