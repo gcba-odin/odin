@@ -1252,6 +1252,88 @@ module.exports = {
             controller: 'Options',
             model: 'statistic',
             action: 'instance'
-        }
+        },
+
+        // Basemaps
+
+        'GET /basemaps/statistics': {
+            blueprint: 'statistics',
+            model: 'basemap'
+        },
+        'DELETE /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+
+        'PATCH /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+        'PUT /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+
+
+        'GET /basemaps/first': {
+            blueprint: 'first',
+            model: 'basemap'
+            // policy: 'isAuthenticated'
+        },
+        'GET /basemaps/last': {
+            blueprint: 'last',
+            model: 'basemap'
+            // policy: 'isAuthenticated'
+        },
+        'GET /basemaps/search': {
+            blueprint: 'search',
+            model: 'basemap'
+            // policy: 'isAuthenticated'
+        },
+        'PATCH /basemaps/:id': {
+            blueprint: 'update',
+            model: 'basemap'
+            // policy: 'isAuthenticated'
+        },
+
+        'HEAD /basemaps/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'basemap'
+        },
+        'HEAD /basemaps': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'basemap'
+        },
+
+        'OPTIONS /basemaps': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'collection'
+        },
+        'OPTIONS /basemaps/first': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'query'
+        },
+        'OPTIONS /basemaps/last': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'query'
+        },
+        'OPTIONS /basemaps/count': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'count'
+        },
+        'OPTIONS /basemaps/:id': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'instance'
+        },
     }
 };
