@@ -126,8 +126,8 @@ module.exports = {
                                             DataStorageService.mongoSave(dataset, data.fileName, json, res);
                                         });
                                     }
-                                    fs.writeFile(filePath, result, function () {
-                                    });
+                                    // fs.writeFile(filePath, result, function () {
+                                    // });
                                 });
                             }
                             // Save the file metadata to the relational DB

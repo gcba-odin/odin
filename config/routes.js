@@ -436,7 +436,11 @@ module.exports = {
         },
 
         'GET /files/:id/resources': 'File.resources',
+
+        'GET /files/:id/download': 'File.download',
+
         'GET /files/:id/download/:format': 'File.formattedDownload',
+
         'DELETE /files': {
             controller: 'NotImplemented',
             model: 'file',
@@ -455,7 +459,6 @@ module.exports = {
         },
 
         'POST /files': 'File.upload',
-        'GET /files/:id/download': 'File.download',
 
         'GET /files/:id/contents': 'File.contents',
 
