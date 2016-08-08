@@ -66,9 +66,14 @@ module.exports = {
         next()
     },
     beforeCreate: (values, next) => {
-        values.image = _.replace(values.url, 'model', 'categories');
-        values.image = _.replace(values.image, 'id', values.id);
-        values.image = values.image + '/image';
+
+        if (_.endsWith(values.image, '/id')) {
+
+            values.image = _.replace(values.url, 'model', 'categories');
+            values.image = _.replace(values.image, 'id', values.id);
+            values.image = values.image + '/image';
+        }
+
         next();
     }
 };
