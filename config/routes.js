@@ -14,6 +14,11 @@ module.exports = {
         'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
 
+        'GET /users/statistics': {
+            blueprint: 'statistics',
+            model: 'user'
+        },
+
         'DELETE /users/:id': {
             controller: 'Delete',
             model: 'user',
@@ -94,6 +99,11 @@ module.exports = {
         },
 
         // Organizations
+
+        'GET /organizations/statistics': {
+            blueprint: 'statistics',
+            model: 'organization'
+        },
 
         'DELETE /organizations': {
             controller: 'NotImplemented',
@@ -185,6 +195,12 @@ module.exports = {
 
 
         // Categories
+
+        'GET /categories/statistics': {
+            blueprint: 'statistics',
+            model: 'category'
+        },
+
         'POST /categories': 'Category.upload',
         'PATCH /categories/:id': 'Category.update',
         'GET /categories/:id/image': 'Category.image',
@@ -275,6 +291,12 @@ module.exports = {
 
         // Statuses
 
+        'GET /statuses/statistics': {
+            blueprint: 'statistics',
+            model: 'status'
+        },
+
+
         'GET /statuses/first': {
             blueprint: 'first',
             model: 'status'
@@ -333,6 +355,12 @@ module.exports = {
         },
 
         // Filetypes
+
+        'GET /filetypes/statistics': {
+            blueprint: 'statistics',
+            model: 'filetype'
+        },
+
         'DELETE /filetypes/:id': {
             controller: 'Delete',
             model: 'filetype',
@@ -401,6 +429,11 @@ module.exports = {
         },
 
         // Files
+
+        'GET /files/statistics': {
+            blueprint: 'statistics',
+            model: 'file'
+        },
 
         'GET /files/:id/resources': 'File.resources',
         'GET /files/:id/download/:format': 'File.formattedDownload',
@@ -485,6 +518,11 @@ module.exports = {
 
         // Databases
 
+        'GET /databases/statistics': {
+            blueprint: 'statistics',
+            model: 'database'
+        },
+
         'GET /databases/first': {
             blueprint: 'first',
             model: 'database'
@@ -544,6 +582,11 @@ module.exports = {
 
 
         // Datasets
+
+        'GET /datasets/statistics': {
+            blueprint: 'statistics',
+            model: 'dataset'
+        },
 
         'DELETE /datasets': {
             controller: 'NotImplemented',
@@ -624,6 +667,12 @@ module.exports = {
 
 
         // Tags
+
+        'GET /tags/statistics': {
+            blueprint: 'statistics',
+            model: 'tag'
+        },
+
         'DELETE /tags/:id': {
             controller: 'Delete',
             model: 'tag',
@@ -695,6 +744,11 @@ module.exports = {
 
         // UpdateFrequencies
 
+        'GET /updatefrequencies/statistics': {
+            blueprint: 'statistics',
+            model: 'updatefrequency'
+        },
+
         'GET /updatefrequencies/first': {
             blueprint: 'first',
             model: 'updatefrequency'
@@ -754,7 +808,10 @@ module.exports = {
         },
 
         // Configs
-
+        'GET /configs/statistics': {
+            blueprint: 'statistics',
+            model: 'config'
+        },
         'GET /configs/first': {
             blueprint: 'first',
             model: 'config'
@@ -815,6 +872,10 @@ module.exports = {
 
         // Logs
 
+        'GET /logs/statistics': {
+            blueprint: 'statistics',
+            model: 'log'
+        },
         'GET /logs/first': {
             blueprint: 'first',
             model: 'log'
@@ -870,7 +931,10 @@ module.exports = {
 
         // Maps
 
-
+        'GET /maps/statistics': {
+            blueprint: 'statistics',
+            model: 'map'
+        },
         'DELETE /maps': {
             controller: 'NotImplemented',
             model: 'map',
@@ -952,6 +1016,11 @@ module.exports = {
 
         // Charts
 
+        'GET /charts/statistics': {
+            blueprint: 'statistics',
+            model: 'chart'
+        },
+
         'POST /charts': 'Chart.create',
 
         'DELETE /charts': {
@@ -1028,7 +1097,10 @@ module.exports = {
 
         // Views
 
-
+        'GET /views/statistics': {
+            blueprint: 'statistics',
+            model: 'view'
+        },
         'DELETE /views': {
             controller: 'NotImplemented',
             model: 'view',
