@@ -32,10 +32,12 @@ module.exports = {
         },
         url: {
             type: 'string',
-            url: true,
             size: 500
         },
-        
+        attribution:{
+            type: 'string'
+        },
+
         toJSON() {
             return this.toObject();
         }

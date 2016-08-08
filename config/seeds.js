@@ -2,7 +2,7 @@ module.exports = {
     fixtures: {
         order: [
             'Organization', 'User', 'Category', 'Status', 'FileType', 'Config', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Log', 'Statistic'
+            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map', 'View', 'Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -843,12 +843,17 @@ module.exports = {
                 }
             }
         }],
+        Basemap: [{
+            id: 'nYrnfYEv',
+            name: 'roadmap',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        }],
         Map: [{
             id: '6ogPbIz9',
             name: 'Map 1',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'roadmap',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
