@@ -91,6 +91,9 @@ module.exports = {
                 if (file.type.mimetype === format) {
                     this.download(req, res)
                 }
+                if (!file.type.api){
+                    return res.badRequest();
+                }
                 var result;
                 FileContentsService.mongoContents(file.dataset.id, file.fileName, 0, 0, res, function (data) {
                     _.forEach(data, function (elem) {
