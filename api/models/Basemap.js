@@ -30,7 +30,12 @@ module.exports = {
             collection: 'map',
             via: 'basemap'
         },
-
+        url: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
+        
         toJSON() {
             return this.toObject();
         }
