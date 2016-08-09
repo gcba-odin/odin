@@ -11,7 +11,7 @@
 - Added RSS feed support
 - Created file API
 - Created stats system
-- Set up a logging system with Winston
+- Set up a logging system with [Winston](https://github.com/winstonjs/winston)
 
 ## Enhancements
 
