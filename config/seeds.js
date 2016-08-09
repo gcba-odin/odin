@@ -1258,7 +1258,7 @@ module.exports = {
             type: 'string',
             model: 'Statuses',
             key: 'unpublishedStatus',
-            value: 'nWRhpRV',
+            value: 'rWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
