@@ -1245,8 +1245,8 @@ module.exports = {
             description: 'Estado publicado',
             type: 'string',
             model: 'Statuses',
-            key: 'publishStatus',
-            value: 'nWRhpRV',
+            key: 'publishedStatus',
+            value: 'qWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1257,8 +1257,8 @@ module.exports = {
             description: 'Estado despublicado',
             type: 'string',
             model: 'Statuses',
-            key: 'unpublishStatus',
-            value: 'nWRhpRV',
+            key: 'unpublishedStatus',
+            value: 'rWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
