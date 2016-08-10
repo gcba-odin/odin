@@ -66,7 +66,7 @@ module.exports = {
         },
         type: {
             model: 'filetype'
-                // required: true
+            // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
@@ -84,7 +84,7 @@ module.exports = {
         },
         dataset: {
             model: 'dataset'
-                // required: true
+            // required: true
         },
         tags: {
             collection: 'tag',
@@ -97,7 +97,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
 
         toJSON() {
@@ -112,7 +112,7 @@ module.exports = {
 
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function(err, record) {
+        }).exec(function (err, record) {
             values.status = record.value;
 
             if (_.endsWith(values.url, '/id')) {
@@ -123,7 +123,6 @@ module.exports = {
             }
             next();
         });
-
 
 
     },
@@ -139,11 +138,7 @@ module.exports = {
         if (!_.isEmpty(destroyedRecords)) {
             destroyedRecords = destroyedRecords[0];
             UnpublishService.unpublish(destroyedRecords);
-            var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
-            fs.unlink(path, function() {
-                DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
-                ZipService.createZip(destroyedRecords.dataset);
-            });
+            UploadService.deleteFile(destroyedRecords.dataset, destroyedRecords.fileName, next);
         }
         next();
     }

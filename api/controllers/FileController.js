@@ -21,7 +21,7 @@ module.exports = {
         // UploadService.uploadFile(req, res);
     },
     update: function(req, res) {
-        UploadService.createFile(req, res, false, function(data) {
+        UploadService.createFile(req, res, false , function(data) {
             UploadService.metadataUpdate(File, data, 'file', req, res);
         });
     },
