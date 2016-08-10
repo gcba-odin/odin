@@ -16,76 +16,90 @@ const XLSX = require('xlsx');
 const pluralize = require('pluralize');
 
 module.exports = {
-    uploadFile: function (req, res) {
+    createFile: function(req, res, fileRequired, cb) {
+        // Check if the dataset ID is valid
+        var dataset = req.param('dataset');
+
+        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
+        var uploadedFile = req.file('uploadFile').on('error', function(err) {
+            console.log('inside error')
+            if (!res.headersSent) return res.negotiate(err);
+        });
+
+        console.log('after first dir');
+
+        // If there is a file
+        if (uploadedFile.isNoop && fileRequired === true) {
+            return res.badRequest('No file was uploaded.');
+        } else {
+            this.uploadFile(req, res, uploadedFile, dataset, cb);
+        }
+    },
+
+    uploadFile: function(req, res, uploadedFile, dataset, cb) {
+        console.log('ak')
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
         var allowedTypes;
-        var uploadFile = req.file('uploadFile').on('error', function (err) {
-            if (!res.headersSent) return res.negotiate(err);
-        });
 
-        // Check if the dataset ID is valid
-        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
-        // If there is a file
+        FileType.find().exec(function(err, filetypes) {
+            allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
+                allowedTypes.push(filetype.mimetype);
+            }, []);
 
-        if (!uploadFile.isNoop) {
+            data.fileName = shortid.generate();
+            console.log('before second console')
+            console.dir(uploadedFile)
+            uploadedFile.upload({
+                    saveAs: function(file, cb) {
 
-            FileType.find().exec(function (err, filetypes) {
-                allowedTypes = _.transform(filetypes, function (allowedTypes, filetype) {
-                    allowedTypes.push(filetype.mimetype);
-                }, []);
-
-                data.fileName = shortid.generate();
-                uploadFile.upload({
-                        saveAs: function (file, cb) {
-
-                            //Get the mime and the extension of the file
-                            mimetype = mime.lookup(file.filename.split('.').pop());
-                            extension = file.filename.split('.').pop();
-                            // If the mime is present on the array of allowed types we can save it
-                            if (allowedTypes.indexOf(mimetype) === -1) {
-                                return res.negotiate({
-                                    status: 415,
-                                    code: 415,
-                                    message: 'filetype not allowed'
-                                });
-                            } else {
-                                data.fileName += '.' + extension;
-                                return cb(null, data.fileName);
-                            }
-                        },
-                        dirname: path.resolve(sails.config.odin.uploadFolder + '/' + dataset),
-                        maxBytes: 2000000000
-
-                    },
-                    function onUploadComplete(err, files) {
-                        //	IF ERROR Return and send 500 error with error
-
-                        if (err) return res.serverError(err);
-                        if (files.length === 0) {
-                            return res.badRequest('No file was uploaded');
+                        //Get the mime and the extension of the file
+                        mimetype = mime.lookup(file.filename.split('.').pop());
+                        extension = file.filename.split('.').pop();
+                        // If the mime is present on the array of allowed types we can save it
+                        if (allowedTypes.indexOf(mimetype) === -1) {
+                            return res.negotiate({
+                                status: 415,
+                                code: 415,
+                                message: 'filetype not allowed'
+                            });
+                        } else {
+                            data.fileName += '.' + extension;
+                            return cb(null, data.fileName);
                         }
+                    },
+                    dirname: path.resolve(sails.config.odin.uploadFolder + '/' + dataset),
+                    maxBytes: 2000000000
 
-                        // Get the id of the filetype based on mime of the file
-                        sails.models.filetype.findOne({
-                            name: extension
-                        }).exec(function (err, record) {
-                            if (err) return res.negotiate(err);
-                            if (!record) {
-                                return res.serverError('Could not find the filetype uploaded: ' + extension);
-                            }
-                            data.type = record.id;
+                },
+                function onUploadComplete(err, files) {
+                    //	IF ERROR Return and send 500 error with error
 
-                            // If the file is consumable via the API
-                            if (record.api) {
-                                var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + data.fileName;
+                    if (err) return res.serverError(err);
+                    if (files.length === 0) {
+                        return res.badRequest('No file was uploaded');
+                    }
 
-                                // Read the file
-                                fs.createReadStream(filePath)
-                                    // Encode it
-                                    .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                    // Get the id of the filetype based on mime of the file
+                    sails.models.filetype.findOne({
+                        name: extension
+                    }).exec(function(err, record) {
+                        if (err) return res.negotiate(err);
+                        if (!record) {
+                            return res.serverError('Could not find the filetype uploaded: ' + extension);
+                        }
+                        data.type = record.id;
+
+                        // If the file is consumable via the API
+                        if (record.api) {
+                            var filePath = sails.config.odin.uploadFolder + "/" + dataset + '/' + data.fileName;
+
+                            // Read the file
+                            fs.createReadStream(filePath)
+                                // Encode it
+                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
                                     if (err) return res.negotiate(err);
 
                                     if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
@@ -98,7 +112,7 @@ module.exports = {
                                         var workbook = XLSX.readFile(files[0].fd);
 
                                         //Join all the worksheets on one json
-                                        json = _.reduce(workbook.SheetNames, function (result, sheetName) {
+                                        json = _.reduce(workbook.SheetNames, function(result, sheetName) {
                                             var worksheet = workbook.Sheets[sheetName];
 
                                             var currentJson = XLSX.utils.sheet_to_json(worksheet);
@@ -116,7 +130,7 @@ module.exports = {
                                             delimiter: 'auto'
                                         });
 
-                                        converter.fromString(result, function (err, json) {
+                                        converter.fromString(result, function(err, json) {
                                             if (err) {
                                                 return res.negotiate(err);
                                             }
@@ -129,31 +143,29 @@ module.exports = {
                                     // fs.writeFile(filePath, result, function () {
                                     // });
                                 });
-                            }
-                            // Save the file metadata to the relational DB
-                            UploadService.metadataSave(File, data, '/files', req, res);
+                        }
+                        // Save the file metadata to the relational DB
+                        cb(data)
+                            // UploadService.metadataSave(File, data, '/files', req, res);
 
-                        });
                     });
-            });
-
-        } else {
-            return res.badRequest('No file was uploaded.');
-        }
+                });
+        });
     },
 
-    uploadImage: function (req, res, cb) {
+
+    uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
 
-        var uploadFile = req.file('uploadImage').on('error', function (err) {
+        var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
             data.fileName = shortid.generate();
 
             uploadFile.upload({
-                saveAs: function (file, cb) {
+                saveAs: function(file, cb) {
                     var mimetype = mime.lookup(file.filename.split('.').pop());
 
                     if (mimetype !== 'image/svg+xml') {
@@ -180,7 +192,7 @@ module.exports = {
         }
     },
 
-    metadataSave: function (model, data, modelName, req, res) {
+    metadataSave: function(model, data, modelName, req, res) {
         model.create(data).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -198,7 +210,7 @@ module.exports = {
 
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function (instance) {
+                    _.map(newInstance, function(instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
@@ -207,13 +219,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
 
-            model.find(newInstance.id).populate(associations).exec(function (err, record) {
+            model.find(newInstance.id).populate(associations).exec(function(err, record) {
                 if (err) res.negotiate(err);
                 res.created(record[0], {
                     meta: {
@@ -231,7 +243,7 @@ module.exports = {
 
     },
 
-    metadataUpdate: function (model, data, modelName, req, res) {
+    metadataUpdate: function(model, data, modelName, req, res) {
         // Look up the model
         model.update(data.id, data).exec(function updated(err, records) {
 
@@ -272,13 +284,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
             //populate the response
-            model.find(updatedRecord.id).populate(associations).exec(function (err, record) {
+            model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
                 if (err) return res.negotiate(err);
 
                 return res.updated(updatedRecord, {

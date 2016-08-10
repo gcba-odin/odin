@@ -201,7 +201,7 @@ module.exports = {
             model: 'category'
         },
 
-        'POST /categories': 'Category.upload',
+        'POST /categories': 'Category.create',
         'PATCH /categories/:id': 'Category.update',
         'GET /categories/:id/image': 'Category.image',
         'DELETE /categories': {
@@ -458,7 +458,10 @@ module.exports = {
             action: 'notImplemented'
         },
 
-        'POST /files': 'File.upload',
+        'POST /files': 'File.create',
+
+        'PATCH /files/:id': 'File.update',
+
 
         'GET /files/:id/contents': 'File.contents',
 
@@ -474,11 +477,6 @@ module.exports = {
         },
         'GET /files/last': {
             blueprint: 'last',
-            model: 'file'
-                // policy: 'isAuthenticated'
-        },
-        'PATCH /files/:id': {
-            blueprint: 'update',
             model: 'file'
                 // policy: 'isAuthenticated'
         },
@@ -1281,22 +1279,22 @@ module.exports = {
         'GET /basemaps/first': {
             blueprint: 'first',
             model: 'basemap'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
         'GET /basemaps/last': {
             blueprint: 'last',
             model: 'basemap'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
         'GET /basemaps/search': {
             blueprint: 'search',
             model: 'basemap'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
         'PATCH /basemaps/:id': {
             blueprint: 'update',
             model: 'basemap'
-            // policy: 'isAuthenticated'
+                // policy: 'isAuthenticated'
         },
 
         'HEAD /basemaps/*': {

@@ -8,7 +8,7 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 var SkipperDisk = require('skipper-disk');
 
 module.exports = {
-    upload: function(req, res, cb) {
+    create: function(req, res, cb) {
         UploadService.uploadImage(req, res, function(data) {
             UploadService.metadataSave(Category, data, 'category', req, res);
         });
