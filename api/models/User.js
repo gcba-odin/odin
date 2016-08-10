@@ -72,7 +72,7 @@ module.exports = {
         },
 
         toJSON() {
-            let obj = this.toObject();
+            const obj = this.toObject();
             delete obj.password;
             obj.fullName = this.fullName();
 

@@ -3,8 +3,9 @@
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 class ParamsProcessor {
-    constructor(req, many) {
+    constructor(req, res, many) {
         this.req = req;
+        this.res = res;
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
         this._model = _actionUtil.parseModel(this.req);
@@ -14,12 +15,14 @@ class ParamsProcessor {
     parse() {
         // this.query = '';
         this.fields = this.parseFields(this.req);
-        this.include = this.parseInclude(this.req);
+        this.include = this.parseInclude();
 
         if (this._many) {
             this.match = this.parseMatch(this.req);
             this.condition = this.parseCondition(this.req);
-            this.where = this.parseCriteria(this.req, this._model);
+            this.where = this.parseCriteria(this.req);
+            delete this.where.full.match;
+            delete this.where.full.condition;
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
 
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
@@ -30,7 +33,6 @@ class ParamsProcessor {
             // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
-
             this.result = {
                 include: this.include,
                 fields: this.fields,
@@ -45,14 +47,14 @@ class ParamsProcessor {
         } else {
             this.result = {
                 include: this.include,
-                fields: this.fields
+                fields: this.fields,
+                pk: this.pk
             };
         }
 
         return this.result;
     }
 
-    //parse match and parse condition should return error if different condition is given, or just return default value ?
     parseMatch(req) {
         var match = req.param('match');
 
@@ -61,26 +63,31 @@ class ParamsProcessor {
                 return 'startsWith';
             case 'ends':
                 return 'endsWith';
-            default:
+            case '':
                 return 'contains';
+            case 'contains':
+                return 'contains';
+            default:
+                return this.res.unprocessableEntity();
         }
     }
 
     parseCondition(req) {
         var condition = req.param('condition');
-        if (condition === 'AND') {
-            return 'and';
+        switch (condition) {
+            case 'AND':
+                return 'and';
+            case undefined:
+                return 'or';
+            case 'OR':
+                return 'or';
+            default:
+                return this.res.unprocessableEntity();
         }
-        return 'or';
     }
 
-    parseCriteria(req, model) {
-        var criteria = _actionUtil.parseCriteria(req);
-
-        // _.forEach(criteria, function(value, key) {
-        //     if (!model.schema[key]) delete criteria[key];
-        // });
-
+    parseCriteria(req) {
+        var criteria = this.parseCriteriaComplete(req);
         return criteria;
     }
 
@@ -89,6 +96,9 @@ class ParamsProcessor {
      */
     parseSort(req) {
         var sort = req.param('sort') || req.options.sort;
+        if (sort !== 'ASC' && sort !== 'DESC' && sort !== undefined) {
+            return this.res.unprocessableEntity();
+        }
         var orderBy = req.param('orderBy') || req.options.orderBy;
 
         if (_.isUndefined(sort) || _.isUndefined(orderBy)) {
@@ -102,15 +112,18 @@ class ParamsProcessor {
     /*
      * Parses the 'include' query param and builds an object with it, to be consumed by populate()
      */
-    parseInclude(req) {
+    parseInclude() {
         var includes = this.req.param('include') ? this.req.param('include').replace(/ /g, '').split(',') : [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (includes.length > 0) {
-            _.forEach(includes, function(element, i) {
+            _.forEach(includes, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -129,12 +142,14 @@ class ParamsProcessor {
         return results;
     }
 
-    parseFields(req) {
+    parseFields() {
         var fields = this.req.param('fields') ? this.req.param('fields').replace(/ /g, '').split(',') : [];
-        var splits = [];
         var results = {
-            full: [], // Here go the models that will be included with all their attributes
-            partials: {} // Here, the models that will be included with only the specified attributes. Each model is a key holding an array of attributes.
+            // Here go the models that will be included with all their attributes
+            full: [],
+            // Here, the models that will be included with only the specified attributes.
+            // Each model is a key holding an array of attributes.
+            partials: {}
         };
 
         if (this.req.query.fields) {
@@ -142,7 +157,7 @@ class ParamsProcessor {
         }
 
         if (fields.length > 0) {
-            _.forEach(fields, function(element, i) {
+            _.forEach(fields, function(element) {
                 var testee = String(element);
 
                 if (testee.indexOf('.') !== -1) {
@@ -159,13 +174,76 @@ class ParamsProcessor {
         }
 
         return results;
-
-        //return fields;
     }
 
     toString() {
         return this.req.query;
     }
+
+    parseCriteriaComplete(req) {
+        var deep = {};
+        // Allow customizable blacklist for params NOT to include as criteria.
+        req.options.criteria = req.options.criteria || {};
+        req.options.criteria.blacklist = req.options.criteria.blacklist || ['limit', 'skip', 'sort', 'populate'];
+
+        // Validate blacklist to provide a more helpful error msg.
+        var blacklist = req.options.criteria && req.options.criteria.blacklist;
+
+        if (blacklist && !_.isArray(blacklist)) {
+            throw new Error('Invalid `req.options.criteria.blacklist`. ' +
+                'Should be an array of strings (parameter names.)');
+        }
+
+        // Look for explicitly specified `where` parameter.
+        var where = req.params.all().where;
+        // If `where` parameter is a string, try to interpret it as JSON
+        if (_.isString(where)) {
+            where = tryToParseJSON(where);
+        }
+
+        // If `where` has not been specified, but other unbound parameter variables
+        // **ARE** specified, build the `where` option using them.
+        if (!where) {
+            // Prune params which aren't fit to be used as `where` criteria
+            // to build a proper where query
+            where = req.params.all();
+            _.forEach(where, function(key, val) {
+                if (_.indexOf(val, '.') !== -1) {
+                    deep[val] = key;
+                    delete where[val];
+                }
+            });
+            // Omit built-in runtime config (like query modifiers)
+            where = _.omit(where, blacklist || ['limit', 'skip', 'sort']);
+
+            // Omit any params w/ undefined values
+            where = _.omit(where, function(p) {
+                if (isUndefined(p)) {
+                    return true;
+                }
+            });
+
+            // Omit jsonp callback param (but only if jsonp is enabled)
+            var jsonpOpts = req.options.jsonp && !req.isSocket;
+
+            jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
+                callback: 'callback'
+            };
+
+            if (jsonpOpts) {
+                where = _.omit(where, [jsonpOpts.callback]);
+            }
+        }
+
+        // Merge w/ req.options.where and return
+        where = _.merge({}, req.options.where || {}, where) || undefined;
+
+        return {
+            full: where,
+            deep: deep
+        };
+    }
+
 }
 
 module.exports = {

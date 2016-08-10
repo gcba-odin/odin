@@ -6,7 +6,7 @@
  * The request has been fulfilled and resulted in a resource being deleted.
  */
 
-module.exports = function(data, config) {
+module.exports = function() {
 
     LogService.winstonLog('verbose', 'Deleted', {
         ip: this.req.ip

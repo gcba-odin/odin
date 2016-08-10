@@ -23,6 +23,7 @@ module.exports = {
         name: {
             type: 'string',
             required: true,
+            unique: true,
             size: 150,
             minLength: 1
         },
@@ -35,11 +36,16 @@ module.exports = {
             size: 500
         },
         basemap: {
-            type: 'string',
+            model: 'basemap',
             required: true,
-            enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
+            // enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
         },
         url: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
+        link: {
             type: 'string',
             url: true,
             size: 500
@@ -76,61 +82,7 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'string'
-        },
-        notes: {
-            type: 'string'
-        },
-        basemap: {
-            type: 'string'
-        },
-        url: {
-            type: 'string'
-        },
-        embedCode: {
-            type: 'string'
-        },
-        latitudeKey: {
-            type: 'string'
-        },
-        longitudeKey: {
-            type: 'string'
-        },
-        geojson: {
-            type: 'json'
-        },
-        publishedAt: {
-            type: 'datetime'
-        },
-        file: {
-            type: 'string'
-        },
-        createdBy: {
-            type: 'string'
-        }
 
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),

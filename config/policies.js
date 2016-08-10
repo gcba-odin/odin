@@ -13,34 +13,35 @@
 
 module.exports = {
     policies: {
+        '*': ['statistics', 'ensureQueryTypeCast'],
         // '*': 'isAuthenticated',
         // UserController: {
         //    'login': true
         // }
         CategoryController: {
-            create: ['addCreatedBy']
+            upload: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         FileController: {
-            create: ['addCreatedBy', 'addUrl'],
-            upload: ['addCreatedBy', 'addUrl']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            upload: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         OrganizationController: {
-            create: ['addCreatedBy']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         TagController: {
-            create: ['addCreatedBy']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         UserController: {
-            create: ['addCreatedBy']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         ConfigController: {
-            create: ['addCreatedBy']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         MapController: {
-            create: ['addCreatedBy', 'addUrl']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         ChartController: {
-            create: ['addCreatedBy', 'addUrl']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         }
     }
 };

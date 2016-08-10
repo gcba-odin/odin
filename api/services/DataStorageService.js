@@ -36,17 +36,4 @@ module.exports = {
                 db.collection(filename).drop();
             });
         }
-        // getData: function(dataset, filename, res, cb) {
-        //     DataStorageService.mongoConnect(dataset, filename, res, function(db) {
-        //         var collection = db.collection(filename);
-        //         // TODO: find gets only first 20?
-        //         var cursor = collection.find()
-
-    //         cursor.forEach(function(tmp) {
-    //             console.dir(tmp)
-    //         });
-
-    //         cb(collection.find());
-    //     })
-    // }
 };

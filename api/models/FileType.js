@@ -30,6 +30,10 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        mimetype: {
+            type: 'string',
+            size: 200
+        },
         files: {
             collection: 'file',
             via: 'type'
@@ -39,33 +43,7 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        api: {
-            type: 'boolean'
-        },
-        files: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name'],
 
     beforeUpdate: (values, next) => next(),

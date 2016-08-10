@@ -346,9 +346,11 @@ describe('All Views', function() {
                     assert.isString(result.body.data[0].name);
                     assert.equal(result.body.data[0].name, 'View 1');
 
+
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
+
 
                     err ? done(err) : done();
                 });
@@ -574,6 +576,32 @@ describe('All Views', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /views/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/views/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /views', function() {
@@ -771,23 +799,23 @@ describe('Single view', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, '1ogP1Iz9');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, '1ogP1Iz9');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'View 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'View 1');
 
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
+                    assert.property(result.body.data, 'tags');
+                    assert.isArray(result.body.data.tags);
 
-                    result.body.data[0].tags.forEach(function(element) {
+                    result.body.data.tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -801,6 +829,32 @@ describe('Single view', function() {
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Get an inexistent relation
+    describe('- GET /views/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/views/${viewId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
 
                     err ? done(err) : done();
                 });
@@ -849,9 +903,9 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'createdBy');
                     assert.isObject(result.body.data.createdBy);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -895,9 +949,9 @@ describe('Single view', function() {
                     assert.property(result.body.data, 'createdBy');
                     assert.isObject(result.body.data.createdBy);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -919,7 +973,7 @@ describe('Single view', function() {
         it('- Should delete the view', function(done) {
             request.del(`/views/${viewId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

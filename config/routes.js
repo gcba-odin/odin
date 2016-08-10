@@ -14,6 +14,11 @@ module.exports = {
         'POST /users/login': 'User.login', // LOGOUT missing!!!
         'GET /users/refreshToken': 'User.refreshToken',
 
+        'GET /users/statistics': {
+            blueprint: 'statistics',
+            model: 'user'
+        },
+
         'DELETE /users/:id': {
             controller: 'Delete',
             model: 'user',
@@ -73,7 +78,7 @@ module.exports = {
         'OPTIONS /users/count': {
             controller: 'Options',
             model: 'user',
-            action: 'query'
+            action: 'count'
         },
 
         'OPTIONS /users/:id': {
@@ -94,6 +99,29 @@ module.exports = {
         },
 
         // Organizations
+
+        'GET /organizations/statistics': {
+            blueprint: 'statistics',
+            model: 'organization'
+        },
+
+        'DELETE /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+
+        'PATCH /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+        'PUT /organizations': {
+            controller: 'NotImplemented',
+            model: 'organization',
+            action: 'notImplemented'
+        },
+
         'DELETE /organizations/:id': {
             controller: 'Delete',
             model: 'organization',
@@ -144,11 +172,6 @@ module.exports = {
             model: 'organization',
             action: 'collection'
         },
-        'OPTIONS /organizations/:id': {
-            controller: 'Options',
-            model: 'organization',
-            action: 'instance'
-        },
         'OPTIONS /organizations/first': {
             controller: 'Options',
             model: 'organization',
@@ -162,11 +185,42 @@ module.exports = {
         'OPTIONS /organizations/count': {
             controller: 'Options',
             model: 'organization',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /organizations/:id': {
+            controller: 'Options',
+            model: 'organization',
+            action: 'instance'
         },
 
 
         // Categories
+
+        'GET /categories/statistics': {
+            blueprint: 'statistics',
+            model: 'category'
+        },
+
+        'POST /categories': 'Category.create',
+        'PATCH /categories/:id': 'Category.update',
+        'GET /categories/:id/image': 'Category.image',
+        'DELETE /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+
+        'PATCH /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+        'PUT /categories': {
+            controller: 'NotImplemented',
+            model: 'category',
+            action: 'notImplemented'
+        },
+
         'DELETE /categories/:id': {
             controller: 'Delete',
             model: 'category',
@@ -192,11 +246,11 @@ module.exports = {
             model: 'category'
                 // policy: 'isAuthenticated'
         },
-        'PATCH /categories/:id': {
-            blueprint: 'update',
-            model: 'category'
-                // policy: 'isAuthenticated'
-        },
+        // 'PATCH /categories/:id': {
+        //     blueprint: 'update',
+        //     model: 'category'
+        //         // policy: 'isAuthenticated'
+        // },
         'HEAD /categories/*': {
             controller: 'Head',
             action: 'Head',
@@ -213,11 +267,6 @@ module.exports = {
             model: 'category',
             action: 'collection'
         },
-        'OPTIONS /categories/:id': {
-            controller: 'Options',
-            model: 'category',
-            action: 'instance'
-        },
         'OPTIONS /categories/first': {
             controller: 'Options',
             model: 'category',
@@ -231,11 +280,22 @@ module.exports = {
         'OPTIONS /categories/count': {
             controller: 'Options',
             model: 'category',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /categories/:id': {
+            controller: 'Options',
+            model: 'category',
+            action: 'instance'
         },
 
 
         // Statuses
+
+        'GET /statuses/statistics': {
+            blueprint: 'statistics',
+            model: 'status'
+        },
+
 
         'GET /statuses/first': {
             blueprint: 'first',
@@ -273,11 +333,6 @@ module.exports = {
             model: 'status',
             action: 'collection'
         },
-        'OPTIONS /statuses/:id': {
-            controller: 'Options',
-            model: 'status',
-            action: 'instance'
-        },
         'OPTIONS /statuses/first': {
             controller: 'Options',
             model: 'status',
@@ -291,13 +346,21 @@ module.exports = {
         'OPTIONS /statuses/count': {
             controller: 'Options',
             model: 'status',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /statuses/:id': {
+            controller: 'Options',
+            model: 'status',
+            action: 'instance'
         },
 
-        // 'OPTIONS /statuses/:id': { blueprinst: 'update', model: 'status' },
-
-
         // Filetypes
+
+        'GET /filetypes/statistics': {
+            blueprint: 'statistics',
+            model: 'filetype'
+        },
+
         'DELETE /filetypes/:id': {
             controller: 'Delete',
             model: 'filetype',
@@ -344,11 +407,6 @@ module.exports = {
             model: 'filetype',
             action: 'collection'
         },
-        'OPTIONS /filetypes/:id': {
-            controller: 'Options',
-            model: 'filetype',
-            action: 'instance'
-        },
         'OPTIONS /filetypes/first': {
             controller: 'Options',
             model: 'filetype',
@@ -362,14 +420,48 @@ module.exports = {
         'OPTIONS /filetypes/count': {
             controller: 'Options',
             model: 'filetype',
-            action: 'query'
+            action: 'count'
         },
-
+        'OPTIONS /filetypes/:id': {
+            controller: 'Options',
+            model: 'filetype',
+            action: 'instance'
+        },
 
         // Files
 
-        'POST /files': 'File.upload',
+        'GET /files/statistics': {
+            blueprint: 'statistics',
+            model: 'file'
+        },
+
+        'GET /files/:id/resources': 'File.resources',
+
         'GET /files/:id/download': 'File.download',
+
+        'GET /files/:id/download/:format': 'File.formattedDownload',
+
+        'DELETE /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+
+        'PATCH /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+        'PUT /files': {
+            controller: 'NotImplemented',
+            model: 'file',
+            action: 'notImplemented'
+        },
+
+        'POST /files': 'File.create',
+
+        'PATCH /files/:id': 'File.update',
+
 
         'GET /files/:id/contents': 'File.contents',
 
@@ -385,11 +477,6 @@ module.exports = {
         },
         'GET /files/last': {
             blueprint: 'last',
-            model: 'file'
-                // policy: 'isAuthenticated'
-        },
-        'PATCH /files/:id': {
-            blueprint: 'update',
             model: 'file'
                 // policy: 'isAuthenticated'
         },
@@ -409,11 +496,6 @@ module.exports = {
             model: 'file',
             action: 'collection'
         },
-        'OPTIONS /files/:id': {
-            controller: 'Options',
-            model: 'file',
-            action: 'instance'
-        },
         'OPTIONS /files/first': {
             controller: 'Options',
             model: 'file',
@@ -427,11 +509,20 @@ module.exports = {
         'OPTIONS /files/count': {
             controller: 'Options',
             model: 'file',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /files/:id': {
+            controller: 'Options',
+            model: 'file',
+            action: 'instance'
         },
 
-
         // Databases
+
+        'GET /databases/statistics': {
+            blueprint: 'statistics',
+            model: 'database'
+        },
 
         'GET /databases/first': {
             blueprint: 'first',
@@ -469,11 +560,6 @@ module.exports = {
             model: 'database',
             action: 'collection'
         },
-        'OPTIONS /databases/:id': {
-            controller: 'Options',
-            model: 'database',
-            action: 'instance'
-        },
         'OPTIONS /databases/first': {
             controller: 'Options',
             model: 'database',
@@ -487,11 +573,40 @@ module.exports = {
         'OPTIONS /databases/count': {
             controller: 'Options',
             model: 'database',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /databases/:id': {
+            controller: 'Options',
+            model: 'database',
+            action: 'instance'
         },
 
 
         // Datasets
+
+        'GET /datasets/statistics': {
+            blueprint: 'statistics',
+            model: 'dataset'
+        },
+
+        'DELETE /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+
+        'PATCH /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+        'PUT /datasets': {
+            controller: 'NotImplemented',
+            model: 'dataset',
+            action: 'notImplemented'
+        },
+
+
         'GET /datasets/:id/download': 'Dataset.download',
         'GET /datasets/feed/rss': 'Dataset.feedRss',
         'GET /datasets/first': {
@@ -530,11 +645,6 @@ module.exports = {
             model: 'dataset',
             action: 'collection'
         },
-        'OPTIONS /datasets/:id': {
-            controller: 'Options',
-            model: 'dataset',
-            action: 'instance'
-        },
         'OPTIONS /datasets/first': {
             controller: 'Options',
             model: 'dataset',
@@ -548,11 +658,22 @@ module.exports = {
         'OPTIONS /datasets/count': {
             controller: 'Options',
             model: 'dataset',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /datasets/:id': {
+            controller: 'Options',
+            model: 'dataset',
+            action: 'instance'
         },
 
 
         // Tags
+
+        'GET /tags/statistics': {
+            blueprint: 'statistics',
+            model: 'tag'
+        },
+
         'DELETE /tags/:id': {
             controller: 'Delete',
             model: 'tag',
@@ -601,11 +722,6 @@ module.exports = {
             model: 'tag',
             action: 'collection'
         },
-        'OPTIONS /tags/:id': {
-            controller: 'Options',
-            model: 'tag',
-            action: 'instance'
-        },
         'OPTIONS /tags/first': {
             controller: 'Options',
             model: 'tag',
@@ -619,10 +735,20 @@ module.exports = {
         'OPTIONS /tags/count': {
             controller: 'Options',
             model: 'tag',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /tags/:id': {
+            controller: 'Options',
+            model: 'tag',
+            action: 'instance'
         },
 
         // UpdateFrequencies
+
+        'GET /updatefrequencies/statistics': {
+            blueprint: 'statistics',
+            model: 'updatefrequency'
+        },
 
         'GET /updatefrequencies/first': {
             blueprint: 'first',
@@ -661,11 +787,6 @@ module.exports = {
             model: 'updatefrequency',
             action: 'collection'
         },
-        'OPTIONS /updatefrequencies/:id': {
-            controller: 'Options',
-            model: 'updatefrequency',
-            action: 'instance'
-        },
         'OPTIONS /updatefrequencies/first': {
             controller: 'Options',
             model: 'updatefrequency',
@@ -679,11 +800,19 @@ module.exports = {
         'OPTIONS /updatefrequencies/count': {
             controller: 'Options',
             model: 'updatefrequency',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /updatefrequencies/:id': {
+            controller: 'Options',
+            model: 'updatefrequency',
+            action: 'instance'
         },
 
         // Configs
-
+        'GET /configs/statistics': {
+            blueprint: 'statistics',
+            model: 'config'
+        },
         'GET /configs/first': {
             blueprint: 'first',
             model: 'config'
@@ -721,11 +850,6 @@ module.exports = {
             model: 'config',
             action: 'collection'
         },
-        'OPTIONS /configs/:id': {
-            controller: 'Options',
-            model: 'config',
-            action: 'instance'
-        },
         'OPTIONS /configs/first': {
             controller: 'Options',
             model: 'config',
@@ -739,12 +863,20 @@ module.exports = {
         'OPTIONS /configs/count': {
             controller: 'Options',
             model: 'config',
-            action: 'query'
+            action: 'count'
         },
-
+        'OPTIONS /configs/:id': {
+            controller: 'Options',
+            model: 'config',
+            action: 'instance'
+        },
 
         // Logs
 
+        'GET /logs/statistics': {
+            blueprint: 'statistics',
+            model: 'log'
+        },
         'GET /logs/first': {
             blueprint: 'first',
             model: 'log'
@@ -777,11 +909,6 @@ module.exports = {
             model: 'log',
             action: 'collection'
         },
-        'OPTIONS /logs/:id': {
-            controller: 'Options',
-            model: 'log',
-            action: 'instance'
-        },
         'OPTIONS /logs/first': {
             controller: 'Options',
             model: 'log',
@@ -795,10 +922,37 @@ module.exports = {
         'OPTIONS /logs/count': {
             controller: 'Options',
             model: 'log',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /logs/:id': {
+            controller: 'Options',
+            model: 'log',
+            action: 'instance'
         },
 
         // Maps
+
+        'GET /maps/statistics': {
+            blueprint: 'statistics',
+            model: 'map'
+        },
+        'DELETE /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+
+        'PATCH /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+        'PUT /maps': {
+            controller: 'NotImplemented',
+            model: 'map',
+            action: 'notImplemented'
+        },
+
 
         'GET /maps/first': {
             blueprint: 'first',
@@ -813,6 +967,13 @@ module.exports = {
         'GET /maps/search': {
             blueprint: 'search',
             model: 'map'
+                // policy: 'isAuthenticated'
+        },
+
+        'PATCH /maps/:id': {
+            controller: 'Map',
+            model: 'map',
+            action: 'update'
                 // policy: 'isAuthenticated'
         },
 
@@ -832,11 +993,6 @@ module.exports = {
             model: 'map',
             action: 'collection'
         },
-        'OPTIONS /maps/:id': {
-            controller: 'Options',
-            model: 'map',
-            action: 'instance'
-        },
         'OPTIONS /maps/first': {
             controller: 'Options',
             model: 'map',
@@ -850,10 +1006,41 @@ module.exports = {
         'OPTIONS /maps/count': {
             controller: 'Options',
             model: 'map',
-            action: 'query'
+            action: 'count'
+        },
+
+        'OPTIONS /maps/:id': {
+            controller: 'Options',
+            model: 'map',
+            action: 'instance'
         },
 
         // Charts
+
+        'GET /charts/statistics': {
+            blueprint: 'statistics',
+            model: 'chart'
+        },
+
+        'POST /charts': 'Chart.create',
+
+        'DELETE /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+
+        'PATCH /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+        'PUT /charts': {
+            controller: 'NotImplemented',
+            model: 'chart',
+            action: 'notImplemented'
+        },
+
 
         'GET /charts/first': {
             blueprint: 'first',
@@ -870,6 +1057,7 @@ module.exports = {
             model: 'chart'
                 // policy: 'isAuthenticated'
         },
+        'PATCH /charts/:id': 'Chart.update',
 
         'HEAD /charts/*': {
             controller: 'Head',
@@ -887,11 +1075,6 @@ module.exports = {
             model: 'chart',
             action: 'collection'
         },
-        'OPTIONS /charts/:id': {
-            controller: 'Options',
-            model: 'chart',
-            action: 'instance'
-        },
         'OPTIONS /charts/first': {
             controller: 'Options',
             model: 'chart',
@@ -905,10 +1088,37 @@ module.exports = {
         'OPTIONS /charts/count': {
             controller: 'Options',
             model: 'chart',
-            action: 'query'
+            action: 'count'
+        },
+        'OPTIONS /charts/:id': {
+            controller: 'Options',
+            model: 'chart',
+            action: 'instance'
         },
 
         // Views
+
+        'GET /views/statistics': {
+            blueprint: 'statistics',
+            model: 'view'
+        },
+        'DELETE /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+
+        'PATCH /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+        'PUT /views': {
+            controller: 'NotImplemented',
+            model: 'view',
+            action: 'notImplemented'
+        },
+
 
         'GET /views/first': {
             blueprint: 'first',
@@ -922,6 +1132,11 @@ module.exports = {
         },
         'GET /views/search': {
             blueprint: 'search',
+            model: 'view'
+                // policy: 'isAuthenticated'
+        },
+        'PATCH /views/:id': {
+            blueprint: 'update',
             model: 'view'
                 // policy: 'isAuthenticated'
         },
@@ -942,11 +1157,6 @@ module.exports = {
             model: 'view',
             action: 'collection'
         },
-        'OPTIONS /views/:id': {
-            controller: 'Options',
-            model: 'view',
-            action: 'instance'
-        },
         'OPTIONS /views/first': {
             controller: 'Options',
             model: 'view',
@@ -960,7 +1170,168 @@ module.exports = {
         'OPTIONS /views/count': {
             controller: 'Options',
             model: 'view',
+            action: 'count'
+        },
+        'OPTIONS /views/:id': {
+            controller: 'Options',
+            model: 'view',
+            action: 'instance'
+        },
+
+        // Statistics
+
+        'POST /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
+        'DELETE /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
+        'PATCH /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+        'PUT /statistics': {
+            controller: 'NotImplemented',
+            model: 'statistic',
+            action: 'notImplemented'
+        },
+
+
+        'GET /statistics/first': {
+            blueprint: 'first',
+            model: 'statistic'
+                // policy: 'isAuthenticated'
+        },
+        'GET /statistics/last': {
+            blueprint: 'last',
+            model: 'statistic'
+                // policy: 'isAuthenticated'
+        },
+
+        'HEAD /statistics/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'statistic'
+        },
+        'HEAD /statistics': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'statistic'
+        },
+
+        'OPTIONS /statistics': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'collection'
+        },
+        'OPTIONS /statistics/first': {
+            controller: 'Options',
+            model: 'statistic',
             action: 'query'
-        }
+        },
+        'OPTIONS /statistics/last': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'query'
+        },
+        'OPTIONS /statistics/count': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'count'
+        },
+        'OPTIONS /statistics/:id': {
+            controller: 'Options',
+            model: 'statistic',
+            action: 'instance'
+        },
+
+        // Basemaps
+
+        'GET /basemaps/statistics': {
+            blueprint: 'statistics',
+            model: 'basemap'
+        },
+        'DELETE /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+
+        'PATCH /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+        'PUT /basemaps': {
+            controller: 'NotImplemented',
+            model: 'basemap',
+            action: 'notImplemented'
+        },
+
+
+        'GET /basemaps/first': {
+            blueprint: 'first',
+            model: 'basemap'
+                // policy: 'isAuthenticated'
+        },
+        'GET /basemaps/last': {
+            blueprint: 'last',
+            model: 'basemap'
+                // policy: 'isAuthenticated'
+        },
+        'GET /basemaps/search': {
+            blueprint: 'search',
+            model: 'basemap'
+                // policy: 'isAuthenticated'
+        },
+        'PATCH /basemaps/:id': {
+            blueprint: 'update',
+            model: 'basemap'
+                // policy: 'isAuthenticated'
+        },
+
+        'HEAD /basemaps/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'basemap'
+        },
+        'HEAD /basemaps': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'basemap'
+        },
+
+        'OPTIONS /basemaps': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'collection'
+        },
+        'OPTIONS /basemaps/first': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'query'
+        },
+        'OPTIONS /basemaps/last': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'query'
+        },
+        'OPTIONS /basemaps/count': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'count'
+        },
+        'OPTIONS /basemaps/:id': {
+            controller: 'Options',
+            model: 'basemap',
+            action: 'instance'
+        },
     }
 };

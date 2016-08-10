@@ -82,7 +82,6 @@ describe('All Categories', function() {
                             if (element.description) assert.isString(element.description);
 
                             assert.property(element, 'createdBy');
-                            // assert.isObject(element.createdBy);
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
@@ -151,7 +150,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=4');
+                    assert.endsWith(result.body.links.last, 'categories?limit=2&skip=8');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
@@ -293,7 +292,7 @@ describe('All Categories', function() {
 
                     assert.property(result.body.links, 'previous');
                     assert.isString(result.body.links.previous);
-                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=2');
+                    assert.endsWith(result.body.links.previous, 'categories?limit=2&skip=6');
 
                     assert.property(result.body.links, 'first');
                     assert.isString(result.body.links.first);
@@ -489,20 +488,20 @@ describe('All Categories', function() {
                     assert.property(result.body.data[0], 'id');
                     assert.isString(result.body.data[0].id);
                     assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'mWRhpR4');
+                    assert.equal(result.body.data[0].id, 'mWRhpR3');
 
                     assert.property(result.body.data[0], 'name');
                     assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Urbanismo e Infraestructura');
+                    assert.equal(result.body.data[0].name, 'Transporte');
 
                     assert.property(result.body.data[1], 'id');
                     assert.isString(result.body.data[1].id);
                     assert.ok(shortid.isValid(result.body.data[1].id));
-                    assert.equal(result.body.data[1].id, 'mWRhpR3');
+                    assert.equal(result.body.data[1].id, 'mWRhpR4');
 
                     assert.property(result.body.data[1], 'name');
                     assert.isString(result.body.data[1].name);
-                    assert.equal(result.body.data[1].name, 'Transporte');
+                    assert.equal(result.body.data[1].name, 'Urbanismo e Infraestructura');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -565,6 +564,32 @@ describe('All Categories', function() {
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /categories/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/categories/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
 
                     err ? done(err) : done();
                 });
@@ -663,6 +688,8 @@ describe('Single Category', function() {
                 .field('name', 'Category')
                 .field('description', 'An example category')
                 .field('createdBy', 'dogPzIz9')
+                .field('color', 'FFFFFF')
+                .attach('uploadImage', 'test/assets/icon.svg')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -690,6 +717,13 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
+
+                    assert.property(result.body.data, 'color');
+                    assert.isString(result.body.data.color);
+
+                    assert.property(result.body.data, 'image');
+                    assert.isString(result.body.data.image);
+                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
@@ -726,6 +760,13 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
+                    assert.property(result.body.data, 'color');
+                    assert.isString(result.body.data.color);
+
+                    assert.property(result.body.data, 'image');
+                    assert.isString(result.body.data.image);
+                    assert.endsWith(result.body.data.image, '/image');
+
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
 
@@ -740,6 +781,32 @@ describe('Single Category', function() {
         });
     });
 
+    // Get an inexistent relation
+    describe('- GET /categories/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/categories/${categoryId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // Edit category
     describe('- PATCH /categories/:id', function() {
         it('- Should edit the category', function(done) {
@@ -748,6 +815,7 @@ describe('Single Category', function() {
                 .field('name', 'Edited Category')
                 .field('description', 'An example edited category')
                 .field('createdBy', 'nYrnfYEv')
+                .field('color', '000000')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -776,15 +844,19 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    assert.property(result.body.data, 'color');
+                    assert.isString(result.body.data.color);
+                    assert.equal(result.body.data.color, '000000');
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data, 'image');
+                    assert.isString(result.body.data.image);
+                    assert.endsWith(result.body.data.image, '/image');
+
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -818,12 +890,17 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'description');
                     assert.isString(result.body.data.description);
 
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
+                    assert.property(result.body.data, 'color');
+                    assert.isString(result.body.data.color);
+                    assert.equal(result.body.data.color, '000000');
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data, 'image');
+                    assert.isString(result.body.data.image);
+                    assert.endsWith(result.body.data.image, '/image');
+
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -844,7 +921,7 @@ describe('Single Category', function() {
         it('- Should delete the category', function(done) {
             request.del(`/categories/${categoryId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });
@@ -852,18 +929,22 @@ describe('Single Category', function() {
 
     // Check deleted category
     describe('- GET /categories/:id', function() {
-        it('- Should get error 404', function(done) {
+        it('- Should get error 401', function(done) {
             request.get(`/categories/${categoryId}`)
                 .set('Accept', 'application/json')
-                .expect(404)
+                .expect(410)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
                     assert.property(result.body, 'meta');
                     assert.isObject(result.body.meta);
 
+                    // assert.property(result.body.meta, 'code');
+                    // assert.isString(result.body.meta.code);
+                    // assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
                     assert.property(result.body.meta, 'code');
                     assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+                    assert.equal(result.body.meta.code, 'E_GONE');
 
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);

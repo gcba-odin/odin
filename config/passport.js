@@ -52,7 +52,8 @@ const _onLocalStrategyAuth = (req, username, password, next) => {
         })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
-            if (!HashService.bcrypt.compareSync(password, user.password)) return next(null, null, sails.config.errors.USER_NOT_FOUND);
+            if (!HashService.bcrypt.compareSync(password, user.password))
+                return next(null, null, sails.config.errors.USER_NOT_FOUND);
             return next(null, user, {});
         })
         .catch(next);

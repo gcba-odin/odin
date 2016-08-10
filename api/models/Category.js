@@ -30,53 +30,50 @@ module.exports = {
             type: 'string',
             size: 350
         },
+        image: {
+            type: 'string',
+            size: 500
+        },
+        color: {
+            type: 'string',
+            size: 6
+        },
+        active: {
+            type: 'boolean',
+            defaultsTo: true
+        },
         createdBy: {
             model: 'user',
             required: true
         },
+        fileName: {
+            type: 'string',
+            size: 20
+        },
         datasets: {
             collection: 'dataset',
-            via: 'category'
+            via: 'categories'
         },
 
         toJSON() {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'email'
-        },
-        createdBy: {
-            type: 'object'
-        },
-        datasets: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+        next()
+    },
     beforeCreate: (values, next) => {
+
+        if (_.endsWith(values.image, '/id')) {
+
+            values.image = _.replace(values.url, 'model', 'categories');
+            values.image = _.replace(values.image, 'id', values.id);
+            values.image = values.image + '/image';
+        }
+
         next();
     }
 };

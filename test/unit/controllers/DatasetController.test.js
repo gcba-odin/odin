@@ -3,8 +3,6 @@
 
 require('sails-test-helper');
 
-const sails = require('sails');
-const config = require('../../../config/env/test');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
@@ -102,9 +100,6 @@ describe('All Datasets', function() {
                             assert.property(element, 'optional8');
                             assert.property(element, 'optional9');
                             assert.property(element, 'optional10');
-
-                            assert.property(element, 'category');
-                            assert.isObject(element.category);
 
                             assert.property(element, 'status');
                             assert.isObject(element.status);
@@ -383,9 +378,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?name=Dataset 1&status.name=Draft', function() {
+    describe('- GET /datasets?name=Dataset 1&status.name=Borrador', function() {
         it('- Should get one dataset', function(done) {
-            request.get('/datasets?name=Dataset 1&status.name=Draft')
+            request.get('/datasets?name=Dataset 1&status.name=Borrador')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -414,7 +409,7 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Draft');
+                    assert.equal(result.body.data[0].status.name, 'Borrador');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -425,9 +420,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?name=Dataset 1&status.name=Published', function() {
+    describe('- GET /datasets?name=Dataset 1&status.name=Publicado', function() {
         it('- Should get no record', function(done) {
-            request.get('/datasets?name=Dataset 1&status.name=Published')
+            request.get('/datasets?name=Dataset 1&status.name=Publicado')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -457,9 +452,9 @@ describe('All Datasets', function() {
         });
     });
 
-    describe('- GET /datasets?status.name=Published', function() {
+    describe('- GET /datasets?status.name=Publicado', function() {
         it('- Should get one dataset', function(done) {
-            request.get('/datasets?status.name=Published')
+            request.get('/datasets?status.name=Publicado')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -488,7 +483,7 @@ describe('All Datasets', function() {
 
                     assert.property(result.body.data[0], 'status');
                     assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Published');
+                    assert.equal(result.body.data[0].status.name, 'Publicado');
 
                     // Links
                     assert.property(result.body, 'links');
@@ -656,6 +651,32 @@ describe('All Datasets', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /datasets/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/datasets/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /datasets', function() {
@@ -791,9 +812,6 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
-
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
 
@@ -845,8 +863,8 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
+                    // assert.property(result.body.data, 'datasets');
+                    // assert.isArray(result.body.data.datasets);
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
@@ -889,23 +907,23 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, 'sWRhpRk');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Dataset 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'Dataset 1');
 
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
+                    assert.property(result.body.data, 'tags');
+                    assert.isArray(result.body.data.tags);
 
-                    result.body.data[0].tags.forEach(function(element) {
+                    result.body.data.tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -915,6 +933,7 @@ describe('Single Dataset', function() {
                         assert.notProperty(element, 'createdAt');
                         assert.notProperty(element, 'updatedAt');
                     }, this);
+
 
                     // Links
                     assert.property(result.body, 'links');
@@ -941,23 +960,23 @@ describe('Single Dataset', function() {
                     assert.equal(result.body.meta.code, 'OK');
 
                     // Data
+
                     assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
+                    assert.isObject(result.body.data);
 
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRk');
+                    assert.property(result.body.data, 'id');
+                    assert.isString(result.body.data.id);
+                    assert.ok(shortid.isValid(result.body.data.id));
+                    assert.equal(result.body.data.id, 'sWRhpRk');
 
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Dataset 1');
+                    assert.property(result.body.data, 'name');
+                    assert.isString(result.body.data.name);
+                    assert.equal(result.body.data.name, 'Dataset 1');
 
-                    assert.property(result.body.data[0], 'tags');
-                    assert.isArray(result.body.data[0].tags);
+                    assert.property(result.body.data, 'tags');
+                    assert.isArray(result.body.data.tags);
 
-                    result.body.data[0].tags.forEach(function(element) {
+                    result.body.data.tags.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -968,10 +987,10 @@ describe('Single Dataset', function() {
                         assert.notProperty(element, 'updatedAt');
                     }, this);
 
-                    assert.property(result.body.data[0], 'files');
-                    assert.isArray(result.body.data[0].files);
+                    assert.property(result.body.data, 'files');
+                    assert.isArray(result.body.data.files);
 
-                    result.body.data[0].files.forEach(function(element) {
+                    result.body.data.files.forEach(function(element) {
                         assert.isObject(element);
 
                         assert.property(element, 'name');
@@ -991,6 +1010,32 @@ describe('Single Dataset', function() {
         });
     });
 
+    // Get an inexistent relation
+    describe('- GET /datasets/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/datasets/${datasetId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // Edit dataset
     describe('- PATCH /datasets/:id', function() {
         it('- Should edit the dataset', function(done) {
@@ -999,7 +1044,7 @@ describe('Single Dataset', function() {
                 .field('name', 'Edited Dataset')
                 .field('description', 'An example edited dataset')
                 .field('visible', 'true')
-                .field('category', 'kWRhpRV')
+                .field('datasets', 'kWRhpRV')
                 .field('status', 'qWRhpRV')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -1038,19 +1083,12 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
-
-                    assert.property(result.body.data.category, 'name');
-                    assert.isString(result.body.data.category.name);
-                    assert.equal(result.body.data.category.name, 'Educación');
-
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
 
                     assert.property(result.body.data.status, 'name');
                     assert.isString(result.body.data.status.name);
-                    assert.equal(result.body.data.status.name, 'Published');
+                    assert.equal(result.body.data.status.name, 'Publicado');
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -1101,19 +1139,19 @@ describe('Single Dataset', function() {
                     assert.property(result.body.data, 'starred');
                     assert.isBoolean(result.body.data.starred);
 
-                    assert.property(result.body.data, 'category');
-                    assert.isObject(result.body.data.category);
+                    // assert.property(result.body.data, 'datasets');
+                    // assert.isArray(result.body.data.datasets);
 
-                    assert.property(result.body.data.category, 'name');
-                    assert.isString(result.body.data.category.name);
-                    assert.equal(result.body.data.category.name, 'Educación');
+                    // assert.property(result.body.data.datasets[0], 'name');
+                    // assert.isString(result.body.data.datasets[0].name);
+                    // assert.equal(result.body.data.datasets[0].name, 'Educación');
 
                     assert.property(result.body.data, 'status');
                     assert.isObject(result.body.data.status);
 
                     assert.property(result.body.data.status, 'name');
                     assert.isString(result.body.data.status.name);
-                    assert.equal(result.body.data.status.name, 'Published');
+                    assert.equal(result.body.data.status.name, 'Publicado');
 
                     assert.property(result.body.data, 'owner');
                     assert.isObject(result.body.data.owner);
@@ -1139,7 +1177,7 @@ describe('Single Dataset', function() {
         it('- Should delete the dataset', function(done) {
             request.del(`/datasets/${datasetId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });

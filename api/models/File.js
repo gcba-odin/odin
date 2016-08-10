@@ -20,6 +20,10 @@ module.exports = {
             primaryKey: true,
             size: 15
         },
+        fileName: {
+            type: 'string',
+            size: 15
+        },
         name: {
             type: 'string',
             required: true,
@@ -50,25 +54,37 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        gatheringDate: {
+            type: 'date'
+        },
+        updateDate: {
+            type: 'datetime'
+        },
+        updated: {
+            type: 'boolean',
+            defaultsTo: false
+        },
         type: {
             model: 'filetype'
-                // required: true
+            // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
             required: true
         },
         status: {
-            model: 'status',
-            required: true
+            model: 'status'
         },
         organization: {
             model: 'organization',
             required: true
         },
+        optionals: {
+            type: 'json'
+        },
         dataset: {
             model: 'dataset'
-                // required: true
+            // required: true
         },
         tags: {
             collection: 'tag',
@@ -81,84 +97,34 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
 
         toJSON() {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'string'
-        },
-        notes: {
-            type: 'string'
-        },
-        collection: {
-            type: 'string'
-        },
-        visible: {
-            type: 'boolean'
-        },
-        url: {
-            type: 'string'
-        },
-        publishedAt: {
-            type: 'string'
-        },
-        type: {
-            type: 'object'
-        },
-        updateFrequency: {
-            type: 'object'
-        },
-        status: {
-            type: 'object'
-        },
-        organization: {
-            type: 'object'
-        },
-        dataset: {
-            type: 'object'
-        },
-        tags: {
-            type: 'object'
-        },
-        owner: {
-            type: 'object'
-        },
-        createdBy: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'model', 'files');
-        values.url = _.replace(values.url, 'id', values.id);
-        values.url = values.url + '/download';
-        next();
+
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function (err, record) {
+            values.status = record.value;
+
+            if (_.endsWith(values.url, '/id')) {
+
+                values.url = _.replace(values.url, 'model', 'files');
+                values.url = _.replace(values.url, 'id', values.id);
+                values.url = values.url + '/download';
+            }
+            next();
+        });
+
+
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
@@ -171,12 +137,8 @@ module.exports = {
     afterDestroy: (destroyedRecords, next) => {
         if (!_.isEmpty(destroyedRecords)) {
             destroyedRecords = destroyedRecords[0];
-            var path = sails.config.odin.uploadFolder + '/' + destroyedRecords.dataset + '/' + destroyedRecords.name;
-            console.log(path);
-            fs.unlink(path, function() {
-                DataStorageService.deleteCollection(destroyedRecords.dataset, destroyedRecords.name, next);
-                ZipService.createZip(destroyedRecords.dataset);
-            });
+            UnpublishService.unpublish(destroyedRecords);
+            UploadService.deleteFile(destroyedRecords.dataset, destroyedRecords.fileName, next);
         }
         next();
     }

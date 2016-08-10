@@ -33,10 +33,29 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        type: {
+            type: 'string',
+            enum: ['bar', 'pie', 'line', 'stackedbar', 'heatmap']
+        },
         url: {
             type: 'string',
             url: true,
             size: 500
+        },
+        link: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
+        data: {
+            type: 'json'
+        },
+        dataSeries: {
+            type: 'array'
+        },
+        dataType: {
+            type: 'string',
+            enum: ['quantitative', 'qualitative']
         },
         embedCode: {
             type: 'string',
@@ -44,6 +63,10 @@ module.exports = {
         },
         publishedAt: {
             type: 'datetime'
+        },
+        file: {
+            model: 'file'
+                // required: true
         },
         createdBy: {
             model: 'user'
@@ -53,45 +76,7 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'string'
-        },
-        notes: {
-            type: 'string'
-        },
-        url: {
-            type: 'string'
-        },
-        embedCode: {
-            type: 'string'
-        },
-        publishedAt: {
-            type: 'datetime'
-        },
-        createdBy: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),

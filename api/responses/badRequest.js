@@ -8,12 +8,14 @@
  * Domain validation errors, missing data, etc.
  */
 
-module.exports = function(data, config) {
+module.exports = function(links) {
     const response = _.assign({
-        code: _.get(config, 'code', 'E_BAD_REQUEST'),
-        message: _.get(config, 'message', 'The request cannot be fulfilled due to bad syntax'),
-        data: data || {}
-    }, _.get(config, 'root', {}));
+        meta: {
+            code: 'E_BAD_REQUEST',
+            message: 'The request cannot be fulfilled due to bad syntax'
+        },
+        links: links
+    });
 
     this.res.set({
         'Content-Type': 'application/json',
@@ -21,7 +23,8 @@ module.exports = function(data, config) {
     });
     this.res.status(400);
 
-    LogService.winstonLogResponse('Bad Request', response.code, response.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Bad Request', response.code, response.message,
+        this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

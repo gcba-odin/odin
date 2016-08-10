@@ -7,37 +7,67 @@
  */
 const fs = require('fs');
 var winston = require('winston');
+var path = require('path')
+var mkdirp = require('mkdirp');
 
 module.exports = {
   bootstrap: cb => {
 
+    console.dir('Inside bootstrap function');
+
     // Create the upload folder
-    fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
-      if (err || !stats.isDirectory()) {
-        fs.mkdirSync(sails.config.odin.uploadFolder);
-      }
+
+    mkdirp(sails.config.odin.uploadFolder, function(err) {
+      if (err) console.error(err)
+      else console.log('Upload folder created on: ' + sails.config.odin.uploadFolder)
     });
+
+    mkdirp(sails.config.odin.datasetZipFolder, function(err) {
+      if (err) console.error(err)
+      else console.log('Zip folder created on: ' + sails.config.odin.datasetZipFolder)
+    });
+
+
+    // fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
+    //   if (err || !stats.isDirectory()) {
+    //     fs.mkdirSync(sails.config.odin.uploadFolder);
+    //   }
+    // });
+
 
     // Create the logs folder
-    fs.lstat('logs', function(err, stats) {
-      if (err || !stats.isDirectory()) {
-        fs.mkdirSync('logs');
+    var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
+
+    mkdirp(sails.config.odin.logFolder, function(err) {
+      if (err) console.error(err)
+      else {
+        console.log('Log folder created on: ' + sails.config.odin.logFolder)
+        fs.lstat(logCompletePath, function(err, stats) {
+          if (err || !stats.isFile()) {
+            var fd = fs.openSync(logCompletePath, 'w');
+          }
+        });
       }
     });
 
-    var logPath = 'logs/' + sails.config.environment + '.log'
 
+    // fs.lstat(sails.config.odin.logFolder, function(err, stats) {
+    //   if (err || !stats.isDirectory()) {
+    //     fs.mkdirSync(sails.config.odin.logFolder);
     // create the log file
-    fs.lstat(logPath, function(err, stats) {
-      if (err || !stats.isFile()) {
-        var fd = fs.openSync(logPath, 'w');
-      }
+
+
+    // create stats folder which will contain the statistics of the site
+
+    mkdirp(sails.config.odin.statisticsPath, function(err) {
+      if (err) console.error(err)
+      else console.log('Stats path created on: ' + sails.config.odin.statisticsPath)
     });
 
     // Require and configure Winston with File
     winston.add(winston.transports.File, {
-      filename: 'logs/' + sails.config.environment + '.log',
-      level: 'silly'
+      filename: logCompletePath,
+      level: sails.config.odin.logLevel
     });
     winston.remove(winston.transports.Console);
 

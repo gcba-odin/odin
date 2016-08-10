@@ -20,8 +20,8 @@ module.exports = function(data, config) {
         'Content-Type': 'application/json'
     });
     this.res.status(200);
-
-    LogService.winstonLogResponse('Updated', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Updated', response.meta.code, response.meta.message,
+        this.res.headers, response, this.req.ip);
 
     this.res.send(response);
 };

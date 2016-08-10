@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function(data, meta) {
+module.exports = function(data) {
     const response = _.assign({
         meta: {
             code: 'OK',
@@ -17,7 +17,8 @@ module.exports = function(data, meta) {
 
     this.res.status(200);
 
-    LogService.winstonLogResponse('Options response', response.meta.code, response.meta.message, this.res.headers, response, this.req.ip);
+    LogService.winstonLogResponse('Options response', response.meta.code, response.meta.message,
+        this.res.headers, response, this.req.ip);
 
     this.res.jsonx(response);
 };

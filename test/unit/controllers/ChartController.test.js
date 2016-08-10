@@ -91,7 +91,6 @@ describe('All Charts', function() {
                             if (element.url) assert.isString(element.url);
 
                             assert.property(element, 'createdBy');
-                            // assert.isObject(element.createdBy);
 
                             assert.property(element, 'createdAt');
                             assert.property(element, 'updatedAt');
@@ -580,6 +579,32 @@ describe('All Charts', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /charts/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/charts/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /charts', function() {
@@ -705,7 +730,6 @@ describe('Single Chart', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'createdBy');
-                    //assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -744,7 +768,6 @@ describe('Single Chart', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -758,6 +781,32 @@ describe('Single Chart', function() {
         });
     });
 
+    // Get an inexistent relation
+    describe('- GET /charts/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/charts/${chartId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // Edit chart
     describe('- PATCH /charts/:id', function() {
         it('- Should edit the chart', function(done) {
@@ -765,6 +814,7 @@ describe('Single Chart', function() {
                 .set('Accept', 'application/json')
                 .field('name', 'Edited Chart')
                 .field('description', 'An example edited chart')
+                .field('embedCode', '<div></div>')
                 .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -800,12 +850,11 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -846,12 +895,11 @@ describe('Single Chart', function() {
                     assert.property(result.body.data, 'embedCode');
                     assert.isString(result.body.data.embedCode);
 
-                    assert.property(result.body.data.createdBy, 'name');
+                    assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'admin');
+                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
 
                     assert.property(result.body.data, 'createdBy');
-                    // assert.isObject(result.body.data.createdBy);
 
                     assert.property(result.body.data, 'createdAt');
                     assert.property(result.body.data, 'updatedAt');
@@ -870,7 +918,7 @@ describe('Single Chart', function() {
         it('- Should delete the chart', function(done) {
             request.del(`/charts/${chartId}`)
                 .expect(204)
-                .end(function(err, result) {
+                .end(function(err) {
                     err ? done(err) : done();
                 });
         });
