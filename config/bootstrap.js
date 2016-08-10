@@ -7,7 +7,7 @@
  */
 const fs = require('fs');
 var winston = require('winston');
-var path = require('path')
+var path = require('path');
 var mkdirp = require('mkdirp');
 
 module.exports = {
@@ -18,12 +18,12 @@ module.exports = {
     // Create the upload folder
 
     mkdirp(sails.config.odin.uploadFolder, function(err) {
-      if (err) console.error(err)
+      if (err) console.error(err);
       else console.log('Upload folder created on: ' + sails.config.odin.uploadFolder)
     });
 
     mkdirp(sails.config.odin.datasetZipFolder, function(err) {
-      if (err) console.error(err)
+      if (err) console.error(err);
       else console.log('Zip folder created on: ' + sails.config.odin.datasetZipFolder)
     });
 
@@ -39,9 +39,9 @@ module.exports = {
     var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
 
     mkdirp(sails.config.odin.logFolder, function(err) {
-      if (err) console.error(err)
+      if (err) console.error(err);
       else {
-        console.log('Log folder created on: ' + sails.config.odin.logFolder)
+        console.log('Log folder created on: ' + sails.config.odin.logFolder);
         fs.lstat(logCompletePath, function(err, stats) {
           if (err || !stats.isFile()) {
             var fd = fs.openSync(logCompletePath, 'w');
@@ -60,7 +60,7 @@ module.exports = {
     // create stats folder which will contain the statistics of the site
 
     mkdirp(sails.config.odin.statisticsPath, function(err) {
-      if (err) console.error(err)
+      if (err) console.error(err);
       else console.log('Stats path created on: ' + sails.config.odin.statisticsPath)
     });
 

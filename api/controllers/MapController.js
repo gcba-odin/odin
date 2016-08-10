@@ -33,12 +33,16 @@ module.exports = {
                 // fetch the collection data of the file
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
 
-                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function (geoJson, errors) {
-                        values.geojson = geoJson;
-                        // Once the geoJson is created, we create the map
-                        UploadService.metadataSave(_Map, values, 'maps', req, res, {errors: errors});
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray,
+                        function (geoJson, incorrect, correct) {
+                            values.geojson = geoJson;
+                            // Once the geoJson is created, we create the map
+                            UploadService.metadataSave(_Map, values, 'maps', req, res, {
+                                incorrect: incorrect,
+                                correct: correct
+                            });
 
-                    }.bind(this));
+                        }.bind(this));
                 }.bind(this));
             }
         }.bind(this));
@@ -69,11 +73,15 @@ module.exports = {
                 // fetch the collection data of the file
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (data) {
 
-                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function (geoJson, errors) {
-                        values.geojson = geoJson;
-                        // Once the geoJson is created, we create the map
-                        UploadService.metadataUpdate(_Map, values, 'maps', req, res, {errors: errors});
-                    });
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray,
+                        function (geoJson, incorrect, correct) {
+                            values.geojson = geoJson;
+                            // Once the geoJson is created, we create the map
+                            UploadService.metadataUpdate(_Map, values, 'maps', req, res, {
+                                incorrect: incorrect,
+                                correct: correct
+                            });
+                        });
                 }.bind(this));
             }
         }.bind(this));
@@ -81,7 +89,8 @@ module.exports = {
 
 
     generateGeoJson(data, latitude, longitude, propertiesArray, cb) {
-        var errors = 0;
+        var incorrect = 0;
+        var correct = 0;
         var geoJson = {
             type: "FeatureCollection",
             features: []
@@ -95,9 +104,10 @@ module.exports = {
             });
 
             if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude])) {
-                errors++;
+                incorrect++;
             }
             else {
+                correct++;
                 var point = {
                     geometry: {
                         type: "Point",
@@ -110,7 +120,7 @@ module.exports = {
                 geoJson.features.push(point);
             }
         });
-        cb(geoJson, errors);
+        cb(geoJson, incorrect, correct);
     }
 
     // mapCreate: function (values, req, res) {

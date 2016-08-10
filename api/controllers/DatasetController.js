@@ -8,6 +8,7 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 var RSS = require('rss');
 var SkipperDisk = require('skipper-disk');
+var slug = require('slug');
 
 module.exports = {
     download: function(req, res) {
@@ -15,7 +16,7 @@ module.exports = {
 
         Dataset.findOne(pk).then(function(dataset) {
 
-            var path = sails.config.odin.datasetZipFolder + '/' + dataset.id + '.zip';
+            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {lower: true}) + '.zip';
 
             var fileAdapter = SkipperDisk();
 
