@@ -21,15 +21,16 @@ module.exports = {
         var dataset = req.param('dataset');
 
         if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
+
+
         var uploadedFile = req.file('uploadFile').on('error', function(err) {
-            console.log('inside error')
             if (!res.headersSent) return res.negotiate(err);
         });
 
-        console.log('after first dir');
 
         // If there is a file
-        if (uploadedFile.isNoop && fileRequired === true) {
+
+        if (uploadedFile.isNoop && fileRequired) {
             return res.badRequest('No file was uploaded.');
         } else {
             this.uploadFile(req, res, uploadedFile, dataset, cb);
@@ -37,23 +38,23 @@ module.exports = {
     },
 
     uploadFile: function(req, res, uploadedFile, dataset, cb) {
-        console.log('ak')
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
         var allowedTypes;
-
-        FileType.find().exec(function(err, filetypes) {
-            allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
+        if (uploadedFile.isNoop) {
+            cb(data);
+        }
+        else{
+        FileType.find().exec(function (err, filetypes) {
+            allowedTypes = _.transform(filetypes, function (allowedTypes, filetype) {
                 allowedTypes.push(filetype.mimetype);
             }, []);
 
             data.fileName = shortid.generate();
-            console.log('before second console')
-            console.dir(uploadedFile)
             uploadedFile.upload({
-                    saveAs: function(file, cb) {
+                    saveAs: function (file, cb) {
 
                         //Get the mime and the extension of the file
                         mimetype = mime.lookup(file.filename.split('.').pop());
@@ -85,7 +86,7 @@ module.exports = {
                     // Get the id of the filetype based on mime of the file
                     sails.models.filetype.findOne({
                         name: extension
-                    }).exec(function(err, record) {
+                    }).exec(function (err, record) {
                         if (err) return res.negotiate(err);
                         if (!record) {
                             return res.serverError('Could not find the filetype uploaded: ' + extension);
@@ -99,58 +100,59 @@ module.exports = {
                             // Read the file
                             fs.createReadStream(filePath)
                                 // Encode it
-                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
-                                    if (err) return res.negotiate(err);
+                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
+                                if (err) return res.negotiate(err);
 
-                                    if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                    //Should check which type the file is and convert it .
-                                    var json = [];
-                                    if (extension === 'xls' || extension === 'xlsx') {
-                                        //Convert XLS to json, store on nosql database
+                                //Should check which type the file is and convert it .
+                                var json = [];
+                                if (extension === 'xls' || extension === 'xlsx') {
+                                    //Convert XLS to json, store on nosql database
 
-                                        var workbook = XLSX.readFile(files[0].fd);
+                                    var workbook = XLSX.readFile(files[0].fd);
 
-                                        //Join all the worksheets on one json
-                                        json = _.reduce(workbook.SheetNames, function(result, sheetName) {
-                                            var worksheet = workbook.Sheets[sheetName];
+                                    //Join all the worksheets on one json
+                                    json = _.reduce(workbook.SheetNames, function (result, sheetName) {
+                                        var worksheet = workbook.Sheets[sheetName];
 
-                                            var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                            result = _.concat(result, currentJson);
-                                            return result;
-                                        }, []);
+                                        var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                        result = _.concat(result, currentJson);
+                                        return result;
+                                    }, []);
 
+                                    DataStorageService.mongoSave(dataset, data.fileName, json, res);
+
+
+                                } else {
+                                    // Convert to JSON
+
+                                    var converter = new Converter({
+                                        delimiter: 'auto'
+                                    });
+
+                                    converter.fromString(result, function (err, json) {
+                                        if (err) {
+                                            return res.negotiate(err);
+                                        }
+                                        if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+
+                                        // Connect to the db
                                         DataStorageService.mongoSave(dataset, data.fileName, json, res);
-
-
-                                    } else {
-                                        // Convert to JSON
-
-                                        var converter = new Converter({
-                                            delimiter: 'auto'
-                                        });
-
-                                        converter.fromString(result, function(err, json) {
-                                            if (err) {
-                                                return res.negotiate(err);
-                                            }
-                                            if (json.length === 0) return res.badRequest("Invalid or empty csv.");
-
-                                            // Connect to the db
-                                            DataStorageService.mongoSave(dataset, data.fileName, json, res);
-                                        });
-                                    }
-                                    // fs.writeFile(filePath, result, function () {
-                                    // });
-                                });
+                                    });
+                                }
+                                // fs.writeFile(filePath, result, function () {
+                                // });
+                            });
                         }
                         // Save the file metadata to the relational DB
-                        cb(data)
-                            // UploadService.metadataSave(File, data, '/files', req, res);
+                        cb(data);
+                        // UploadService.metadataSave(File, data, '/files', req, res);
 
                     });
                 });
         });
+    }
     },
 
 
