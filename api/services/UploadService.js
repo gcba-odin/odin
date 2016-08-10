@@ -330,7 +330,7 @@ module.exports = {
     },
 
     deleteFile: function (datasetId, fileName, res) {
-        Dataset.findOne(pk).then(function (dataset) {
+        Dataset.findOne(datasetId).then(function (dataset) {
 
             var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {lower: true}) + '/' + fileName;
 
