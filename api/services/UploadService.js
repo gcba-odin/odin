@@ -21,13 +21,9 @@ module.exports = {
         // Check if the dataset ID is valid
         var dataset = req.param('dataset');
 
-        if (!shortid.isValid(dataset)) return res.badRequest('Dataset can contain only numbers and letters');
-
-
         var uploadedFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
-
 
         // If there is a file
 
@@ -41,7 +37,6 @@ module.exports = {
     uploadFile: function (req, res, uploadedFile, dataset, cb) {
         var mimetype = '';
         var extension = '';
-        var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
         var allowedTypes;
         if (uploadedFile.isNoop) {
@@ -53,7 +48,7 @@ module.exports = {
                     allowedTypes.push(filetype.mimetype);
                 }, []);
 
-                data.fileName = slug(data.name,{lower: true});
+                data.fileName = slug(data.name, {lower: true});
                 uploadedFile.upload({
                         saveAs: function (file, cb) {
 
@@ -75,7 +70,7 @@ module.exports = {
                                     File.findOne(pk).then(function (file) {
                                         UploadService.deleteFile(file.dataset, file.fileName, res);
                                     });
-                                }catch(err){
+                                } catch (err) {
                                     console.log(err);
                                 }
                                 data.fileName += '.' + extension;
@@ -175,7 +170,7 @@ module.exports = {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
-            data.fileName = slug(data.name,{lower: true});
+            data.fileName = slug(data.name, {lower: true});
 
             uploadFile.upload({
                 saveAs: function (file, cb) {
@@ -205,7 +200,7 @@ module.exports = {
         }
     },
 
-    metadataSave: function (model, data, modelName, req, res) {
+    metadataSave: function (model, data, modelName, req, res, extraRecordsResponse) {
         model.create(data).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -239,6 +234,9 @@ module.exports = {
             });
 
             model.find(newInstance.id).populate(associations).exec(function (err, record) {
+                if (!_.isUndefined(extraRecordsResponse)) {
+                    record[0] = _.merge(record[0], extraRecordsResponse);
+                }
                 if (err) res.negotiate(err);
                 res.created(record[0], {
                     meta: {
@@ -256,7 +254,7 @@ module.exports = {
 
     },
 
-    metadataUpdate: function (model, data, modelName, req, res) {
+    metadataUpdate: function (model, data, modelName, req, res, extraRecordsResponse) {
         // Look up the model
         model.update(data.id, data).exec(function updated(err, records) {
 
@@ -306,14 +304,19 @@ module.exports = {
             model.find(updatedRecord.id).populate(associations).exec(function (err, record) {
                 if (err) return res.negotiate(err);
 
-                return res.updated(updatedRecord, {
+                //if we have any extraRecords to add to the response,
+                // we merge it to the response
+                if (!_.isUndefined(extraRecordsResponse)) {
+                    record[0] = _.merge(record[0], extraRecordsResponse);
+                }
+                return res.updated(record[0], {
                     meta: {
                         code: sails.config.success.OK.code,
                         message: sails.config.success.OK.message
                     },
                     links: {
                         all: sails.config.odin.baseUrl + '/' + modelName,
-                        record: sails.config.odin.baseUrl + '/' + modelName + '/' + updatedRecord.id
+                        record: sails.config.odin.baseUrl + '/' + modelName + '/' + record.id
                     }
                 });
 
