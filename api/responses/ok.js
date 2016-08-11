@@ -16,10 +16,7 @@ module.exports = function(data, config) {
     // Ideally the Builder should let you put in headers and sed the response too
     // But for now it is just acting as a response body factory, rather than a response factory
     const response = _.assign({
-        meta: _.get(config, 'meta', {
-            message: sails.config.success.ok.message,
-            code: sails.config.success.ok.code
-        }),
+        meta: _.get(config, 'meta', {}),
         data: data || {},
         links: _.get(config, 'links', {})
     }, _.get(config, 'root', {}));
