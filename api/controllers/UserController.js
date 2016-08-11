@@ -7,6 +7,7 @@
 const _ = require('lodash');
 const passport = require('passport');
 var requestify = require('requestify');
+var jwt = require('jwt-simple');
 
 module.exports = {
 
@@ -38,17 +39,20 @@ module.exports = {
     //     });
     // }
     refreshToken(req, res) {
-        console.log('before post')
-        requestify.post(sails.config.odin.kongAdmin, {
-                consumer_id: '7fb5addf-5263 - 4a28-91dd-8f9bbc44ab16',
-                created_at: Date.now(),
-                id: '633cc788-2568-4254-84d8-2871cad8efff',
-                key: '99afc57fdbc04c6cb2dd4ba5690e4346',
-                secret: 'dcc01414b70e4f45aa2371b9b82ef95e'
+        var consumerId = req.param('consumerId');
+        var consumerUsername = req.param('consumer')
+        requestify.post(sails.config.odin.kongAdmin + '/consumers/' + consumerUsername + '/jwt', {
+                consumer_id: consumerId
             })
-            .then(function (response) {
+            .then(function(response) {
                 // Get the response body
-                console.dir(response.getBody());
+                var credential = response.getBody();
+                var payload = {
+                    iss: credential.key
+                };
+                var secret = credential.secret
+                var token = jwt.encode(payload, secret);
+                return res.ok(token)
             });
     }
 };
