@@ -18,7 +18,7 @@ module.exports = {
 
         var propertiesArray = _.split(properties, ',');
 
-        var link = _.get(values, 'link', '');
+        var link = _.get(values, 'link', null);
 
         if (fileId === '') return res.notFound();
 
@@ -26,7 +26,7 @@ module.exports = {
         File.findOne(fileId).exec(function (err, record) {
             if (err) return res.negotiate(err);
 
-            if (link !== '') {
+            if (link !== null) {
                 this.mapCreate(values, req, res)
             } else {
 
@@ -59,7 +59,7 @@ module.exports = {
 
         var propertiesArray = _.split(properties, ',');
 
-        var link = _.get(values, 'link', '');
+        var link = _.get(values, 'link', null);
 
         if (fileId === '') return res.notFound();
 
@@ -67,7 +67,7 @@ module.exports = {
         File.findOne(fileId).exec(function (err, record) {
             if (err) return res.negotiate(err);
 
-            if (link !== '') {
+            if (link !== null) {
                 UploadService.metadataUpdate(_Map, values, 'maps', req, res);
             } else {
                 // fetch the collection data of the file

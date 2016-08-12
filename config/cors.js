@@ -33,6 +33,6 @@ module.exports = {
     /**
      * Which headers should be allowed for CORS requests?
      */
-    headers: 'content-type, authorization, access-control-allow-origin'
+    headers: 'content-type, authorization, x-admin-authorization, origin'
   }
 };

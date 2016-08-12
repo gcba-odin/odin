@@ -19,7 +19,7 @@ module.exports = {
         //    'login': true
         // }
         CategoryController: {
-            upload: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         FileController: {
             create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
