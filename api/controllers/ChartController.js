@@ -24,7 +24,7 @@ module.exports = {
 
 
         const values = actionUtil.parseValues(req);
-        
+
         var link = _.get(values, 'link', null);
 
         if (link !== null) {
@@ -45,7 +45,7 @@ module.exports = {
                 if (err) return res.negotiate(err);
                 FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function (table) {
 
-                    if (dataType === 'quantitative') {
+                    if (dataType === 'qualitative') {
 
                         //if the map is qualitative we group all the data referenced by the element asked
 
@@ -53,7 +53,7 @@ module.exports = {
                             return value[element1];
                         });
                     } else {
-                        if (dataType === 'qualitative') {
+                        if (dataType === 'quantitative') {
                             //if the chart is quantitative return associative array
                             var chartData = _.transform(table, function (result, value) {
                                 var key = value[element1];
@@ -64,7 +64,7 @@ module.exports = {
                     }
                     values.data = {
                         labels: _.keys(chartData),
-                        data: (dataType === 'qualitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
+                        data: (dataType === 'quantitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
                     };
 
                     cb(values);

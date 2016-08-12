@@ -4,6 +4,7 @@ const sails = require('sails');
 module.exports.odin = {
     baseUrl: 'http://localhost:3000',
     kongHost: 'http://kongexample.com',
+    kongAdmin: 'http://kongexample.com:8001',
 
     uploadFolder: 'files',
     datasetZipFolder: 'datasets',

@@ -7,6 +7,7 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const mime = require('mime');
+const slug = require('slug');
 var json2csv = require('json2csv');
 var json2xls = require('json2xls');
 
@@ -21,23 +22,25 @@ module.exports = {
         // UploadService.uploadFile(req, res);
     },
     update: function(req, res) {
-        UploadService.createFile(req, res, false , function(data) {
+        UploadService.createFile(req, res, false, function(data) {
             UploadService.metadataUpdate(File, data, 'file', req, res);
         });
     },
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
 
-        File.findOne(pk).then(function(file) {
+        File.findOne(pk).populate('dataset').then(function(file) {
             if (!file) return res.notFound();
 
-            var dirname = sails.config.odin.uploadFolder + '/' + file.dataset + '/' + file.fileName;
+            var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {
+                lower: true
+            }) + '/' + file.fileName;
 
             var fileAdapter = SkipperDisk();
 
             var extension = file.fileName.split('.').pop();
             res.set('Content-Type', mime.lookup(extension));
-            res.set('Content-Disposition', 'attachment; filename=' + file.name + '.' + extension);
+            res.set('Content-Disposition', 'attachment; filename=' + file.fileName);
 
             LogService.winstonLog('verbose', 'file downloaded', {
                 ip: req.ip,

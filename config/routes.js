@@ -12,7 +12,7 @@ module.exports = {
         // Users
 
         'POST /users/login': 'User.login', // LOGOUT missing!!!
-        'GET /users/refreshToken': 'User.refreshToken',
+        'POST /clients/tokens': 'User.refreshToken',
 
         'GET /users/statistics': {
             blueprint: 'statistics',
