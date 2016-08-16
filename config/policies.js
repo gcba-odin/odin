@@ -13,35 +13,36 @@
 
 module.exports = {
     policies: {
-        '*': ['statistics', 'ensureQueryTypeCast'],
+        '*': ['isAuthenticated','statistics', 'ensureQueryTypeCast'],
         // '*': 'isAuthenticated',
-        // UserController: {
-        //    'login': true
-        // }
+        OptionsController: true,
         CategoryController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         FileController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            upload: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            upload: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         OrganizationController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         TagController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         UserController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+           login: true,
+           refreshToken: true
         },
         ConfigController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         MapController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
         ChartController: {
-            create: ['statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         }
     }
 };
