@@ -17,9 +17,9 @@ const pluralize = require('pluralize');
 var slug = require('slug');
 
 module.exports = {
-    createFile: function (req, res, fileRequired, cb) {
+    createFile: function(req, res, fileRequired, cb) {
 
-        var uploadedFile = req.file('uploadFile').on('error', function (err) {
+        var uploadedFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
 
@@ -31,7 +31,7 @@ module.exports = {
         }
     },
 
-    uploadFile: function (req, res, uploadedFile, cb) {
+    uploadFile: function(req, res, uploadedFile, cb) {
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
@@ -39,18 +39,20 @@ module.exports = {
         var allowedTypes;
         if (uploadedFile.isNoop) {
             cb(data);
-        }
-        else {
-            Dataset.findOne(dataset).then(function (dataset) {
+        } else {
+            Dataset.findOne(dataset).then(function(dataset) {
 
-                FileType.find().exec(function (err, filetypes) {
-                    allowedTypes = _.transform(filetypes, function (allowedTypes, filetype) {
+                FileType.find().exec(function(err, filetypes) {
+                    if (err) return res.negotiate(err)
+                    allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
                         allowedTypes.push(filetype.mimetype);
                     }, []);
 
-                    data.fileName = slug(data.name, {lower: true});
+                    data.fileName = slug(data.name, {
+                        lower: true
+                    });
                     uploadedFile.upload({
-                            saveAs: function (file, cb) {
+                            saveAs: function(file, cb) {
 
                                 //Get the mime and the extension of the file
                                 mimetype = mime.lookup(file.filename.split('.').pop());
@@ -67,7 +69,7 @@ module.exports = {
                                     //If file exists, deleted it
                                     try {
                                         const pk = actionUtil.requirePk(req);
-                                        File.findOne(pk).then(function (file) {
+                                        File.findOne(pk).then(function(file) {
                                             UploadService.deleteFile(file.dataset, file.fileName, res);
                                         });
                                     } catch (err) {
@@ -78,7 +80,9 @@ module.exports = {
                                 }
                             },
                             dirname: path.resolve(sails.config.odin.uploadFolder +
-                                '/' + slug(dataset.name, {lower: true})),
+                                '/' + slug(dataset.name, {
+                                    lower: true
+                                })),
                             maxBytes: 2000000000
 
                         },
@@ -93,7 +97,7 @@ module.exports = {
                             // Get the id of the filetype based on mime of the file
                             sails.models.filetype.findOne({
                                 name: extension
-                            }).exec(function (err, record) {
+                            }).exec(function(err, record) {
                                 if (err) return res.negotiate(err);
                                 if (!record) {
                                     return res.serverError('Could not find the filetype uploaded: ' + extension);
@@ -102,55 +106,55 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 if (record.api) {
-                                    var filePath = sails.config.odin.uploadFolder + "/" + slug(dataset.name, {lower: true}) + '/' + data.fileName;
+                                    var filePath = sails.config.odin.uploadFolder + "/" + slug(dataset.name, {
+                                        lower: true
+                                    }) + '/' + data.fileName;
 
                                     // Read the file
                                     fs.createReadStream(filePath)
                                         // Encode it
-                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function (err, result) {
-                                        if (err) return res.negotiate(err);
+                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
+                                            if (err) return res.negotiate(err);
 
-                                        if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                        //Should check which type the file is and convert it .
-                                        var json = [];
-                                        if (extension === 'xls' || extension === 'xlsx') {
-                                            //Convert XLS to json, store on nosql database
+                                            //Should check which type the file is and convert it .
+                                            var json = [];
+                                            if (extension === 'xls' || extension === 'xlsx') {
+                                                //Convert XLS to json, store on nosql database
+                                                var workbook = XLSX.readFile(files[0].fd);
 
-                                            var workbook = XLSX.readFile(files[0].fd);
+                                                //Join all the worksheets on one json
+                                                json = _.reduce(workbook.SheetNames, function(result, sheetName) {
+                                                    var worksheet = workbook.Sheets[sheetName];
 
-                                            //Join all the worksheets on one json
-                                            json = _.reduce(workbook.SheetNames, function (result, sheetName) {
-                                                var worksheet = workbook.Sheets[sheetName];
-
-                                                var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                                result = _.concat(result, currentJson);
-                                                return result;
-                                            }, []);
-
-                                            DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-
-
-                                        } else {
-                                            // Convert to JSON
-
-                                            var converter = new Converter({
-                                                delimiter: 'auto'
-                                            });
-
-                                            converter.fromString(result, function (err, json) {
-                                                if (err) {
-                                                    return res.negotiate(err);
-                                                }
-                                                if (json.length === 0) return res.badRequest("Invalid or empty csv.");
-
-                                                // Connect to the db
+                                                    var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                                    result = _.concat(result, currentJson);
+                                                    return result;
+                                                }, []);
                                                 DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                            });
-                                        }
-                                        // fs.writeFile(filePath, result, function () {
-                                        // });
-                                    });
+
+
+                                            } else {
+                                                // Convert to JSON
+
+                                                var converter = new Converter({
+                                                    delimiter: 'auto'
+                                                });
+
+                                                converter.fromString(result, function(err, json) {
+                                                    if (err) {
+                                                        return res.negotiate(err);
+                                                    }
+                                                    if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+
+                                                    // Connect to the db
+                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                                });
+                                            }
+                                            // fs.writeFile(filePath, result, function () {
+                                            // });
+                                        });
                                 }
                                 // Save the file metadata to the relational DB
                                 cb(data);
@@ -165,18 +169,20 @@ module.exports = {
     },
 
 
-    uploadImage: function (req, res, cb) {
+    uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
 
-        var uploadFile = req.file('uploadImage').on('error', function (err) {
+        var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
-            data.fileName = slug(data.name, {lower: true});
+            data.fileName = slug(data.name, {
+                lower: true
+            });
 
             uploadFile.upload({
-                saveAs: function (file, cb) {
+                saveAs: function(file, cb) {
                     var mimetype = mime.lookup(file.filename.split('.').pop());
 
                     if (mimetype !== 'image/svg+xml') {
@@ -203,7 +209,7 @@ module.exports = {
         }
     },
 
-    metadataSave: function (model, data, modelName, req, res, extraRecordsResponse) {
+    metadataSave: function(model, data, modelName, req, res, extraRecordsResponse) {
         model.create(data).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -221,7 +227,7 @@ module.exports = {
 
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function (instance) {
+                    _.map(newInstance, function(instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
@@ -230,13 +236,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
 
-            model.find(newInstance.id).populate(associations).exec(function (err, record) {
+            model.find(newInstance.id).populate(associations).exec(function(err, record) {
                 if (!_.isUndefined(extraRecordsResponse)) {
                     record[0] = _.merge(record[0], extraRecordsResponse);
                 }
@@ -257,7 +263,7 @@ module.exports = {
 
     },
 
-    metadataUpdate: function (model, data, modelName, req, res, extraRecordsResponse) {
+    metadataUpdate: function(model, data, modelName, req, res, extraRecordsResponse) {
         // Look up the model
         model.update(data.id, data).exec(function updated(err, records) {
 
@@ -298,13 +304,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
             //populate the response
-            model.find(updatedRecord.id).populate(associations).exec(function (err, record) {
+            model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
                 if (err) return res.negotiate(err);
 
                 //if we have any extraRecords to add to the response,
@@ -329,12 +335,14 @@ module.exports = {
 
     },
 
-    deleteFile: function (datasetId, fileName, res) {
-        Dataset.findOne(datasetId).then(function (dataset) {
+    deleteFile: function(datasetId, fileName, res) {
+        Dataset.findOne(datasetId).then(function(dataset) {
 
-            var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {lower: true}) + '/' + fileName;
+            var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {
+                lower: true
+            }) + '/' + fileName;
 
-            fs.unlink(path, function () {
+            fs.unlink(path, function() {
                 DataStorageService.deleteCollection(dataset.id, fileName, res);
                 ZipService.createZip(dataset.id);
             });

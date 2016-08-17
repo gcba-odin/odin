@@ -568,10 +568,13 @@ class ResponseGET extends ResponseBuilder {
     compareFilters(filters, value) {
         //Removed spaces to compare filter with value
         value = _.replace(value, / /g, '');
-
+        value = _.lowerCase(value)
+        console.dir(filters)
         var found = (_.find(filters, function(filterValue) {
             filterValue = _.replace(filterValue, / /g, '');
-
+            filterValue = _.lowerCase(filterValue)
+            console.log('\nfilter value = ' + filterValue)
+            console.log('value = ' + value)
             return _.includes(value, filterValue);
 
             // return filterValue === value;
