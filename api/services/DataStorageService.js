@@ -12,11 +12,11 @@ module.exports = {
             });
     },
     mongoSave: function(dataset, filename, json, res) {
-        json = _.transform(json, function(each) {
-            return _.mapKeys(each, function(value, key) {
+        json = _.transform(json, function(result, each) {
+            result.push(_.mapKeys(each, function(value, key) {
                 return _.replace(key, ".", " ");
-            });
-        }, {})
+            }));
+        }, [])
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
             var collection = db.collection(filename);
             collection.insert(json, {
