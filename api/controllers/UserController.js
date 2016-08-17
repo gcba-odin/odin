@@ -41,18 +41,19 @@ module.exports = {
     refreshToken(req, res) {
         var consumerId = req.param('consumerId');
         var consumerUsername = req.param('consumer')
-        requestify.post(sails.config.odin.kongAdmin + '/consumers/' + consumerUsername + '/jwt', {
-                consumer_id: consumerId
-            })
-            .then(function(response) {
-                // Get the response body
-                var credential = response.getBody();
-                var payload = {
-                    iss: credential.key
-                };
-                var secret = credential.secret
-                var token = jwt.encode(payload, secret);
-                return res.ok(token)
-            });
+        return res.ok('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5OWFmYzU3ZmRiYzA0YzZjYjJkZDRiYTU2OTBlNDM0NiJ9.Uo0I98Fu3BX8XlOgSnIvfeFx2Z_LdqM8WNT4hSMdDDM')
+            // requestify.post(sails.config.odin.kongAdmin + '/consumers/' + consumerUsername + '/jwt', {
+            //         consumer_id: consumerId
+            //     })
+            //     .then(function(response) {
+            //         // Get the response body
+            //         var credential = response.getBody();
+            //         var payload = {
+            //             iss: credential.key
+            //         };
+            //         var secret = credential.secret
+            //         var token = jwt.encode(payload, secret);
+            //         return res.ok(token)
+            //     });
     }
 };
