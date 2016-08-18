@@ -295,14 +295,29 @@ module.exports = {
             mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             api: true
         }, {
-            id: 'zWRhpRV',
-            name: 'xml',
+            id: '2WRhpRV',
+            name: 'application-xml',
             mimetype: 'application/xml',
             api: false
         }, {
-            id: '0WRhpRV',
+            id: '3WRhpRV',
+            name: 'text-xml',
+            mimetype: 'text/xml',
+            api: false
+        }, {
+            id: '4WRhpRV',
+            name: 'ms-excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '5WRhpRV',
             name: 'zip',
             mimetype: 'application/zip',
+            api: false
+        }, {
+            id: '6WRhpRV',
+            name: 'zip-compressed',
+            mimetype: 'application/x-zip-compressed',
             api: false
         }],
         UpdateFrequency: [{
