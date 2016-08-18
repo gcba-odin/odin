@@ -8,15 +8,25 @@
  * Error code for user not authorized to perform the operation or the resource is unavailable for some reason.
  */
 
-const _ = require('lodash');
-
-module.exports = function (data, config) {
+module.exports = function(data, config) {
   const response = _.assign({
     code: _.get(config, 'code', 'E_FORBIDDEN'),
     message: _.get(config, 'message', 'User not authorized to perform the operation'),
     data: data || {}
   }, _.get(config, 'root', {}));
 
+  LogService.winstonLog('verbose', 'Forbidden', {
+    ip: this.req.ip,
+    code: response.code,
+    message: response.message
+  });
+
+  this.res.set({
+    'Content-Type': 'application/json'
+  });
   this.res.status(403);
-  this.res.jsonx(response);
+
+  LogService.winstonLogResponse('Forbidden', response.code, response.message, this.res.headers, response, this.req.ip);
+
+  this.res.send(response);
 };

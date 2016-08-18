@@ -17,7 +17,7 @@ module.exports = {
      * When enabled, GET, POST, PUT and DELETE routes will be generated for everyone of a controller's actions
      * @type {Boolean}
      */
-    actions: true,
+    actions: false,
 
     /**
      * When enabled, `index` action will be default action
@@ -61,7 +61,7 @@ module.exports = {
      * from other models which are linked by associations
      * @type {Boolean}
      */
-    populate: false,
+    populate: true,
 
     /**
      * Whether to run Model.watch() in the find and findOne blueprint actions

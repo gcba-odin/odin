@@ -9,16 +9,19 @@
  * In a POST request the response will contain an entity describing or containing the result of the action.
  */
 
-const _ = require('lodash');
+module.exports = function(data, config) {
+    const response = _.assign({
+        meta: _.get(config, 'meta', {}),
+        links: _.get(config, 'links', {}),
+        data: data || {}
+    });
 
-module.exports = function (data, config) {
-  const response = _.assign({
-    statusCode: '200',
-    statusMessage:'OK',
-    code: _.get(config, 'code', 'UPDATED'),
-    message: _.get(config, 'message', 'The request has been fulfilled and resulted in a modified resource'),
-  }, _.get(config, 'root', {}));
+    this.res.set({
+        'Content-Type': 'application/json'
+    });
+    this.res.status(200);
+    LogService.winstonLogResponse('Updated', response.meta.code, response.meta.message,
+        this.res.headers, response, this.req.ip);
 
-  this.res.status(200);
-  this.res.jsonx(response);
+    this.res.send(response);
 };

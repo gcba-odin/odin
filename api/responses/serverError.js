@@ -7,15 +7,28 @@
  * The general catch-all error when the server-side throws an exception.
  */
 
-const _ = require('lodash');
+module.exports = function(data, config) {
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_INTERNAL_SERVER_ERROR'),
+        message: _.get(config, 'message', 'Something bad happened on the server'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
 
-module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_INTERNAL_SERVER_ERROR'),
-    message: _.get(config, 'message', 'Something bad happened on the server'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
+    if (!this.res.headersSent) {
+        LogService.winstonLog('verbose', 'Server Error', {
+            ip: this.req.ip,
+            code: response.code,
+            message: response.message
+        });
 
-  this.res.status(500);
-  this.res.jsonx(response);
+        this.res.set({
+            'Content-Type': 'application/json'
+        });
+        this.res.status(500);
+
+        LogService.winstonLogResponse('Server Error', response.code, response.message,
+            this.res.headers, response, this.req.ip);
+
+        this.res.send(response);
+    }
 };

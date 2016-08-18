@@ -7,13 +7,13 @@ files
 # Datasets
 datasets
 
-# Stats
-stats
-
 # Logs
 logs
 *.log
 npm-debug.log*
+
+#Stats
+stats
 
 # Runtime data
 pids
@@ -36,7 +36,7 @@ coverage
 build/Release
 
 # Dependency directory
- node_modules
+node_modules
 
 # Documentation folder
 docs
@@ -55,3 +55,11 @@ nbproject
 
 # Optional REPL history
 .node_repl_history
+
+# Editor
+.vscode
+
+# Executables
+*.node
+*.o
+*.so

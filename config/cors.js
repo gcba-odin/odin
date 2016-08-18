@@ -13,7 +13,7 @@ module.exports = {
     /**
      * Allow CORS on all routes by default?
      */
-    allRoutes: false,
+    allRoutes: true,
 
     /**
      * Which domains which are allowed CORS access?
@@ -33,6 +33,6 @@ module.exports = {
     /**
      * Which headers should be allowed for CORS requests?
      */
-    headers: 'content-type, authorization'
+    headers: 'content-type, authorization, x-admin-authorization, origin'
   }
 };
