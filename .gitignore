@@ -1,6 +1,15 @@
 # Local
 config/local.js
 
+# Files
+files
+
+# Datasets
+datasets
+
+# Stats
+stats
+
 # Logs
 logs
 *.log
@@ -27,7 +36,7 @@ coverage
 build/Release
 
 # Dependency directory
-# node_modules
+ node_modules
 
 # Documentation folder
 docs
