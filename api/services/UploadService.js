@@ -43,7 +43,7 @@ module.exports = {
             Dataset.findOne(dataset).then(function(dataset) {
 
                 FileType.find().exec(function(err, filetypes) {
-                    if (err) return res.negotiate(err)
+                    if (err) return res.negotiate(err);
                     allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
                         allowedTypes.push(filetype.mimetype);
                     }, []);
