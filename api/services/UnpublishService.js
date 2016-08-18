@@ -3,29 +3,23 @@
 
 module.exports = {
     unpublish: function(attributes) {
-        View.update({
+        View.destroy({
             file: attributes.id
-        }, {
-            publishedAt: null
         }).exec(function(err) {
             if (err)
-                console.error('There was an error updating the view!', err);
+                console.error('There was an error deleting the view!', err);
         });
 
-        _Map.update({
+        _Map.destroy({
             file: attributes.id
-        }, {
-            publishedAt: null
         }).exec(function(err) {
-            if (err) console.error('There was an error updating the map!', err);
+            if (err) console.error('There was an error deleting the map!', err);
         });
 
-        Chart.update({
+        Chart.destroy({
             file: attributes.id
-        }, {
-            publishedAt: null
         }).exec(function(err) {
-            if (err) console.error('There was an error updating the chart!', err);
+            if (err) console.error('There was an error deleting the chart!', err);
         });
     }
 };
