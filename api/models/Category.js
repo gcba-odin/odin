@@ -30,10 +30,6 @@ module.exports = {
             type: 'string',
             size: 350
         },
-        image: {
-            type: 'string',
-            size: 500
-        },
         color: {
             type: 'string',
             size: 6

@@ -8,11 +8,13 @@
  * Domain validation errors, missing data, etc.
  */
 
-module.exports = function(links) {
+module.exports = function (links, message) {
     const response = _.assign({
         meta: {
             code: 'E_BAD_REQUEST',
-            message: 'The request cannot be fulfilled due to bad syntax'
+            message: _.isUndefined(message) ?
+                'The request cannot be fulfilled due to bad syntax' :
+                message
         },
         links: links
     });
