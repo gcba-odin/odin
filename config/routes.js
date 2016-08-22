@@ -429,6 +429,8 @@ module.exports = {
         },
 
         // Files
+        'PATCH /files/:id/publish': 'File.publish',
+        'PATCH /files/:id/unpublish': 'File.unpublish',
 
         'GET /files/statistics': {
             blueprint: 'statistics',
@@ -584,6 +586,9 @@ module.exports = {
 
         // Datasets
 
+        'PATCH /datasets/:id/publish': 'Dataset.publish',
+        'PATCH /datasets/:id/unpublish': 'Dataset.unpublish',
+
         'GET /datasets/statistics': {
             blueprint: 'statistics',
             model: 'dataset'
@@ -629,6 +634,7 @@ module.exports = {
             model: 'dataset'
                 // policy: 'isAuthenticated'
         },
+
         'HEAD /datasets/*': {
             controller: 'Head',
             action: 'Head',
@@ -931,6 +937,8 @@ module.exports = {
         },
 
         // Maps
+        'PATCH /maps/:id/publish': 'Map.publish',
+        'PATCH /maps/:id/unpublish': 'Map.unpublish',
 
         'GET /maps/statistics': {
             blueprint: 'statistics',
@@ -1016,6 +1024,8 @@ module.exports = {
         },
 
         // Charts
+        'PATCH /charts/:id/publish': 'Chart.publish',
+        'PATCH /charts/:id/unpublish': 'Chart.unpublish',
 
         'GET /charts/statistics': {
             blueprint: 'statistics',
@@ -1332,6 +1342,6 @@ module.exports = {
             controller: 'Options',
             model: 'basemap',
             action: 'instance'
-        },
+        }
     }
 };
