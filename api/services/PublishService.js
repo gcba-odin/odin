@@ -8,11 +8,10 @@ module.exports = {
             key: requiredStatus
         }).exec(function(err, statusConfig) {
             if (err) return res.negotiate(err)
-            console.dir(statusConfig)
             model.update(id, {
-                status: statusConfig.value
+                status: statusConfig.value,
+                publishedAt: requiredStatus === 'publishedStatus' ? new Date() : null
             }).exec(function(err, updatedRecord) {
-                console.dir(updatedRecord)
                 if (err) return res.negotiate(err);
                 var modelName = pluralize(model.adapter.identity);
                 var meta = {
