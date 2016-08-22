@@ -8,15 +8,17 @@
  * Domain validation errors, missing data, etc.
  */
 
-module.exports = function (links, message) {
+module.exports = function(data, config) {
+    console.dir(data)
+    console.dir(config)
     const response = _.assign({
         meta: {
             code: 'E_BAD_REQUEST',
-            message: _.isUndefined(message) ?
-                'The request cannot be fulfilled due to bad syntax' :
-                message
+            message: _.isNil(config.message) ?
+                'The request cannot be fulfilled due to bad syntax' : config.message
         },
-        links: links
+        links: _.isNil(config.links) ? {} : config.links,
+        data: _.isNil(data) ? {} : data
     });
 
     this.res.set({

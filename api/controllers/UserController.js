@@ -43,13 +43,14 @@ module.exports = {
         var consumerUsername = req.param('consumer');
 
         if (_.isUndefined(consumerId) || _.isUndefined(consumerUsername)) {
-            return res.badRequest({},'consumerId & consumer parameters are mandatory');
-        }
-        else {
+            return res.badRequest(null, {
+                message: 'consumerId & consumer parameters are mandatory'
+            });
+        } else {
             requestify.post(sails.config.odin.kongAdmin + '/consumers/' + consumerUsername + '/jwt', {
                     consumer_id: consumerId
                 })
-                .then(function (response) {
+                .then(function(response) {
                     // Get the response body
                     var credential = response.getBody();
                     var payload = {
