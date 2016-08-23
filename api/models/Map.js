@@ -35,6 +35,9 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        status: {
+            model: 'status'
+        },
         basemap: {
             model: 'basemap',
             required: true,
@@ -86,11 +89,22 @@ module.exports = {
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
+
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'model', 'maps');
-        values.url = _.replace(values.url, 'id', values.id);
-        next();
+
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function (err, record) {
+            values.status = record.value;
+
+            values.url = _.replace(values.url, 'model', 'maps');
+            values.url = _.replace(values.url, 'id', values.id);
+            next();
+        });
+
+
     },
+
     afterUpdate: (values, next) => {
         next();
     },

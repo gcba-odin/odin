@@ -14,16 +14,7 @@ module.exports.odin = {
         host: 'localhost',
         port: '27017'
     },
-    allowedTypes: ['text/yaml', 'text/csv', 'text/html', 'text/calendar',
-        'application/pdf', 'application/x-rar-compressed', 'application/rss+xml',
-        'application/octet-stream', 'application/vnd.ms-excel', 'application/xml',
-        'application/zip', 'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/x-zip-compressed'
-    ],
-
-
-    logFile: sails.config.environment + '.log',
+    logFile: 'sailsApp.log',
     logFolder: 'logs',
     logLevel: 'error',
 

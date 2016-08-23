@@ -248,10 +248,10 @@ class ResponseGET extends ResponseBuilder {
             if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};
             }
-            // Only find not deleted records
-            _.merge(this.params.where.full, {
-                deletedAt: null
-            });
+            // // Only find not deleted records
+            // _.merge(this.params.where.full, {
+            //     deletedAt: null
+            // });
 
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -438,7 +438,7 @@ class ResponseGET extends ResponseBuilder {
         }
         // If the client is requesting a single item, we'll show other links
         else {
-            if (!_.isUndefined(records) && records.deletedAt === null) {
+            if (!_.isUndefined(records) /*&& records.deletedAt === null*/ ) {
                 var relations = {};
 
                 _.forEach(this._model.associations, function(association) {
@@ -568,15 +568,11 @@ class ResponseGET extends ResponseBuilder {
     compareFilters(filters, value) {
         //Removed spaces to compare filter with value
         value = _.replace(value, / /g, '');
-        value = _.lowerCase(value)
-        console.dir(filters)
+        value = _.lowerCase(value);
         var found = (_.find(filters, function(filterValue) {
             filterValue = _.replace(filterValue, / /g, '');
-            filterValue = _.lowerCase(filterValue)
-            console.log('\nfilter value = ' + filterValue)
-            console.log('value = ' + value)
+            filterValue = _.lowerCase(filterValue);
             return _.includes(value, filterValue);
-
             // return filterValue === value;
         }));
 
@@ -650,7 +646,9 @@ class ResponseGET extends ResponseBuilder {
                                 '/' + this.params.pk;
                         }
 
-                        return this.res.badRequest(links);
+                        return this.res.badRequest(null, {
+                            links: links
+                        });
                     }
                 }.bind(this), this);
 

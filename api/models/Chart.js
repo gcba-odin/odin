@@ -22,6 +22,7 @@ module.exports = {
         name: {
             type: 'string',
             required: true,
+            unique: true,
             size: 150,
             minLength: 1
         },
@@ -53,6 +54,9 @@ module.exports = {
         dataSeries: {
             type: 'array'
         },
+        status: {
+            model: 'status'
+        },
         dataType: {
             type: 'string',
             enum: ['quantitative', 'qualitative']
@@ -80,10 +84,20 @@ module.exports = {
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
+
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'model', 'charts');
-        values.url = _.replace(values.url, 'id', values.id);
-        next();
+
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function (err, record) {
+            values.status = record.value;
+
+            values.url = _.replace(values.url, 'model', 'charts');
+            values.url = _.replace(values.url, 'id', values.id);
+            next();
+        });
+
+
     },
     afterUpdate: (values, next) => {
         next();

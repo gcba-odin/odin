@@ -49,6 +49,29 @@ ODIN has not been tested with earlier versions of Node.js and MongoDB.
 
     ``` $ npm start ```
 
+## Configuration
+
+You should override the corresponding settings in the 'local.js' file
+```javascript
+module.exports.odin = {
+    baseUrl: 'http://localhost:3000', // --> Url where the api is hosted
+    kongHost: 'http://kongexample.com', // --> Url where kong is hosted
+    kongAdmin: 'http://kongexample.com:8001', // --> Kong port to acces configurations
+
+    uploadFolder: 'files', // --> Path to the folder where the datasets files will be stored
+    datasetZipFolder: 'datasets', // --> Path where the datasets zips will be stored
+
+    defaultEncoding: 'utf8',
+    dataStorage: {  //--> NoSql database host and port
+        host: 'localhost',
+        port: '27017'
+    },
+    logFile: 'sailsApp.log', // --> File name and path of the log file
+    logFolder: 'logs', // --> Folder where the logs will be saved
+    logLevel: 'error', // --> Log level
+    statisticsPath: 'stats' // -->Path where the statistics will be saved each month
+```
+
 ## License
 
 The MIT License (MIT)

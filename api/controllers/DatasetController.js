@@ -11,12 +11,23 @@ var SkipperDisk = require('skipper-disk');
 var slug = require('slug');
 
 module.exports = {
+    publish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(Dataset, pk, 'publishedStatus', res)
+    },
+    unpublish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(Dataset, pk, 'unpublishedStatus', res)
+    },
+
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
 
         Dataset.findOne(pk).then(function(dataset) {
 
-            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {lower: true}) + '.zip';
+            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {
+                lower: true
+            }) + '.zip';
 
             var fileAdapter = SkipperDisk();
 
