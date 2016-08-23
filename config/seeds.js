@@ -304,6 +304,21 @@ module.exports = {
             name: 'zip',
             mimetype: 'application/zip',
             api: false
+        }, {
+            id: '9WRhpRV',
+            name: 'zip2',
+            mimetype: ' application/x-zip-compressed',
+            api: false
+        }, {
+            id: '8WRhpRV',
+            name: 'excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '7WRhpRV',
+            name: 'xml2',
+            mimetype: 'text/xml',
+            api: false
         }],
         UpdateFrequency: [{
             id: 'tWRhpR2',
