@@ -16,6 +16,6 @@ module.exports = {
      * silly, verbose, info, debug, warn, error, silent
      * @type {String}
      */
-    level: 'verbose'
+    level: 'error'
   }
 };

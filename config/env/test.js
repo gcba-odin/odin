@@ -24,5 +24,12 @@ module.exports = {
     session: false,
     sockets: false,
     views: false
+  },
+  http: {
+    port: 3000
+  },
+  odin: {
+    uploadFolder: '/tmp/odin'
   }
+  // appUrl: 'http://137.135.84.77' + (sails.config.port !== 80) ? ':' + sails.config.port : '',
 };

@@ -12,22 +12,34 @@ const toLowerCase = _.partial(_.result, _, 'toLowerCase');
 const parseModels = _.flow(toLowerCase, _.method('split', ','));
 
 module.exports = {
-  index(req, res) {
-    const q = req.param('q');
-    if (!q) return res.badRequest(null, {message: 'You should specify a "q" parameter!'});
+    index(req, res) {
+        const q = req.param('query');
+        const models = parseModels(req.param('resources')) || _.keys(sails.models);
 
-    const models = parseModels(req.param('models')) || _.keys(sails.models);
+        if (!q) return res.badRequest(null, {
+            message: 'You should specify a "query" parameter!'
+        });
 
-    Promise.reduce(models, (res, modelName) => {
-        const model = sails.models[modelName];
+        Promise.reduce(models, (res, modelName) => {
+                const model = sails.models[modelName];
+                const where = _.transform(model.definition, function(result, val, key) {
+                    if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
+                        result.or.push(_.set({}, key, {
+                            contains: q
+                        }));
+                    }
+                }, {
+                    or: []
+                });
 
-        if (!model) return res;
-
-        const where = _.transform(model.definition, (result, val, key) => result.or.push(_.set({}, key, {contains: q})), {or: []});
-
-        return Promise.join(modelName, model.find(where), _.partial(_.set, res));
-      }, {})
-      .then(res.ok)
-      .catch(res.negotiate);
-  }
+                return Promise.join(modelName, model.find(where), _.partial(_.set, res));
+            }, {}).then(records => {
+                records = _.omitBy(records, _.isEmpty);
+                return [records, {
+                    // records is an array of models, within each one, the result of the search
+                    // meta: {count: _.size(records)}
+                }];
+            }).spread(res.ok)
+            .catch(res.negotiate);
+    }
 };

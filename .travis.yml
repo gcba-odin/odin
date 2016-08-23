@@ -1,0 +1,35 @@
+language: node_js
+node_js:
+  - '5.12'
+env:
+  global:
+    - CXX=g++-4.8
+    - PGPORT=5433
+    - PGHOST=localhost
+sudo: required
+before_script:
+  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
+  - psql -c 'CREATE DATABASE odin;' -U postgres
+  - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
+  - npm update -g npm
+  - npm install
+  - npm install -g dredd@stable
+  - npm install -g node-gyp
+script:
+  - make test
+services:
+  - mongodb
+  - postgresql
+addons:
+  apt:
+    sources:
+    - mongodb-3.2-precise
+    - precise-pgdg-9.5
+    - ubuntu-toolchain-r-test
+    packages:
+    - mongodb-org-server
+    - postgresql-9.5
+    - postgresql-contrib-9.5
+    - g++-4.8
+  postgresql: 9.5

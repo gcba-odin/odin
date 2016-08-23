@@ -8,15 +8,26 @@
  * Error code response for missing or invalid authentication token.
  */
 
-const _ = require('lodash');
+module.exports = function(data, config) {
+    const response = _.assign({
+        code: _.get(config, 'code', 'E_UNAUTHORIZED'),
+        message: _.get(config, 'message', 'Missing or invalid authentication token'),
+        data: data || {}
+    }, _.get(config, 'root', {}));
 
-module.exports = function (data, config) {
-  const response = _.assign({
-    code: _.get(config, 'code', 'E_UNAUTHORIZED'),
-    message: _.get(config, 'message', 'Missing or invalid authentication token'),
-    data: data || {}
-  }, _.get(config, 'root', {}));
+    LogService.winstonLog('verbose', 'Unauthorized', {
+        ip: this.req.ip,
+        code: response.code,
+        message: response.message
+    });
 
-  this.res.status(401);
-  this.res.jsonx(response);
+    this.res.set({
+        'Content-Type': 'application/json'
+    });
+    this.res.status(401);
+
+    LogService.winstonLogResponse('Unauthorized', response.code, response.message,
+        this.res.headers, response, this.req.ip);
+
+    this.res.send(response);
 };

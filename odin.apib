@@ -1,0 +1,5316 @@
+FORMAT: 1A
+
+# ODIN API
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa. Nunc accumsan nec urna quis fringilla.
+
+# Group Users
+
+## User [/users/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (User Base)
+    + password: security123 (string, required)
+
+
+### Retrieve a User [GET]
+Retrieves the user with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get User Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Update a User [PATCH]
+Updates the user with the given ID.
+
+
++ Request
+    + Attributes (User Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Delete a User [DELETE]
+Delete the user with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get User Head [HEAD]
+
+Get the user Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get User Options [OPTIONS]
+
+Get the user options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Users  [/users]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+### Retrieve all users [GET]
+Get all users
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get User Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Create a User [POST]
+Creates a User
+
++ Request
+    + Attributes (User Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Users Head [HEAD]
+
+Get the users Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Users Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## User login  [/users/login]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus, malesuada ut congue fermentum, tincidunt a massa. Nunc accumsan nec urna quis fringilla. Fusce ut nunc in libero consectetur bibendum volutpat eget odio.
+
+### Login a user [POST]
++ Attributes
+    + username: john_doe (string, required)
+    + password: security123 (string, required)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Login Head [HEAD]
+
+Get the users Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Login Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## User first  [/users/first]
+
+### Get first user [GET]
+Get first user
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get User Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First User Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## User last  [/users/last]
+
+### Get last user [GET]
+Get last user
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get User Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last User Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## User count  [/users/count]
+
+### Get count user [GET]
+Get count user
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count User Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count User Options [OPTIONS]
+
+Get the users options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Datasets
+
+## Dataset [/datasets/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Dataset Base)
+    + id: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+### Retrieve a Dataset [GET]
+Retrieves the Dataset with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Update a Dataset [PATCH]
+Updates the Dataset with the given ID.
+
++ Request
+    + Attributes (Dataset Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Delete a Dataset [DELETE]
+Delete the Dataset with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Dataset Head [HEAD]
+
+Get the Dataset Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Dataset Options [OPTIONS]
+
+Get the Dataset options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Dataset download [/datasets/:id/download]
+
++ Parameters
+    + id: dogPzIz8 (string, required)
+
+### Retrieve a Dataset [GET]
+Download the Dataset with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Datasets  [/datasets]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+### Retrieve all Datasets [GET]
+Get all Datasets
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Create a Dataset [POST]
+Creates a Dataset
+
++ Request
+    + Attributes (Dataset Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Datasets Head [HEAD]
+
+Get the Datasets Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Datasets Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Dataset first  [/datasets/first]
+
+### Get first Dataset [GET]
+Get first Dataset
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First Dataset Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Dataset last  [/datasets/last]
+
+### Get last Dataset [GET]
+Get last Dataset
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Dataset Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last Dataset Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Dataset count  [/datasets/count]
+
+### Get count Dataset [GET]
+Get count Dataset
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count Dataset Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count Dataset Options [OPTIONS]
+
+Get the Datasets options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Categories
+
+## Category [/categories/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Category Base)
+    + id: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+### Retrieve a Category [GET]
+Retrieves the Category with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Update a Category [PATCH]
+Updates the Category with the given ID.
+
+
++ Request
+    + Attributes (Category Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Delete a Category [DELETE]
+Delete the Category with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Category Head [HEAD]
+
+Get the Category Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Category Options [OPTIONS]
+
+Get the Category options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Categories  [/categories]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+### Retrieve all Categories [GET]
+Get all Categories
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Create a Category [POST]
+Creates a Category
+
++ Request
+    + Attributes (Category Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Categories Head [HEAD]
+
+Get the Categories Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get Categories Options [OPTIONS]
+
+Get the Categories options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Category first  [/categories/first]
+
+### Get first Category [GET]
+Get first Category
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First Category Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get First Category Options [OPTIONS]
+
+Get the Categories options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Category last  [/categories/last]
+
+### Get last Category [GET]
+Get last Category
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Category Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last Category Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get last Category Options [OPTIONS]
+
+Get the Categories options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Category count  [/categories/count]
+
+### Get count Category [GET]
+Get count Category
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count Category Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+### Get count Category Options [OPTIONS]
+
+Get the Categories options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Logs
+
+## Log [/logs/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Log Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Log [GET]
+
+Retrieves the Log entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Log [PATCH]
+
+Updates the Log entry with the given ID.
+
++ Request
+    + Attributes (Log Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Log [DELETE]
+
+Deletes the Log entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Log Head [HEAD]
+
+Gets the Log Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Log Options [OPTIONS]
+
+Gets the Log options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Logs  [/logs]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Logs [GET]
+
+Gets all Logs
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Log [POST]
+
+Creates a Log
+
++ Request
+    + Attributes (Log Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Logs Head [HEAD]
+
+Gets the Logs Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Logs Options [OPTIONS]
+
+Get the Logs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Log first  [/logs/first]
+
+
+### Get first Log [GET]
+
+Gets the first Log entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Log Options [OPTIONS]
+
+Gets the first Log options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Log last  [/logs/last]
+
+
+### Get last Log [GET]
+
+Gets the last Log entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Log Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Log Options [OPTIONS]
+
+Gets the last Log options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Log count  [/logs/count]
+
+
+### Get count Log [GET]
+
+Gets the Log entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Log Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Log Options [OPTIONS]
+
+Gets the Logs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Configs
+
+## Config [/configs/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Config Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Config [GET]
+
+Retrieves the Config entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Config Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Config [PATCH]
+
+Updates the Config entry with the given ID.
+
++ Request
+    + Attributes (Config Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Config [DELETE]
+
+Deletes the Config entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Config Head [HEAD]
+
+Gets the Config Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Config Options [OPTIONS]
+
+Gets the Config options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+## Configs  [/configs]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Configs [GET]
+
+Gets all Configs
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Config Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Config [POST]
+
+Creates a Config
+
++ Request
+    + Attributes (Config Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Configs Head [HEAD]
+
+Gets the Configs Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Configs Options [OPTIONS]
+
+Get the Configs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Config first  [/configs/first]
+
+
+### Get first Config [GET]
+
+Gets the first Config entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Config Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Config Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Config Options [OPTIONS]
+
+Gets the first Config options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Config last  [/configs/last]
+
+
+### Get last Config [GET]
+
+Gets the last Config entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Config Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Config Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Config Options [OPTIONS]
+
+Gets the last Config options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Config count  [/configs/count]
+
+
+### Get count Config [GET]
+
+Gets the Config entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Config Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Config Options [OPTIONS]
+
+Gets the Configs options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Databases
+
+## Database [/databases/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Database Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Database [GET]
+
+Retrieves the Database entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Database Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Database [PATCH]
+
+Updates the Database entry with the given ID.
+
++ Request
+    + Attributes (Database Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Database [DELETE]
+
+Deletes the Database entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Database Head [HEAD]
+
+Gets the Database Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Database Options [OPTIONS]
+
+Gets the Database options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Databases  [/databases]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Databases [GET]
+
+Gets all Databases
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Database Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Database [POST]
+
+Creates a Database
+
++ Request
+    + Attributes (Database Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Databases Head [HEAD]
+
+Gets the Databases Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Databases Options [OPTIONS]
+
+Get the Databases options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Database first  [/databases/first]
+
+
+### Get first Database [GET]
+
+Gets the first Database entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Database Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Database Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Database Options [OPTIONS]
+
+Gets the first Database options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Database last  [/databases/last]
+
+
+### Get last Database [GET]
+
+Gets the last Database entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Database Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Database Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Database Options [OPTIONS]
+
+Gets the last Database options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Database count  [/databases/count]
+
+
+### Get count Database [GET]
+
+Gets the Database entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Database Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Database Options [OPTIONS]
+
+Gets the Databases options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Files
+
+## File [/files/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (File Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a File [GET]
+
+Retrieves the File entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a File [PATCH]
+
+Updates the File entry with the given ID.
+
++ Request
+    + Attributes (File Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a File [DELETE]
+
+Deletes the File entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get File Head [HEAD]
+
+Gets the File Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get File Options [OPTIONS]
+
+Gets the File options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Files  [/files]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Files [GET]
+
+Gets all Files
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a File [POST]
+
+Creates a File
+
++ Request
+    + Attributes (File Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Files Head [HEAD]
+
+Gets the Files Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Files Options [OPTIONS]
+
+Get the Files options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## File first  [/files/first]
+
+
+### Get first File [GET]
+
+Gets the first File entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First File Options [OPTIONS]
+
+Gets the first File options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## File last  [/files/last]
+
+
+### Get last File [GET]
+
+Gets the last File entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last File Options [OPTIONS]
+
+Gets the last File options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## File count  [/files/count]
+
+
+### Get count File [GET]
+
+Gets the File entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count File Options [OPTIONS]
+
+Gets the Files options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Filetypes
+
+## Filetype [/filetypes/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Filetype Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Filetype [GET]
+
+Retrieves the Filetype entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Filetype Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Filetype [PATCH]
+
+Updates the Filetype entry with the given ID.
+
++ Request
+    + Attributes (Filetype Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Filetype [DELETE]
+
+Deletes the Filetype entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Filetype Head [HEAD]
+
+Gets the Filetype Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Filetype Options [OPTIONS]
+
+Gets the Filetype options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Filetypes  [/filetypes]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Filetypes [GET]
+
+Gets all Filetypes
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a File [POST]
+
+Creates a File
+
++ Request
+    + Attributes (File Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Filetypes Head [HEAD]
+
+Gets the Filetypes Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Filetypes Options [OPTIONS]
+
+Get the Filetypes options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## File first  [/filetypes/first]
+
+
+### Get first File [GET]
+
+Gets the first File entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First File Options [OPTIONS]
+
+Gets the first File options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## File last  [/filetypes/last]
+
+
+### Get last File [GET]
+
+Gets the last File entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get File Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last File Options [OPTIONS]
+
+Gets the last File options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## File count  [/filetypes/count]
+
+
+### Get count File [GET]
+
+Gets the File entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count File Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count File Options [OPTIONS]
+
+Gets the Filetypes options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Organizations
+
+## Organization [/organizations/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Organization Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Organization [GET]
+
+Retrieves the Organization entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Organization Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Organization [PATCH]
+
+Updates the Organization entry with the given ID.
+
++ Request
+    + Attributes (Organization Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Organization [DELETE]
+
+Deletes the Organization entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Organization Head [HEAD]
+
+Gets the Organization Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Organization Options [OPTIONS]
+
+Gets the Organization options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Organizations  [/organizations]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Organizations [GET]
+
+Gets all Organizations
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Organization Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Organization [POST]
+
+Creates a Organization
+
++ Request
+    + Attributes (Organization Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Organizations Head [HEAD]
+
+Gets the Organizations Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Organizations Options [OPTIONS]
+
+Get the Organizations options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Organization first  [/organizations/first]
+
+
+### Get first Organization [GET]
+
+Gets the first Organization entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Organization Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Organization Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Organization Options [OPTIONS]
+
+Gets the first Organization options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Organization last  [/organizations/last]
+
+
+### Get last Organization [GET]
+
+Gets the last Organization entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Organization Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Organization Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Organization Options [OPTIONS]
+
+Gets the last Organization options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Organization count  [/organizations/count]
+
+
+### Get count Organization [GET]
+
+Gets the Organization entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Organization Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Organization Options [OPTIONS]
+
+Gets the Organizations options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Statuses
+
+## Status [/statuses/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Status Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Status [GET]
+
+Retrieves the Status entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Status Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Status [PATCH]
+
+Updates the Status entry with the given ID.
+
++ Request
+    + Attributes (Status Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Status [DELETE]
+
+Deletes the Status entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Status Head [HEAD]
+
+Gets the Status Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Status Options [OPTIONS]
+
+Gets the Status options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Statuses  [/statuses]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Statuses [GET]
+
+Gets all Statuses
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Status Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Status [POST]
+
+Creates a Status
+
++ Request
+    + Attributes (Status Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Statuses Head [HEAD]
+
+Gets the Statuses Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Statuses Options [OPTIONS]
+
+Get the Statuses options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Status first  [/statuses/first]
+
+
+### Get first Status [GET]
+
+Gets the first Status entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Status Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Status Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Status Options [OPTIONS]
+
+Gets the first Status options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Status last  [/statuses/last]
+
+
+### Get last Status [GET]
+
+Gets the last Status entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Status Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Status Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Status Options [OPTIONS]
+
+Gets the last Status options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Status count  [/statuses/count]
+
+
+### Get count Status [GET]
+
+Gets the Status entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Status Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Status Options [OPTIONS]
+
+Gets the Statuses options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Tags
+
+## Tag [/tags/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Tag Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Tag [GET]
+
+Retrieves the Tag entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Tag Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Tag [PATCH]
+
+Updates the Tag entry with the given ID.
+
++ Request
+    + Attributes (Tag Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Tag [DELETE]
+
+Deletes the Tag entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Tag Head [HEAD]
+
+Gets the Tag Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Tag Options [OPTIONS]
+
+Gets the Tag options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Tags  [/tags]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Tags [GET]
+
+Gets all Tags
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Tag Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Tag [POST]
+
+Creates a Tag
+
++ Request
+    + Attributes (Tag Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Tags Head [HEAD]
+
+Gets the Tags Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Tags Options [OPTIONS]
+
+Get the Tags options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Tag first  [/tags/first]
+
+
+### Get first Tag [GET]
+
+Gets the first Tag entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Tag Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Tag Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Tag Options [OPTIONS]
+
+Gets the first Tag options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Tag last  [/tags/last]
+
+
+### Get last Tag [GET]
+
+Gets the last Tag entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Tag Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Tag Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Tag Options [OPTIONS]
+
+Gets the last Tag options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Tag count  [/tags/count]
+
+
+### Get count Tag [GET]
+
+Gets the Tag entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Tag Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Tag Options [OPTIONS]
+
+Gets the Tags options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+
+# Group Updatefrequencies
+
+## Updatefrequency [/updatefrequencies/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Updatefrequency Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Updatefrequency [GET]
+
+Retrieves the Updatefrequency entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Updatefrequency Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Updatefrequency [PATCH]
+
+Updates the Updatefrequency entry with the given ID.
+
++ Request
+    + Attributes (Updatefrequency Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Updatefrequency [DELETE]
+
+Deletes the Updatefrequency entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Updatefrequency Head [HEAD]
+
+Gets the Updatefrequency Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Updatefrequency Options [OPTIONS]
+
+Gets the Updatefrequency options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Updatefrequencies  [/updatefrequencies]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Updatefrequencies [GET]
+
+Gets all Updatefrequencies
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Updatefrequency Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Updatefrequency [POST]
+
+Creates a Updatefrequency
+
++ Request
+    + Attributes (Updatefrequency Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Updatefrequencies Head [HEAD]
+
+Gets the Updatefrequencies Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Updatefrequencies Options [OPTIONS]
+
+Get the Updatefrequencies options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Updatefrequency first  [/updatefrequencies/first]
+
+
+### Get first Updatefrequency [GET]
+
+Gets the first Updatefrequency entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Updatefrequency Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Updatefrequency Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Updatefrequency Options [OPTIONS]
+
+Gets the first Updatefrequency options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Updatefrequency last  [/updatefrequencies/last]
+
+
+### Get last Updatefrequency [GET]
+
+Gets the last Updatefrequency entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Updatefrequency Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Updatefrequency Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Updatefrequency Options [OPTIONS]
+
+Gets the last Updatefrequency options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Updatefrequency count  [/updatefrequencies/count]
+
+
+### Get count Updatefrequency [GET]
+
+Gets the Updatefrequency entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Updatefrequency Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Updatefrequency Options [OPTIONS]
+
+Gets the Updatefrequencies options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+# Group Charts
+
+## Chart [/charts/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Chart Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Chart [GET]
+
+Retrieves the Chart entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Chart Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Chart [PATCH]
+
+Updates the Chart entry with the given ID.
+
++ Request
+    + Attributes (Chart Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Chart [DELETE]
+
+Deletes the Chart entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Chart Head [HEAD]
+
+Gets the Chart Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Chart Options [OPTIONS]
+
+Gets the Chart options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Charts  [/charts]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Charts [GET]
+
+Gets all Charts
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Chart Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Chart [POST]
+
+Creates a Chart
+
++ Request
+    + Attributes (Chart Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Charts Head [HEAD]
+
+Gets the Charts Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Charts Options [OPTIONS]
+
+Get the Charts options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Chart first  [/charts/first]
+
+
+### Get first Chart [GET]
+
+Gets the first Chart entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Chart Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Chart Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Chart Options [OPTIONS]
+
+Gets the first Chart options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Chart last  [/charts/last]
+
+
+### Get last Chart [GET]
+
+Gets the last Chart entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Chart Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Chart Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Chart Options [OPTIONS]
+
+Gets the last Chart options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Chart count  [/charts/count]
+
+
+### Get count Chart [GET]
+
+Gets the Chart entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Chart Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Chart Options [OPTIONS]
+
+Gets the Charts options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+# Group Maps
+
+## Map [/maps/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (Map Base)
+    + id: dogPzIz8 (string, required)
+    + action: create (string, required)
+    + target: user (string, required)
+    + user: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a Map [GET]
+
+Retrieves the Map entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Map Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a Map [PATCH]
+
+Updates the Map entry with the given ID.
+
++ Request
+    + Attributes (Map Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a Map [DELETE]
+
+Deletes the Map entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Map Head [HEAD]
+
+Gets the Map Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Map Options [OPTIONS]
+
+Gets the Map options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Maps  [/maps]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Maps [GET]
+
+Gets all Maps
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Map Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a Map [POST]
+
+Creates a Map
+
++ Request
+    + Attributes (Map Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Maps Head [HEAD]
+
+Gets the Maps Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Maps Options [OPTIONS]
+
+Get the Maps options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## Map first  [/maps/first]
+
+
+### Get first Map [GET]
+
+Gets the first Map entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Map Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Map Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First Map Options [OPTIONS]
+
+Gets the first Map options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Map last  [/maps/last]
+
+
+### Get last Map [GET]
+
+Gets the last Map entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Map Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Map Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last Map Options [OPTIONS]
+
+Gets the last Map options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## Map count  [/maps/count]
+
+
+### Get count Map [GET]
+
+Gets the Map entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Map Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count Map Options [OPTIONS]
+
+Gets the Maps options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Group Views
+
+## View [/views/:id]
++ Parameters
+    + id: dogPzIz8 (string, required)
+
++ Attributes (View Base)
+    + id: dogPzIz8 (string, required)
+    + createdAt: 1415203908 (string) - datetime
+    + updatedAt: 1415203908 (string) - datetime
+
+
+### Retrieve a View [GET]
+
+Retrieves the View entry with the given ID.
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get View Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Update a View [PATCH]
+
+Updates the View entry with the given ID.
+
++ Request
+    + Attributes (View Base)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Delete a View [DELETE]
+
+Deletes the View entry with the given ID
+
++ Response 204 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get View Head [HEAD]
+
+Gets the View Head with the given ID
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get View Options [OPTIONS]
+
+Gets the View options with the given ID
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+## Views  [/views]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue tellus,
+malesuada ut congue fermentum, tincidunt a massa.
+Nunc accumsan nec urna quis fringilla.
+
+
+### Retrieve all Views [GET]
+
+Gets all Views
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get View Collection Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Create a View [POST]
+
+Creates a View
+
++ Request
+    + Attributes (View Base)
+
++ Response 201 (application/json; charset=utf-8)
+    + Attributes (General Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Views Head [HEAD]
+
+Gets the Views Head
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get Views Options [OPTIONS]
+
+Get the Views options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+## View first  [/views/first]
+
+
+### Get first View [GET]
+
+Gets the first View entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get View Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First View Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get First View Options [OPTIONS]
+
+Gets the first View options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## View last  [/views/last]
+
+
+### Get last View [GET]
+
+Gets the last View entry
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get View Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last View Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get last View Options [OPTIONS]
+
+Gets the last View options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+## View count  [/views/count]
+
+
+### Get count View [GET]
+
+Gets the View entry count
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Get Count Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count View Head [HEAD]
+
++ Response 200
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+### Get count View Options [OPTIONS]
+
+Gets the Views options
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (Options Response)
+
++ Response 403 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 404 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
++ Response 500 (application/json; charset=utf-8)
+    + Attributes (Response Error)
+
+
+
+
+# Data Structure
+
+## User Base (object)
++ username: john_doe (string,required)
++ email: johndoe@example.com (string,required)
++ firstName: john (string)
++ lastName: doe (string)
++ avatar: http://site.com/avatar/dogPzIz8 (string)
++ organization: (Organization, required)
++ active: true (boolean)
++ deletedAt: 1231245 (string, nullable) - datetime
+
+## User Get (object)
++ username: john_doe (string,required)
++ email: johndoe@example.com (string,required)
++ firstName: john (string)
++ lastName: doe (string)
++ avatar: http://site.com/avatar/dogPzIz8 (string)
++ organization: (Organization, required)
++ active: true (boolean)
++ deletedAt: 1231245 (string) - datetime
++ id: dogPzIz8 (string, required)
++ createdAt: 1415203908 (string) - datetime
++ updatedAt: 1415203908 (string) - datetime
++ createdBy: (object, required)
+
+## Dataset Base (object)
++ name: examplename (string,required)
++ description: description of dataset (string)
++ notes: some notes about the dataset (string)
++ visibility: true (boolean)
++ starred: true (boolean)
++ optional1: some optional data (string)
++ optional2: some optional data (string)
++ optional3: some optional data (string)
++ optional4: some optional data (string)
++ optional5: some optional data (string)
++ optional6: some optional data (string)
++ optional7: some optional data (string)
++ optional8: some optional data (string)
++ optional9: some optional data (string)
++ optional10: some optional data (string)
++ publishedAt: 1415203908 (string) - datetime
++ category: (object)
++ status: (object)
++ organization: (object)
++ createdBy: (object)
++ owner: (object, required)
+
+
+## Category Base (object)
++ name: name of the category (string, required)
++ description: description of the category (string)
++ createdBy: (object)
+
+
+## Log Base (object)
++ action: the action that was performed (string, required)
++ target: the model the action was performed upon (string, required)
++ user: (object, required)
+
+
+## Config Base (object)
++ description: description of the config (string, required)
++ type: the type of the config (string, required)
++ key: the key of the config (string, required)
++ value: the value of the config (string)
++ updatedBy: (object)
+
+## Database Base (object)
++ name: the name of the database (string, required)
++ collection: the collection of the database (string)
++ url: the url of the database (string, required)
+
+## File Base (object)
++ description: description of the file (string, required)
++ name: name of the file (string, required)
++ notes: notes of the file (string)
++ collection: the collection associated to the file (string)
++ visible: weather if the file is visible or not (boolean)
++ url: the url associated to the file (string)
++ publishedAt: the time that the file was published (string)
++ type: (object)
++ updateFrequency: (object)
++ status: (object)
++ organization: (object)
++ dataset:(object)
++ owner: (object)
++ createdBy: (object)
+
+## Filetype Base (object)
++ api: whether the file is saved on the database or not (boolean)
++ name: the name of the filetype (string)
++ files: files with the filetype (array)
+
+## Organization Base (object)
++ name: name of the organization (string, required)
++ description: description of the organization (string, required)
++ adress: adress of the organization (string)
++ createdBy: (object)
++ users: the users associated to the organization (array)
++ parent: (object)
++ children: the childrens of the organization (array)
++ files: the files of the organization (array)
+
+## Status Base (object)
++ name: the name of the status (string)
++ files: files associated with the status (array)
++ datasets: datasets associated with the status (array)
+
+## Tag Base (object)
++ name: the name of the tag (string, required)
++ files: files associated with the tag (array)
++ datasets: datasets associated with the tag (array)
++ createdBy: (object, required)
+
+## Updatefrequency Base (object)
++ name: the name of the update frequency (string, required)
+
+## Chart Base (object)
++ name: the name of the chart (string, required)
++ description: the description of the chart (string)
++ notes: notes associated with the map (string)
++ url: the url of the chart (string)
++ createdBy: (object, required)
++ embedCode: embed code of the chart (string)
+
+## Map Base (object)
++ name: the name of the map (string, required)
++ description: the description of the map (string)
++ notes: notes associated with the map (string)
++ basemap: basemap of the map (string)
++ url: the url of the map (string)
++ createdBy: (object, required)
++ embedCode: embed code of the map (string)
++ geojson: (object)
+
+## View Base (object)
++ name: the name of the map (string, required)
++ description: the description of the map (string)
++ notes: notes associated with the map (string)
++ createdBy: (object, required)
++ tags: tags of the view (array)
+
+
+
+## Get User Response (object)
++ meta (Metadata Response)
++ data (User Get)
++ links (object)
+
+## Get Log Response (object)
++ meta (Metadata Response)
++ data (Category)
++ links (object)
+
+## Get Config Response (object)
++ meta (Metadata Response)
++ data (Config)
++ links (object)
+
+## Get Dataset Response (object)
++ meta (Metadata Response)
++ data (Dataset)
++ links (object)
+
+## Get Category Response (object)
++ meta (Metadata Response)
++ data (Category)
++ links (object)
+
+## Get Database Response (object)
++ meta (Metadata Response)
++ data (Database)
++ links (object)
+
+## Get File Response (object)
++ meta (Metadata Response)
++ data (File)
++ links (object)
+
+## Get Filetype Response (object)
++ meta (Metadata Response)
++ data (Filetype)
++ links (object)
+
+## Get Organization Response (object)
++ meta (Metadata Response)
++ data (Organization)
++ links (object)
+
+## Get Status Response (object)
++ meta (Metadata Response)
++ data (Status)
++ links (object)
+
+## Get Tag Response (object)
++ meta (Metadata Response)
++ data (Tag)
++ links (object)
+
+## Get Updatefrequency Response (object)
++ meta (Metadata Response)
++ data (Updatefrequency)
++ links (object)
+
+## Get Map Response (object)
++ meta (Metadata Response)
++ data (Map)
++ links (object)
+
+## Get Chart Response (object)
++ meta (Metadata Response)
++ data (Chart)
++ links (object)
+
+## Get View Response (object)
++ meta (Metadata Response)
++ data (View)
++ links (object)
+
+
+## Get User Collection Response (object)
++ meta (Metadata Response)
++ data (array[User Get])
++ links (object)
+
+## Get Dataset Collection Response (object)
++ meta (Metadata Response)
++ data (array[Dataset])
++ links (object)
+
+## Get Category Collection Response (object)
++ meta (Metadata Response)
++ data (array[Category])
++ links (object)
+
+## Get Log Collection Response (object)
++ meta (Metadata Response)
++ data (array[Log])
++ links (object)
+
+## Get Config Collection Response (object)
++ meta (Metadata Response)
++ data (array[Config])
++ links (object)
+
+## Get Database Collection Response (object)
++ meta (Metadata Response)
++ data (array[Database])
++ links (object)
+
+## Get File Collection Response (object)
++ meta (Metadata Response)
++ data (array[File])
++ links (object)
+
+## Get Filetype Collection Response (object)
++ meta (Metadata Response)
++ data (array[Filetype])
++ links (object)
+
+## Get Organization Collection Response (object)
++ meta (Metadata Response)
++ data (array[Organization])
++ links (object)
+
+## Get Status Collection Response (object)
++ meta (Metadata Response)
++ data (array[Status])
++ links (object)
+
+## Get Tag Collection Response (object)
++ meta (Metadata Response)
++ data (array[Tag])
++ links (object)
+
+## Get Updatefrequency Collection Response (object)
++ meta (Metadata Response)
++ data (array[Updatefrequency])
++ links (object)
+
+## Get Map Collection Response (object)
++ meta (Metadata Response)
++ data (array[Map])
++ links (object)
+
+## Get Chart Collection Response (object)
++ meta (Metadata Response)
++ data (array[Chart])
++ links (object)
+
+## Get View Collection Response (object)
++ meta (Metadata Response)
++ data (array[View])
++ links (object)
+
+
+## General Response (object)
++ meta (Metadata Response)
++ links (object)
+
+## General Response Error (object)
++ meta (Metadata Response)
++ links (object)
+
+## Options Response (object)
++ meta (Metadata Response)
++ methods (array[Methods Response])
+
+## Get Count Response
++ meta (Metadata Response)
++ data (object)
++ links (object)
+
+## Metadata Response (object)
++ statusCode
++ statusMessage
+
+## Methods Response (object)
++ url (string)
++ headers (object)
++ parameters (object)
+
+## Response Error (object)
++ meta (Metadata Response)
++ error (object)
++ links (object)

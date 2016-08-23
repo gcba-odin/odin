@@ -1,10 +1,19 @@
 # Local
 config/local.js
 
+# Files
+files
+
+# Datasets
+datasets
+
 # Logs
 logs
 *.log
 npm-debug.log*
+
+#Stats
+stats
 
 # Runtime data
 pids
@@ -46,3 +55,11 @@ nbproject
 
 # Optional REPL history
 .node_repl_history
+
+# Editor
+.vscode
+
+# Executables
+*.node
+*.o
+*.so

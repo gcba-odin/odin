@@ -17,10 +17,10 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
  * @private
  */
 const LOCAL_STRATEGY_CONFIG = {
-  usernameField: 'email',
-  passwordField: 'password',
-  session: false,
-  passReqToCallback: true
+    usernameField: 'username',
+    passwordField: 'password',
+    session: false,
+    passReqToCallback: true
 };
 
 /**
@@ -29,12 +29,12 @@ const LOCAL_STRATEGY_CONFIG = {
  * @private
  */
 const JWT_STRATEGY_CONFIG = {
-  secretOrKey: 'c5158dbb8972e48256e18d69d401e938068bf6100f1418c4ab2fcdf25dc9c1b0',
-  jwtFromRequest: ExtractJwt.versionOneCompatibility({tokenBodyField: 'access_token'}),
-  tokenQueryParameterName: 'access_token',
-  authScheme: 'Bearer',
-  session: false,
-  passReqToCallback: true
+    secretOrKey: 'c5158dbb8972e48256e18d69d401e938068bf6100f1418c4ab2fcdf25dc9c1b0',
+    jwtFromRequest: ExtractJwt.fromHeader('x-admin-authorization'),
+    tokenQueryParameterName: 'access_token',
+    authScheme: 'Bearer',
+    session: false,
+    passReqToCallback: true
 };
 
 /**
@@ -46,14 +46,17 @@ const JWT_STRATEGY_CONFIG = {
  * @private
  */
 const _onLocalStrategyAuth = (req, username, password, next) => {
-  User
-    .findOne({[LOCAL_STRATEGY_CONFIG.usernameField]: username})
-    .then(user => {
-      if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
-      if (!HashService.bcrypt.compareSync(password, user.password)) return next(null, null, sails.config.errors.USER_NOT_FOUND);
-      return next(null, user, {});
-    })
-    .catch(next);
+    User
+        .findOne({
+            [LOCAL_STRATEGY_CONFIG.usernameField]: username
+        })
+        .then(user => {
+            if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
+            if (!HashService.bcrypt.compareSync(password, user.password))
+                return next(null, null, sails.config.errors.USER_NOT_FOUND);
+            return next(null, user, {});
+        })
+        .catch(next);
 };
 
 /**
@@ -64,36 +67,43 @@ const _onLocalStrategyAuth = (req, username, password, next) => {
  * @private
  */
 const _onJwtStrategyAuth = (req, payload, next) => {
-  User
-    .findOne({id: payload.id})
-    .then(user => {
-      if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
-      return next(null, user, {});
-    })
-    .catch(next);
+    User
+        .findOne({
+            id: payload.id
+        })
+        .then(user => {
+            if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
+            return next(null, user, {});
+        })
+        .catch(next);
 };
 
 module.exports = {
-  passport: {
-    /**
-     * Triggers when all Passport steps is done and user profile is parsed
-     * @param {Object} req Request object
-     * @param {Object} res Response object
-     * @param {Object} error Object with error info
-     * @param {Object} user User object
-     * @param {Object} info Information object
-     * @returns {*}
-     * @private
-     */
-    onPassportAuth(req, res, error, user, info) {
-      if (error || !user) return res.negotiate(error || info);
+    passport: {
+        /**
+         * Triggers when all Passport steps is done and user profile is parsed
+         * @param {Object} req Request object
+         * @param {Object} res Response object
+         * @param {Object} error Object with error info
+         * @param {Object} user User object
+         * @param {Object} info Information object
+         * @returns {*}
+         * @private
+         */
+        onPassportAuth(req, res, error, user, info) {
+            if (error || !user) return res.negotiate(error || info);
 
-      return res.ok({
-        token: CipherService.jwt.encodeSync({id: user.id}),
-        user: user
-      });
+            return res.ok({
+                token: CipherService.jwt.encodeSync({
+                    id: user.id
+                }),
+                user: user.id,
+                username: user.username
+                    // We dont need user data returned
+                    // user: user
+            });
+        }
     }
-  }
 };
 
 passport.use(new LocalStrategy(_.assign({}, LOCAL_STRATEGY_CONFIG), _onLocalStrategyAuth));

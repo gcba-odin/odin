@@ -8,14 +8,16 @@
 const passport = require('passport');
 
 module.exports = (req, res, next) => {
-    passport.authenticate('jwt', (error, user, info) => {
-        console.log(error);
-        console.log(user);
-        console.log(info);
-        if (error || !user) return res.negotiate(error || info);
 
-        req.user = user;
+    // if ( !req.get( 'x-consumer-id' ) || req.host !== sails.config.odin.kongHost )
+    if (!_.isUndefined(req.get('x-admin-authorization'))) {
+        passport.authenticate('jwt', (error, user, info) => {
+            if (error || !user) return res.negotiate(error || info);
 
+            req.user = user;
+            next();
+        })(req, res);
+    } else {
         next();
-    })(req, res);
+    }
 };
