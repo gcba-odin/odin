@@ -90,16 +90,8 @@ describe('All Datasets', function() {
                             assert.property(element, 'starred');
                             assert.isBoolean(element.starred);
 
-                            assert.property(element, 'optional1');
-                            assert.property(element, 'optional2');
-                            assert.property(element, 'optional3');
-                            assert.property(element, 'optional4');
-                            assert.property(element, 'optional5');
-                            assert.property(element, 'optional6');
-                            assert.property(element, 'optional7');
-                            assert.property(element, 'optional8');
-                            assert.property(element, 'optional9');
-                            assert.property(element, 'optional10');
+                            assert.property(element, 'optionals');
+                            assert.isObject(element.optionals);
 
                             assert.property(element, 'status');
                             assert.isObject(element.status);
@@ -451,49 +443,7 @@ describe('All Datasets', function() {
                 });
         });
     });
-
-    describe('- GET /datasets?status.name=Publicado', function() {
-        it('- Should get one dataset', function(done) {
-            request.get('/datasets?status.name=Publicado')
-                .set('Accept', 'application/json')
-                .expect(200)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    // Meta
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'OK');
-
-                    // Data
-                    assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
-
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'sWRhpRn');
-
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'Dataset 4');
-
-                    assert.property(result.body.data[0], 'status');
-                    assert.isObject(result.body.data[0].status);
-                    assert.equal(result.body.data[0].status.name, 'Publicado');
-
-                    // Links
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
-
+    
     // Search
 
     describe('- GET /datasets/search?query=1', function() {

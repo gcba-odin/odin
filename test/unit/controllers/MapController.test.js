@@ -84,8 +84,7 @@ describe('All Maps', function() {
                             if (element.notes) assert.isString(element.notes);
 
                             assert.property(element, 'basemap');
-                            assert.isString(element.basemap);
-                            assert.oneOf(element.basemap, ['roadmap', 'satellite', 'hybrid', 'terrain']);
+                            assert.isObject(element.basemap);
 
                             assert.property(element, 'url');
                             if (element.url) assert.isString(element.url);
