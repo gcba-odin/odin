@@ -15,6 +15,14 @@ var json2xls = require('json2xls');
 var SkipperDisk = require('skipper-disk');
 
 module.exports = {
+    publish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(File, pk, 'publishedStatus', res)
+    },
+    unpublish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(File, pk, 'unpublishedStatus', res)
+    },
     create: function(req, res) {
         UploadService.createFile(req, res, true, function(data) {
             UploadService.metadataSave(File, data, 'file', req, res);

@@ -25,7 +25,9 @@ module.exports = {
 
         // If there is a file
         if (uploadedFile.isNoop && fileRequired) {
-            return res.badRequest('No file was uploaded.');
+            return res.badRequest(null, {
+                message: 'No file was uploaded.'
+            });
         } else {
             this.uploadFile(req, res, uploadedFile, cb);
         }
@@ -91,7 +93,9 @@ module.exports = {
 
                             if (err) return res.serverError(err);
                             if (files.length === 0) {
-                                return res.badRequest('No file was uploaded');
+                                return res.badRequest(null, {
+                                    message: 'No file was uploaded'
+                                });
                             }
 
                             // Get the id of the filetype based on mime of the file
@@ -146,7 +150,9 @@ module.exports = {
                                                     if (err) {
                                                         return res.negotiate(err);
                                                     }
-                                                    if (json.length === 0) return res.badRequest("Invalid or empty csv.");
+                                                    if (json.length === 0) return res.badRequest(null, {
+                                                        message: "Invalid or empty csv."
+                                                    });
 
                                                     // Connect to the db
                                                     DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
@@ -200,7 +206,9 @@ module.exports = {
             }, function onUploadComplete(err, files) {
                 if (err) return res.serverError(err);
                 if (files.length === 0) {
-                    return res.badRequest('No file was uploaded');
+                    return res.badRequest(null, {
+                        message: 'No file was uploaded'
+                    });
                 }
                 cb(data);
             });
