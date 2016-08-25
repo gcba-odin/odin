@@ -37,17 +37,62 @@ ODIN has not been tested with earlier versions of Node.js and MongoDB.
 
 1. Clone the repo
 
-    ``` $ git clone https://github.com/gcba-odin/odin.git ```
+``` bash
+  $ git clone https://github.com/gcba-odin/odin.git
+```
 
-2. Install the dependencies
+2. Instalar las dependencias
 
-    ```
-    $ cd odin
-    $ npm install
-    ```
-3. Start the app
+```bash
+  $ cd odin
+  $ npm install
+```
 
-    ``` $ npm start ```
+3. Crear la base de datos en postgres: nombre de la db `odin`, password `postgres`
+
+4. Ajustar las configuraciones de `config/odin.js` según gusto y necesidad
+
+5. Iniciar la app
+
+``` bash
+  $ npm start
+```
+
+## PostgreSQL
+Ubuntu instructions:
+```bash
+    sudo apt-get update
+    sudo apt-get install postgresql postgresql-contrib
+```
+
+For more information visit the PostgreSQL [oficial page](https://www.postgresql.org/).
+
+## Kong
+
+1. Install kong according their [web page](https://getkong.org/) instructions (depending on OS)
+
+   Ubuntu instructions:
+
+```bash
+    1. Download the package from https://getkong.org/install/ubuntu/#packages
+    2. sudo apt-get update
+    3. sudo apt-get install netcat openssl libpcre3 dnsmasq procps
+    4. sudo dpkg -i kong-0.8.3.*.deb
+```
+
+2. Create the postgres database: db name: `kong`, password `postgres`
+
+3. Load the database dump
+
+4. Move the configuration file `kong.yml` on `/etc/kong`
+
+5. Modify `kong.yml` configurations according needs
+
+6. Start  Kong
+
+   ```bash
+    $ sudo kong start
+   ```
 
 ## Configuration
 
