@@ -21,6 +21,7 @@ module.exports = (req, res) => {
     var model = _.upperFirst(modelLowercase);
 
     var groupBy = req.param('groupBy');
+    var action = req.param('action');
 
     if (groupBy !== undefined) {
         Statistic.find({
@@ -29,7 +30,12 @@ module.exports = (req, res) => {
             if (err) return res.negotiate(err);
 
             var groupedDataById = _.groupBy(data, function(value) {
-                var itemId = _.split(value.endpoint, '/')[2];
+                var splittedEndpoint = _.split(value.endpoint, '/'); 
+                var itemId = splittedEndpoint[2];
+                //TODO: Add action filter logic when groupBy === undefined
+                if(action !== undefined){
+                    if(splittedEndpoint[3] != action) return null;
+                }
                 return shortid.isValid(itemId) ? itemId : null
             });
             delete groupedDataById['null']

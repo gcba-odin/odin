@@ -9,6 +9,7 @@ const fs = require('fs');
 const detectCharacterEncoding = require('detect-character-encoding');
 const shortid = require('shortid');
 const DatasetId = 'sWRhpRk';
+const DatasetName = 'dataset-1';
 var csvId, csvName, xlsId, xlsName, xlsxId, xlsxName;
 
 chai.use(require('chai-fs'));
@@ -442,44 +443,6 @@ describe('All Files', function() {
 
                     assert.property(result.body.links, 'all');
                     assert.isString(result.body.links.all);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
-
-    describe('- GET /files?status.name=Publicado', function() {
-        it('- Should get one file', function(done) {
-            request.get('/files?status.name=Publicado')
-                .set('Accept', 'application/json')
-                .expect(200)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    // Meta
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'OK');
-
-                    // Data
-                    assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 1);
-
-                    assert.property(result.body.data[0], 'id');
-                    assert.isString(result.body.data[0].id);
-                    assert.ok(shortid.isValid(result.body.data[0].id));
-                    assert.equal(result.body.data[0].id, 'vWRhpRd');
-
-                    assert.property(result.body.data[0], 'name');
-                    assert.isString(result.body.data[0].name);
-                    assert.equal(result.body.data[0].name, 'File 4');
-
-                    // Links
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
 
                     err ? done(err) : done();
                 });
@@ -1011,13 +974,13 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${csvName}`);
+            assert.isFile(`/tmp/odin/${DatasetName}/${csvName}`);
             done();
 
         });
 
         it('- Should check that the file is UTF-8 encoded', function(done) {
-            const fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetId}/${csvName}`);
+            const fileBuffer = fs.readFileSync(`/tmp/odin/${DatasetName}/${csvName}`);
             const charsetMatch = detectCharacterEncoding(fileBuffer);
 
             assert.equal(charsetMatch.encoding, 'UTF-8');
@@ -1035,7 +998,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${xlsName}`);
+            assert.isFile(`/tmp/odin/${DatasetName}/${xlsName}`);
             done();
 
         });
@@ -1050,7 +1013,7 @@ describe('Single File', function() {
         });
 
         it('- Should check that the file exists', function(done) {
-            assert.isFile(`/tmp/odin/${DatasetId}/${xlsxName}`);
+            assert.isFile(`/tmp/odin/${DatasetName}/${xlsxName}`);
             done();
 
         });
