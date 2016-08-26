@@ -2,7 +2,7 @@ module.exports = {
     fixtures: {
         order: [
             'Organization', 'User', 'Category', 'Status', 'FileType', 'Config', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map', 'View', 'Log', 'Statistic'
+            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map','Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -228,32 +228,6 @@ module.exports = {
             id: 'rWRhpRV',
             name: 'Despublicado'
         }],
-        Database: [{
-            id: 'sWRhpRf',
-            name: 'Database 1',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRg',
-            name: 'Database 2',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRh',
-            name: 'Database 3',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRi',
-            name: 'Database 4',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRj',
-            name: 'Database 5',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }],
         FileType: [{
             id: 'sWRhpRV',
             name: 'csv',
@@ -295,14 +269,39 @@ module.exports = {
             mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             api: true
         }, {
-            id: 'zWRhpRV',
-            name: 'xml',
+            id: '2WRhpRV',
+            name: 'application-xml',
             mimetype: 'application/xml',
             api: false
         }, {
-            id: '0WRhpRV',
+            id: '3WRhpRV',
+            name: 'text-xml',
+            mimetype: 'text/xml',
+            api: false
+        }, {
+            id: '4WRhpRV',
+            name: 'ms-excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '5WRhpRV',
             name: 'zip',
             mimetype: 'application/zip',
+            api: false
+        }, {
+            id: '6WRhpRV',
+            name: 'zip-compressed',
+            mimetype: 'application/x-zip-compressed',
+            api: false
+        }, {
+            id: '8WRhpRV',
+            name: 'excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '7WRhpRV',
+            name: 'xml2',
+            mimetype: 'text/xml',
             api: false
         }],
         UpdateFrequency: [{
@@ -413,7 +412,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 status: {
@@ -445,7 +448,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 status: {
@@ -477,7 +484,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 status: {
@@ -509,7 +520,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 status: {
@@ -541,7 +556,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 status: {
@@ -574,7 +593,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 type: {
@@ -615,7 +638,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 type: {
@@ -656,7 +683,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 type: {
@@ -697,7 +728,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 type: {
@@ -738,7 +773,11 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
-            optionals: null,
+            optionals: {
+                'optional1':'first',
+                'optional2':'second',
+                'foo':'bar'
+            },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 type: {
@@ -898,7 +937,7 @@ module.exports = {
             name: 'Map 2',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'satellite',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -952,7 +991,7 @@ module.exports = {
             name: 'Map 3',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'hybrid',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -1006,7 +1045,7 @@ module.exports = {
             name: 'Map 4',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'terrain',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -1060,7 +1099,7 @@ module.exports = {
             name: 'Map 5',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'roadmap',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -1107,102 +1146,6 @@ module.exports = {
                 },
                 createdBy: {
                     username: 'admin'
-                }
-            }
-        }],
-        View: [{
-            id: '1ogP1Iz9',
-            name: 'View 1',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                }
-            }
-        }, {
-            id: '2ogP2Iz9',
-            name: 'View 2',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                }
-            }
-        }, {
-            id: '3ogP3Iz9',
-            name: 'View 3',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 7', 'Tag 8', 'Tag 9']
-                }
-            }
-        }, {
-            id: '4ogP4Iz9',
-            name: 'View 4',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                }
-            }
-        }, {
-            id: '5ogP5Iz9',
-            name: 'View 5',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
                 }
             }
         }],

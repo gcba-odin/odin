@@ -110,7 +110,9 @@ module.exports = {
             _.forEach(propertiesArray, function(property) {
                 propertiesMap[property] = value[property];
             });
-
+            // if commas are present, replace them with dots
+            value[longitude] = _.toNumber(_.replace(value[longitude], ',', '.'));
+            value[latitude] = _.toNumber(_.replace(value[latitude], ',', '.'));
             if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude])) {
                 incorrect++;
             } else {
@@ -128,38 +130,38 @@ module.exports = {
             }
         });
         cb(geoJson, incorrect, correct);
-    }
+    },
 
-    // mapCreate: function (values, req, res) {
-    //     _Map.create(values).exec(function created(err, newInstance) {
-    //         if (err) return res.negotiate(err);
-    //
-    //         if (req._sails.hooks.pubsub) {
-    //             if (req.isSocket) {
-    //                 Model.subscribe(req, newInstance);
-    //                 Model.introduce(newInstance);
-    //             }
-    //             // Make sure data is JSON-serializable before publishing
-    //             var publishData = _.isArray(newInstance) ?
-    //                 _.map(newInstance, function (instance) {
-    //                     return instance.toJSON();
-    //                 }) :
-    //                 newInstance.toJSON();
-    //             Model.publishCreate(publishData, !req.options.mirror && req);
-    //         }
-    //
-    //         // Send JSONP-friendly response if it's supported
-    //         res.created(newInstance, {
-    //             meta: {
-    //                 code: sails.config.success.CREATED.code,
-    //                 message: sails.config.success.CREATED.message
-    //             },
-    //             links: {
-    //                 record: sails.config.odin.baseUrl + '/maps/' + newInstance.id,
-    //                 all: sails.config.odin.baseUrl + '/maps'
-    //             }
-    //         });
-    //     });
-    // },
+    mapCreate: function(values, req, res) {
+        _Map.create(values).exec(function created(err, newInstance) {
+            if (err) return res.negotiate(err);
+
+            if (req._sails.hooks.pubsub) {
+                if (req.isSocket) {
+                    Model.subscribe(req, newInstance);
+                    Model.introduce(newInstance);
+                }
+                // Make sure data is JSON-serializable before publishing
+                var publishData = _.isArray(newInstance) ?
+                    _.map(newInstance, function(instance) {
+                        return instance.toJSON();
+                    }) :
+                    newInstance.toJSON();
+                Model.publishCreate(publishData, !req.options.mirror && req);
+            }
+
+            // Send JSONP-friendly response if it's supported
+            res.created(newInstance, {
+                meta: {
+                    code: sails.config.success.CREATED.code,
+                    message: sails.config.success.CREATED.message
+                },
+                links: {
+                    record: sails.config.odin.baseUrl + '/maps/' + newInstance.id,
+                    all: sails.config.odin.baseUrl + '/maps'
+                }
+            });
+        });
+    }
 
 };

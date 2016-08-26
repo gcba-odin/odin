@@ -721,10 +721,6 @@ describe('Single Category', function() {
                     assert.property(result.body.data, 'color');
                     assert.isString(result.body.data.color);
 
-                    assert.property(result.body.data, 'image');
-                    assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '/image');
-
                     assert.property(result.body.data, 'createdBy');
                     //assert.isObject(result.body.data.createdBy);
 
@@ -762,10 +758,6 @@ describe('Single Category', function() {
 
                     assert.property(result.body.data, 'color');
                     assert.isString(result.body.data.color);
-
-                    assert.property(result.body.data, 'image');
-                    assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '/image');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
@@ -848,13 +840,9 @@ describe('Single Category', function() {
                     assert.isString(result.body.data.color);
                     assert.equal(result.body.data.color, '000000');
 
-                    assert.property(result.body.data, 'image');
-                    assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '/image');
-
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
+                    assert.equal(result.body.data.createdBy.username, 'admin');
 
                     assert.property(result.body.data, 'createdBy');
 
@@ -894,13 +882,9 @@ describe('Single Category', function() {
                     assert.isString(result.body.data.color);
                     assert.equal(result.body.data.color, '000000');
 
-                    assert.property(result.body.data, 'image');
-                    assert.isString(result.body.data.image);
-                    assert.endsWith(result.body.data.image, '/image');
-
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
-                    assert.equal(result.body.data.createdBy.username, 'howardfoster');
+                    assert.equal(result.body.data.createdBy.username, 'admin');
 
                     assert.property(result.body.data, 'createdBy');
                     // assert.isObject(result.body.data.createdBy);
