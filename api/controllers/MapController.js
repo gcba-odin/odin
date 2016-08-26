@@ -111,8 +111,8 @@ module.exports = {
                 propertiesMap[property] = value[property];
             });
             // if commas are present, replace them with dots
-            value[longitude] = _.replace(value[longitude], ',', '.');
-            value[latitude] = _.replace(value[latitude], ',', '.');
+            value[longitude] = _.toNumber(_.replace(value[longitude], ',', '.'));
+            value[latitude] = _.toNumber(_.replace(value[latitude], ',', '.'));
             if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude])) {
                 incorrect++;
             } else {
