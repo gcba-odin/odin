@@ -61,11 +61,19 @@ module.exports = {
                     } else {
                         if (dataType === 'quantitative') {
                             //if the chart is quantitative return associative array
-                            var chartData = _.transform(table, function(result, value) {
-                                var key = value[element1];
-                                var val = value[element2];
+
+                            var groupedData = _.groupBy(table, function(value) {
+                                return value[element1];
+                            });
+                            var chartData = _.transform(groupedData, function(result, value) {
+                                var key = value[0][element1];
+                                var val = _.sumBy(value, function(each) {
+                                    // in case a number is like 192.123.522, transform it to 192123522
+                                    return _.toNumber(_.join(_.split(each[element2], '.'), ""))
+                                });
                                 result[key] = val;
                             }, {});
+                            console.dir(chartData)
                         }
                     }
                     values.data = {
