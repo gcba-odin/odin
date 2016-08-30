@@ -45,10 +45,16 @@ module.exports = (req, res) => {
                 //if (!_.isEmpty(builder.includes)) {
                 //    records[0] = _.assign(records[0], builder.includes);
                 //}
+                var returnRecords = records;
+                if(_.isUndefined(req.user)){
+                    builder.filterObject(returnRecords, 'owner');
+                    builder.filterObject(returnRecords, 'createdBy');
+                }
+                    
                 return res.ok(
-                    records, {
-                        meta: builder.meta(records),
-                        links: builder.links(records)
+                    returnRecords, {
+                        meta: builder.meta(returnRecords),
+                        links: builder.links(returnRecords)
                     }
                 );
             }

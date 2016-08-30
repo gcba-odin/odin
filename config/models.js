@@ -19,6 +19,6 @@ module.exports = {
      * Available values is `safe`, `alter` or `drop`
      * @type {String}
      */
-    migrate: 'alter'
+    migrate: 'safe'
   }
 };

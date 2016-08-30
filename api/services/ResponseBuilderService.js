@@ -22,6 +22,7 @@ const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
 const mergeDefaults = require('merge-defaults');
+var removeDiacritics = require('diacritics').remove;
 
 class ResponseBuilder {
     constructor(req, res) {
@@ -164,6 +165,41 @@ class ResponseGET extends ResponseBuilder {
         this._many = many;
     }
 
+    normalize(str) {
+        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
+            to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+            mapping = {};
+
+        for (var i = 0, j = from.length; i < j; i++)
+            mapping[from.charAt(i)] = to.charAt(i);
+
+        var ret = [];
+
+        for (var i = 0, j = str.length; i < j; i++) {
+            var c = str.charAt(i);
+            if (mapping.hasOwnProperty(str.charAt(i)))
+                ret.push(mapping[c]);
+            else
+                ret.push(c);
+        }
+        return ret.join('');
+    }
+    
+    filterObject(data, deleteKey) {
+        for (var key in data) {
+            var item = data[key];
+            
+            if (key === deleteKey) {
+                delete data[key];
+            }
+            else{
+                if (typeof item == "object") {
+                    this.filterObject(item, deleteKey);
+                }
+            }
+        }    
+    }
+
     addData(value) {
         if (this._many) {
             if (_.isPlainObject(this._data)) this._data = [];
@@ -248,11 +284,25 @@ class ResponseGET extends ResponseBuilder {
             if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};
             }
-            // // Only find not deleted records
-            // _.merge(this.params.where.full, {
-            //     deletedAt: null
-            // });
+            
+            // If request is from frontend, filter out:
+            if(_.isUndefined(this.req.user)){
+                var modelFrontCond = this.getFrontConditions(this._model);   
+                _.merge(this.params.where.full, modelFrontCond);
 
+                _.forEach(this._model.associations, function(association) {
+                    if (association.type === 'collection')
+                    {
+                        if(!_.includes(this.params.include.full, association.alias)){
+                            this.params.include.full.push(association.alias);
+                        }
+                        var associationFrontCond = this.getFrontConditions(sails.models[association.collection], association.alias);   
+                        _.merge(this.params.where.deep, associationFrontCond);
+                    }
+
+                }.bind(this));
+            }
+            
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .limit(this.params.limit)
@@ -286,6 +336,35 @@ class ResponseGET extends ResponseBuilder {
         this._query = this.select(this._query, this.params.fields);
 
         return this._query;
+    }
+
+    /*
+     * Filters out active, status and deletedAt properties for frontend requests.
+     */
+    getFrontConditions(model, alias) {
+        var frontConditions = {}
+        
+        var prefix = '';
+        if(!_.isUndefined(alias)){
+            prefix+=(alias + '.');
+        }
+        
+        if(!_.isUndefined(model.attributes['active'])){
+            //Active
+            var activeKey = prefix + 'active';
+            frontConditions[activeKey] = true;
+        }
+        if(!_.isUndefined(model.attributes['status'])){
+            //Published status
+            var statusKey = prefix + 'status';
+            frontConditions[statusKey] = 'qWRhpRV';
+        }
+        if(!_.isUndefined(model.attributes['deletedAt'])){
+            //Not logically deleted
+            var deletedAtKey = prefix + 'deletedAt';
+            frontConditions[deletedAtKey] = null;
+        }
+        return frontConditions;
     }
 
     /*
@@ -472,7 +551,8 @@ class ResponseGET extends ResponseBuilder {
                         var elementsId = _.map(element[key], function(item) {
                             return item.id;
                         });
-                        var filter = _.split(filters[key], ',');
+                        var filter = _.split(filter, ',');    
+                        
                         // if it doesnt fulfill the filter,
                         // we add it to the array which will remove the element from the response
 
@@ -512,37 +592,82 @@ class ResponseGET extends ResponseBuilder {
                 var splittedKey = _.split(key, '.');
                 var model = splittedKey[0];
 
-                //Split every filter on an array
-                value = value.match(/('[ áéíóúa-zA-Z,1-9 ]+'|[ áéíóúa-zA-Z1-9 ]+)/g);
+                var convert = false;
+                if(value != null && typeof value === 'string'){
+                    value = this.normalize(value);
+                    value = value.toLowerCase().replace(/[^a-z0-9,]/g, '');
+                    if (value.indexOf(',') != -1) {
+                        //Do not convert, multiple values separated by comma
+                        value = _.split(value, ',');
+                    }
+                    else{
+                        //Convert from array to string later
+                        convert = true;
+                        value = value.replace(',', '');
+                    }
+                    
+                }
 
-                //Sanitize the escaped \'
-                var sanitizedValue = this.sanitizeSimpleComma(value);
-
-                deepFilters[model] = {
+                var filterValues = [];
+                if(_.isArray(value)){
+                    filterValues = value;
+                }
+                else{
+                    filterValues.push(value);
+                }
+                var newDeepFilter = {
                     attribute: splittedKey[1],
-                    values: sanitizedValue
+                    convert: convert,
+                    values: filterValues
                 };
+
+                if(_.isUndefined(deepFilters[model])){
+                    deepFilters[model] = [];
+                }
+                deepFilters[model].push(newDeepFilter);
+                
                 // deepFilters = { category: { attribute: 'name', value: '[Filter1, Filter2]' } }
             }.bind(this));
+
+            //console.log(deepFilters);
 
             records.forEach(function(element, j) {
 
                 records[j] = _.transform(element, function(result, value, key) {
                     // If the field is on the filters object, we check if it fullfill the filter
                     if (!_.isUndefined(deepFilters[key])) {
+                        if (_.isArray(value)) {    
+                            deepFilters[key].forEach(function(deepFilter) {
+                                //console.log(value);
+                                var values = _.transform(value, function(result, value) {
+                                    var attrValue = value[deepFilter.attribute];
+                                    if(attrValue != null && typeof attrValue == 'string'){
+                                        attrValue = this.normalize(attrValue);
+                                        attrValue = attrValue.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');
+                                    }
+                                    result.push(attrValue);    
+                                }.bind(this), [])
+                                if(_.isEmpty(values)){
+                                    //Just to handle empty property cases and null filters
+                                    //Eg: deletedAt: null
+                                    values.push(null);   
+                                }
+                                
+                                //If any is string, convert the entire array to single string
+                                if(deepFilter.convert){
+                                    values = _.toString(values);
+                                }
 
-                        if (_.isArray(value)) {
-                            var values = _.transform(value, function(result, value) {
-                                result.push(value[deepFilters[key].attribute]);
-                            }, [])
+                                value[deepFilter.attribute] = values;
 
-                            value[deepFilters[key].attribute] = _.toString(values)
-                        }
+                                //console.log(values);
 
-                        // if the value filtered is undefined, or its different than the filter we remove it from query
-                        if (_.isUndefined(value) ||
-                            this.compareFilters(deepFilters[key].values, value[deepFilters[key].attribute])) {
-                            toRemove.push(j);
+                                // if the value filtered is undefined, or its different than the filter we remove it from query
+                                if (_.isUndefined(value) || 
+                                    (this.compareFilters(deepFilter.values, value[deepFilter.attribute], this.normalize))) {
+                                    toRemove.push(j);
+                                }
+                            }.bind(this)); 
                         }
                     }
                 }.bind(this), element);
@@ -565,14 +690,21 @@ class ResponseGET extends ResponseBuilder {
         });
     }
 
-    compareFilters(filters, value) {
-        //Removed spaces to compare filter with value
-        value = _.replace(value, / /g, '');
-        value = _.lowerCase(value);
+    compareFilters(filters, values, normalize) {
+        /*if(values != null && typeof values == 'string'){
+            values = normalize(values);
+            values = values.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');                        
+        }*/
         var found = (_.find(filters, function(filterValue) {
-            filterValue = _.replace(filterValue, / /g, '');
-            filterValue = _.lowerCase(filterValue);
-            return _.includes(value, filterValue);
+            if(filterValue != null && typeof filterValue == 'string'){
+                filterValue = normalize(filterValue);
+                filterValue = filterValue.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');
+            }
+            console.log(values);
+            console.log(filterValue);
+            var included = _.includes(values, filterValue);
+            //console.log(included);
+            return included;
             // return filterValue === value;
         }));
 
