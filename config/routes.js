@@ -1285,6 +1285,11 @@ module.exports = {
             action: 'notImplemented'
         },
 
+        'DELETE /basemaps/:id': {
+            controller: 'Delete',
+            model: 'basemap',
+            action: 'delete'
+        },
 
         'GET /basemaps/first': {
             blueprint: 'first',
