@@ -39,9 +39,9 @@ module.exports = {
             model: 'status'
         },
         basemap: {
-            model: 'basemap',
-            required: true,
-            // enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
+            model: 'basemap'
+                // required: true,
+                // enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
         },
         url: {
             type: 'string',
@@ -94,7 +94,7 @@ module.exports = {
 
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function (err, record) {
+        }).exec(function(err, record) {
             values.status = record.value;
 
             values.url = _.replace(values.url, 'model', 'maps');
