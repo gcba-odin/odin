@@ -22,7 +22,6 @@ const pluralize = require('pluralize');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Processor = require('../services/ParamsProcessorService');
 const mergeDefaults = require('merge-defaults');
-var removeDiacritics = require('diacritics').remove;
 
 class ResponseBuilder {
     constructor(req, res) {
