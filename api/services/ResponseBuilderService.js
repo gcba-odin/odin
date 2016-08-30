@@ -184,7 +184,7 @@ class ResponseGET extends ResponseBuilder {
         }
         return ret.join('');
     }
-    
+
     filterObject(data, deleteKey) {
         for (var key in data) {
             var item = data[key];
@@ -700,8 +700,8 @@ class ResponseGET extends ResponseBuilder {
                 filterValue = normalize(filterValue);
                 filterValue = filterValue.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');
             }
-            console.log(values);
-            console.log(filterValue);
+            //console.log(values);
+            //console.log(filterValue);
             var included = _.includes(values, filterValue);
             //console.log(included);
             return included;
