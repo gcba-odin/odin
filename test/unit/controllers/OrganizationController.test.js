@@ -979,29 +979,29 @@ describe('Single organization', function() {
         });
     });
 
-    // Check deleted organization
-    describe('- GET /organizations/:id', function() {
-        it('- Should get error 404', function(done) {
-            request.get(`/organizations/${organizationId}`)
-                .set('Accept', 'application/json')
-                .expect(410)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_GONE');
-
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
-
-                    assert.property(result.body.links, 'all');
-                    assert.isString(result.body.links.all);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
+    // // Check deleted organization
+    // describe('- GET /organizations/:id', function() {
+    //     it('- Should get error 404', function(done) {
+    //         request.get(`/organizations/${organizationId}`)
+    //             .set('Accept', 'application/json')
+    //             .expect(410)
+    //             .expect('Content-Type', 'application/json; charset=utf-8')
+    //             .end(function(err, result) {
+    //                 assert.property(result.body, 'meta');
+    //                 assert.isObject(result.body.meta);
+    //
+    //                 assert.property(result.body.meta, 'code');
+    //                 assert.isString(result.body.meta.code);
+    //                 assert.equal(result.body.meta.code, 'E_GONE');
+    //
+    //                 assert.property(result.body, 'links');
+    //                 assert.isObject(result.body.links);
+    //
+    //                 assert.property(result.body.links, 'all');
+    //                 assert.isString(result.body.links.all);
+    //
+    //                 err ? done(err) : done();
+    //             });
+    //     });
+    // });
 });

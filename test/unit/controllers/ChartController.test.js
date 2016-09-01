@@ -6,7 +6,7 @@ require('sails-test-helper');
 const chai = require('chai');
 const assert = chai.assert;
 const shortid = require('shortid');
-var chartId;
+var chartId, fileId;
 
 chai.use(require('chai-fs'));
 chai.use(require('chai-string'));
@@ -83,9 +83,6 @@ describe('All Charts', function() {
 
                             assert.property(element, 'notes');
                             if (element.notes) assert.isString(element.notes);
-
-                            assert.property(element, 'embedCode');
-                            if (element.embedCode) assert.isString(element.embedCode);
 
                             assert.property(element, 'url');
                             if (element.url) assert.isString(element.url);
@@ -689,6 +686,36 @@ describe('All Charts', function() {
  */
 
 describe('Single Chart', function() {
+
+    // // Upload CSV file
+    // describe('- POST /files [csv]', function() {
+    //     it('- Should upload a new file [csv]', function(done) {
+    //         request.post('/files')
+    //             .set('Accept', 'application/json')
+    //             .field('name', 'CSV Chart file')
+    //             .field('description', 'An example file')
+    //             .field('notes', 'Lorem ipsum dolor sit amet...')
+    //             .field('type', 'sWRhpRV')
+    //             .field('dataset', 'sWRhpRk')
+    //             .field('status', 'pWRhpRV')
+    //             .field('organization', 'hWRhpRV')
+    //             .field('updateFrequency', 'zWRhpR8')
+    //             .field('owner', 'dogPzIz9')
+    //             .field('createdBy', 'dogPzIz9')
+    //             .attach('uploadFile', 'test/assets/example.csv')
+    //             .expect(201)
+    //             .expect('Content-Type', 'application/json; charset=utf-8')
+    //             .end(function(err, result) {
+    //                 if (!err) {
+    //                     fileId = result.body.data.id;
+    //                     console.dir(fileId)
+    //                     done();
+    //                 } else done(err);
+    //             });
+    //     });
+    // });
+
+
     // Create chart
     describe('- POST /charts', function() {
         it('- Should create a new chart', function(done) {
@@ -698,6 +725,7 @@ describe('Single Chart', function() {
                 .field('description', 'An example chart')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('createdBy', 'dogPzIz9')
+                .field('link', 'www.odin.org')
                 .expect(201)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -814,7 +842,7 @@ describe('Single Chart', function() {
                 .set('Accept', 'application/json')
                 .field('name', 'Edited Chart')
                 .field('description', 'An example edited chart')
-                .field('embedCode', '<div></div>')
+                .field('link', 'www.odin.org')
                 .field('createdBy', 'nYrnfYEv')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -846,9 +874,6 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
-
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
@@ -891,9 +916,6 @@ describe('Single Chart', function() {
 
                     assert.property(result.body.data, 'notes');
                     assert.isString(result.body.data.notes);
-
-                    assert.property(result.body.data, 'embedCode');
-                    assert.isString(result.body.data.embedCode);
 
                     assert.property(result.body.data.createdBy, 'username');
                     assert.isString(result.body.data.createdBy.username);
