@@ -164,7 +164,7 @@ class ResponseGET extends ResponseBuilder {
         this._many = many;
     }
 
-    normalize(str) {
+    normalize(str, includeComma) {
         var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
             to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
             mapping = {};
@@ -181,7 +181,12 @@ class ResponseGET extends ResponseBuilder {
             else
                 ret.push(c);
         }
-        return ret.join('');
+        var retStr = ret.join('');
+        retStr = retStr.toLowerCase().replace(/[^a-z0-9,]/g, '');
+        if(!includeComma){
+            retStr = retStr.replace(',', '');
+        }
+        return retStr;
     }
 
     filterObject(data, deleteKey) {
@@ -592,19 +597,18 @@ class ResponseGET extends ResponseBuilder {
                 var model = splittedKey[0];
 
                 var convert = false;
+                
                 if(value != null && typeof value === 'string'){
-                    value = this.normalize(value);
-                    value = value.toLowerCase().replace(/[^a-z0-9,]/g, '');
+                    //Sanitize
+                    value = value.match(/('[ áéíóúa-zA-Z,1-9- ]+'|[ áéíóúa-zA-Z1-9- ]+)/g);
+                    value = this.sanitizeSimpleComma(value);
+                    //console.log(value);
+
+                    //value = this.normalize(value, true);
                     if (value.indexOf(',') != -1) {
                         //Do not convert, multiple values separated by comma
                         value = _.split(value, ',');
                     }
-                    else{
-                        //Convert from array to string later
-                        convert = true;
-                        value = value.replace(',', '');
-                    }
-                    
                 }
 
                 var filterValues = [];
@@ -616,7 +620,6 @@ class ResponseGET extends ResponseBuilder {
                 }
                 var newDeepFilter = {
                     attribute: splittedKey[1],
-                    convert: convert,
                     values: filterValues
                 };
 
@@ -641,8 +644,7 @@ class ResponseGET extends ResponseBuilder {
                                 var values = _.transform(value, function(result, value) {
                                     var attrValue = value[deepFilter.attribute];
                                     if(attrValue != null && typeof attrValue == 'string'){
-                                        attrValue = this.normalize(attrValue);
-                                        attrValue = attrValue.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');
+                                        attrValue = this.normalize(attrValue, false);
                                     }
                                     result.push(attrValue);    
                                 }.bind(this), [])
@@ -653,9 +655,9 @@ class ResponseGET extends ResponseBuilder {
                                 }
                                 
                                 //If any is string, convert the entire array to single string
-                                if(deepFilter.convert){
+                                /*if(deepFilter.convert){
                                     values = _.toString(values);
-                                }
+                                }*/
 
                                 value[deepFilter.attribute] = values;
 
@@ -690,14 +692,9 @@ class ResponseGET extends ResponseBuilder {
     }
 
     compareFilters(filters, values, normalize) {
-        /*if(values != null && typeof values == 'string'){
-            values = normalize(values);
-            values = values.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');                        
-        }*/
         var found = (_.find(filters, function(filterValue) {
             if(filterValue != null && typeof filterValue == 'string'){
-                filterValue = normalize(filterValue);
-                filterValue = filterValue.toLowerCase().replace(/[^a-záéíóú0-9]/g, '');
+                filterValue = normalize(filterValue, false);
             }
             //console.log(values);
             //console.log(filterValue);
