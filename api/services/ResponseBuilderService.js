@@ -552,10 +552,12 @@ class ResponseGET extends ResponseBuilder {
                 records[j] = _.transform(element, function(result, value, key) {
                     if (!_.isUndefined(filters[key])) {
                         // get the ids of the collection filtered
+                        
                         var elementsId = _.map(element[key], function(item) {
                             return item.id;
                         });
-                        var filter = _.split(filter, ',');    
+
+                        var filter = _.split(filters[key], ',');
                         
                         // if it doesnt fulfill the filter,
                         // we add it to the array which will remove the element from the response
