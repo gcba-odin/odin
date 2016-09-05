@@ -651,6 +651,11 @@ module.exports = {
             blueprint: 'search',
             model: 'dataset'
         },
+        'OPTIONS /datasets/search': {
+            controller: 'Options',
+            model: 'dataset',
+            action: 'custom'
+        },
         'PATCH /datasets/:id': {
             blueprint: 'update',
             model: 'dataset',
