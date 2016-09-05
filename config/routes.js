@@ -613,6 +613,12 @@ module.exports = {
             model: 'dataset'
         },
 
+        'OPTIONS /datasets/statistics': {
+            controller: 'Options',
+            model: 'dataset',
+            action: 'custom'
+        },
+
         'DELETE /datasets': {
             controller: 'NotImplemented',
             model: 'dataset',
