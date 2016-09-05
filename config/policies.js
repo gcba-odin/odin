@@ -14,7 +14,7 @@
 module.exports = {
     policies: {
         // '*': 'isAuthenticated',
-        '*': ['statistics', 'ensureQueryTypeCast'],
+        '*': ['addLoggedUser', 'statistics', 'ensureQueryTypeCast'],
         BasemapController: {
             create: ['isAuthenticated', 'statistics'],
             update: ['isAuthenticated', 'statistics'],
@@ -79,8 +79,11 @@ module.exports = {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
             login: true,
-            refreshToken: true,
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            refreshToken: true
+        },
+        DeleteController: {
+            delete: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
         }
     }
 };

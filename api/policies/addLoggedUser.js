@@ -2,8 +2,8 @@
 
 /**
  * addLoggedUser
- * @description :: Policy that injects user in `req` via JSON Web Token. In case there's no header, 
- * continues as invited user.
+ * @description :: Policy that injects user in `req` via JSON Web Token. In case there's no header,
+ * continues as guest user.
  */
 
 const passport = require('passport');

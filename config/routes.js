@@ -10,8 +10,7 @@ module.exports = {
     routes: {
 
         // Users
-
-        'POST /users/login': 'User.login', // LOGOUT missing!!!
+        'POST /users/login': 'User.login',
         'POST /clients/tokens': 'User.refreshToken',
 
         'GET /users/statistics': {
@@ -23,30 +22,25 @@ module.exports = {
             controller: 'Delete',
             model: 'user',
             action: 'delete',
-            policy: 'isAuthenticated'
         },
         'POST /users/:id/restore': {
             controller: 'Delete',
             model: 'user',
             action: 'restore',
-            policy: 'isAuthenticated'
         },
 
         'GET /users/search': {
             blueprint: 'search',
             model: 'user'
-            // policy: 'isAuthenticated'
         },
         'GET /users/first': {
             blueprint: 'first',
             model: 'user'
-            // policy: 'isAuthenticated'
         },
 
         'GET /users/last': {
             blueprint: 'last',
             model: 'user'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /users/:id': {
@@ -140,19 +134,16 @@ module.exports = {
         'GET /organizations/first': {
             blueprint: 'first',
             model: 'organization'
-            // policy: 'isAuthenticated'
         },
 
         'GET /organizations/last': {
             blueprint: 'last',
             model: 'organization'
-            // policy: 'isAuthenticated'
         },
 
         'GET /organizations/search': {
             blueprint: 'search',
             model: 'organization'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /organizations/:id': {
@@ -251,17 +242,14 @@ module.exports = {
         'GET /categories/first': {
             blueprint: 'first',
             model: 'category'
-            // policy: 'isAuthenticated'
         },
         'GET /categories/last': {
             blueprint: 'last',
             model: 'category'
-            // policy: 'isAuthenticated'
         },
         'GET /categories/search': {
             blueprint: 'search',
             model: 'category'
-            // policy: 'isAuthenticated'
         },
         'HEAD /categories/*': {
             controller: 'Head',
@@ -312,17 +300,14 @@ module.exports = {
         'GET /statuses/first': {
             blueprint: 'first',
             model: 'status'
-            // policy: 'isAuthenticated'
         },
         'GET /statuses/last': {
             blueprint: 'last',
             model: 'status'
-            // policy: 'isAuthenticated'
         },
         'GET /statuses/search': {
             blueprint: 'search',
             model: 'status'
-            // policy: 'isAuthenticated'
         },
         'PATCH /statuses/:id': {
             blueprint: 'update',
@@ -388,17 +373,14 @@ module.exports = {
         'GET /filetypes/first': {
             blueprint: 'first',
             model: 'filetype'
-            // policy: 'isAuthenticated'
         },
         'GET /filetypes/last': {
             blueprint: 'last',
             model: 'filetype'
-            // policy: 'isAuthenticated'
         },
         'GET /filetypes/search': {
             blueprint: 'search',
             model: 'filetype'
-            // policy: 'isAuthenticated'
         },
         'PATCH /filetypes/:id': {
             blueprint: 'update',
@@ -503,17 +485,14 @@ module.exports = {
         'GET /files/first': {
             blueprint: 'first',
             model: 'file'
-            // policy: 'isAuthenticated'
         },
         'GET /files/search': {
             blueprint: 'search',
             model: 'file'
-            // policy: 'isAuthenticated'
         },
         'GET /files/last': {
             blueprint: 'last',
             model: 'file'
-            // policy: 'isAuthenticated'
         },
         'HEAD /files/*': {
             controller: 'Head',
@@ -562,17 +541,14 @@ module.exports = {
         'GET /databases/first': {
             blueprint: 'first',
             model: 'database'
-            // policy: 'isAuthenticated'
         },
         'GET /databases/last': {
             blueprint: 'last',
             model: 'database'
-            // policy: 'isAuthenticated'
         },
         'GET /databases/search': {
             blueprint: 'search',
             model: 'database'
-            // policy: 'isAuthenticated'
         },
         'PATCH /databases/:id': {
             blueprint: 'update',
@@ -660,17 +636,14 @@ module.exports = {
         'GET /datasets/first': {
             blueprint: 'first',
             model: 'dataset'
-            // policy: 'isAuthenticated'
         },
         'GET /datasets/last': {
             blueprint: 'last',
             model: 'dataset'
-            // policy: 'isAuthenticated'
         },
         'GET /datasets/search': {
             blueprint: 'search',
             model: 'dataset'
-            // policy: 'isAuthenticated'
         },
         'PATCH /datasets/:id': {
             blueprint: 'update',
@@ -738,18 +711,15 @@ module.exports = {
         'GET /tags/first': {
             blueprint: 'first',
             model: 'tag'
-            // policy: 'isAuthenticated'
         },
 
         'GET /tags/last': {
             blueprint: 'last',
             model: 'tag'
-            // policy: 'isAuthenticated'
         },
         'GET /tags/search': {
             blueprint: 'search',
             model: 'tag'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /tags/:id': {
@@ -804,17 +774,14 @@ module.exports = {
         'GET /updatefrequencies/first': {
             blueprint: 'first',
             model: 'updatefrequency'
-            // policy: 'isAuthenticated'
         },
         'GET /updatefrequencies/search': {
             blueprint: 'search',
             model: 'updatefrequency'
-            // policy: 'isAuthenticated'
         },
         'GET /updatefrequencies/last': {
             blueprint: 'last',
             model: 'updatefrequency'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /updatefrequencies/:id': {
@@ -867,17 +834,14 @@ module.exports = {
         'GET /configs/first': {
             blueprint: 'first',
             model: 'config'
-            // policy: 'isAuthenticated'
         },
         'GET /configs/last': {
             blueprint: 'last',
             model: 'config'
-            // policy: 'isAuthenticated'
         },
         'GET /configs/search': {
             blueprint: 'search',
             model: 'config'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /configs/:id': {
@@ -931,17 +895,14 @@ module.exports = {
         'GET /logs/first': {
             blueprint: 'first',
             model: 'log'
-            // policy: 'isAuthenticated'
         },
         'GET /logs/last': {
             blueprint: 'last',
             model: 'log'
-            // policy: 'isAuthenticated'
         },
         'GET /logs/search': {
             blueprint: 'search',
             model: 'log'
-            // policy: 'isAuthenticated'
         },
 
         'HEAD /logs/*': {
@@ -1020,17 +981,14 @@ module.exports = {
         'GET /maps/first': {
             blueprint: 'first',
             model: 'map'
-            // policy: 'isAuthenticated'
         },
         'GET /maps/last': {
             blueprint: 'last',
             model: 'map'
-            // policy: 'isAuthenticated'
         },
         'GET /maps/search': {
             blueprint: 'search',
             model: 'map'
-            // policy: 'isAuthenticated'
         },
 
         'PATCH /maps/:id': {
@@ -1128,17 +1086,14 @@ module.exports = {
         'GET /charts/first': {
             blueprint: 'first',
             model: 'chart'
-            // policy: 'isAuthenticated'
         },
         'GET /charts/last': {
             blueprint: 'last',
             model: 'chart'
-            // policy: 'isAuthenticated'
         },
         'GET /charts/search': {
             blueprint: 'search',
             model: 'chart'
-            // policy: 'isAuthenticated'
         },
         'PATCH /charts/:id': {
             controller: 'Chart',
@@ -1211,17 +1166,14 @@ module.exports = {
         'GET /views/first': {
             blueprint: 'first',
             model: 'view'
-            // policy: 'isAuthenticated'
         },
         'GET /views/last': {
             blueprint: 'last',
             model: 'view'
-            // policy: 'isAuthenticated'
         },
         'GET /views/search': {
             blueprint: 'search',
             model: 'view'
-            // policy: 'isAuthenticated'
         },
         'PATCH /views/:id': {
             blueprint: 'update',
@@ -1295,12 +1247,10 @@ module.exports = {
         'GET /statistics/first': {
             blueprint: 'first',
             model: 'statistic'
-            // policy: 'isAuthenticated'
         },
         'GET /statistics/last': {
             blueprint: 'last',
             model: 'statistic'
-            // policy: 'isAuthenticated'
         },
 
         'HEAD /statistics/*': {
@@ -1373,17 +1323,14 @@ module.exports = {
         'GET /basemaps/first': {
             blueprint: 'first',
             model: 'basemap'
-            // policy: 'isAuthenticated'
         },
         'GET /basemaps/last': {
             blueprint: 'last',
             model: 'basemap'
-            // policy: 'isAuthenticated'
         },
         'GET /basemaps/search': {
             blueprint: 'search',
             model: 'basemap'
-            // policy: 'isAuthenticated'
         },
         'PATCH /basemaps/:id': {
             blueprint: 'update',
