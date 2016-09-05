@@ -289,23 +289,7 @@ class ResponseGET extends ResponseBuilder {
                 this.params.where.full = {};
             }
             
-            // If request is from frontend, filter out:
-            if(_.isUndefined(this.req.user)){
-                var modelFrontCond = this.getFrontConditions(this._model);   
-                _.merge(this.params.where.full, modelFrontCond);
-
-                _.forEach(this._model.associations, function(association) {
-                    if (association.type === 'collection')
-                    {
-                        if(!_.includes(this.params.include.full, association.alias)){
-                            this.params.include.full.push(association.alias);
-                        }
-                        var associationFrontCond = this.getFrontConditions(sails.models[association.collection], association.alias);   
-                        _.merge(this.params.where.deep, associationFrontCond);
-                    }
-
-                }.bind(this));
-            }
+            this.mergeFrontConditions();
             
             this._query = this._model.find()
                 .where(this.params.where.full)
@@ -341,6 +325,29 @@ class ResponseGET extends ResponseBuilder {
 
         return this._query;
     }
+
+    /*
+     * Merges model + related associations front conditions
+     */
+     mergeFrontConditions(){
+        // If request is from frontend, filter out:
+        if(_.isUndefined(this.req.user)){
+            var modelFrontCond = this.getFrontConditions(this._model);   
+            _.merge(this.params.where.full, modelFrontCond);
+
+            _.forEach(this._model.associations, function(association) {
+                if (association.type === 'collection')
+                {
+                    if(!_.includes(this.params.include.full, association.alias)){
+                        this.params.include.full.push(association.alias);
+                    }
+                    var associationFrontCond = this.getFrontConditions(sails.models[association.collection], association.alias);   
+                    _.merge(this.params.where.deep, associationFrontCond);
+                }
+
+            }.bind(this));
+        }    
+     }
 
     /*
      * Filters out active, status and deletedAt properties for frontend requests.
@@ -1077,7 +1084,7 @@ class ResponseSearch extends ResponseGET {
 
         this.model = model;
 
-        this.params.where = _.transform(model.definition, function(result, val, key) {
+        this.params.where.full = _.transform(model.definition, function(result, val, key) {
             // Check if the field is a string, and if is set to be searchable on the model
             if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
 
@@ -1112,13 +1119,19 @@ class ResponseSearch extends ResponseGET {
      * Builds and returns the query promise
      */
     searchQuery() {
+        
+        this.mergeFrontConditions();
+        
+        console.log(this.params.where.full);
+        console.log(this.params.where.deep);        
+
         this._query = this.model.find()
-            .where(this.params.where)
+            .where(this.params.where.full)
             .limit(this.params.limit)
             .skip(this.params.skip)
             .sort(this.params.sort);
 
-        this.model.count().where(this.params.where)
+        this.model.count().where(this.params.where.full)
             .then(function(cant) {
                 this._count = cant;
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
@@ -1128,6 +1141,11 @@ class ResponseSearch extends ResponseGET {
             });
 
         this._query = this.populate(this._query, this.model, this.params.include);
+
+        //deep association filters
+        if (!_.isUndefined(this.params.where) && !_.isEmpty(this.params.where.deep)) {
+            this._query = this.deepFilter(this._query, this.params.where.deep);
+        }
 
         return this._query;
     }
