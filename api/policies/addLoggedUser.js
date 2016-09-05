@@ -10,7 +10,10 @@ const passport = require('passport');
 
 module.exports = (req, res, next) => {
     passport.authenticate('jwt', (error, user, info) => {
-        if (error || !user) next();
+        if (error || !user) {
+            next();
+            return;
+        }
 
         req.user = user;
         next();
