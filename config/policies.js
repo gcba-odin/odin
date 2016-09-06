@@ -23,27 +23,33 @@ module.exports = {
         CategoryController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy']
         },
         ChartController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics'],
+            publish: ['isAuthenticated', 'statistics'],
+            unpublish: ['isAuthenticated', 'statistics']
         },
         ConfigController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy']
         },
         DatasetController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics'],
+            publish: ['isAuthenticated', 'statistics'],
+            unpublish: ['isAuthenticated', 'statistics']
         },
         FileController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics'],
+            publish: ['isAuthenticated', 'statistics'],
+            unpublish: ['isAuthenticated', 'statistics']
         },
         FileTypeController: {
             create: ['isAuthenticated', 'statistics'],
@@ -58,17 +64,19 @@ module.exports = {
         MapController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics'],
+            publish: ['isAuthenticated', 'statistics'],
+            unpublish: ['isAuthenticated', 'statistics']
         },
         OptionsController: true,
         OrganizationController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics']
         },
         TagController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics']
         },
         StatusController: {
             create: ['isAuthenticated', 'statistics'],
@@ -83,7 +91,7 @@ module.exports = {
         },
         DeleteController: {
             delete: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         }
     }
 };
