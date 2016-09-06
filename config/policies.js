@@ -13,36 +13,77 @@
 
 module.exports = {
     policies: {
-        '*': ['isAuthenticated','statistics', 'ensureQueryTypeCast'],
         // '*': 'isAuthenticated',
-        OptionsController: true,
+        '*': ['addLoggedUser', 'statistics', 'ensureQueryTypeCast'],
+        BasemapController: {
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
         CategoryController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
-        },
-        FileController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            upload: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
-        },
-        OrganizationController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
-        },
-        TagController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
-        },
-        UserController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-           login: true,
-           refreshToken: true
-        },
-        ConfigController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy']
-        },
-        MapController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
         },
         ChartController: {
-            create: ['isAuthenticated','statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        ConfigController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        DatasetController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        FileController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        FileTypeController: {
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
+        LogController: {
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
+        MapController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        OptionsController: true,
+        OrganizationController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        TagController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            destroy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+        },
+        StatusController: {
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
+        UserController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            login: true,
+            refreshToken: true
+        },
+        DeleteController: {
+            delete: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
         }
     }
 };

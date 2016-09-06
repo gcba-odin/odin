@@ -86,9 +86,6 @@ describe('All Statistics', function() {
                             assert.property(element, 'querystring');
                             if (element.querystring) assert.isString(element.querystring);
 
-                            assert.property(element, 'client');
-                            if (element.client) assert.isString(element.client);
-
                             assert.property(element, 'useragent');
                             assert.isString(element.useragent);
 
@@ -162,7 +159,7 @@ describe('All Statistics', function() {
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'statistics?limit=2&skip=8');
+                    assert.endsWith(result.body.links.last, 'statistics?limit=2&skip=10');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
@@ -239,7 +236,7 @@ describe('All Statistics', function() {
 
                     assert.property(result.body.links, 'last');
                     assert.isString(result.body.links.last);
-                    assert.endsWith(result.body.links.last, 'statistics?limit=2&skip=8');
+                    assert.endsWith(result.body.links.last, 'statistics?limit=2&skip=10');
 
                     assert.property(result.body.links, 'firstItem');
                     assert.isString(result.body.links.firstItem);
@@ -282,7 +279,7 @@ describe('All Statistics', function() {
 
                     assert.property(result.body.meta, 'end');
                     assert.isNumber(result.body.meta.end);
-                    assert.equal(result.body.meta.end, 9);
+                    assert.equal(result.body.meta.end, 10);
 
                     assert.property(result.body.meta, 'page');
                     assert.isNumber(result.body.meta.page);

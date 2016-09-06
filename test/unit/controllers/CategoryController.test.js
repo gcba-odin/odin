@@ -910,34 +910,5 @@ describe('Single Category', function() {
                 });
         });
     });
-
-    // Check deleted category
-    describe('- GET /categories/:id', function() {
-        it('- Should get error 401', function(done) {
-            request.get(`/categories/${categoryId}`)
-                .set('Accept', 'application/json')
-                .expect(410)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    // assert.property(result.body.meta, 'code');
-                    // assert.isString(result.body.meta.code);
-                    // assert.equal(result.body.meta.code, 'E_NOT_FOUND');
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'E_GONE');
-
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
-
-                    assert.property(result.body.links, 'all');
-                    assert.isString(result.body.links.all);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
+    
 });

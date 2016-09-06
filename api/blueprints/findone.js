@@ -30,19 +30,22 @@ module.exports = (req, res) => {
     var builder = new Response.ResponseGET(req, res, false);
 
     builder.findQuery()
-        .then(record => {
-            if (_.isUndefined(record[0])) return res.notFound(null, {
+        .then(records => {
+            if (_.isUndefined(records[0])) return res.notFound(null, {
                 meta: builder.meta(undefined),
                 links: builder.links(undefined)
             });
             else {
-                if (record[0].deletedAt !== null) {
-                    return res.gone(builder.links(record[0]));
+                var returnRecord = records[0];
+                if(_.isUndefined(req.user)){
+                    builder.filterObject(returnRecord, 'owner');
+                    builder.filterObject(returnRecord, 'createdBy');
                 }
+
                 return res.ok(
-                    record[0], {
-                        meta: builder.meta(record[0]),
-                        links: builder.links(record[0])
+                    returnRecord, {
+                        meta: builder.meta(returnRecord),
+                        links: builder.links(returnRecord)
                     }
                 );
             }

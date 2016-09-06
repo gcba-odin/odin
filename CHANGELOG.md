@@ -1,4 +1,27 @@
-# Version 0.1.0 Beta (12/08/2016)
+# Version 0.2.0 Beta (09/09/2016)
+
+## New features
+
+- **Responses** - Refresh token endpoint
+- **Responses** - Implemented publish/unpublish endpoint
+- **Responses** - Refresh token endpoint
+- **Maps** - Information on how many points were created correctly/incorrectly
+
+## Fixes
+
+- **Maps** - Fix map creation from link
+- **Maps** - Fix lat/long fields with points
+- **Charts** - Quiantitative charts aggregates columns
+- **Tests** - Updates and fix on mocha tests
+- **Files** - Fix xls/xlsx with '.' on headers
+- **Files** - Fix file download
+- **Files** - Fix delete file
+- **Files** - Delete old file when is updated
+- **Datasets** - Slugified datasets names
+- **Responses** - Fix Bad Request response, data now returned on `data`
+- **Authorization** - Policy `is authenticated` now asks for x-admin-authorization header
+
+# Version 0.1.1 Alpha (12/08/2016)
 
 
 ## New features
