@@ -36,15 +36,12 @@ module.exports = (req, res) => {
                 links: builder.links(undefined)
             });
             else {
-                if (records[0].deletedAt !== null) {
-                    return res.gone(builder.links(records[0]));
-                }
                 var returnRecord = records[0];
                 if(_.isUndefined(req.user)){
                     builder.filterObject(returnRecord, 'owner');
                     builder.filterObject(returnRecord, 'createdBy');
                 }
-                
+
                 return res.ok(
                     returnRecord, {
                         meta: builder.meta(returnRecord),
