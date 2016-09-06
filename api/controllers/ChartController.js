@@ -69,12 +69,12 @@ module.exports = {
                                 var key = value[0][element1];
                                 var val = _.sumBy(value, function(each) {
                                     // in case a number is like 192.123.522, transform it to 192123522
-                                    var withoutDots = _.join(_.split(each[element2], '.'), "");
+                                    // var withoutDots = _.join(_.split(each[element2], '.'), "");
                                     // in case a number is like 192123,522, transform it to 192123.522
-                                    return _.toNumber(_.replace(withoutDots, ',', '.'));
+                                    return _.toNumber(_.replace(each[element2], ',', '.'));
 
                                 });
-                                result[key] = _.round(val,2);
+                                result[key] = _.round(val, 2);
                             }, {});
                         }
                     }
