@@ -6,6 +6,7 @@
 - **Responses** - Implemented publish/unpublish endpoint
 - **Responses** - Refresh token endpoint
 - **Maps** - Information on how many points were created correctly/incorrectly
+- **Authorization** - Added policy addUserLogged
 
 ## Fixes
 
@@ -19,7 +20,7 @@
 - **Files** - Delete old file when is updated
 - **Datasets** - Slugified datasets names
 - **Responses** - Fix Bad Request response, data now returned on `data`
-- **Authorization** - Policy `is authenticated` now asks for x-admin-authorization header
+- **Authorization** - Fix Policy `isAuthenticated
 
 # Version 0.1.1 Alpha (12/08/2016)
 
@@ -37,7 +38,7 @@
 - Set up a logging system with [Winston](https://github.com/winstonjs/winston)
 
 ## Enhancements
-
+ 
 - Added unit tests
 - Some configs are now in the DB
 

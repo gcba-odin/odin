@@ -21,12 +21,12 @@ module.exports = {
         'DELETE /users/:id': {
             controller: 'Delete',
             model: 'user',
-            action: 'delete',
+            action: 'delete'
         },
         'POST /users/:id/restore': {
             controller: 'Delete',
             model: 'user',
-            action: 'restore',
+            action: 'restore'
         },
 
         'GET /users/search': {
@@ -121,14 +121,12 @@ module.exports = {
         'DELETE /organizations/:id': {
             controller: 'Delete',
             model: 'organization',
-            action: 'delete',
-            policy: 'isAuthenticated'
+            action: 'delete'
         },
         'POST /organizations/:id/restore': {
             controller: 'Delete',
             model: 'organization',
-            action: 'restore',
-            policy: 'isAuthenticated'
+            action: 'restore'
         },
 
         'GET /organizations/first': {
@@ -199,14 +197,12 @@ module.exports = {
         'POST /categories': {
             controller: 'Category',
             model: 'category',
-            action: 'create',
-            policy: 'isAuthenticated'
+            action: 'create'
         },
         'PATCH /categories/:id': {
             controller: 'Category',
             model: 'category',
-            action: 'update',
-            policy: 'isAuthenticated'
+            action: 'update'
         },
         'GET /categories/:id/image': 'Category.image',
 
@@ -230,14 +226,12 @@ module.exports = {
         'DELETE /categories/:id': {
             controller: 'Delete',
             model: 'category',
-            action: 'delete',
-            policy: 'isAuthenticated'
+            action: 'delete'
         },
         'POST /categories/:id/restore': {
             controller: 'Delete',
             model: 'category',
-            action: 'restore',
-            policy: 'isAuthenticated'
+            action: 'restore'
         },
         'GET /categories/first': {
             blueprint: 'first',
@@ -361,14 +355,12 @@ module.exports = {
         'DELETE /filetypes/:id': {
             controller: 'Delete',
             model: 'filetype',
-            action: 'delete',
-            policy: 'isAuthenticated'
+            action: 'delete'
         },
         'POST /filetypes/:id/restore': {
             controller: 'Delete',
             model: 'filetype',
-            action: 'restore',
-            policy: 'isAuthenticated'
+            action: 'restore'
         },
         'GET /filetypes/first': {
             blueprint: 'first',
@@ -428,14 +420,12 @@ module.exports = {
         'PATCH /files/:id/publish': {
             controller: 'File',
             model: 'file',
-            action: 'publish',
-            policy: 'isAuthenticated'
+            action: 'publish'
         },
         'PATCH /files/:id/unpublish': {
             controller: 'File',
             model: 'file',
-            action: 'unpublish',
-            policy: 'isAuthenticated'
+            action: 'unpublish'
         },
 
         'GET /files/statistics': {
@@ -469,15 +459,13 @@ module.exports = {
         'POST /files': {
             controller: 'File',
             model: 'file',
-            action: 'create',
-            policy: 'isAuthenticated'
+            action: 'create'
         },
 
         'PATCH /files/:id': {
             controller: 'File',
             model: 'file',
-            action: 'update',
-            policy: 'isAuthenticated'
+            action: 'update'
         },
 
         'GET /files/:id/contents': 'File.contents',
@@ -530,82 +518,17 @@ module.exports = {
             model: 'file',
             action: 'instance'
         },
-
-        // Databases
-
-        'GET /databases/statistics': {
-            blueprint: 'statistics',
-            model: 'database'
-        },
-
-        'GET /databases/first': {
-            blueprint: 'first',
-            model: 'database'
-        },
-        'GET /databases/last': {
-            blueprint: 'last',
-            model: 'database'
-        },
-        'GET /databases/search': {
-            blueprint: 'search',
-            model: 'database'
-        },
-        'PATCH /databases/:id': {
-            blueprint: 'update',
-            model: 'database',
-            policy: 'isAuthenticated'
-        },
-        'HEAD /databases/*': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'database'
-        },
-        'HEAD /databases': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'database'
-        },
-
-        'OPTIONS /databases': {
-            controller: 'Options',
-            model: 'database',
-            action: 'collection'
-        },
-        'OPTIONS /databases/first': {
-            controller: 'Options',
-            model: 'database',
-            action: 'query'
-        },
-        'OPTIONS /databases/last': {
-            controller: 'Options',
-            model: 'database',
-            action: 'query'
-        },
-        'OPTIONS /databases/count': {
-            controller: 'Options',
-            model: 'database',
-            action: 'count'
-        },
-        'OPTIONS /databases/:id': {
-            controller: 'Options',
-            model: 'database',
-            action: 'instance'
-        },
-
-
         // Datasets
 
         'PATCH /datasets/:id/publish': {
             controller: 'Dataset',
             model: 'dataset',
-            action: 'publish',
-            policy: 'isAuthenticated'
+            action: 'publish'
         },
         'PATCH /datasets/:id/unpublish': {
             controller: 'Dataset',
             model: 'dataset',
-            action: 'unpublish',
-            policy: 'isAuthenticated'
+            action: 'unpublish'
         },
 
         'GET /datasets/statistics': {
@@ -710,14 +633,12 @@ module.exports = {
         'DELETE /tags/:id': {
             controller: 'Delete',
             model: 'tag',
-            action: 'delete',
-            policy: 'isAuthenticated'
+            action: 'delete'
         },
         'POST /tags/:id/restore': {
             controller: 'Delete',
             model: 'tag',
-            action: 'restore',
-            policy: 'isAuthenticated'
+            action: 'restore'
         },
         'GET /tags/first': {
             blueprint: 'first',
@@ -957,14 +878,12 @@ module.exports = {
         'PATCH /maps/:id/publish': {
             controller: 'Map',
             model: 'map',
-            action: 'publish',
-            policy: 'isAuthenticated'
+            action: 'publish'
         },
         'PATCH /maps/:id/unpublish': {
             controller: 'Map',
             model: 'map',
-            action: 'unpublish',
-            policy: 'isAuthenticated'
+            action: 'unpublish'
         },
 
         'GET /maps/statistics': {
@@ -1051,16 +970,12 @@ module.exports = {
         'PATCH /charts/:id/publish': {
             controller: 'Chart',
             model: 'chart',
-            action: 'publish',
-            policy: 'isAuthenticated'
-
+            action: 'publish'
         },
         'PATCH /charts/:id/unpublish': {
             controller: 'Chart',
             model: 'chart',
-            action: 'unpublish',
-            policy: 'isAuthenticated'
-
+            action: 'unpublish'
         },
 
         'GET /charts/statistics': {
@@ -1071,9 +986,7 @@ module.exports = {
         'POST /charts': {
             controller: 'Chart',
             model: 'chart',
-            action: 'create',
-            policy: 'isAuthenticated'
-
+            action: 'create'
         },
 
         'DELETE /charts': {
@@ -1147,85 +1060,6 @@ module.exports = {
         'OPTIONS /charts/:id': {
             controller: 'Options',
             model: 'chart',
-            action: 'instance'
-        },
-
-        // Views
-
-        'GET /views/statistics': {
-            blueprint: 'statistics',
-            model: 'view'
-        },
-        'DELETE /views': {
-            controller: 'NotImplemented',
-            model: 'view',
-            action: 'notImplemented'
-        },
-
-        'PATCH /views': {
-            controller: 'NotImplemented',
-            model: 'view',
-            action: 'notImplemented'
-        },
-        'PUT /views': {
-            controller: 'NotImplemented',
-            model: 'view',
-            action: 'notImplemented'
-        },
-
-
-        'GET /views/first': {
-            blueprint: 'first',
-            model: 'view'
-        },
-        'GET /views/last': {
-            blueprint: 'last',
-            model: 'view'
-        },
-        'GET /views/search': {
-            blueprint: 'search',
-            model: 'view'
-        },
-        'PATCH /views/:id': {
-            blueprint: 'update',
-            model: 'view',
-            policy: 'isAuthenticated'
-        },
-
-        'HEAD /views/*': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'view'
-        },
-        'HEAD /views': {
-            controller: 'Head',
-            action: 'Head',
-            model: 'view'
-        },
-
-        'OPTIONS /views': {
-            controller: 'Options',
-            model: 'view',
-            action: 'collection'
-        },
-        'OPTIONS /views/first': {
-            controller: 'Options',
-            model: 'view',
-            action: 'query'
-        },
-        'OPTIONS /views/last': {
-            controller: 'Options',
-            model: 'view',
-            action: 'query'
-        },
-        'OPTIONS /views/count': {
-            controller: 'Options',
-            model: 'view',
-            action: 'count'
-        },
-        'OPTIONS /views/:id': {
-            controller: 'Options',
-            model: 'view',
             action: 'instance'
         },
 
@@ -1327,8 +1161,13 @@ module.exports = {
         'DELETE /basemaps/:id': {
             controller: 'Delete',
             model: 'basemap',
-            action: 'delete',
-            policy: 'isAuthenticated'
+            action: 'delete'
+        },
+
+        'POST /basemaps/:id/restore': {
+            controller: 'Delete',
+            model: 'basemap',
+            action: 'restore'
         },
 
         'GET /basemaps/first': {
