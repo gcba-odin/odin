@@ -46,7 +46,7 @@ module.exports = {
         'PATCH /users/:id': {
             blueprint: 'update',
             model: 'user',
-            policy: 'isAuthenticated'
+            policy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
         },
 
         'OPTIONS /users': {
@@ -204,7 +204,11 @@ module.exports = {
             model: 'category',
             action: 'update'
         },
-        'GET /categories/:id/image': 'Category.image',
+        'GET /categories/:id/image': {
+            controller: 'Category',
+            model: 'category',
+            action: 'image'
+        },
 
         'DELETE /categories': {
             controller: 'NotImplemented',

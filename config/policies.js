@@ -23,7 +23,8 @@ module.exports = {
         CategoryController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy']
+            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            image: ['addLoggedUser', 'statistics']
         },
         ChartController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],

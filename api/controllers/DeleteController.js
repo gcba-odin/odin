@@ -42,7 +42,6 @@ module.exports = {
         }, {
             deletedAt: null
         }).exec(function(err, record) {
-            console.log(record);
             if (err) return res.negotiate(err);
             return res.ok();
         });

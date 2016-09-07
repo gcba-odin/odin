@@ -33,7 +33,7 @@ module.exports = {
         }
     },
 
-    uploadFile: function(req, res, uploadedFile, fileRequired,cb) {
+    uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
@@ -72,13 +72,11 @@ module.exports = {
                                     if (!fileRequired) {
                                         const pk = actionUtil.requirePk(req);
                                         File.findOne(pk).populate('dataset').then(function(file) {
-						var upath = path.resolve(sails.config.odin.uploadFolder +
+                                            var upath = path.resolve(sails.config.odin.uploadFolder +
                                                 '/' + slug(file.dataset.name, {
                                                     lower: true
-                                                })+ '/'+file.fileName);
+                                                }) + '/' + file.fileName);
                                             fs.lstat(upath, function(err, stats) {
-						console.log(err);
-						console.log(stats.isFile());
                                                 if (!err && stats.isFile()) {
                                                     UploadService.deleteFile(file.dataset.id, file.fileName, res);
                                                 }
@@ -98,7 +96,6 @@ module.exports = {
                         },
                         function onUploadComplete(err, files) {
                             //	IF ERROR Return and send 500 error with error
-				console.log('inside upload complete');
                             if (err) return res.serverError(err);
                             if (files.length === 0) {
                                 return res.badRequest(null, {
@@ -170,7 +167,6 @@ module.exports = {
                                             // });
                                         });
                                 }
-				console.log('end upload');
                                 // Save the file metadata to the relational DB
                                 cb(data);
                                 // UploadService.metadataSave(File, data, '/files', req, res);
