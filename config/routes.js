@@ -31,7 +31,7 @@ module.exports = {
         'POST /users/:id/deactivate': {
             controller: 'Delete',
             model: 'user',
-            action: 'softDelete'
+            action: 'deactivate'
         },
 
         'GET /users/search': {
@@ -135,7 +135,7 @@ module.exports = {
         'POST /organizations/:id/deactivate': {
             controller: 'Delete',
             model: 'organization',
-            action: 'softDelete'
+            action: 'deactivate'
         },
 
         'GET /organizations/first': {
@@ -249,7 +249,7 @@ module.exports = {
         'POST /categories/:id/deactivate': {
             controller: 'Delete',
             model: 'Category',
-            action: 'softDelete'
+            action: 'deactivate'
         },
         'GET /categories/first': {
             blueprint: 'first',
@@ -383,7 +383,7 @@ module.exports = {
         'POST /filetypes/:id/deactivate': {
             controller: 'Delete',
             model: 'filetype',
-            action: 'softDelete'
+            action: 'deactivate'
         },
         'GET /filetypes/first': {
             blueprint: 'first',
@@ -666,7 +666,7 @@ module.exports = {
         'POST /tags/:id/deactivate': {
             controller: 'Delete',
             model: 'tag',
-            action: 'softDelete'
+            action: 'deactivate'
         },
         'GET /tags/first': {
             blueprint: 'first',
@@ -1200,7 +1200,7 @@ module.exports = {
         'POST /basemaps/:id/deactivate': {
             controller: 'Delete',
             model: 'basemap',
-            action: 'softDelete'
+            action: 'deactivate'
         },
         'GET /basemaps/first': {
             blueprint: 'first',
