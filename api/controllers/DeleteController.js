@@ -93,23 +93,6 @@ module.exports = {
         var user;
         user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
 
-        model.update({
-            id: id
-        }, {
-            deletedAt: new Date()
-        }).exec(function(err, record) {
-
-            if (err) return res.negotiate(err);
-
-            //Create the log record
-            LogService.log(req, undefined, 'delete');
-
-            LogService.winstonLog('info', model.adapter.identity + ' deleted', {
-                ip: req.ip,
-                resource: record[0].id
-            });
-
-            return res.deleted();
-        });
+        this.softDelete(req, res, model, id);
     }
 };
