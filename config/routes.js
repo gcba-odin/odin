@@ -28,6 +28,11 @@ module.exports = {
             model: 'user',
             action: 'restore'
         },
+        'POST /users/:id/deactivate': {
+            controller: 'Delete',
+            model: 'user',
+            action: 'softDelete'
+        },
 
         'GET /users/search': {
             blueprint: 'search',
@@ -46,7 +51,7 @@ module.exports = {
         'PATCH /users/:id': {
             blueprint: 'update',
             model: 'user',
-            policy: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl']
+            policies: 'isAuthenticated'
         },
 
         'OPTIONS /users': {
@@ -82,7 +87,6 @@ module.exports = {
             model: 'user',
             action: 'instance'
         },
-
         'HEAD /users/*': {
             controller: 'Head',
             action: 'Head',
@@ -127,6 +131,11 @@ module.exports = {
             controller: 'Delete',
             model: 'organization',
             action: 'restore'
+        },
+        'POST /organizations/:id/deactivate': {
+            controller: 'Delete',
+            model: 'organization',
+            action: 'softDelete'
         },
 
         'GET /organizations/first': {
@@ -236,6 +245,11 @@ module.exports = {
             controller: 'Delete',
             model: 'category',
             action: 'restore'
+        },
+        'POST /categories/:id/deactivate': {
+            controller: 'Delete',
+            model: 'Category',
+            action: 'softDelete'
         },
         'GET /categories/first': {
             blueprint: 'first',
@@ -365,6 +379,11 @@ module.exports = {
             controller: 'Delete',
             model: 'filetype',
             action: 'restore'
+        },
+        'POST /filetypes/:id/deactivate': {
+            controller: 'Delete',
+            model: 'filetype',
+            action: 'softDelete'
         },
         'GET /filetypes/first': {
             blueprint: 'first',
@@ -643,6 +662,11 @@ module.exports = {
             controller: 'Delete',
             model: 'tag',
             action: 'restore'
+        },
+        'POST /tags/:id/deactivate': {
+            controller: 'Delete',
+            model: 'tag',
+            action: 'softDelete'
         },
         'GET /tags/first': {
             blueprint: 'first',
@@ -1173,7 +1197,11 @@ module.exports = {
             model: 'basemap',
             action: 'restore'
         },
-
+        'POST /basemaps/:id/deactivate': {
+            controller: 'Delete',
+            model: 'basemap',
+            action: 'softDelete'
+        },
         'GET /basemaps/first': {
             blueprint: 'first',
             model: 'basemap'

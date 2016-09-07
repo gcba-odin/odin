@@ -13,7 +13,6 @@
 
 module.exports = {
     policies: {
-        // '*': 'isAuthenticated',
         '*': ['addLoggedUser', 'statistics', 'ensureQueryTypeCast'],
         BasemapController: {
             create: ['isAuthenticated', 'statistics'],
