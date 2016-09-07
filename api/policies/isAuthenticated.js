@@ -8,7 +8,6 @@
 const passport = require('passport');
 
 module.exports = (req, res, next) => {
-console.dir('ac')
     passport.authenticate('jwt', (error, user, info) => {
         if (error || !user) return res.negotiate(error || info);
 

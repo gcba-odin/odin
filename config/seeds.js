@@ -2,7 +2,7 @@ module.exports = {
     fixtures: {
         order: [
             'Organization', 'User', 'Category', 'Status', 'FileType', 'Config', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map','Log', 'Statistic'
+            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map', 'Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -413,9 +413,9 @@ module.exports = {
             visible: 1,
             starred: true,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
@@ -449,9 +449,9 @@ module.exports = {
             visible: 1,
             starred: true,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
@@ -485,9 +485,9 @@ module.exports = {
             visible: 1,
             starred: true,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
@@ -521,9 +521,9 @@ module.exports = {
             visible: 1,
             starred: true,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
@@ -557,9 +557,9 @@ module.exports = {
             visible: 1,
             starred: true,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
@@ -594,9 +594,9 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
@@ -639,9 +639,9 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
@@ -684,9 +684,9 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
@@ -729,9 +729,9 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
@@ -774,9 +774,9 @@ module.exports = {
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
             optionals: {
-                'optional1':'first',
-                'optional2':'second',
-                'foo':'bar'
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
             },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
@@ -1168,7 +1168,7 @@ module.exports = {
             type: 'string',
             model: 'Statuses',
             key: 'defaultStatus',
-            value: 'nWRhpRV',
+            value: 'qWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'

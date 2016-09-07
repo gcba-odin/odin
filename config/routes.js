@@ -28,6 +28,11 @@ module.exports = {
             model: 'user',
             action: 'restore'
         },
+        'POST /users/:id/deactivate': {
+            controller: 'Delete',
+            model: 'user',
+            action: 'deactivate'
+        },
 
         'GET /users/search': {
             blueprint: 'search',
@@ -46,7 +51,7 @@ module.exports = {
         'PATCH /users/:id': {
             blueprint: 'update',
             model: 'user',
-            policy: 'isAuthenticated'
+            policies: 'isAuthenticated'
         },
 
         'OPTIONS /users': {
@@ -82,7 +87,6 @@ module.exports = {
             model: 'user',
             action: 'instance'
         },
-
         'HEAD /users/*': {
             controller: 'Head',
             action: 'Head',
@@ -127,6 +131,11 @@ module.exports = {
             controller: 'Delete',
             model: 'organization',
             action: 'restore'
+        },
+        'POST /organizations/:id/deactivate': {
+            controller: 'Delete',
+            model: 'organization',
+            action: 'deactivate'
         },
 
         'GET /organizations/first': {
@@ -204,7 +213,11 @@ module.exports = {
             model: 'category',
             action: 'update'
         },
-        'GET /categories/:id/image': 'Category.image',
+        'GET /categories/:id/image': {
+            controller: 'Category',
+            model: 'category',
+            action: 'image'
+        },
 
         'DELETE /categories': {
             controller: 'NotImplemented',
@@ -232,6 +245,11 @@ module.exports = {
             controller: 'Delete',
             model: 'category',
             action: 'restore'
+        },
+        'POST /categories/:id/deactivate': {
+            controller: 'Delete',
+            model: 'Category',
+            action: 'deactivate'
         },
         'GET /categories/first': {
             blueprint: 'first',
@@ -361,6 +379,11 @@ module.exports = {
             controller: 'Delete',
             model: 'filetype',
             action: 'restore'
+        },
+        'POST /filetypes/:id/deactivate': {
+            controller: 'Delete',
+            model: 'filetype',
+            action: 'deactivate'
         },
         'GET /filetypes/first': {
             blueprint: 'first',
@@ -639,6 +662,11 @@ module.exports = {
             controller: 'Delete',
             model: 'tag',
             action: 'restore'
+        },
+        'POST /tags/:id/deactivate': {
+            controller: 'Delete',
+            model: 'tag',
+            action: 'deactivate'
         },
         'GET /tags/first': {
             blueprint: 'first',
@@ -1169,7 +1197,11 @@ module.exports = {
             model: 'basemap',
             action: 'restore'
         },
-
+        'POST /basemaps/:id/deactivate': {
+            controller: 'Delete',
+            model: 'basemap',
+            action: 'deactivate'
+        },
         'GET /basemaps/first': {
             blueprint: 'first',
             model: 'basemap'

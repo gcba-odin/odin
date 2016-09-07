@@ -9,8 +9,6 @@
  */
 
 module.exports = function(data, config) {
-    console.dir(data)
-    console.dir(config)
     const response = _.assign({
         meta: {
             code: 'E_BAD_REQUEST',
