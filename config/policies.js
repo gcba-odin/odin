@@ -91,7 +91,8 @@ module.exports = {
         },
         DeleteController: {
             delete: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy']
+            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            deactivate: ['isAuthenticated', 'statistics']
         }
     }
 };
