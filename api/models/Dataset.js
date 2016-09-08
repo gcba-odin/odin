@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+var slug = require('slug');
 
 module.exports = {
     schema: true,
@@ -25,6 +26,9 @@ module.exports = {
             unique: true,
             size: 150,
             minLength: 1
+        },
+        slug: {
+            type: 'string',
         },
         description: {
             type: 'string',
@@ -85,8 +89,16 @@ module.exports = {
 
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+        if(values.name){
+            values.slug = slug(values.name, {lower: true});    
+        }
+        next()
+    },
     beforeCreate: (values, next) => {
+        if(values.name){
+            values.slug = slug(values.name, {lower: true});    
+        }
         Config.findOne({
             key: 'defaultStatus'
         }).exec(function(err, record) {
