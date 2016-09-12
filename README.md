@@ -27,7 +27,7 @@ Currently there's no support for other NoSQL databases.
 
 So, all in all you'll need:
 
-- Node.js 5.12
+- Node.js
 - A relational database (PostgreSQL 9.5)
 - MongoDB 3.2.x
 
@@ -73,8 +73,10 @@ For more information visit the PostgreSQL [oficial page](https://www.postgresql.
 
    Ubuntu instructions:
 
+   Note: **Use 0.8.x version**
+
 ```bash
-    1. Download the package from https://getkong.org/install/ubuntu/#packages
+    1. Download the package from https://github.com/Mashape/kong/releases/tag/0.8.3
     2. sudo apt-get update
     3. sudo apt-get install netcat openssl libpcre3 dnsmasq procps
     4. sudo dpkg -i kong-0.8.3.*.deb
@@ -82,16 +84,21 @@ For more information visit the PostgreSQL [oficial page](https://www.postgresql.
 
 2. Create the postgres database: db name: `kong`, password `postgres`
 
-3. Load the database dump
+3. Move the configuration file `kong.yml` on `/etc/kong`
 
-4. Move the configuration file `kong.yml` on `/etc/kong`
+4. Modify `kong.yml` configurations according needs
 
-5. Modify `kong.yml` configurations according needs
-
-6. Start  Kong
+5. Start Kong
 
    ```bash
     $ sudo kong start
+   ```
+6. Load the database dump
+
+7. Restart Kong
+
+   ```bash
+    $ sudo kong restart
    ```
 
 ## Configuration
