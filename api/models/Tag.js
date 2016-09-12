@@ -38,10 +38,6 @@ module.exports = {
             model: 'user',
             required: true
         },
-        views: {
-            collection: 'view',
-            via: 'tags'
-        },
 
         toJSON() {
             return this.toObject();
