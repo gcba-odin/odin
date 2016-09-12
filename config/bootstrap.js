@@ -28,12 +28,6 @@ module.exports = {
     });
 
 
-    // fs.lstat(sails.config.odin.uploadFolder, function(err, stats) {
-    //   if (err || !stats.isDirectory()) {
-    //     fs.mkdirSync(sails.config.odin.uploadFolder);
-    //   }
-    // });
-
 
     // Create the logs folder
     var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
@@ -49,12 +43,6 @@ module.exports = {
         });
       }
     });
-
-
-    // fs.lstat(sails.config.odin.logFolder, function(err, stats) {
-    //   if (err || !stats.isDirectory()) {
-    //     fs.mkdirSync(sails.config.odin.logFolder);
-    // create the log file
 
 
     // create stats folder which will contain the statistics of the site

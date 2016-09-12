@@ -87,7 +87,6 @@ module.exports = {
                 'keepAlive',
                 'bodyParser',
                 '$custom',
-                'statistics',
                 'router',
                 '404',
                 '500'
