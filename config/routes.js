@@ -308,6 +308,21 @@ module.exports = {
             model: 'status'
         },
 
+        'DELETE /statuses/:id': {
+            controller: 'Delete',
+            model: 'status',
+            action: 'delete'
+        },
+        'POST /statuses/:id/restore': {
+            controller: 'Delete',
+            model: 'status',
+            action: 'restore'
+        },
+        'POST /statuses/:id/deactivate': {
+            controller: 'Delete',
+            model: 'status',
+            action: 'deactivate'
+        },
 
         'GET /statuses/first': {
             blueprint: 'first',
@@ -362,6 +377,7 @@ module.exports = {
             model: 'status',
             action: 'instance'
         },
+
 
         // Filetypes
 

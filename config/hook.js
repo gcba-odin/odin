@@ -1,4 +1,4 @@
 module.exports.hooks = {
-    fixtures: false,
+    // fixtures: false,
     jobs: false
 };
