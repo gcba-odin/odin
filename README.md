@@ -101,9 +101,12 @@ For more information visit the PostgreSQL [oficial page](https://www.postgresql.
     $ sudo kong restart
    ```
 
+## Troubleshooting
+
+- `sh: 1: node: not found nodejs`: Link node to nodejs. First `whereis nodejs` Then soft link node to nodejs `ln -s [the path of nodejs] /usr/bin/node `
+- `fatal error: gssapi/gssapi.h: No such file or directory`: Try installing the Kerberos Development Package: `apt-get install libkrb5-dev`
 ## Configuration
 
-You should override the corresponding settings in the 'local.js' file
 ```javascript
 module.exports.odin = {
     baseUrl: 'http://localhost:3000', // --> Url where the api is hosted
