@@ -29,7 +29,7 @@ module.exports = {
         type: {
             type: 'string',
             required: true,
-            enum: ['bool', 'string', 'int', 'float', 'model']
+            enum: ['bool', 'string', 'integer', 'float', 'model']
         },
         multiple: {
             type: 'boolean',
