@@ -41,22 +41,26 @@ ODIN has not been tested with earlier versions of Node.js and MongoDB.
   $ git clone https://github.com/gcba-odin/odin.git
 ```
 
-2. Instalar las dependencias
+2. Install dependencies
 
 ```bash
   $ cd odin
   $ npm install
 ```
 
-3. Crear la base de datos en postgres: nombre de la db `odin`, password `postgres`
+3. Create postgres database. dbname: `odin`, owner: `postgres`, owner password `postgres`
 
-4. Ajustar las configuraciones de `config/odin.js` según gusto y necesidad
+4. Modify `config/odin.js` configurations according your needs
 
-5. Iniciar la app
+5. Start the app
 
 ``` bash
   $ npm start
 ```
+6. To make sure your app server will start back up if it crashes use pm2 `npm install -g pm2`
+
+7. Start the app with `pm2 start app.js -i 0 -- --prod`, where `-i` indicates how many CPUs will use.
+For more information read pm2 [docs](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/)
 
 ## PostgreSQL
 Ubuntu instructions:
