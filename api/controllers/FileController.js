@@ -108,7 +108,7 @@ module.exports = {
             File.findOne(pk).populate(['type', 'dataset']).exec(function(err, file) {
                 if (err) return res.negotiate(err);
                 if (file.type.mimetype === format) {
-                    this.download(req, res)
+                    return this.download(req, res)
                 }
                 if (!file.type.api) {
                     return res.badRequest();
@@ -124,6 +124,9 @@ module.exports = {
                         resource: pk
                     });
 
+                    var slugifiedName = slug(file.name, {
+                        lower: true
+                    })
 
                     if (format === 'text/csv') {
                         result = json2csv({
@@ -132,11 +135,11 @@ module.exports = {
 
                         res.set('Content-Type', format);
 
-                        res.set('Content-Disposition', 'attachment; filename=' + file.name + '.' + extension);
+                        res.set('Content-Disposition', 'attachment; filename=' + slugifiedName + '.' + extension);
 
                         res.send(result);
                     } else {
-                        res.xls(file.name + '.' + extension, data);
+                        res.xls(slugifiedName + '.' + extension, data);
                     }
 
                 });
@@ -153,17 +156,12 @@ module.exports = {
             .then(function(maps) {
                 if (!_.isEmpty(maps))
                     resources['maps'] = maps;
-                this.findResource(View, pk)
-                    .then(function(views) {
-                        if (!_.isEmpty(views))
-                            resources['views'] = views;
-                        this.findResource(Chart, pk)
-                            .then(function(charts) {
-                                if (!_.isEmpty(charts))
-                                    resources['charts'] = charts;
-                                return res.ok(resources);
-                            });
-                    }.bind(this));
+                this.findResource(Chart, pk)
+                    .then(function(charts) {
+                        if (!_.isEmpty(charts))
+                            resources['charts'] = charts;
+                        return res.ok(resources);
+                    });
             }.bind(this));
     },
     findResource(model, filePk) {
