@@ -230,12 +230,6 @@ class ResponseGET extends ResponseBuilder {
                 //.limit(this.params.limit)
                 //.skip(this.params.skip)
                 .sort(this.params.sort);
-
-            this._model.count().where(this.params.where.full)
-                .then(function (modelsCount) {
-                    this._count = modelsCount;
-                    this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-                }.bind(this));
         } 
         //Single result (find one)
         else {
@@ -606,6 +600,47 @@ class ResponseGET extends ResponseBuilder {
             }
         }
         return query;
+    }
+
+    /*
+     * Return paginated records based on skip and limit
+     */
+    paginate(records){
+        return _(records).slice(this.params.skip).take(this.params.limit).value();
+    }
+
+    /*
+     * Filter records at least one association is empty
+     */
+    filterAssociations(records){
+        //Get model collections
+        var collections = [];
+        _.forEach(this._model.associations, function (association) {
+            if (association.type === 'collection'){
+                collections.push(association.alias);
+            }
+        });
+            
+        //Remove from results if any of the model collections is empty
+        return _.filter(records, function (record) {
+            var include = true;
+            _.forEach(collections, function (element) {
+                 var collection = record[element]; 
+                 if(_.isUndefined(collection) || _.isEmpty(collection)){
+                    include = false;
+                    return;
+                 }
+            });                
+            return include;                     
+        });
+    }
+
+    /*
+     * Set count from current records
+     */
+    count(records){
+        this._count = records.length;
+        this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
     }
 }
 

@@ -48,31 +48,14 @@ module.exports = (req, res) => {
                     builder.filterObject(returnRecords, 'createdBy');
                 }
                 
-                //Get model collections
-                var collections = [];
-                _.forEach(builder._model.associations, function (association) {
-                    if (association.type === 'collection'){
-                        collections.push(association.alias);
-                    }
-                });
-                    
-                //Remove from results if any of the model collections is empty
-                var filteredRecords = _.filter(returnRecords, function (record) {
-                    var include = true;
-                    _.forEach(collections, function (element) {
-                         var collection = record[element]; 
-                         if(_.isUndefined(collection) || _.isEmpty(collection)){
-                            include = false;
-                            return;
-                         }
-                    });                
-                    return include;                     
-                }.bind(collections));
-
+                var filteredRecords = builder.filterAssociations(returnRecords);
+                var paginatedRecords = builder.paginate(filteredRecords);
+                builder.count(paginatedRecords);
+                
                 return res.ok(
-                    filteredRecords, {
-                        meta: builder.meta(filteredRecords),
-                        links: builder.links(filteredRecords)
+                    paginatedRecords, {
+                        meta: builder.meta(paginatedRecords),
+                        links: builder.links(paginatedRecords)
                     }
                 );
             }
