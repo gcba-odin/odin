@@ -220,23 +220,15 @@ class ResponseGET extends ResponseBuilder {
             //Parse deep filters and convert to query conditions
             var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
         
-            //console.log(fullFilters);
-            //console.log(deepFilters);
-
             _.forEach(collections, function (value, key) {
               deepConditions[key] = this.filtersToConditions(deepFilters[key], 'and', sails.models[value.collection]);  
             }.bind(this));
 
-            console.log(fullConditions);
-            console.log(deepConditions);
-
-            console.log(this.params.fields);
-
             //NOTE: Why don't we paginate on the server? Because waterline populate filters only apply on nested collections. 
             this._query = this._model.find()
                 .where(fullConditions)
-                .limit(this.params.limit)
-                .skip(this.params.skip)
+                //.limit(this.params.limit)
+                //.skip(this.params.skip)
                 .sort(this.params.sort);
 
             this._model.count().where(this.params.where.full)
@@ -251,20 +243,8 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find(this.params.pk);
         }
 
-        // this._query = this.select(this._query, this.params.fields);
-        
         this._query = this.populate(this._query, this._model, this.params.include, deepConditions);
-        /*if (!_.isEmpty(collectionsFilter)) {
-            this._query = this.filter(this._query, collectionsFilter);
-        }
-
-        //deep association filters
-        if (!_.isUndefined(this.params.where) && !_.isEmpty(this.params.where.deep)) {
-            this._query = this.deepFilter(this._query, this.params.where.deep);
-        }
-
-        this._query = this.select(this._query, this.params.fields);
-        */
+        
         return this._query;
     }
 

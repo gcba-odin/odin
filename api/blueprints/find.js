@@ -42,19 +42,37 @@ module.exports = (req, res) => {
                 links: builder.links(undefined)
             });
             else {
-                //if (!_.isEmpty(builder.includes)) {
-                //    records[0] = _.assign(records[0], builder.includes);
-                //}
                 var returnRecords = records;
                 if(_.isUndefined(req.user)){
                     builder.filterObject(returnRecords, 'owner');
                     builder.filterObject(returnRecords, 'createdBy');
                 }
+                
+                //Get model collections
+                var collections = [];
+                _.forEach(builder._model.associations, function (association) {
+                    if (association.type === 'collection'){
+                        collections.push(association.alias);
+                    }
+                });
                     
+                //Remove from results if any of the model collections is empty
+                var filteredRecords = _.filter(returnRecords, function (record) {
+                    var include = true;
+                    _.forEach(collections, function (element) {
+                         var collection = record[element]; 
+                         if(_.isUndefined(collection) || _.isEmpty(collection)){
+                            include = false;
+                            return;
+                         }
+                    });                
+                    return include;                     
+                }.bind(collections));
+
                 return res.ok(
-                    returnRecords, {
-                        meta: builder.meta(returnRecords),
-                        links: builder.links(returnRecords)
+                    filteredRecords, {
+                        meta: builder.meta(filteredRecords),
+                        links: builder.links(filteredRecords)
                     }
                 );
             }
