@@ -164,31 +164,6 @@ class ResponseGET extends ResponseBuilder {
         this._many = many;
     }
 
-    normalize(str, includeComma) {
-        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
-            to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
-            mapping = {};
-
-        for (var i = 0, j = from.length; i < j; i++)
-            mapping[from.charAt(i)] = to.charAt(i);
-
-        var ret = [];
-
-        for (var i = 0, j = str.length; i < j; i++) {
-            var c = str.charAt(i);
-            if (mapping.hasOwnProperty(str.charAt(i)))
-                ret.push(mapping[c]);
-            else
-                ret.push(c);
-        }
-        var retStr = ret.join('');
-        retStr = retStr.toLowerCase().replace(/[^a-z0-9,]/g, '');
-        if (!includeComma) {
-            retStr = retStr.replace(',', '');
-        }
-        return retStr;
-    }
-
     filterObject(data, deleteKey) {
         for (var key in data) {
             var item = data[key];
@@ -222,100 +197,64 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        var collections = [];
-        var collectionsFilter = {};
+        var collections = {};
+        var fullConditions = {}
+        var deepConditions = {};
+
         _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection')
-                collections.push(association.alias);
+            if (association.type === 'collection'){
+                collections[association.alias] = association;
+            }
         });
 
+        //Multiple results (find)
         if (this._many) {
-            if (!_.isUndefined(this.params.where.full) && !_.isEmpty(this.params.where.full)) {
-
-                if (this.params.condition === 'or') {
-
-                    this.params.where.full = _.transform(this.params.where.full, function (result, val, key) {
-                        if (collections.indexOf(key) === -1) {
-                            if (val === 'null') val = null;
-                            if (this._model.definition[key].type === 'boolean' || val === null) {
-                                result.or.push({
-                                    [key]: val
-                                })
-                            } else {
-                                // If the condition is or we split the values given with comma
-                                // And then add it each one of the values as an element of the OR query
-                                var values = _.split(val, ',');
-                                _.forEach(values, function (value) {
-                                    result.or.push(_.set({}, key, {
-                                        [this.params.match]: value
-                                    }));
-                                }.bind(this));
-                            }
-                        }
-                        //if it is a collection  we add it to the include object,
-                        // and store it in the collection filter array.
-                        else {
-                            this.params.include.full.push(key);
-                            collectionsFilter[key] = val;
-                        }
-
-                    }.bind(this), {
-                        or: []
-                    });
-                } else {
-
-                    // Condition is AND
-                    this.params.where.full = _.transform(this.params.where.full, function (result, val, key) {
-
-                        if (collections.indexOf(key) === -1) {
-                            if (val === 'null') val = null;
-                            if (this._model.definition[key].type === 'boolean' || val === null) {
-                                result[key]= val;
-
-                            } else {
-                                var value = _.replace(val, ',', ' ');
-
-                                result[key] = {
-                                    [this.params.match]: value
-                                };
-                            }
-                        }
-                        //if it is a collection  we add it to the include object,
-                        // and store it in the collection filter array.
-                        else {
-                            this.params.include.full.push(key);
-                            collectionsFilter[key] = val;
-                        }
-                    }.bind(this), {});
-                }
-            }
-            if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
-                this.params.where.full = {};
-            }
+            
+            //Merge "invited" users conditions in case there's no req.user
             this.mergeFrontConditions();
 
+            //Parse full filters and convert to query conditions
+            var fullFilters = this.parseFullFilters(this.params.where.full, collections);
+            fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+            
+            //Parse deep filters and convert to query conditions
+            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
+        
+            //console.log(fullFilters);
+            //console.log(deepFilters);
+
+            _.forEach(collections, function (value, key) {
+              deepConditions[key] = this.filtersToConditions(deepFilters[key], 'and', sails.models[value.collection]);  
+            }.bind(this));
+
+            console.log(fullConditions);
+            console.log(deepConditions);
+
+            console.log(this.params.fields);
+
+            //NOTE: Why don't we paginate on the server? Because waterline populate filters only apply on nested collections. 
             this._query = this._model.find()
-                .where(this.params.where.full)
+                .where(fullConditions)
                 .limit(this.params.limit)
                 .skip(this.params.skip)
                 .sort(this.params.sort);
 
             this._model.count().where(this.params.where.full)
-                .then(function (cant) {
-                    this._count = cant;
+                .then(function (modelsCount) {
+                    this._count = modelsCount;
                     this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
                 }.bind(this));
-        } else {
-
+        } 
+        //Single result (find one)
+        else {
             this.params.pk = actionUtil.requirePk(this.req);
-
             this._query = this._model.find(this.params.pk);
         }
 
         // this._query = this.select(this._query, this.params.fields);
-        this._query = this.populate(this._query, this._model, this.params.include);
-
-        if (!_.isEmpty(collectionsFilter)) {
+        
+        this._query = this.populate(this._query, this._model, this.params.include, deepConditions);
+        /*if (!_.isEmpty(collectionsFilter)) {
             this._query = this.filter(this._query, collectionsFilter);
         }
 
@@ -325,8 +264,119 @@ class ResponseGET extends ResponseBuilder {
         }
 
         this._query = this.select(this._query, this.params.fields);
-
+        */
         return this._query;
+    }
+
+    /*
+     * Parse full filters
+     */
+    parseFullFilters(fullFilters, collections){
+        //Parse full filters
+        var finalFullFilters = {}
+        _.forEach(fullFilters, function (value, key) {
+            // Not a collection. Eg: "name="
+            if(_.isUndefined(collections[key])){
+                finalFullFilters[key] = value;
+            }   
+        }.bind(this));
+        return finalFullFilters;
+    }
+    
+    /*
+     * Parse deep filters
+     */
+    parseDeepFilters(fullFilters, deepFilters, collections){
+        var finalDeepFilters = {};
+
+        //Parse full filters
+        _.forEach(fullFilters, function (value, key) {
+            //Collection filter: Move to deep filters. Eg: "categories="
+            if(!_.isUndefined(collections[key])){
+                var modelName = collections[key].collection;
+                var primaryKey = (key + '.' + sails.models[modelName].primaryKey);
+                finalDeepFilters[primaryKey] = value;
+            }   
+        }.bind(this));
+
+        finalDeepFilters = _.merge(deepFilters, finalDeepFilters);
+
+        //Grouping deep filters by collection alias. Eg: {'categories': {id: '', name:''}, 'files': {}}
+        finalDeepFilters = this.groupDeepFilters(finalDeepFilters);
+            
+        return finalDeepFilters;
+    }
+
+    /*
+     * Group deep filters by collection
+     */
+    groupDeepFilters(deepFilters){
+        //Parse deep filters
+        var groupedDeepFilters = {};
+        _.forEach(deepFilters, function (value, key) {
+            //Eg: categories.name -> collectionName is categories, collectionField is name
+            var splittedKey = _.split(key, '.');
+            var collectionName = splittedKey[0];
+            var collectionField = splittedKey[1];
+
+            if(_.isUndefined(groupedDeepFilters[collectionName])){
+                groupedDeepFilters[collectionName] = {}
+            }
+            groupedDeepFilters[collectionName][collectionField] = value;
+        });
+        return groupedDeepFilters;
+    }
+
+    /*
+     * Convert filters into query condition
+     */
+    filtersToConditions(params, condition, model) {
+        return condition === 'or' ? this.filtersToOrConditions(params, model) : this.filtersToAndConditions(params, model);
+    }
+
+    /*
+     * Convert filters into OR query conditions
+     */
+    filtersToOrConditions(params, model) {
+        return _.transform(params, function (result, val, key) {
+            if (val === 'null') val = null;
+            if (model.definition[key].type === 'boolean' || val === null) {
+                result.or.push({
+                    [key]: val
+                })
+            } else {
+                // If the condition is OR we split the values given with comma
+                // And then add it each one of the values as an element of the OR query
+                var values = _.split(val, ',');
+
+                _.forEach(values, function (value) {
+                    result.or.push(_.set({}, key, {
+                        [this.params.match]: value
+                    }));
+                }.bind(this));
+            }
+        }.bind(this), {
+            or: []
+        });
+    }
+    
+    /*
+     * Convert filters into AND query conditions
+     */
+    filtersToAndConditions(params, model) {
+        return _.transform(params, function (result, val, key) {
+            if (val === 'null') val = null;
+            if (model.definition[key].type === 'boolean' || val === null) {
+                result[key]= val;
+            } else {
+                // If the condition AND we just replace commas for spaces 
+                //var value = _.replace(val, ',', ' ');
+                var values = _.split(val, ',');
+                result[key] = {
+                    [this.params.match]: values
+                };
+            }
+        }.bind(this), {});
     }
 
     /*
@@ -389,9 +439,8 @@ class ResponseGET extends ResponseBuilder {
             sort: 'createdAt ASC'
         });
 
-        // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
-        this._query = this.select(this._query, this.params.fields);
+        //this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -405,9 +454,8 @@ class ResponseGET extends ResponseBuilder {
             sort: 'createdAt DESC'
         });
 
-        // this._query = this.select(this._query, this.params.fields);
         this._query = this.populate(this._query, this._model, this.params.include);
-        this._query = this.select(this._query, this.params.fields);
+        //this._query = this.select(this._query, this.params.fields);
 
         return this._query;
     }
@@ -552,198 +600,10 @@ class ResponseGET extends ResponseBuilder {
         return this._links;
     }
 
-    filter(query, filters) {
-        query.then(function (records) {
-            // Variable where we'll save all the indexes to be removed
-            var toRemove = [];
-
-            records.forEach(function (element, j) {
-                records[j] = _.transform(element, function (result, value, key) {
-                    if (!_.isUndefined(filters[key])) {
-                        // get the ids of the collection filtered
-
-                        var elementsId = _.map(element[key], function (item) {
-                            return item.id;
-                        });
-
-                        var filter = _.split(filters[key], ',');
-
-                        // if it doesnt fulfill the filter,
-                        // we add it to the array which will remove the element from the response
-
-                        // With the or condition, we only need one match
-                        if (this.params.condition === 'or') {
-                            if (_.size(_.intersection(elementsId, filter)) === 0) {
-                                toRemove.push(j);
-                            }
-                            // with the AND condition, we need that all matches
-                        } else {
-                            if (_.size(_.intersection(elementsId, filter)) !== _.size(filter)) {
-                                toRemove.push(j);
-                            }
-                        }
-                    }
-                }.bind(this), element);
-            }.bind(this));
-            // pull out of the final records all the records which didnt fulfill the filter
-            _.pullAt(records, toRemove);
-            // with some of the records deleted, we need to update the count
-            this._count = _.size(records);
-            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-
-            return records;
-        }.bind(this));
-
-        return query;
-    }
-
-    deepFilter(query) {
-        query.then(function (records) {
-            // Variable where we'll save all the indexes to be removed
-            var toRemove = [];
-            var deepFilters = {};
-            // ?category.name=Gobierno
-            _.forEach(this.params.where.deep, function (value, key) {
-                var splittedKey = _.split(key, '.');
-                var model = splittedKey[0];
-
-                var convert = false;
-
-                if (value != null && typeof value === 'string') {
-                    //Sanitize
-                    value = value.match(/('[ áéíóúa-zA-Z,1-9- ]+'|[ áéíóúa-zA-Z1-9- ]+)/g);
-                    value = this.sanitizeSimpleComma(value);
-
-                    //value = this.normalize(value, true);
-                    if (value.indexOf(',') != -1) {
-                        //Do not convert, multiple values separated by comma
-                        value = _.split(value, ',');
-                    }
-                }
-
-                var filterValues = [];
-                if (_.isArray(value)) {
-                    filterValues = value;
-                }
-                else {
-                    filterValues.push(value);
-                }
-                var newDeepFilter = {
-                    attribute: splittedKey[1],
-                    values: filterValues
-                };
-
-                if (_.isUndefined(deepFilters[model])) {
-                    deepFilters[model] = [];
-                }
-                deepFilters[model].push(newDeepFilter);
-
-                // deepFilters = { category: { attribute: 'name', value: '[Filter1, Filter2]' } }
-            }.bind(this));
-
-
-            records.forEach(function (element, j) {
-
-                records[j] = _.transform(element, function (result, value, key) {
-                    // If the field is on the filters object, we check if it fullfill the filter
-                    if (!_.isUndefined(deepFilters[key])) {
-                        if (_.isArray(value)) {
-                            deepFilters[key].forEach(function (deepFilter) {
-                                var values = _.transform(value, function (result, value) {
-                                    var attrValue = value[deepFilter.attribute];
-                                    if (attrValue != null && typeof attrValue == 'string') {
-                                        attrValue = this.normalize(attrValue, false);
-                                    }
-                                    result.push(attrValue);
-                                }.bind(this), [])
-                                if (_.isEmpty(values)) {
-                                    //Just to handle empty property cases and null filters
-                                    //Eg: deletedAt: null
-                                    values.push(null);
-                                }
-
-                                //If any is string, convert the entire array to single string
-                                /*if(deepFilter.convert){
-                                 values = _.toString(values);
-                                 }*/
-
-                                value[deepFilter.attribute] = values;
-
-
-                                // if the value filtered is undefined, or its different than the filter we remove it from query
-                                if (_.isUndefined(value) ||
-                                    (this.compareFilters(deepFilter.values, value[deepFilter.attribute], this.normalize))) {
-                                    toRemove.push(j);
-                                }
-                            }.bind(this));
-                        }
-                    }
-                }.bind(this), element);
-            }.bind(this));
-            // pull out of the final records all the records which didnt fulfill the filter
-            _.pullAt(records, toRemove);
-            // with some of the records deleted, we need to update the count
-            this._count = _.size(records);
-            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-
-            return records;
-        }.bind(this));
-
-        return query;
-    }
-
-    sanitizeSimpleComma(array) {
-        return _.map(array, function (each) {
-            return _.replace(each, new RegExp("\'", "g"), '');
-        });
-    }
-
-    compareFilters(filters, values, normalize) {
-        var found = (_.find(filters, function (filterValue) {
-            if (filterValue != null && typeof filterValue == 'string') {
-                filterValue = normalize(filterValue, false);
-            }
-            var included = _.includes(values, filterValue);
-            return included;
-            // return filterValue === value;
-        }));
-
-        return (found === undefined) ? true : false;
-    }
-
-    select(query, fields) {
-        query.then(function (records) {
-            // Filter out the partials
-            // Each result item
-            records.forEach(function (element, j) {
-                if (!_.isEmpty(fields.full)) {
-                    element = _.pick(element, [fields.full]);
-                }
-                records[j] = _.transform(element, function (result, value, key) {
-                    // Each granular field
-                    _.forEach(fields.partials, function (partialValue, partialKey) {
-                        if (key === partialKey && _.isObject(element[partialKey])) {
-                            // Each object in the collection
-                            _.forEach(element[partialKey], function (resultValue, resultKey) {
-                                // If it's not listed in the granular fields, delete it
-                                if (partialValue.indexOf(resultKey) === -1) {
-                                    delete element[partialKey][resultKey];
-                                } else result[partialKey] = element[partialKey];
-                            });
-                        } else delete element[key];
-                    });
-                }, element);
-            });
-            return records;
-        });
-
-        return query;
-    }
-
     /*
      * Handles the population of related items and collections
      */
-    populate(query, model, includes) {
+    populate(query, model, includes, deepConditions) {
         // Fully populate non collection items
         _.forEach(model.definition, function (value, key) {
             if (value.foreignKey) {
@@ -755,63 +615,15 @@ class ResponseGET extends ResponseBuilder {
             // Fully populate collections
             if (includes.full) {
                 _.forEach(includes.full, function (element) {
-                    query.populate(element);
+                    var conditions = {};
+                    if(!_.isUndefined(deepConditions)){
+                        if(!_.isUndefined(deepConditions[element])){
+                            conditions = deepConditions[element];
+                        }
+                    }
+                    query.populate(element, conditions);
                 }, this);
             }
-
-            // Partial includes are supported in Waterline, but are adapter dependant
-            // Since not many adapters implement them we're doing it by hand
-            // TODO: Check if the adapter supports them, to avoid the heavy load of the custom solution
-
-            // Fully populate included partials (will be filtered out later)
-            if (includes.partials) {
-                _.forEach(includes.partials, function (value, key) {
-                    try {
-                        query.populate(key);
-                    } catch (err) {
-                        var links = {
-                            all: sails.config.odin.baseUrl + '/' + this.modelName
-                        };
-
-                        if (!_.isUndefined(this.params.pk)) {
-                            links.record = sails.config.odin.baseUrl + '/' + this.modelName +
-                                '/' + this.params.pk;
-                        }
-
-                        return this.res.badRequest(null, {
-                            links: links
-                        });
-                    }
-                }.bind(this), this);
-
-                return query.then(function (records) {
-                    // Filter out the partials
-                    // Each result item
-                    records.forEach(function (element, j) {
-                        records[j] = _.transform(element, function (result, value, key) {
-                            // Each granular include, gruped by model
-
-                            _.forEach(includes.partials, function (partialValue, partialKey) {
-                                if (key === partialKey && _.isArray(element[partialKey])) {
-                                    // Each collection of included objects
-
-                                    element[partialKey].forEach(function (item, k) {
-                                        // Each included object in the collection
-                                        _.forEach(item, function (resultValue, resultKey) {
-
-                                            // If it's not listed in the granular includes, delete it
-                                            if (partialValue.indexOf(resultKey) === -1) {
-                                                delete element[partialKey][k][resultKey];
-                                            } else result[partialKey][k] = element[partialKey][k];
-                                        });
-                                    });
-                                } else result[key] = element[key];
-                            });
-                        }, element);
-                    });
-                    return records;
-                });
-            } else return query;
         }
         return query;
     }
