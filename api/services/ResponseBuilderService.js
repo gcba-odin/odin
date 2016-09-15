@@ -221,7 +221,7 @@ class ResponseGET extends ResponseBuilder {
             var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
         
             _.forEach(collections, function (value, key) {
-              deepConditions[key] = this.filtersToConditions(deepFilters[key], 'and', sails.models[value.collection]);  
+              deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
             }.bind(this));
 
             //NOTE: Why don't we paginate on the server? Because waterline populate filters only apply on nested collections. 
@@ -344,7 +344,7 @@ class ResponseGET extends ResponseBuilder {
                 result[key]= val;
             } else {
                 // If the condition AND we just replace commas for spaces 
-                //var value = _.replace(val, ',', ' ');
+                // var value = _.replace(val, ',', ' ');
                 var values = _.split(val, ',');
                 result[key] = {
                     [this.params.match]: values
@@ -955,20 +955,31 @@ class ResponseSearch extends ResponseGET {
             .sort(this.params.sort);
 
         this.model.count().where(this.params.where.full)
-            .then(function (cant) {
-                this._count = cant;
+            .then(function (count) {
+                this._count = count;
                 this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
             }.bind(this))
             .catch(function (err) {
                 console.error(err);
             });
 
-        this._query = this.populate(this._query, this.model, this.params.include);
+        var collections = {};
+        _.forEach(this._model.associations, function (association) {
+            if (association.type === 'collection'){
+                collections[association.alias] = association;
+            }
+        });
 
-        //deep association filters
-        if (!_.isUndefined(this.params.where) && !_.isEmpty(this.params.where.deep)) {
-            this._query = this.deepFilter(this._query, this.params.where.deep);
-        }
+        var deepConditions = {};
+        var deepFilters = this.groupDeepFilters(this.params.where.deep);
+        
+        _.forEach(collections, function (value, key) {
+          deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
+        }.bind(this));
+
+        console.log(deepConditions);
+
+        this._query = this.populate(this._query, this.model, this.params.include, deepConditions);
 
         return this._query;
     }
