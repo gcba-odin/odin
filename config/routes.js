@@ -248,7 +248,7 @@ module.exports = {
         },
         'POST /categories/:id/deactivate': {
             controller: 'Delete',
-            model: 'Category',
+            model: 'category',
             action: 'deactivate'
         },
         'GET /categories/first': {
