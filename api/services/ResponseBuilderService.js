@@ -227,12 +227,14 @@ class ResponseGET extends ResponseBuilder {
 
             //Parse full filters and convert to query conditions
             var fullFilters = this.parseFullFilters(this.params.where.full, collections);
+            
+            //Parse deep filters and convert to query conditions
+            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
+            
             var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
             //Back to params
             this.params.where.full = fullConditions;
 
-            //Parse deep filters and convert to query conditions
-            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
             var deepConditions = {};
             _.forEach(collections, function (value, key) {
               deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
@@ -244,9 +246,6 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .sort(this.params.sort);
-
-            console.log(this.params.where.full);
-            console.log(this.params.where.deep);
 
             // NOTE: Waterline populate filters only apply on nested collections.
             // We could only paginate on server if:
@@ -288,6 +287,7 @@ class ResponseGET extends ResponseBuilder {
                 finalFullFilters[key] = value;
             }   
         }.bind(this));
+
         return finalFullFilters;
     }
     
@@ -306,7 +306,7 @@ class ResponseGET extends ResponseBuilder {
                 finalDeepFilters[primaryKey] = value;
             }   
         }.bind(this));
-
+        
         finalDeepFilters = _.merge(deepFilters, finalDeepFilters);
 
         //Grouping deep filters by collection alias. Eg: {'categories': {id: '', name:''}, 'files': {}}
