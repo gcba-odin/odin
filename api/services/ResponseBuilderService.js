@@ -681,7 +681,7 @@ class ResponsePATCH extends ResponseBuilder {
         const _values = this.parseValues(this.req);
         var pk = actionUtil.requirePk(this.req);
 
-        this.update = this._model.update(pk, _.omit(_values, 'id'));
+        this.update = this._model.update(pk, _values);
     }
 
     parseValues(req) {
