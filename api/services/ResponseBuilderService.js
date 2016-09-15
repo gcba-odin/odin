@@ -245,6 +245,9 @@ class ResponseGET extends ResponseBuilder {
                 .where(this.params.where.full)
                 .sort(this.params.sort);
 
+            console.log(this.params.where.full);
+            console.log(this.params.where.deep);
+
             // NOTE: Waterline populate filters only apply on nested collections.
             // We could only paginate on server if:
             // (a) No deep params are supplied 
@@ -376,7 +379,7 @@ class ResponseGET extends ResponseBuilder {
             } else {
                 // If the condition AND we just replace commas for spaces 
                 // var value = _.replace(val, ',', ' ');
-                if(val.indexOf(',')){
+                if(val.indexOf(',') > 0){
                     result[key] = _.split(val, ',');
                 }
                 else{
