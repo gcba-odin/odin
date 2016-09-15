@@ -614,7 +614,7 @@ class ResponseGET extends ResponseBuilder {
                             conditions = deepConditions[element];
                         }
                     }
-                    console.log(conditions);
+                    //console.log(conditions);
                     query.populate(element, conditions);
                 }, this);
             }
@@ -997,7 +997,7 @@ class ResponseSearch extends ResponseGET {
           deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
         }.bind(this));
 
-        console.log(deepConditions);
+        //console.log(deepConditions);
 
         this._query = this.populate(this._query, this.model, this.params.include, deepConditions);
 
