@@ -243,6 +243,11 @@ class ResponseGET extends ResponseBuilder {
             //Back to params
             this.params.where.deep = deepConditions;
 
+            //In case there are no filters
+            if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
+                this.params.where.full = {};                  
+            }
+
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .sort(this.params.sort);
