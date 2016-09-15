@@ -78,7 +78,7 @@ class ParamsProcessor {
             case 'AND':
                 return 'and';
             case undefined:
-                return 'and';
+                return 'or';
             case 'OR':
                 return 'or';
             default:

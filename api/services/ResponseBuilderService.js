@@ -237,7 +237,7 @@ class ResponseGET extends ResponseBuilder {
 
             var deepConditions = {};
             _.forEach(collections, function (value, key) {
-              deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
+              deepConditions[key] = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);  
             }.bind(this));
 
             //Back to params
@@ -306,7 +306,7 @@ class ResponseGET extends ResponseBuilder {
                 finalDeepFilters[primaryKey] = value;
             }   
         }.bind(this));
-        
+
         finalDeepFilters = _.merge(deepFilters, finalDeepFilters);
 
         //Grouping deep filters by collection alias. Eg: {'categories': {id: '', name:''}, 'files': {}}
@@ -397,6 +397,7 @@ class ResponseGET extends ResponseBuilder {
     mergeFrontConditions() {
         // If request is from frontend, filter out:
         if (_.isUndefined(this.req.user)) {
+            this.params.condition = 'and';
             var modelFrontCond = this.getFrontConditions(this._model);
             _.merge(this.params.where.full, modelFrontCond);
 
@@ -1004,7 +1005,7 @@ class ResponseSearch extends ResponseGET {
         var deepFilters = this.groupDeepFilters(this.params.where.deep);
         
         _.forEach(collections, function (value, key) {
-          deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
+          deepConditions[key] = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);  
         }.bind(this));
 
         //console.log(deepConditions);
