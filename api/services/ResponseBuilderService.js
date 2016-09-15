@@ -241,18 +241,20 @@ class ResponseGET extends ResponseBuilder {
             //Back to params
             this.params.where.deep = deepConditions;
 
-            console.log(this.params.where.full);
-            console.log(this.params.where.deep);
-
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .sort(this.params.sort);
 
-            if(!_.isUndefined(this.req.user) || _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
-                // NOTE: Only paginate on server if removeEmptyAssociations is specified on model
-                // Because waterline populate filters only apply on nested collections. 
-                this._query = this._query.limit(this.params.limit)
-                this._query = this._query.skip(this.params.skip)
+            // NOTE: Waterline populate filters only apply on nested collections.
+            // We could only paginate on server if:
+            // (a) No deep params are supplied 
+            // (b) removeEmptyAssociations is not specified or false (model).  
+                    
+            if(_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) || 
+                _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
+                
+                this._query = this._query.limit(this.params.limit);
+                this._query = this._query.skip(this.params.skip);
             
                 this.performCountQuery();
             }
@@ -261,6 +263,9 @@ class ResponseGET extends ResponseBuilder {
         else {
             this.params.pk = actionUtil.requirePk(this.req);
             this._query = this._model.find(this.params.pk);
+            if(_.isUndefined(this.params.where)) {
+                this.params.where = {};
+            }    
         }
 
         this._query = this.populate(this._query, this._model, this.params.include, this.params.where.deep);
@@ -644,22 +649,21 @@ class ResponseGET extends ResponseBuilder {
      */
     filterAssociations(records){
         //Get model collections
-        var collections = [];
-        _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
-                collections.push(association.alias);
-            }
-        });
-            
+        var collections =_.filter(this._model.associations, function (association) {
+            var associationCond = this.params.where.deep[association.alias];
+            return association.type === 'collection' && !_.isUndefined(associationCond) 
+                && !_.isEmpty(associationCond);
+        }.bind(this));
+        
         //Remove from results if any of the model collections is empty
         return _.filter(records, function (record) {
             var include = true;
             _.forEach(collections, function (element) {
-                 var collection = record[element]; 
-                 if(_.isUndefined(collection) || _.isEmpty(collection)){
+                var collectionName = record[element.alias]; 
+                if(_.isUndefined(collectionName) || _.isEmpty(collectionName)){
                     include = false;
                     return;
-                 }
+                }
             });                
             return include;                     
         });
