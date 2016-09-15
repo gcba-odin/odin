@@ -28,6 +28,9 @@ module.exports = {
                         case 'PATCH':
                             method = "update";
                             break;
+                        case 'PUT':
+                            method = "update";
+                            break;
                         case 'DELETE':
                             method = "delete";
                             break;

@@ -48,11 +48,11 @@ module.exports = {
             model: 'user'
         },
 
-        'PATCH /users/:id': {
-            blueprint: 'update',
-            model: 'user',
-            policies: 'isAuthenticated'
-        },
+        // 'PATCH /users/:id': {
+        //     blueprint: 'update',
+        //     model: 'user',
+        //     policies: 'isAuthenticated'
+        // },
 
         'OPTIONS /users': {
             controller: 'Options',
@@ -153,11 +153,11 @@ module.exports = {
             model: 'organization'
         },
 
-        'PATCH /organizations/:id': {
-            blueprint: 'update',
-            model: 'organization',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /organizations/:id': {
+        //     blueprint: 'update',
+        //     model: 'organization',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /organizations/*': {
             controller: 'Head',
             action: 'Head',
@@ -208,7 +208,7 @@ module.exports = {
             model: 'category',
             action: 'create'
         },
-        'PATCH /categories/:id': {
+        'PUT /categories/:id': {
             controller: 'Category',
             model: 'category',
             action: 'update'
@@ -336,11 +336,11 @@ module.exports = {
             blueprint: 'search',
             model: 'status'
         },
-        'PATCH /statuses/:id': {
-            blueprint: 'update',
-            model: 'status',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /statuses/:id': {
+        //     blueprint: 'update',
+        //     model: 'status',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /statuses/*': {
             controller: 'Head',
             action: 'Head',
@@ -413,11 +413,11 @@ module.exports = {
             blueprint: 'search',
             model: 'filetype'
         },
-        'PATCH /filetypes/:id': {
-            blueprint: 'update',
-            model: 'filetype',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /filetypes/:id': {
+        //     blueprint: 'update',
+        //     model: 'filetype',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /filetypes/*': {
             controller: 'Head',
             action: 'Head',
@@ -501,7 +501,7 @@ module.exports = {
             action: 'create'
         },
 
-        'PATCH /files/:id': {
+        'PUT /files/:id': {
             controller: 'File',
             model: 'file',
             action: 'update'
@@ -618,11 +618,11 @@ module.exports = {
             model: 'dataset',
             action: 'custom'
         },
-        'PATCH /datasets/:id': {
-            blueprint: 'update',
-            model: 'dataset',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /datasets/:id': {
+        //     blueprint: 'update',
+        //     model: 'dataset',
+        //     policy: 'isAuthenticated'
+        // },
 
         'HEAD /datasets/*': {
             controller: 'Head',
@@ -698,11 +698,11 @@ module.exports = {
             model: 'tag'
         },
 
-        'PATCH /tags/:id': {
-            blueprint: 'update',
-            model: 'tag',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /tags/:id': {
+        //     blueprint: 'update',
+        //     model: 'tag',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /tags/*': {
             controller: 'Head',
             action: 'Head',
@@ -760,11 +760,11 @@ module.exports = {
             model: 'updatefrequency'
         },
 
-        'PATCH /updatefrequencies/:id': {
-            blueprint: 'update',
-            model: 'updatefrequency',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /updatefrequencies/:id': {
+        //     blueprint: 'update',
+        //     model: 'updatefrequency',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /updatefrequencies/*': {
             controller: 'Head',
             action: 'Head',
@@ -820,11 +820,11 @@ module.exports = {
             model: 'config'
         },
 
-        'PATCH /configs/:id': {
-            blueprint: 'update',
-            model: 'config',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /configs/:id': {
+        //     blueprint: 'update',
+        //     model: 'config',
+        //     policy: 'isAuthenticated'
+        // },
         'HEAD /configs/*': {
             controller: 'Head',
             action: 'Head',
@@ -965,11 +965,10 @@ module.exports = {
             model: 'map'
         },
 
-        'PATCH /maps/:id': {
+        'PUT /maps/:id': {
             controller: 'Map',
             model: 'map',
             action: 'update',
-            policy: 'isAuthenticated'
         },
 
         'HEAD /maps/*': {
@@ -1063,11 +1062,10 @@ module.exports = {
             blueprint: 'search',
             model: 'chart'
         },
-        'PATCH /charts/:id': {
+        'PUT /charts/:id': {
             controller: 'Chart',
             model: 'chart',
             action: 'update',
-            policy: 'isAuthenticated'
         },
 
         'HEAD /charts/*': {
@@ -1230,11 +1228,11 @@ module.exports = {
             blueprint: 'search',
             model: 'basemap'
         },
-        'PATCH /basemaps/:id': {
-            blueprint: 'update',
-            model: 'basemap',
-            policy: 'isAuthenticated'
-        },
+        // 'PATCH /basemaps/:id': {
+        //     blueprint: 'update',
+        //     model: 'basemap',
+        //     policy: 'isAuthenticated'
+        // },
 
         'HEAD /basemaps/*': {
             controller: 'Head',
