@@ -7,6 +7,7 @@
 
 var shortId = require('shortid');
 var slug = require('slug');
+var fs = require('fs');
 
 module.exports = {
     schema: true,
@@ -90,18 +91,40 @@ module.exports = {
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => {
-        if(values.name){
-            values.slug = slug(values.name, {lower: true});    
+
+        if (values.id) {
+
+            Dataset.find(values.id).limit(1).then(function (originalDataset) {
+                originalDataset = originalDataset[0];
+
+                if (originalDataset.name !== values.name) {
+
+                    var originalDirname = sails.config.odin.uploadFolder + "/" + slug(originalDataset.name, {
+                            lower: true
+                        });
+                    var newDirname = sails.config.odin.uploadFolder + "/" + slug(values.name, {
+                            lower: true
+                        });
+                    fs.rename(originalDirname, newDirname, function (err) {
+                        if (err) throw err;
+                        console.log('Datasets folder renamed');
+                    });
+                }
+            });
+
+        }
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
         }
         next()
     },
     beforeCreate: (values, next) => {
-        if(values.name){
-            values.slug = slug(values.name, {lower: true});    
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
         }
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function(err, record) {
+        }).exec(function (err, record) {
             values.status = record.value;
             next();
         });
