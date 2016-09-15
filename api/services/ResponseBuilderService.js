@@ -224,12 +224,27 @@ class ResponseGET extends ResponseBuilder {
               deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
             }.bind(this));
 
-            //NOTE: Why don't we paginate on the server? Because waterline populate filters only apply on nested collections. 
+            //console.log(fullConditions);
+            //console.log(deepConditions);
+
             this._query = this._model.find()
                 .where(fullConditions)
-                //.limit(this.params.limit)
-                //.skip(this.params.skip)
                 .sort(this.params.sort);
+
+            if(_.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
+                // NOTE: Only paginate on server if removeEmptyAssociations is specified on model
+                // Because waterline populate filters only apply on nested collections. 
+                this._query = this._query.limit(this.params.limit)
+                this._query = this._query.skip(this.params.skip)
+            
+                this._model.count().where(this.params.where.full)
+                .then(function (count) {
+                    this._count = count;
+                    this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+                }.bind(this))
+                .catch(function (err) {
+                });
+            }
         } 
         //Single result (find one)
         else {
@@ -345,10 +360,14 @@ class ResponseGET extends ResponseBuilder {
             } else {
                 // If the condition AND we just replace commas for spaces 
                 // var value = _.replace(val, ',', ' ');
-                var values = _.split(val, ',');
-                result[key] = {
-                    [this.params.match]: values
-                };
+                if(val.indexOf(',')){
+                    result[key] = _.split(val, ',');
+                }
+                else{
+                    result[key] = {
+                        [this.params.match]: val
+                    };    
+                }
             }
         }.bind(this), {});
     }
@@ -595,6 +614,7 @@ class ResponseGET extends ResponseBuilder {
                             conditions = deepConditions[element];
                         }
                     }
+                    console.log(conditions);
                     query.populate(element, conditions);
                 }, this);
             }

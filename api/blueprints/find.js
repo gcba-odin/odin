@@ -48,14 +48,18 @@ module.exports = (req, res) => {
                     builder.filterObject(returnRecords, 'createdBy');
                 }
                 
-                var filteredRecords = builder.filterAssociations(returnRecords);
-                var paginatedRecords = builder.paginate(filteredRecords);
-                builder.count(paginatedRecords);
-                
+                //Some models don't need to filter records because of empty associations
+                //In those cases, we're previously paginating on server
+                if(builder._model.removeEmptyAssociations) {
+                    returnRecords = builder.filterAssociations(returnRecords);
+                    returnRecords = builder.paginate(returnRecords);
+                    builder.count(returnRecords);
+                }
+
                 return res.ok(
-                    paginatedRecords, {
-                        meta: builder.meta(paginatedRecords),
-                        links: builder.links(paginatedRecords)
+                    returnRecords, {
+                        meta: builder.meta(returnRecords),
+                        links: builder.links(returnRecords)
                     }
                 );
             }

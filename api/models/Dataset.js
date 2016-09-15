@@ -88,6 +88,8 @@ module.exports = {
         }
     },
 
+    removeEmptyAssociations: true,
+
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => {
