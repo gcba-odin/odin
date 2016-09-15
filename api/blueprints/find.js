@@ -46,16 +46,16 @@ module.exports = (req, res) => {
                 if(_.isUndefined(req.user)){
                     builder.filterObject(returnRecords, 'owner');
                     builder.filterObject(returnRecords, 'createdBy');
+                
+                    //Some models don't need to filter records because of empty associations
+                    //In those cases, we're previously paginating on server
+                    if(builder._model.removeEmptyAssociations) {
+                        returnRecords = builder.filterAssociations(returnRecords);
+                        returnRecords = builder.paginate(returnRecords);
+                        builder.count(returnRecords);
+                    }
                 }
                 
-                //Some models don't need to filter records because of empty associations
-                //In those cases, we're previously paginating on server
-                if(builder._model.removeEmptyAssociations) {
-                    returnRecords = builder.filterAssociations(returnRecords);
-                    returnRecords = builder.paginate(returnRecords);
-                    builder.count(returnRecords);
-                }
-
                 return res.ok(
                     returnRecords, {
                         meta: builder.meta(returnRecords),

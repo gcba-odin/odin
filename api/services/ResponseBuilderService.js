@@ -194,13 +194,25 @@ class ResponseGET extends ResponseBuilder {
     }
 
     /*
+     * Performs count query
+     */
+    performCountQuery(){
+        this._model.count().where(this.params.where.full)
+        .then(function (count) {
+            this._count = count;
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+        }.bind(this))
+        .catch(function (err) {
+            console.log(err);
+        });
+    }
+
+    /*
      * Builds and returns the query promise
      */
     findQuery() {
         var collections = {};
-        var fullConditions = {}
-        var deepConditions = {};
-
+        
         _.forEach(this._model.associations, function (association) {
             if (association.type === 'collection'){
                 collections[association.alias] = association;
@@ -215,35 +227,34 @@ class ResponseGET extends ResponseBuilder {
 
             //Parse full filters and convert to query conditions
             var fullFilters = this.parseFullFilters(this.params.where.full, collections);
-            fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
-            
+            var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+            //Back to params
+            this.params.where.full = fullConditions;
+
             //Parse deep filters and convert to query conditions
             var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
-        
+            var deepConditions = {};
             _.forEach(collections, function (value, key) {
               deepConditions[key] = this.filtersToConditions(deepFilters[key], this.params.condition, sails.models[value.collection]);  
             }.bind(this));
 
-            //console.log(fullConditions);
-            //console.log(deepConditions);
+            //Back to params
+            this.params.where.deep = deepConditions;
+
+            console.log(this.params.where.full);
+            console.log(this.params.where.deep);
 
             this._query = this._model.find()
-                .where(fullConditions)
+                .where(this.params.where.full)
                 .sort(this.params.sort);
 
-            if(_.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
+            if(!_.isUndefined(this.req.user) || _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
                 // NOTE: Only paginate on server if removeEmptyAssociations is specified on model
                 // Because waterline populate filters only apply on nested collections. 
                 this._query = this._query.limit(this.params.limit)
                 this._query = this._query.skip(this.params.skip)
             
-                this._model.count().where(this.params.where.full)
-                .then(function (count) {
-                    this._count = count;
-                    this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-                }.bind(this))
-                .catch(function (err) {
-                });
+                this.performCountQuery();
             }
         } 
         //Single result (find one)
@@ -252,7 +263,7 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find(this.params.pk);
         }
 
-        this._query = this.populate(this._query, this._model, this.params.include, deepConditions);
+        this._query = this.populate(this._query, this._model, this.params.include, this.params.where.deep);
         
         return this._query;
     }
@@ -614,7 +625,6 @@ class ResponseGET extends ResponseBuilder {
                             conditions = deepConditions[element];
                         }
                     }
-                    //console.log(conditions);
                     query.populate(element, conditions);
                 }, this);
             }
@@ -974,14 +984,7 @@ class ResponseSearch extends ResponseGET {
             .skip(this.params.skip)
             .sort(this.params.sort);
 
-        this.model.count().where(this.params.where.full)
-            .then(function (count) {
-                this._count = count;
-                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-            }.bind(this))
-            .catch(function (err) {
-                console.error(err);
-            });
+        this.performCountQuery();
 
         var collections = {};
         _.forEach(this._model.associations, function (association) {
