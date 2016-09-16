@@ -150,13 +150,12 @@ module.exports = {
     },
     resources: function(req, res) {
         var resources = {};
-        const pk = actionUtil.requirePk(req);
-
-        this.findResource(_Map, pk)
+        
+        this.findResource('map', req, res)
             .then(function(maps) {
                 if (!_.isEmpty(maps))
                     resources['maps'] = maps;
-                this.findResource(Chart, pk)
+                this.findResource('chart', req, res)
                     .then(function(charts) {
                         if (!_.isEmpty(charts))
                             resources['charts'] = charts;
@@ -164,9 +163,13 @@ module.exports = {
                     });
             }.bind(this));
     },
-    findResource(model, filePk) {
-        return model.find({
-            file: filePk
-        });
+    findResource(model, req, res) {
+        const pk = actionUtil.requirePk(req);
+        req.options.model = model;
+        req.params.where = {
+            file: pk
+        };
+        var builder = new Response.ResponseGET(req, res, true);
+        return builder.findQuery();
     }
 };

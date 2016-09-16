@@ -92,14 +92,6 @@ module.exports = {
             via: 'files',
             dominant: true
         },
-        maps: {
-            collection: 'map',
-            via: 'file',
-        },
-        charts: {
-            collection: 'chart',
-            via: 'file'
-        },
         owner: {
             model: 'user',
             required: true
