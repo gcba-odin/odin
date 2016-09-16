@@ -226,6 +226,8 @@ module.exports = {
         model.create(data).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
+            LogService.log(req, newInstance.id);
+
             // Log to winston
             LogService.winstonLog('info', modelName + ' created', {
                 ip: req.ip,
