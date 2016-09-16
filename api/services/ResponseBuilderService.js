@@ -217,7 +217,7 @@ class ResponseGET extends ResponseBuilder {
             if (association.type === 'collection'){
                 collections[association.alias] = association;
             }
-        });
+        }.bind(this));
 
         //Multiple results (find)
         if (this._many) {
@@ -237,7 +237,14 @@ class ResponseGET extends ResponseBuilder {
 
             var deepConditions = {};
             _.forEach(collections, function (value, key) {
-              deepConditions[key] = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);  
+                var keyConditions = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);
+                deepConditions[key] = keyConditions;  
+
+                if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
+                    if (!_.includes(this.params.include.full, key)) {
+                        this.params.include.full.push(key);
+                    }
+                }
             }.bind(this));
 
             //Back to params
@@ -402,15 +409,11 @@ class ResponseGET extends ResponseBuilder {
     mergeFrontConditions() {
         // If request is from frontend, filter out:
         if (_.isUndefined(this.req.user)) {
-            this.params.condition = 'and';
             var modelFrontCond = this.getFrontConditions(this._model);
             _.merge(this.params.where.full, modelFrontCond);
 
             _.forEach(this._model.associations, function (association) {
                 if (association.type === 'collection') {
-                    if (!_.includes(this.params.include.full, association.alias)) {
-                        this.params.include.full.push(association.alias);
-                    }
                     var associationFrontCond = this.getFrontConditions(sails.models[association.collection], association.alias);
                     _.merge(this.params.where.deep, associationFrontCond);
                 }
@@ -658,18 +661,23 @@ class ResponseGET extends ResponseBuilder {
      */
     filterAssociations(records){
         //Get model collections
-        var collections =_.filter(this._model.associations, function (association) {
-            var associationCond = this.params.where.deep[association.alias];
-            return association.type === 'collection' && !_.isUndefined(associationCond) 
-                && !_.isEmpty(associationCond);
+
+        var collections = {};
+        _.forEach(this._model.associations, function (association) {
+            if (association.type === 'collection'){
+                var associationCond = this.params.where.deep[association.alias];
+                if(!_.isUndefined(associationCond) && !_.isEmpty(associationCond)){
+                    collections[association.alias] = association;
+                }
+            }
         }.bind(this));
-        
+
         //Remove from results if any of the model collections is empty
         return _.filter(records, function (record) {
             var include = true;
-            _.forEach(collections, function (element) {
-                var collectionName = record[element.alias]; 
-                if(_.isUndefined(collectionName) || _.isEmpty(collectionName)){
+            _.forEach(collections, function (value, key) {
+                var collectionValue = record[key];
+                if(_.isUndefined(collectionValue) || _.isEmpty(collectionValue)){
                     include = false;
                     return;
                 }
@@ -1009,9 +1017,18 @@ class ResponseSearch extends ResponseGET {
         var deepConditions = {};
         var deepFilters = this.groupDeepFilters(this.params.where.deep);
         
+        var deepConditions = {};
         _.forEach(collections, function (value, key) {
-          deepConditions[key] = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);  
+            var keyConditions = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);
+            deepConditions[key] = keyConditions;
+
+            if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
+                if (!_.includes(this.params.include.full, key)) {
+                    this.params.include.full.push(key);
+                }
+            }  
         }.bind(this));
+
 
         //console.log(deepConditions);
 

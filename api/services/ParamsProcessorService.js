@@ -74,6 +74,9 @@ class ParamsProcessor {
 
     parseCondition(req) {
         var condition = req.param('condition');
+        /*if (_.isUndefined(req.user)) {
+            return 'and';
+        }*/
         switch (condition) {
             case 'AND':
                 return 'and';
