@@ -162,6 +162,9 @@ class ResponseGET extends ResponseBuilder {
         this._query = '';
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
+
+        // TODO: Extract full and deep filters logic here (ResponseGET, ResponseCOUNT, ResponseSEARCH)
+        // In addition, make collections a class property
     }
 
     filterObject(data, deleteKey) {
@@ -928,9 +931,9 @@ class ResponseQuery extends ResponseBuilder {
     }
 }
 
-class ResponseCount extends ResponseBuilder {
-    constructor(req, res) {
-        super(req, res);
+class ResponseCount extends ResponseGET {
+    constructor(req, res, many) {
+        super(req, res, many);
 
         const modelName = pluralize(this._model.adapter.identity);
 
@@ -941,9 +944,27 @@ class ResponseCount extends ResponseBuilder {
         this._links = {
             all: sails.config.odin.baseUrl + '/' + modelName
         };
-        this.countQuery = this._model.count();
+
+        //Merge "invited" users conditions in case there's no req.user    
+        this.mergeFrontConditions();
+        
+        var collections = {};
+        _.forEach(this._model.associations, function (association) {
+            if (association.type === 'collection'){
+                collections[association.alias] = association;
+            }
+        });
+
+        //Parse full filters and convert to query conditions
+        var fullFilters = this.parseFullFilters(this.params.where.full, collections);
+        var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+        //Back to params
+        this.params.where.full = fullConditions;
+
+        this.countQuery = this._model.count(this.params.where.full);
     }
 }
+
 
 class ResponseSearch extends ResponseGET {
     constructor(req, res, many) {

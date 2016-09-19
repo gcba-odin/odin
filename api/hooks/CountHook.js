@@ -8,13 +8,37 @@ const _ = require('lodash');
 const pluralize = require('pluralize');
 
 const defaultCountBlueprint = (req, res) => {
-    var builder = new Response.ResponseCount(req, res);
-    builder.countQuery.then(count => res.ok({
-        count
-    }, {
-        meta: builder._meta,
-        links: builder._links
-    }));
+    
+    //Association filters. We need to retrieve the results and then filter out in client side
+    var findBuilder = new Response.ResponseGET(req, res, true);
+    var findQuery = findBuilder.findQuery();
+    var countBuilder = new Response.ResponseCount(req, res, true);
+    
+    var sharedInfo = {
+        meta: countBuilder._meta,
+        links: countBuilder._links
+    };
+
+    if(!_.isUndefined(findBuilder.params.where) && !_.isUndefined(findBuilder.params.where.deep) && !_.isEmpty(findBuilder.params.where.deep)){
+        findQuery.then(records => {
+            if(findBuilder._model.removeEmptyAssociations) {
+                records = findBuilder.filterAssociations(records);
+            }
+            findBuilder.count(records);
+            
+            return res.ok(
+                { count: findBuilder._count }, sharedInfo
+            );
+            records = null;
+        })
+        .catch(res.negotiate);
+    }
+    else{
+        //Direct server count.
+        countBuilder.countQuery.then(count => res.ok({
+            count
+        }, sharedInfo));
+    }
 };
 
 module.exports = sails => {
