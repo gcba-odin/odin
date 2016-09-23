@@ -242,6 +242,9 @@ class ResponseGET extends ResponseBuilder {
 
             // Convert full filters to query conditions            
             var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+            if (!_.isUndefined(fullConditions.or) && _.isEmpty(fullConditions.or)) {
+                fullConditions = {};                  
+            }
             var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
 
             // Merge both user and "invited" conditions
@@ -286,11 +289,6 @@ class ResponseGET extends ResponseBuilder {
             //console.log(this.params.where.full);
             //console.log(this.params.where.deep);
             
-            //In case there are no filters
-            if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
-                this.params.where.full = {};                  
-            }
-
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .sort(this.params.sort);

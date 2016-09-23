@@ -58,7 +58,7 @@ module.exports = (req, res) => {
                 }
                 builder.removeIncludes(records);
                            
-                return res.ok(
+                res.ok(
                     records, {
                         meta: builder.meta(records),
                         links: builder.links(records)

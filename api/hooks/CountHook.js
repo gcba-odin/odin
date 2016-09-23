@@ -26,7 +26,7 @@ const defaultCountBlueprint = (req, res) => {
             }
             findBuilder.count(records);
             
-            return res.ok(
+            res.ok(
                 { count: findBuilder._count }, sharedInfo
             );
             records = null;
