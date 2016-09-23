@@ -12,12 +12,14 @@ const defaultCountBlueprint = (req, res) => {
     
     var model = actionUtil.parseModel(req);    
     const q = req.param('query');
-    _.forEach(model.definition, function (val, key) {
-        if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
-            req.params[key] = q;
-        }
-    });
-
+    if(q){
+        _.forEach(model.definition, function (val, key) {
+            if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
+                req.params[key] = q;
+            }
+        });
+    }
+    
     //Association filters. We need to retrieve the results and then filter out in client side
     var findBuilder = new Response.ResponseGET(req, res, true);
     var findQuery = findBuilder.findQuery();
