@@ -55,8 +55,9 @@ module.exports = (req, res) => {
                         records = builder.paginate(records);
                         builder.count(records);
                     }
-                }           
-                
+                }
+                builder.removeIncludes(records);
+                           
                 return res.ok(
                     records, {
                         meta: builder.meta(records),

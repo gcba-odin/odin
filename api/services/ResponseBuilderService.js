@@ -251,6 +251,8 @@ class ResponseGET extends ResponseBuilder {
             // Now convert deep filters to query conditions (Both user and "invited" filters)
             var deepConditions = {};
             
+            this.params.include.remove = [];
+                
             // Each nested collection has its corresponding deep conditions
             // Example: {'categories': {slug: 'test', status: 'publishedId'}, 'files': {...}}
             _.forEach(this.collections, function (value, key) {
@@ -270,7 +272,6 @@ class ResponseGET extends ResponseBuilder {
 
                 // We need to temporary include collections for populate deep conditions
                 // Then, when retrieving the data, removing unnecessary nested collections
-                this.params.include.remove = [];
                 if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
                     if (!_.includes(this.params.include.full, key)) {
                         this.params.include.full.push(key);
@@ -278,12 +279,12 @@ class ResponseGET extends ResponseBuilder {
                     }
                 }
             }.bind(this));
-
+            
             //Back to params
             this.params.where.deep = deepConditions;
 
-            console.log(this.params.where.full);
-            console.log(this.params.where.deep);
+            //console.log(this.params.where.full);
+            //console.log(this.params.where.deep);
             
             //In case there are no filters
             if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
@@ -701,6 +702,22 @@ class ResponseGET extends ResponseBuilder {
      */
     paginate(records){
         return _(records).slice(this.params.skip).take(this.params.limit).value();
+    }
+
+    /*
+     * Remove includes that have been added only for deep conditions
+     */
+    removeIncludes(records){
+        //Get model collections
+        return _.map(records, function(item){
+            _.forEach(this.params.include.remove, function (include) {
+                if(!_.isUndefined(item[include])){
+                    //TODO: delete item[include]
+                    item[include] = null;
+                }
+            }.bind(this));
+            return item;
+        }.bind(this));
     }
 
     /*
