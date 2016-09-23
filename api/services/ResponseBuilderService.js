@@ -1010,6 +1010,9 @@ class ResponseCount extends ResponseGET {
         
         // Convert full filters to query conditions            
         var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+        if (!_.isUndefined(fullConditions.or) && _.isEmpty(fullConditions.or)) {
+            fullConditions = {};                  
+        }
         var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
 
         // Merge both user and "invited" conditions
