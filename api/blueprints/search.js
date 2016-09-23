@@ -6,28 +6,22 @@
  */
 
 const _ = require('lodash');
-const Response = require('../services/ResponseBuilderService');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+var find = require('../blueprints/find.js');
 
 module.exports = (req, res) => {
-    var builder = new Response.ResponseSearch(req, res, true);
+    
+    const q = req.param('query');
+    if (!q) return res.badRequest(null, {
+        message: 'You should specify a "query" parameter!'
+    });
+    
+    var model = actionUtil.parseModel(req);
+    _.forEach(model.definition, function (val, key) {
+        if (val.type === 'string' && model.searchables && model.searchables.indexOf(key) !== -1) {
+            req.params[key] = q;
+        }
+    });
 
-    builder.searchQuery()
-        .then(records => {
-            if (_.isUndefined(records)) return res.notFound(null, {
-                meta: builder.meta(undefined),
-                links: builder.links(undefined)
-            });
-            else {
-                //if (!_.isEmpty(builder.includes)) {
-                //    records[0] = _.assign(records[0], builder.includes);
-                //}
-                return res.ok(
-                    records, {
-                        meta: builder.meta(records),
-                        links: builder.links(records)
-                    }
-                );
-            }
-        })
-        .catch(res.negotiate);
+    return find(req,res);
 };

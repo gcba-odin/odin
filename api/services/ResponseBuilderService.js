@@ -163,7 +163,16 @@ class ResponseGET extends ResponseBuilder {
         // Don't forget to set 'many' in blueprints/find.js (eg, new Response.ResponseGET(req, res, true);
         this._many = many;
 
-        // TODO: Extract full and deep filters logic here (ResponseGET, ResponseCOUNT, ResponseSEARCH)
+        this.collections = {};
+        
+        _.forEach(this._model.associations, function (association) {
+            if (association.type === 'collection'){
+                this.collections[association.alias] = association;
+            }
+        }.bind(this));
+
+
+        // TODO: Extract full and deep filters logic here (ResponseGET, ResponseCOUNT)
         // In addition, make collections a class property
     }
 
@@ -214,38 +223,58 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
-        var collections = {};
         
-        _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
-                collections[association.alias] = association;
-            }
-        }.bind(this));
-
         //Multiple results (find)
         if (this._many) {
-            
-            //Merge "invited" users conditions in case there's no req.user
-            this.mergeFrontConditions();
 
-            //Parse full filters and convert to query conditions
-            var fullFilters = this.parseFullFilters(this.params.where.full, collections);
-            
-            //Parse deep filters and convert to query conditions
-            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep, collections);
-            
+            // We separate filters into:
+            // a)Main model (full filters)
+            // b)Nested collections (deep filters)
+
+            // Get "invited" full filters in case there's no req.user
+            var frontFullFilters = this.getFrontFullFilters();
+            var frontDeepFilters = this.getFrontDeepFilters();
+
+            // Parse user full + deep filters 
+            var fullFilters = this.parseFullFilters(this.params.where.full);
+            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep);
+            frontDeepFilters = this.parseDeepFilters({}, frontDeepFilters);
+
+            // Convert full filters to query conditions            
             var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
-            //Back to params
+            var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
+
+            // Merge both user and "invited" conditions
+            _.merge(fullConditions, frontFullConditions);
             this.params.where.full = fullConditions;
 
+            // Now convert deep filters to query conditions (Both user and "invited" filters)
             var deepConditions = {};
-            _.forEach(collections, function (value, key) {
-                var keyConditions = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);
+            
+            // Each nested collection has its corresponding deep conditions
+            // Example: {'categories': {slug: 'test', status: 'publishedId'}, 'files': {...}}
+            _.forEach(this.collections, function (value, key) {
+                // Get collection model
+                var keyModel = sails.models[value.collection];
+                
+                // Get collection conditions
+                var keyConditions = this.filtersToConditions(deepFilters[key], this.params.condition, keyModel);
+                if (!_.isUndefined(keyConditions.or) && _.isEmpty(keyConditions.or)) {
+                    keyConditions = {};                  
+                }
                 deepConditions[key] = keyConditions;  
 
+                // Merge with collection front conditions
+                var keyFrontConditions = this.filtersToAndConditions(frontDeepFilters[key], keyModel);
+                _.merge(deepConditions[key], keyFrontConditions);                
+
+                // We need to temporary include collections for populate deep conditions
+                // Then, when retrieving the data, removing unnecessary nested collections
+                this.params.include.remove = [];
                 if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
                     if (!_.includes(this.params.include.full, key)) {
                         this.params.include.full.push(key);
+                        this.params.include.remove.push(key);   
                     }
                 }
             }.bind(this));
@@ -253,6 +282,9 @@ class ResponseGET extends ResponseBuilder {
             //Back to params
             this.params.where.deep = deepConditions;
 
+            console.log(this.params.where.full);
+            console.log(this.params.where.deep);
+            
             //In case there are no filters
             if (!_.isUndefined(this.params.where.full.or) && _.isEmpty(this.params.where.full.or)) {
                 this.params.where.full = {};                  
@@ -266,7 +298,6 @@ class ResponseGET extends ResponseBuilder {
             // We could only paginate on server if:
             // (a) No deep params are supplied 
             // (b) removeEmptyAssociations is not specified or false (model).  
-                    
             if(_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) || 
                 _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
                 
@@ -293,12 +324,12 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Parse full filters
      */
-    parseFullFilters(fullFilters, collections){
+    parseFullFilters(fullFilters){
         //Parse full filters
         var finalFullFilters = {}
         _.forEach(fullFilters, function (value, key) {
             // Not a collection. Eg: "name="
-            if(_.isUndefined(collections[key])){
+            if(_.isUndefined(this.collections[key])){
                 finalFullFilters[key] = value;
             }   
         }.bind(this));
@@ -309,14 +340,14 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Parse deep filters
      */
-    parseDeepFilters(fullFilters, deepFilters, collections){
+    parseDeepFilters(fullFilters, deepFilters){
         var finalDeepFilters = {};
 
         //Parse full filters
         _.forEach(fullFilters, function (value, key) {
             //Collection filter: Move to deep filters. Eg: "categories="
-            if(!_.isUndefined(collections[key])){
-                var modelName = collections[key].collection;
+            if(!_.isUndefined(this.collections[key])){
+                var modelName = this.collections[key].collection;
                 var primaryKey = (key + '.' + sails.models[modelName].primaryKey);
                 finalDeepFilters[primaryKey] = value;
             }   
@@ -363,20 +394,22 @@ class ResponseGET extends ResponseBuilder {
     filtersToOrConditions(params, model) {
         return _.transform(params, function (result, val, key) {
             if (val === 'null') val = null;
-            if (model.definition[key].type === 'boolean' || val === null) {
-                result.or.push({
-                    [key]: val
-                })
-            } else {
-                // If the condition is OR we split the values given with comma
-                // And then add it each one of the values as an element of the OR query
-                var values = _.split(val, ',');
+            if(!_.isUndefined(model.definition[key])){
+                if (model.definition[key].type === 'boolean' || val === null) {
+                    result.or.push({
+                        [key]: val
+                    })
+                } else {
+                    // If the condition is OR we split the values given with comma
+                    // And then add it each one of the values as an element of the OR query
+                    var values = _.split(val, ',');
 
-                _.forEach(values, function (value) {
-                    result.or.push(_.set({}, key, {
-                        [this.params.match]: value
-                    }));
-                }.bind(this));
+                    _.forEach(values, function (value) {
+                        result.or.push(_.set({}, key, {
+                            [this.params.match]: value
+                        }));
+                    }.bind(this));
+                }
             }
         }.bind(this), {
             or: []
@@ -389,46 +422,57 @@ class ResponseGET extends ResponseBuilder {
     filtersToAndConditions(params, model) {
         return _.transform(params, function (result, val, key) {
             if (val === 'null') val = null;
-            if (model.definition[key].type === 'boolean' || val === null) {
-                result[key]= val;
-            } else {
-                // If the condition AND we just replace commas for spaces 
-                // var value = _.replace(val, ',', ' ');
-                if(val.indexOf(',') > 0){
-                    result[key] = _.split(val, ',');
-                }
-                else{
-                    result[key] = {
-                        [this.params.match]: val
-                    };    
+            if(!_.isUndefined(model.definition[key])){
+                if (model.definition[key].type === 'boolean' || val === null) {
+                    result[key]= val;
+                } else {
+                    // If the condition AND we just replace commas for spaces 
+                    // var value = _.replace(val, ',', ' ');
+                    if(val.indexOf(',') > 0){
+                        result[key] = _.split(val, ',');
+                    }
+                    else{
+                        result[key] = {
+                            [this.params.match]: val
+                        };    
+                    }
                 }
             }
         }.bind(this), {});
     }
 
     /*
-     * Merges model + related associations front conditions
+     * Get model front filters
+     * Example: {status: 'publishedId', deletedAt: null}
      */
-    mergeFrontConditions() {
+    getFrontFullFilters() {
         // If request is from frontend, filter out:
+        var fullFilters = {};
         if (_.isUndefined(this.req.user)) {
-            var modelFrontCond = this.getFrontConditions(this._model);
-            _.merge(this.params.where.full, modelFrontCond);
-
-            _.forEach(this._model.associations, function (association) {
-                if (association.type === 'collection') {
-                    var associationFrontCond = this.getFrontConditions(sails.models[association.collection], association.alias);
-                    _.merge(this.params.where.deep, associationFrontCond);
-                }
-
-            }.bind(this));
+            fullFilters = this.getFrontFilters(this._model);
+            //_.merge(this.params.where.full, modelFrontCond);
         }
+        return fullFilters;
     }
+
+    /*
+     * Get model related associations front filters
+     * Example: {categories.status: 'publishedId', categories.deletedAt: null}
+     */
+    getFrontDeepFilters() {
+        // If request is from frontend, filter out:
+        var deepFilters = {};
+        _.forEach(this.collections, function (value, key) {
+            var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
+            _.merge(deepFilters, associationFilter);
+        }.bind(this));
+        return deepFilters;
+    }    
 
     /*
      * Filters out active, status and deletedAt properties for frontend requests.
      */
-    getFrontConditions(model, alias) {
+    getFrontFilters(model, alias) {
         var frontConditions = {}
 
         var prefix = '';
@@ -666,12 +710,10 @@ class ResponseGET extends ResponseBuilder {
         //Get model collections
 
         var collections = {};
-        _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
-                var associationCond = this.params.where.deep[association.alias];
-                if(!_.isUndefined(associationCond) && !_.isEmpty(associationCond)){
-                    collections[association.alias] = association;
-                }
+        _.forEach(this.collections, function (value, key) {
+            var associationCond = this.params.where.deep[key];
+            if(!_.isUndefined(associationCond) && !_.isEmpty(associationCond)){
+                collections[key] = value;
             }
         }.bind(this));
 
@@ -945,117 +987,21 @@ class ResponseCount extends ResponseGET {
             all: sails.config.odin.baseUrl + '/' + modelName
         };
 
-        //Merge "invited" users conditions in case there's no req.user    
-        this.mergeFrontConditions();
+        // Get "invited" full filters in case there's no req.user
+        var frontFullFilters = this.getFrontFullFilters();
         
-        var collections = {};
-        _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
-                collections[association.alias] = association;
-            }
-        });
-
-        //Parse full filters and convert to query conditions
-        var fullFilters = this.parseFullFilters(this.params.where.full, collections);
+        // Parse user full filters 
+        var fullFilters = this.parseFullFilters(this.params.where.full);
+        
+        // Convert full filters to query conditions            
         var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
-        //Back to params
+        var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
+
+        // Merge both user and "invited" conditions
+        _.merge(fullConditions, frontFullConditions);
         this.params.where.full = fullConditions;
 
         this.countQuery = this._model.count(this.params.where.full);
-    }
-}
-
-
-class ResponseSearch extends ResponseGET {
-    constructor(req, res, many) {
-        super(req, res, many);
-
-        var model = sails.models[req.options.model];
-        var query = req.param('query');
-
-        if (!query) return res.badRequest(null, {
-            message: 'You should specify a "query" parameter!'
-        });
-
-        this.model = model;
-
-        this.params.where.full = _.transform(model.definition, function (result, val, key) {
-            // Check if the field is a string, and if is set to be searchable on the model
-            if (val.type === 'string' && model.searchables.indexOf(key) !== -1) {
-
-                if (this.params.condition === 'and') {
-                    query = _.replace(query, ',', ' ');
-                    result.or.push(_.set({}, key, {
-                        'contains': query
-                    }));
-                }
-                // The condition is OR
-                else {
-                    query = _.split(query, ',');
-                    // if (_.isArray(query)) {
-                    _.forEach(query, function (value) {
-                        result.or.push(_.set({}, key, {
-                            [this.params.match]: value
-                        }));
-                    }.bind(this));
-                    // } else {
-                    // result.or.push(_.set({}, key, {
-                    // [this.params.match]: query
-                    // }))
-                    // }
-                }
-            }
-        }.bind(this), {
-            or: []
-        });
-    }
-
-    /*
-     * Builds and returns the query promise
-     */
-    searchQuery() {
-
-        this.mergeFrontConditions();
-
-        // console.log(this.params.where.full);
-        // console.log(this.params.where.deep);
-
-        this._query = this.model.find()
-            .where(this.params.where.full)
-            .limit(this.params.limit)
-            .skip(this.params.skip)
-            .sort(this.params.sort);
-
-        this.performCountQuery();
-
-        var collections = {};
-        _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
-                collections[association.alias] = association;
-            }
-        });
-
-        var deepConditions = {};
-        var deepFilters = this.groupDeepFilters(this.params.where.deep);
-        
-        var deepConditions = {};
-        _.forEach(collections, function (value, key) {
-            var keyConditions = this.filtersToAndConditions(deepFilters[key], sails.models[value.collection]);
-            deepConditions[key] = keyConditions;
-
-            if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
-                if (!_.includes(this.params.include.full, key)) {
-                    this.params.include.full.push(key);
-                }
-            }  
-        }.bind(this));
-
-
-        //console.log(deepConditions);
-
-        this._query = this.populate(this._query, this.model, this.params.include, deepConditions);
-
-        return this._query;
     }
 }
 
@@ -1066,6 +1012,5 @@ module.exports = {
     ResponseDELETE,
     ResponseOPTIONS,
     ResponseQuery,
-    ResponseCount,
-    ResponseSearch
+    ResponseCount
 };
