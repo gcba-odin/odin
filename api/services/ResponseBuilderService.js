@@ -461,10 +461,12 @@ class ResponseGET extends ResponseBuilder {
     getFrontDeepFilters() {
         // If request is from frontend, filter out:
         var deepFilters = {};
-        _.forEach(this.collections, function (value, key) {
-            var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
-            _.merge(deepFilters, associationFilter);
-        }.bind(this));
+        if (_.isUndefined(this.req.user)) {
+            _.forEach(this.collections, function (value, key) {
+                var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
+                _.merge(deepFilters, associationFilter);
+            }.bind(this));
+        }
         return deepFilters;
     }    
 
