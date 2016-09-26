@@ -88,7 +88,7 @@ module.exports = {
             // required: true
         },
         rest: {
-            model: 'rest'
+            model: 'rest'          
         },
         soap: {
             model: 'soap'

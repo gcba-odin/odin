@@ -25,15 +25,14 @@ module.exports = {
             size: 500,
             minLength: 1
         },
-        /*attributesAsHeaders: {
+        attributesAsHeaders: {
             type: 'boolean',
             defaultsTo: false
         },
-        
-        attributesAsHeaders: {
-            type: 'string',
-            size: 350
-        },*/
+        file: {
+            model: 'file',
+            required: true
+        },
         parameters: {
             type: 'json'
         },
