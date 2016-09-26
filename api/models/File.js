@@ -87,6 +87,12 @@ module.exports = {
             model: 'dataset'
             // required: true
         },
+        rest: {
+            model: 'rest'
+        },
+        soap: {
+            model: 'soap'
+        },
         tags: {
             collection: 'tag',
             via: 'files',
