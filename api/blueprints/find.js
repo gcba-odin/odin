@@ -52,8 +52,8 @@ module.exports = (req, res) => {
                     //In those cases, we're previously paginating on server
                     if(builder._model.removeEmptyAssociations) {
                         records = builder.filterAssociations(records);
-                        records = builder.paginate(records);
                         builder.count(records);
+                        records = builder.paginate(records);
                     }
                 }
                 builder.removeIncludes(records);
