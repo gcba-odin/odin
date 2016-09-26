@@ -29,7 +29,7 @@ module.exports = {
             minLength: 1
         },
         slug: {
-            type: 'string',
+            type: 'string'
         },
         description: {
             type: 'string',

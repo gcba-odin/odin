@@ -23,6 +23,9 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        slug: {
+            type: 'string'
+        },
         name: {
             type: 'string',
             required: true,
@@ -46,6 +49,16 @@ module.exports = {
 
     searchables: ['name'],
 
-    beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next()
+    beforeUpdate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    },
+    beforeCreate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    }
 };

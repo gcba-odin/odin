@@ -26,6 +26,9 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        slug: {
+            type: 'string'
+        },
         description: {
             type: 'string',
             size: 350
@@ -59,6 +62,16 @@ module.exports = {
 
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next()
+    beforeUpdate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    },
+    beforeCreate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    }
 };
