@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * Rest
- * @description :: Rest service implementation
+ * Soap
+ * @description :: Soap service implementation
  */
 
 var webServicesModel  = require('./shared/WebServicesModel');
