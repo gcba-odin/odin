@@ -26,6 +26,9 @@ module.exports = {
             size: 100,
             minLength: 1
         },
+        slug: {
+            type: 'string'
+        },
         files: {
             collection: 'file',
             via: 'tags'
@@ -44,5 +47,18 @@ module.exports = {
         }
     },
 
-    searchables: ['name']
+    searchables: ['name'],
+
+    beforeUpdate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    },
+    beforeCreate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    }
 };
