@@ -65,6 +65,14 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        maps: {
+            collection: 'map',
+            via: 'file',
+        },
+        charts: {
+            collection: 'chart',
+            via: 'file'
+        },
         type: {
             model: 'filetype'
             // required: true
@@ -116,7 +124,6 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-
         Config.findOne({
             key: 'defaultStatus'
         }).exec(function (err, record) {
@@ -134,6 +141,8 @@ module.exports = {
 
     },
     afterUpdate: (values, next) => {
+        console.dir(values);
+        console.log('\n\n');
         if (values.dataset) ZipService.createZip(values.dataset);
         next();
     },

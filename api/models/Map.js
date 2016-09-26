@@ -40,8 +40,6 @@ module.exports = {
         },
         basemap: {
             model: 'basemap'
-                // required: true,
-                // enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
         },
         url: {
             type: 'string',
@@ -60,12 +58,13 @@ module.exports = {
         latitudeKey: {
             type: 'string',
             size: 100
-                // required: true
+        },
+        properties: {
+            type: 'array',
         },
         longitudeKey: {
             type: 'string',
             size: 100
-                // required: true
         },
         geojson: {
             type: 'json'
@@ -79,7 +78,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
         toJSON() {
             return this.toObject();
@@ -94,7 +93,7 @@ module.exports = {
 
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function(err, record) {
+        }).exec(function (err, record) {
             values.status = record.value;
 
             values.url = _.replace(values.url, 'model', 'maps');
