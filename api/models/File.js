@@ -95,11 +95,11 @@ module.exports = {
             model: 'dataset'
             // required: true
         },
-        rest: {
-            model: 'rest'          
+        restService: {
+            model: 'restservice'          
         },
-        soap: {
-            model: 'soap'
+        soapService: {
+            model: 'soapservice'
         },
         tags: {
             collection: 'tag',

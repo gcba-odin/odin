@@ -1,7 +1,7 @@
 /**
- * SoapController
+ * RestServiceController
  *
- * @description :: Server-side logic for managing soaps
+ * @description :: Server-side logic for managing Restservices
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 

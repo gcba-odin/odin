@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Soap
+ * SoapService
  * @description :: Soap service implementation
  */
 

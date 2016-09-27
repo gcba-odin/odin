@@ -51,6 +51,17 @@ module.exports = {
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
+
+        RestController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
+        SoapController: {
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            destroy: ['isAuthenticated', 'statistics']
+        },
         FileTypeController: {
             create: ['isAuthenticated', 'statistics'],
             update: ['isAuthenticated', 'statistics'],

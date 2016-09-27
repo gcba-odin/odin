@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Rest
+ * RestService
  * @description :: Rest service implementation
  */
 

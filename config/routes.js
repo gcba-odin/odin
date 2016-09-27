@@ -557,6 +557,131 @@ module.exports = {
             model: 'file',
             action: 'instance'
         },
+
+        // Rest Services
+        'POST /restservices': {
+            controller: 'restservice',
+            model: 'restservice',
+            action: 'create'
+        },
+
+        'PUT /restservices/:id': {
+            controller: 'restservice',
+            model: 'restservice',
+            action: 'update'
+        },
+        'DELETE /restservices/:id': {
+            controller: 'Delete',
+            model: 'restservice',
+            action: 'delete'
+        },
+        'GET /restservices/search': {
+            blueprint: 'search',
+            model: 'restservice'
+        },
+        'GET /restservices/last': {
+            blueprint: 'last',
+            model: 'restservice'
+        },
+        'HEAD /restservices/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'restservice'
+        },
+        'HEAD /restservices': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'restservice'
+        },
+
+        'OPTIONS /restservices': {
+            controller: 'Options',
+            model: 'restservice',
+            action: 'collection'
+        },
+        'OPTIONS /restservices/first': {
+            controller: 'Options',
+            model: 'restservice',
+            action: 'query'
+        },
+        'OPTIONS /restservices/last': {
+            controller: 'Options',
+            model: 'restservice',
+            action: 'query'
+        },
+        'OPTIONS /restservices/count': {
+            controller: 'Options',
+            model: 'restservice',
+            action: 'count'
+        },
+        'OPTIONS /restservices/:id': {
+            controller: 'Options',
+            model: 'restservice',
+            action: 'instance'
+        },
+
+        // Soap Services
+        'POST /soapservices': {
+            controller: 'soapservice',
+            model: 'soapservice',
+            action: 'create'
+        },
+
+        'PUT /soapservices/:id': {
+            controller: 'soapservice',
+            model: 'soapservice',
+            action: 'update'
+        },
+        'DELETE /soapservices/:id': {
+            controller: 'Delete',
+            model: 'soapservice',
+            action: 'delete'
+        },
+        'GET /soapservices/search': {
+            blueprint: 'search',
+            model: 'soapservice'
+        },
+        'GET /soapservices/last': {
+            blueprint: 'last',
+            model: 'soapservice'
+        },
+        'HEAD /soapservices/*': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'soapservice'
+        },
+        'HEAD /soapservices': {
+            controller: 'Head',
+            action: 'Head',
+            model: 'soapservice'
+        },
+
+        'OPTIONS /soapservices': {
+            controller: 'Options',
+            model: 'soapservice',
+            action: 'collection'
+        },
+        'OPTIONS /soapservices/first': {
+            controller: 'Options',
+            model: 'soapservice',
+            action: 'query'
+        },
+        'OPTIONS /soapservices/last': {
+            controller: 'Options',
+            model: 'soapservice',
+            action: 'query'
+        },
+        'OPTIONS /soapservices/count': {
+            controller: 'Options',
+            model: 'soapservice',
+            action: 'count'
+        },
+        'OPTIONS /soapservices/:id': {
+            controller: 'Options',
+            model: 'soapservice',
+            action: 'instance'
+        },
+        
         // Datasets
 
         'PATCH /datasets/:id/publish': {
