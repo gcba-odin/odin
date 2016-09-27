@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+var slug = require('slug');
 
 module.exports = {
     schema: true,
@@ -51,13 +52,17 @@ module.exports = {
 
     beforeUpdate: (values, next) => {
         if (values.name) {
-            values.slug = slug(values.name, {lower: true});
+            values.slug = slug(values.name, {
+                lower: true
+            });
         }
         next()
     },
     beforeCreate: (values, next) => {
         if (values.name) {
-            values.slug = slug(values.name, {lower: true});
+            values.slug = slug(values.name, {
+                lower: true
+            });
         }
         next()
     }
