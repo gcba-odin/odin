@@ -146,8 +146,6 @@ module.exports = {
 
     },
     afterUpdate: (values, next) => {
-        console.dir(values);
-        console.log('\n\n');
         if (values.dataset) ZipService.createZip(values.dataset);
         next();
     },

@@ -16,7 +16,7 @@ module.exports = {
                     else {
                         const output = fs.createWriteStream(sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {lower: true}) + '.zip');
 
-                        console.log('Dataset folder created on: ' + path);
+                        console.log('Dataset folder: ' + path);
                         var archive = archiver('zip');
 
                         output.on('close', function () {
