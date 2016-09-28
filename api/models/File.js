@@ -65,6 +65,11 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        layout: {
+            type: 'boolean',
+            defaultsTo: false
+        },
+
         maps: {
             collection: 'map',
             via: 'file',
@@ -96,7 +101,7 @@ module.exports = {
             // required: true
         },
         restService: {
-            model: 'restservice'          
+            model: 'restservice'
         },
         soapService: {
             model: 'soapservice'
