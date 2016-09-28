@@ -47,6 +47,14 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        maps: {
+            collection: 'map',
+            via: 'file'
+        },
+        charts: {
+            collection: 'chart',
+            via: 'file'
+        },
         url: {
             type: 'string',
             url: true,
