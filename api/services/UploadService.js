@@ -76,8 +76,6 @@ module.exports = {
                                         File.findOne(pk).populate('dataset').then(function(file) {
                                             // if the uploaded name is the same of the one saved on the filesystem
                                             // don't deleted, just overwrite it
-                                            console.dir(file.fileName);
-                                            console.dir(data.fileName);
                                             if (file.fileName !== data.fileName) {
                                                 var upath = path.resolve(sails.config.odin.uploadFolder +
                                                     '/' + slug(file.dataset.name, {
