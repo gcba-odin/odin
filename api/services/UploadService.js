@@ -40,7 +40,7 @@ module.exports = {
         var data = actionUtil.parseValues(req);
         var allowedTypes;
         if (uploadedFile.isNoop) {
-            cb(data);
+            return cb(data);
         } else {
             Dataset.findOne(dataset).then(function(dataset) {
 
@@ -59,6 +59,8 @@ module.exports = {
                                 //Get the mime and the extension of the file
                                 mimetype = mime.lookup(file.filename.split('.').pop());
                                 extension = file.filename.split('.').pop();
+                                data.fileName += '.' + extension;
+
                                 // If the mime is present on the array of allowed types we can save it
                                 if (allowedTypes.indexOf(mimetype) === -1) {
                                     return res.negotiate({
@@ -72,18 +74,21 @@ module.exports = {
                                     if (!fileRequired) {
                                         const pk = actionUtil.requirePk(req);
                                         File.findOne(pk).populate('dataset').then(function(file) {
-                                            var upath = path.resolve(sails.config.odin.uploadFolder +
-                                                '/' + slug(file.dataset.name, {
-                                                    lower: true
-                                                }) + '/' + file.fileName);
-                                            fs.lstat(upath, function(err, stats) {
-                                                if (!err && stats.isFile()) {
-                                                    UploadService.deleteFile(file.dataset.id, file.fileName, res);
-                                                }
-                                            });
+                                            // if the uploaded name is the same of the one saved on the filesystem
+                                            // don't deleted, just overwrite it
+                                            if (file.fileName !== data.fileName) {
+                                                var upath = path.resolve(sails.config.odin.uploadFolder +
+                                                    '/' + slug(file.dataset.name, {
+                                                        lower: true
+                                                    }) + '/' + file.fileName);
+                                                fs.lstat(upath, function(err, stats) {
+                                                    if (!err && stats.isFile()) {
+                                                        UploadService.deleteFile(file.dataset.id, file.fileName, res);
+                                                    }
+                                                });
+                                            }
                                         });
                                     }
-                                    data.fileName += '.' + extension;
                                     return cb(null, data.fileName);
                                 }
                             },
@@ -161,15 +166,16 @@ module.exports = {
 
                                                     // Connect to the db
                                                     DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                                    //If file is required the method was update,
+                                                    // then we update their visualizations
+                                                    if (!fileRequired) {
+                                                        VisualizationsUpdateService.update(data)
+                                                    }
                                                 });
                                             }
-                                            // fs.writeFile(filePath, result, function () {
-                                            // });
                                         });
                                 }
-                                // Save the file metadata to the relational DB
                                 cb(data);
-                                // UploadService.metadataSave(File, data, '/files', req, res);
 
                             });
                         });
