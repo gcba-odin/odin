@@ -1265,9 +1265,9 @@ module.exports = {
                     username: 'admin'
                 }
             }
-        }]
+        }],
 
-            Log: [{
+        Log: [{
             id: '6ogPaIz9',
             action: 'create',
             target: 'organization',

@@ -77,13 +77,11 @@ module.exports = {
                                             // if the uploaded name is the same of the one saved on the filesystem
                                             // don't deleted, just overwrite it
                                             if (file.fileName !== data.fileName) {
-
                                                 var upath = path.resolve(sails.config.odin.uploadFolder +
                                                     '/' + slug(file.dataset.name, {
                                                         lower: true
                                                     }) + '/' + file.fileName);
                                                 fs.lstat(upath, function(err, stats) {
-
                                                     if (!err && stats.isFile()) {
                                                         UploadService.deleteFile(file.dataset.id, file.fileName, res);
                                                     }
