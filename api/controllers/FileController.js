@@ -27,7 +27,7 @@ module.exports = {
         UploadService.createFile(req, res, true, function(data) {
             UploadService.metadataSave(File, data, 'file', req, res);
             this.updateLayout(data);
-        });
+        }.bind(this));
         // UploadService.uploadFile(req, res);
     },
     update: function(req, res) {
