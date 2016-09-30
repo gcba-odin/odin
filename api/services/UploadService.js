@@ -170,9 +170,6 @@ module.exports = {
                                                     DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
                                                     //If file is required the method was update,
                                                     // then we update their visualizations
-                                                    if (!fileRequired) {
-                                                        VisualizationsUpdateService.update(data)
-                                                    }
                                                 });
                                             }
                                         });
