@@ -179,7 +179,9 @@ module.exports = {
         // find on the dataset if previous file with that property existed and set it to false
         if (data.layout === true) {
             File.update({
-                id: !data.id,
+                id: {
+                    '!': data.id
+                },
                 dataset: data.dataset,
                 layout: true
             }, {
