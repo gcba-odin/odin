@@ -26,13 +26,15 @@ module.exports = {
     create: function(req, res) {
         UploadService.createFile(req, res, true, function(data) {
             UploadService.metadataSave(File, data, 'file', req, res);
+            this.updateLayout(data);
         });
         // UploadService.uploadFile(req, res);
     },
     update: function(req, res) {
         UploadService.createFile(req, res, false, function(data) {
             UploadService.metadataUpdate(File, data, 'file', req, res);
-        });
+            this.updateLayout(data);
+        }.bind(this));
     },
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
@@ -150,7 +152,7 @@ module.exports = {
     },
     resources: function(req, res) {
         var resources = {};
-        
+
         this.findResource('map', req, res)
             .then(function(maps) {
                 if (!_.isEmpty(maps))
@@ -171,5 +173,20 @@ module.exports = {
         };
         var builder = new Response.ResponseGET(req, res, true);
         return builder.findQuery();
+    },
+    updateLayout: function(data) {
+        // if the file has the property layout on true,
+        // find on the dataset if previous file with that property existed and set it to false
+        if (data.layout === true) {
+            File.update({
+                id: !data.id,
+                dataset: data.dataset,
+                layout: true
+            }, {
+                layout: false
+            }).then(function(file) {
+                console.log('layout updated');
+            })
+        }
     }
 };
