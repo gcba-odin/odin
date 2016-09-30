@@ -8,28 +8,43 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 var RSS = require('rss');
 var SkipperDisk = require('skipper-disk');
+var slug = require('slug');
 
 module.exports = {
+    publish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(Dataset, pk, 'publishedStatus', res)
+    },
+    unpublish: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(Dataset, pk, 'unpublishedStatus', res)
+    },
+
     download: function(req, res) {
         const pk = actionUtil.requirePk(req);
 
-        var path = sails.config.odin.uploadFolder + '/' + pk + '/dataset-' + pk + '.zip';
-        var fileAdapter = SkipperDisk();
+        Dataset.findOne(pk).then(function(dataset) {
 
-        res.set('Content-Type', 'application/zip');
-        res.set('Content-Disposition', 'attachment; filename=dataset-' + pk + '.zip');
+            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {
+                lower: true
+            }) + '.zip';
 
-        fileAdapter.read(path).on('error', function(err) {
-            return res.serverError(err);
-        }).pipe(res);
+            var fileAdapter = SkipperDisk();
+
+            res.set('Content-Type', 'application/zip');
+            res.set('Content-Disposition', 'attachment; filename=' + dataset.name + '.zip');
+
+            fileAdapter.read(path).on('error', function(err) {
+                return res.serverError(err);
+            }).pipe(res);
+        })
     },
     feedRss: function(req, res) {
-
         var feedOptions = {
             title: 'Datasets',
             description: 'Feed de datasets',
             generator: 'ODIN',
-            feed_url: req.host + ':' + req.port + '/datasets'
+            feed_url: sails.config.odin.baseUrl + '/datasets'
                 // site_url: '',
                 // image_url: '',
                 // docs: '',
@@ -49,13 +64,12 @@ module.exports = {
         // const modelName = pluralize(buiilder._model.adapter.identity);
 
         builder.getDataForFeedQuery().then(function(records) {
-            // console.dir(records[0]);
             _.forEach(records, function(record) {
 
                 var itemOption = {
                     title: record.name,
                     description: record.description,
-                    url: req.host + ':' + req.port + '/' + builder.modelName + '/' + record.id,
+                    url: sails.config.odin.baseUrl + '/' + builder.modelName + '/' + record.id,
                     // guid: '',
                     // categories: '',
                     // author: '',

@@ -12,7 +12,11 @@ module.exports = {
             });
     },
     mongoSave: function(dataset, filename, json, res) {
-
+        json = _.transform(json, function(result, each) {
+            result.push(_.mapKeys(each, function(value, key) {
+                return _.replace(key, ".", " ");
+            }));
+        }, [])
         DataStorageService.mongoConnect(dataset, filename, res, function(db) {
             var collection = db.collection(filename);
             collection.insert(json, {
@@ -32,21 +36,10 @@ module.exports = {
         });
     },
     deleteCollection: function(dataset, filename, res) {
+        if (!_.isNull(filename)) {
             DataStorageService.mongoConnect(dataset, filename, res, function(db) {
                 db.collection(filename).drop();
             });
         }
-        // getData: function(dataset, filename, res, cb) {
-        //     DataStorageService.mongoConnect(dataset, filename, res, function(db) {
-        //         var collection = db.collection(filename);
-        //         // TODO: find gets only first 20?
-        //         var cursor = collection.find()
-
-    //         cursor.forEach(function(tmp) {
-    //             console.dir(tmp)
-    //         });
-
-    //         cb(collection.find());
-    //     })
-    // }
+    }
 };

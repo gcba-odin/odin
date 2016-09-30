@@ -84,14 +84,13 @@ describe('All Maps', function() {
                             if (element.notes) assert.isString(element.notes);
 
                             assert.property(element, 'basemap');
-                            assert.isString(element.basemap);
-                            assert.oneOf(element.basemap, ['roadmap', 'satellite', 'hybrid', 'terrain']);
+                            assert.isObject(element.basemap);
 
                             assert.property(element, 'url');
                             if (element.url) assert.isString(element.url);
 
-                            assert.property(element, 'embedCode');
-                            if (element.embedCode) assert.isString(element.embedCode);
+                            // assert.property(element, 'embedCode');
+                            // if (element.embedCode) assert.isString(element.embedCode);
 
                             assert.property(element, 'latitudeKey');
                             assert.isString(element.latitudeKey);
@@ -372,9 +371,9 @@ describe('All Maps', function() {
         });
     });
 
-    describe('- GET /maps?name=map 1&basemap=roadmap', function() {
+    describe('- GET /maps?name=map 1&id=6ogPbIz9&condition=AND', function() {
         it('- Should get one map', function(done) {
-            request.get('/maps?name=map 1&basemap=roadmap')
+            request.get('/maps?name=map 1&id=6ogPbIz9&condition=AND')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
@@ -401,45 +400,9 @@ describe('All Maps', function() {
                     assert.isString(result.body.data[0].name);
                     assert.equal(result.body.data[0].name, 'Map 1');
 
-                    assert.property(result.body.data[0], 'basemap');
-                    assert.isString(result.body.data[0].basemap);
-                    assert.equal(result.body.data[0].basemap, 'roadmap');
-
                     // Links
                     assert.property(result.body, 'links');
                     assert.isObject(result.body.links);
-
-                    err ? done(err) : done();
-                });
-        });
-    });
-
-    describe('- GET /maps?name=map 1&basemap=terrain', function() {
-        it('- Should get no record', function(done) {
-            request.get('/maps?name=map 1&basemap=terrain')
-                .set('Accept', 'application/json')
-                .expect(200)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, result) {
-                    //Meta
-                    assert.property(result.body, 'meta');
-                    assert.isObject(result.body.meta);
-
-                    assert.property(result.body.meta, 'code');
-                    assert.isString(result.body.meta.code);
-                    assert.equal(result.body.meta.code, 'OK');
-
-                    // Data
-                    assert.property(result.body, 'data');
-                    assert.isArray(result.body.data);
-                    assert.lengthOf(result.body.data, 0);
-
-                    // Links
-                    assert.property(result.body, 'links');
-                    assert.isObject(result.body.links);
-
-                    assert.property(result.body.links, 'all');
-                    assert.isString(result.body.links.all);
 
                     err ? done(err) : done();
                 });
@@ -633,6 +596,32 @@ describe('All Maps', function() {
         });
     });
 
+    // Get an inexistent relation for an inexistent item
+    describe('- GET /maps/:fakeId/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get('/maps/fakeId/arandomstring')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // 501 Not Implemented Errors
 
     describe('- DELETE /maps', function() {
@@ -720,14 +709,15 @@ describe('Single Map', function() {
     var fileId, mapId;
 
     // Upload geodata CSV file
-    describe('- POST /maps [csv]', function() {
+    describe('- POST /files [csv]', function() {
         it('- Should upload a new file [csv]', function(done) {
-            request.post('/maps')
+            request.post('/files')
                 .set('Accept', 'application/json')
                 .field('name', 'CSV File')
                 .field('description', 'An example file')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
                 .field('type', 'sWRhpRV')
+                .field('dataset', 'sWRhpRk')
                 .field('status', 'pWRhpRV')
                 .field('map', 'sWRhpRkh')
                 .field('organization', 'hWRhpRV')
@@ -791,13 +781,13 @@ describe('Single Map', function() {
                     if (result.body.data.notes) assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.equal(result.body.data.name, 'Example Map');
                     assert.equal(result.body.data.description, 'An example map');
@@ -848,13 +838,13 @@ describe('Single Map', function() {
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.property(result.body.data.geojson, 'type');
 
@@ -927,15 +917,41 @@ describe('Single Map', function() {
         });
     });
 
+    // Get an inexistent relation
+    describe('- GET /maps/:id/arandomstring', function() {
+        it('- Should get 404 Not Found error', function(done) {
+            request.get(`/maps/${mapId}/arandomstring`)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .end(function(err, result) {
+                    assert.property(result.body, 'meta');
+                    assert.isObject(result.body.meta);
+
+                    assert.property(result.body.meta, 'code');
+                    assert.isString(result.body.meta.code);
+                    assert.equal(result.body.meta.code, 'E_NOT_FOUND');
+
+                    assert.property(result.body, 'links');
+                    assert.isObject(result.body.links);
+
+                    assert.property(result.body.links, 'all');
+                    assert.isString(result.body.links.all);
+
+                    err ? done(err) : done();
+                });
+        });
+    });
+
     // Edit map
-    describe('- PATCH /maps', function() {
+    describe('- PATCH /maps/', function() {
         it('- Should edit the map', function(done) {
             request.patch(`/maps/${mapId}`)
                 .set('Accept', 'application/json')
                 .field('name', 'Edited Map')
                 .field('description', 'An edited map')
                 .field('notes', 'Lorem ipsum dolor sit amet...')
-                .field('basemap', 'terrain')
+                .field('file', fileId)
                 .expect(200)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, result) {
@@ -965,13 +981,13 @@ describe('Single Map', function() {
                     assert.isString(result.body.data.notes);
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.equal(result.body.data.name, 'Edited Map');
                     assert.equal(result.body.data.description, 'An edited map');
@@ -1022,13 +1038,13 @@ describe('Single Map', function() {
                     assert.equal(result.body.data.notes, 'Lorem ipsum dolor sit amet...');
 
                     assert.property(result.body.data, 'latitudeKey');
-                    assert.isString(result.body.links.latitudeKey);
+                    assert.isString(result.body.data.latitudeKey);
 
                     assert.property(result.body.data, 'longitudeKey');
-                    assert.isString(result.body.links.longitudeKey);
+                    assert.isString(result.body.data.longitudeKey);
 
                     assert.property(result.body.data, 'geojson');
-                    assert.isObject(result.body.geojson);
+                    assert.isObject(result.body.data.geojson);
 
                     assert.property(result.body.data.geojson, 'type');
 

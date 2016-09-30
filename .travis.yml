@@ -2,34 +2,34 @@ language: node_js
 node_js:
   - '5.12'
 env:
-  - CXX=g++-4.8
+  global:
+    - CXX=g++-4.8
+    - PGPORT=5433
+    - PGHOST=localhost
 sudo: required
-before_install:
-  - psql -c 'create database odin;' -U postgres
+before_script:
+  - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
+  - sudo /etc/init.d/postgresql restart
+  - psql -c 'CREATE DATABASE odin;' -U postgres
   - psql -c "ALTER USER postgres with password 'postgres';" -U postgres
-  - mkdir /tmp/odin
-  - mkdir /tmp/odin/sWRhpRk
-  - mkdir /tmp/odin/sWRhpRm
-  - mkdir /tmp/odin/sWRhpRn
-  - mkdir /tmp/odin/sWRhpRl
-  - mkdir /tmp/odin/sWRhpRo
-  - sudo chmod 777 -R /tmp/odin
   - npm update -g npm
+  - npm install
   - npm install -g dredd@stable
   - npm install -g node-gyp
-  - cd /home/travis/build/gcba-odin/odin/node_modules/detect-character-encoding
-  - node-gyp rebuild
-  - cd /home/travis/build/gcba-odin/odin
 script:
   - make test
 services:
   - mongodb
+  - postgresql
 addons:
-  postgresql: '9.4'
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - mongodb-3.2-precise
+    - precise-pgdg-9.5
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-before_script:
-  - dredd
+    - mongodb-org-server
+    - postgresql-9.5
+    - postgresql-contrib-9.5
+    - g++-4.8
+  postgresql: 9.5

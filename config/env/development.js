@@ -8,9 +8,10 @@
 const sails = require('sails');
 
 module.exports = {
+  hookTimeout: 60000,
   port: 3000,
   log: {
-    level: 'info'
+    level: 'verbose'
   },
   models: {
     connection: 'postgres'

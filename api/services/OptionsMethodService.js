@@ -3,15 +3,20 @@ module.exports = {
         collectionMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes();
                 },
                 'POST': function(model) {
-                    return model.setAttributes();
+                    if (_.isUndefined(model.setAttributes))
+                        return AttributesService.setAttributes(model);
+                    else return model.setAttributes();
+
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
             };
@@ -19,41 +24,62 @@ module.exports = {
         instanceMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes();
                 },
                 'PATCH': function(model) {
-                    return model.setAttributes();
+                    if (_.isUndefined(model.setAttributes))
+                        return AttributesService.setAttributes(model);
+                    else return model.setAttributes();
+
                 },
-                'DELETE': function(model) {
+                'DELETE': function() {
                     return {};
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
-            }
+            };
         },
         queryMethods: function() {
             return {
                 'GET': function(model) {
-                    return model.getAttributes();
+                    if (_.isUndefined(model.getAttributes))
+                        return AttributesService.getAttributes(model);
+                    else return model.getAttributes();
                 },
-                'HEAD': function(model) {
+                'HEAD': function() {
                     return {};
                 },
-                'OPTIONS': function(model) {
+                'OPTIONS': function() {
                     return {};
                 }
-            }
+            };
+        },
+        countMethods: function() {
+            return {
+                'GET': function() {
+                    return AttributesService.countAttributes();
+                },
+                'HEAD': function() {
+                    return {};
+                },
+                'OPTIONS': function() {
+                    return {};
+                }
+            };
         }
     },
-    getHeaders: function(method) {
+    getHeaders: function() {
         var headers = {
             'Authorization': 'JWT [token]',
             'Accept': 'application/json'
         };
+
         return headers;
     }
 };

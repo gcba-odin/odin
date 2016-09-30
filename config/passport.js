@@ -30,7 +30,7 @@ const LOCAL_STRATEGY_CONFIG = {
  */
 const JWT_STRATEGY_CONFIG = {
     secretOrKey: 'c5158dbb8972e48256e18d69d401e938068bf6100f1418c4ab2fcdf25dc9c1b0',
-    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    jwtFromRequest: ExtractJwt.fromHeader('x-admin-authorization'),
     tokenQueryParameterName: 'access_token',
     authScheme: 'Bearer',
     session: false,
@@ -52,7 +52,8 @@ const _onLocalStrategyAuth = (req, username, password, next) => {
         })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
-            if (!HashService.bcrypt.compareSync(password, user.password)) return next(null, null, sails.config.errors.USER_NOT_FOUND);
+            if (!HashService.bcrypt.compareSync(password, user.password))
+                return next(null, null, sails.config.errors.USER_NOT_FOUND);
             return next(null, user, {});
         })
         .catch(next);

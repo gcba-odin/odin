@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+var slug = require('slug');
 
 module.exports = {
     schema: true,
@@ -26,57 +27,58 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        slug: {
+            type: 'string',
+        },
         description: {
             type: 'string',
             size: 350
+        },
+        color: {
+            type: 'string',
+            size: 6
+        },
+        active: {
+            type: 'boolean',
+            defaultsTo: true
         },
         createdBy: {
             model: 'user',
             required: true
         },
+        fileName: {
+            type: 'string',
+            size: 20
+        },
         datasets: {
             collection: 'dataset',
-            via: 'category'
+            via: 'categories'
         },
 
         toJSON() {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'email'
-        },
-        createdBy: {
-            type: 'object'
-        },
-        datasets: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+        if(values.name){
+            values.slug = slug(values.name, {lower: true});    
+        }
+        next()
+    },
     beforeCreate: (values, next) => {
+        if(values.name){
+            values.slug = slug(values.name, {lower: true});    
+        }
+        if (_.endsWith(values.image, '/id')) {
+
+            values.image = _.replace(values.url, 'model', 'categories');
+            values.image = _.replace(values.image, 'id', values.id);
+            values.image = values.image + '/image';
+        }
+
         next();
     }
 };

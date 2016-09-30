@@ -6,6 +6,8 @@
  */
 const _ = require('lodash');
 const passport = require('passport');
+var requestify = require('requestify');
+var jwt = require('jwt-simple');
 
 module.exports = {
 
@@ -15,7 +17,17 @@ module.exports = {
      * @param res
      */
     login(req, res) {
-        passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
+        var secret = sails.config.odin.recaptchaSecret;
+        var response = req.param('g-recaptcha-response');
+        requestify.get('https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response)
+            .then(function(response) {
+                var data = response.getBody();
+                if (data.success) {
+                    passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
+                } else {
+                    return res.forbidden(data);
+                }
+            });
     },
 
     /**
@@ -23,17 +35,41 @@ module.exports = {
      * @param req
      * @param res
      */
+    // refreshToken(req, res) {
+    //     if (!req.param('token')) return res.badRequest(null, {
+    //         message: 'You must provide token parameter'
+    //     });
+    //
+    //     const oldDecoded = CipherService.jwt.decodeSync(req.param('token'));
+    //
+    //     res.ok({
+    //         token: CipherService.jwt.encodeSync({
+    //             id: oldDecoded.id
+    //         })
+    //     });
+    // }
     refreshToken(req, res) {
-        if (!req.param('token')) return res.badRequest(null, {
-            message: 'You must provide token parameter'
-        });
+        var consumerId = req.param('consumerId');
+        var consumerUsername = req.param('consumer');
 
-        const oldDecoded = CipherService.jwt.decodeSync(req.param('token'));
-
-        res.ok({
-            token: CipherService.jwt.encodeSync({
-                id: oldDecoded.id
-            })
-        });
+        if (_.isUndefined(consumerId) || _.isUndefined(consumerUsername)) {
+            return res.badRequest(null, {
+                message: 'consumerId & consumer parameters are mandatory'
+            });
+        } else {
+            requestify.post(sails.config.odin.kongAdmin + '/consumers/' + consumerUsername + '/jwt', {
+                    consumer_id: consumerId
+                })
+                .then(function(response) {
+                    // Get the response body
+                    var credential = response.getBody();
+                    var payload = {
+                        iss: credential.key
+                    };
+                    var secret = credential.secret;
+                    var token = jwt.encode(payload, secret);
+                    return res.ok(token);
+                });
+        }
     }
 };

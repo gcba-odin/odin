@@ -6,6 +6,7 @@
  */
 
 var shortId = require('shortid');
+var slug = require('slug');
 
 module.exports = {
     schema: true,
@@ -23,12 +24,19 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        slug: {
+            type: 'string'
+        },
         name: {
             type: 'string',
             required: true,
             unique: true,
             size: 150,
             minLength: 1
+        },
+        mimetype: {
+            type: 'string',
+            size: 200
         },
         files: {
             collection: 'file',
@@ -39,35 +47,23 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        api: {
-            type: 'boolean'
-        },
-        files: {
-            type: 'object'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
     searchables: ['name'],
 
-    beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next()
+    beforeUpdate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {
+                lower: true
+            });
+        }
+        next()
+    },
+    beforeCreate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {
+                lower: true
+            });
+        }
+        next()
+    }
 };

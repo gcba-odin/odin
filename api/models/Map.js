@@ -23,6 +23,7 @@ module.exports = {
         name: {
             type: 'string',
             required: true,
+            unique: true,
             size: 150,
             minLength: 1
         },
@@ -34,12 +35,18 @@ module.exports = {
             type: 'string',
             size: 500
         },
+        status: {
+            model: 'status'
+        },
         basemap: {
-            type: 'string',
-            required: true,
-            enum: ['roadmap', 'satellite', 'hybrid', 'terrain']
+            model: 'basemap'
         },
         url: {
+            type: 'string',
+            url: true,
+            size: 500
+        },
+        link: {
             type: 'string',
             url: true,
             size: 500
@@ -51,12 +58,13 @@ module.exports = {
         latitudeKey: {
             type: 'string',
             size: 100
-                // required: true
+        },
+        properties: {
+            type: 'array',
         },
         longitudeKey: {
             type: 'string',
             size: 100
-                // required: true
         },
         geojson: {
             type: 'json'
@@ -70,75 +78,32 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
         toJSON() {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'string'
-        },
-        notes: {
-            type: 'string'
-        },
-        basemap: {
-            type: 'string'
-        },
-        url: {
-            type: 'string'
-        },
-        embedCode: {
-            type: 'string'
-        },
-        latitudeKey: {
-            type: 'string'
-        },
-        longitudeKey: {
-            type: 'string'
-        },
-        geojson: {
-            type: 'json'
-        },
-        publishedAt: {
-            type: 'datetime'
-        },
-        file: {
-            type: 'string'
-        },
-        createdBy: {
-            type: 'string'
-        }
 
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
     searchables: ['name', 'description'],
 
     beforeUpdate: (values, next) => next(),
+
     beforeCreate: (values, next) => {
-        values.url = _.replace(values.url, 'model', 'maps');
-        values.url = _.replace(values.url, 'id', values.id);
-        next();
+
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function (err, record) {
+            values.status = record.value;
+
+            values.url = _.replace(values.url, 'model', 'maps');
+            values.url = _.replace(values.url, 'id', values.id);
+            next();
+        });
+
+
     },
+
     afterUpdate: (values, next) => {
         next();
     },

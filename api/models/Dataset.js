@@ -6,6 +6,8 @@
  */
 
 var shortId = require('shortid');
+var slug = require('slug');
+var fs = require('fs');
 
 module.exports = {
     schema: true,
@@ -26,6 +28,9 @@ module.exports = {
             size: 150,
             minLength: 1
         },
+        slug: {
+            type: 'string'
+        },
         description: {
             type: 'string',
             size: 350
@@ -40,53 +45,23 @@ module.exports = {
         },
         starred: {
             type: 'boolean',
-            defaultsTo: false
+            defaultsTo: false,
+            boolean: true
         },
-        optional1: {
-            type: 'string',
-            size: 500
+        optionals: {
+            type: 'json'
         },
-        optional2: {
-            type: 'string',
-            size: 500
-        },
-        optional3: {
-            type: 'string',
-            size: 500
-        },
-        optional4: {
-            type: 'string',
-            size: 500
-        },
-        optional5: {
-            type: 'string',
-            size: 500
-        },
-        optional6: {
-            type: 'string',
-            size: 500
-        },
-        optional7: {
-            type: 'string',
-            size: 500
-        },
-        optional8: {
-            type: 'string',
-            size: 500
-        },
-        optional9: {
-            type: 'string',
-            size: 500
-        },
-        optional10: {
+        disclaimer: {
             type: 'string',
             size: 500
         },
         publishedAt: {
             type: 'datetime'
         },
-        category: {
-            model: 'category'
+        categories: {
+            collection: 'category',
+            via: 'datasets',
+            dominant: true
         },
         status: {
             model: 'status'
@@ -112,107 +87,49 @@ module.exports = {
             return this.toObject();
         }
     },
-    baseAttributes: {
-        name: {
-            type: 'string'
-        },
-        description: {
-            type: 'email'
-        },
-        notes: {
-            type: 'string'
-        },
-        visible: {
-            type: 'boolean'
-        },
-        starred: {
-            type: 'boolean'
-        },
-        optional1: {
-            type: 'string',
-            size: 500
-        },
-        optional2: {
-            type: 'string',
-            size: 500
-        },
-        optional3: {
-            type: 'string',
-            size: 500
-        },
-        optional4: {
-            type: 'string',
-            size: 500
-        },
-        optional5: {
-            type: 'string',
-            size: 500
-        },
-        optional6: {
-            type: 'string',
-            size: 500
-        },
-        optional7: {
-            type: 'string',
-            size: 500
-        },
-        optional8: {
-            type: 'string',
-            size: 500
-        },
-        optional9: {
-            type: 'string',
-            size: 500
-        },
-        optional10: {
-            type: 'string',
-            size: 500
-        },
-        publishedAt: {
-            type: 'datetime'
-        },
-        category: {
-            model: 'category'
-        },
-        status: {
-            model: 'status'
-        },
-        files: {
-            collection: 'file',
-            via: 'dataset'
-        },
-        tags: {
-            collection: 'tag',
-            via: 'datasets',
-            dominant: true
-        },
-        owner: {
-            model: 'user',
-            required: true
-        },
-        createdBy: {
-            model: 'user'
-        }
-    },
-    setAttributes() {
-        return this.baseAttributes;
-    },
-    getAttributes() {
-        return _.merge({
-            id: {
-                type: 'string'
-            },
-            createdAt: {
-                type: 'datetime'
-            },
-            updatedAt: {
-                type: 'datetime'
-            }
-        }, this.baseAttributes);
-    },
+
+    removeEmptyAssociations: true,
+
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
-    beforeCreate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+
+        if (values.id) {
+
+            Dataset.find(values.id).limit(1).then(function (originalDataset) {
+                originalDataset = originalDataset[0];
+
+                if (originalDataset.name !== values.name) {
+
+                    var originalDirname = sails.config.odin.uploadFolder + "/" + slug(originalDataset.name, {
+                            lower: true
+                        });
+                    var newDirname = sails.config.odin.uploadFolder + "/" + slug(values.name, {
+                            lower: true
+                        });
+                    fs.rename(originalDirname, newDirname, function (err) {
+                        if (err) throw err;
+                        console.log('Datasets folder renamed');
+                    });
+                }
+            });
+
+        }
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        next()
+    },
+    beforeCreate: (values, next) => {
+        if (values.name) {
+            values.slug = slug(values.name, {lower: true});
+        }
+        Config.findOne({
+            key: 'defaultStatus'
+        }).exec(function (err, record) {
+            values.status = record.value;
+            next();
+        });
+    },
     afterCreate: (values, next) => next()
 };

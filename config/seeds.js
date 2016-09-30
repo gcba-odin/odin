@@ -1,8 +1,8 @@
 module.exports = {
     fixtures: {
         order: [
-            'Organization', 'User', 'Category', 'Status', 'Database', 'Filetype', 'UpdateFrequency',
-            'Tag', 'Dataset', 'File', 'Chart', 'Map', 'View', 'Config', 'Log'
+            'Organization', 'User', 'Category', 'Status', 'FileType', 'Config', 'UpdateFrequency',
+            'Tag', 'Dataset', 'File', 'Chart', 'Basemap', 'Map', 'Log', 'Statistic'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -117,6 +117,7 @@ module.exports = {
             name: 'Cultura, Recreación y Turismo',
             description: 'An example category.',
             active: true,
+            color: 'F5B69E',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -127,6 +128,7 @@ module.exports = {
             name: 'Economía, Negocio y Comercio',
             description: 'An example category.',
             active: true,
+            color: 'FBCDB7',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -137,6 +139,7 @@ module.exports = {
             name: 'Educación',
             description: 'An example category.',
             active: true,
+            color: 'FFF4D2',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -144,9 +147,10 @@ module.exports = {
             }
         }, {
             id: 'lWRhpRV',
-            name: 'Gobierno y Administración pública',
+            name: 'Gobierno y Administración Pública',
             description: 'An example category.',
             active: false,
+            color: 'D4F1E6',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -157,6 +161,7 @@ module.exports = {
             name: 'Medio Ambiente',
             description: 'An example category.',
             active: false,
+            color: 'BFF0E7',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -167,6 +172,7 @@ module.exports = {
             name: 'Salud',
             description: 'An example category.',
             active: false,
+            color: 'F5B69E',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -177,6 +183,7 @@ module.exports = {
             name: 'Seguridad',
             description: 'An example category.',
             active: false,
+            color: 'FBCDB7',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -187,6 +194,7 @@ module.exports = {
             name: 'Transporte',
             description: 'An example category.',
             active: false,
+            color: 'FFF4D2',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -197,6 +205,7 @@ module.exports = {
             name: 'Urbanismo e Infraestructura',
             description: 'An example category.',
             active: false,
+            color: 'D4F1E6',
             models: {
                 createdBy: {
                     username: 'admin'
@@ -205,85 +214,94 @@ module.exports = {
         }],
         Status: [{
             id: 'nWRhpRV',
-            name: 'Draft'
+            name: 'Borrador'
         }, {
             id: 'oWRhpRV',
-            name: 'Under Review'
+            name: 'En revisión'
         }, {
             id: 'pWRhpRV',
-            name: 'Rejected'
+            name: 'Rechazado'
         }, {
             id: 'qWRhpRV',
-            name: 'Published'
+            name: 'Publicado'
         }, {
             id: 'rWRhpRV',
-            name: 'Unpublished'
+            name: 'Despublicado'
         }],
-        Database: [{
-            id: 'sWRhpRf',
-            name: 'Database 1',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRg',
-            name: 'Database 2',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRh',
-            name: 'Database 3',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRi',
-            name: 'Database 4',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }, {
-            id: 'sWRhpRj',
-            name: 'Database 5',
-            collection: 'ExampleCollection',
-            url: 'http://i.imgur.com/u7CUz6v.png'
-        }],
-        Filetype: [{
+        FileType: [{
             id: 'sWRhpRV',
             name: 'csv',
+            mimetype: 'text/csv',
             api: true
         }, {
             id: 'tWRhpRV',
             name: 'html',
+            mimetype: 'text/html',
             api: false
         }, {
             id: 'uWRhpRV',
             name: 'ics',
+            mimetype: 'text/calendar',
             api: false
         }, {
             id: 'vWRhpRV',
             name: 'pdf',
+            mimetype: 'application/pdf',
             api: false
         }, {
             id: 'wWRhpRV',
             name: 'rar',
+            mimetype: 'application/x-rar-compressed',
             api: false
         }, {
             id: 'xWRhpRV',
             name: 'shp',
+            mimetype: 'application/octet-stream',
             api: false
         }, {
             id: 'yWRhpRV',
             name: 'xls',
+            mimetype: 'application/xls',
             api: true
         }, {
             id: '1WRhpRV',
             name: 'xlsx',
+            mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             api: true
         }, {
-            id: 'zWRhpRV',
-            name: 'xml',
+            id: '2WRhpRV',
+            name: 'application-xml',
+            mimetype: 'application/xml',
             api: false
         }, {
-            id: '0WRhpRV',
+            id: '3WRhpRV',
+            name: 'text-xml',
+            mimetype: 'text/xml',
+            api: false
+        }, {
+            id: '4WRhpRV',
+            name: 'ms-excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '5WRhpRV',
             name: 'zip',
+            mimetype: 'application/zip',
+            api: false
+        }, {
+            id: '6WRhpRV',
+            name: 'zip-compressed',
+            mimetype: 'application/x-zip-compressed',
+            api: false
+        }, {
+            id: '8WRhpRV',
+            name: 'excel',
+            mimetype: 'application/vnd.ms-excel',
+            api: true
+        }, {
+            id: '7WRhpRV',
+            name: 'xml2',
+            mimetype: 'text/xml',
             api: false
         }],
         UpdateFrequency: [{
@@ -291,28 +309,28 @@ module.exports = {
             name: 'Eventual'
         }, {
             id: 'zWRhpR8',
-            name: 'Biannual'
+            name: 'Bianual'
         }, {
             id: 'sWRhpR1',
-            name: 'Annual'
+            name: 'Anual'
         }, {
             id: 'wWRhpR5',
             name: 'Semestral'
         }, {
             id: 'vWRhpR4',
-            name: 'Quarterly'
+            name: 'Trimestral'
         }, {
             id: '0WRhpR9',
-            name: 'Bimonthly'
+            name: 'Bimestral'
         }, {
             id: 'uWRhpR3',
-            name: 'Monthly'
+            name: 'Mensual'
         }, {
             id: 'yWRhpR7',
-            name: 'Weekly'
+            name: 'Semanal'
         }, {
             id: 'xWRhpR6',
-            name: 'Real Time'
+            name: 'Tiempo Real'
         }],
         Tag: [{
             id: 'tWRhpz2',
@@ -394,23 +412,15 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
-                category: {
-                    name: 'Cultura, Recreación y Turismo'
-                },
                 status: {
-                    name: 'Draft'
+                    name: 'Borrador'
                 },
                 owner: {
                     username: 'admin'
@@ -426,6 +436,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 1', 'Tag 2', 'Tag 3']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -435,23 +448,15 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
-                category: {
-                    name: 'Economía, negocio y comercio'
-                },
                 status: {
-                    name: 'Under Review'
+                    name: 'En revisión'
                 },
                 owner: {
                     username: 'admin'
@@ -467,6 +472,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 4', 'Tag 5', 'Tag 6']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -476,23 +484,15 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
-                category: {
-                    name: 'Educación'
-                },
                 status: {
-                    name: 'Rejected'
+                    name: 'Rechazado'
                 },
                 owner: {
                     username: 'admin'
@@ -508,6 +508,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 7', 'Tag 8', 'Tag 9']
+                },
+                category: {
+                    name: ['Cultura, Recreación y Turismo', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -517,23 +520,15 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
-                category: {
-                    name: 'Gobierno y administración pública'
-                },
                 status: {
-                    name: 'Published'
+                    name: 'Publicado'
                 },
                 owner: {
                     username: 'admin'
@@ -549,6 +544,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 1', 'Tag 2', 'Tag 3']
+                },
+                category: {
+                    name: ['Gobierno y administración pública', 'Economía, negocio y comercio']
                 }
             }
         }, {
@@ -558,23 +556,15 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             visible: 1,
             starred: true,
-            optional1: null,
-            optional2: null,
-            optional3: null,
-            optional4: null,
-            optional5: null,
-            optional6: null,
-            optional7: null,
-            optional8: null,
-            optional9: null,
-            optional10: null,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
-                category: {
-                    name: 'Medio ambiente'
-                },
                 status: {
-                    name: 'Unpublished'
+                    name: 'Despublicado'
                 },
                 owner: {
                     username: 'admin'
@@ -590,6 +580,9 @@ module.exports = {
                 // alias of the 'user' association
                 tag: {
                     name: ['Tag 4', 'Tag 5', 'Tag 6']
+                },
+                category: {
+                    name: ['Gobierno y administración pública', 'Economía, negocio y comercio', 'Medio ambiente']
                 }
             }
         }],
@@ -600,13 +593,18 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:01+03',
             models: {
                 type: {
                     name: 'csv'
                 },
                 status: {
-                    name: 'Draft'
+                    name: 'Borrador'
                 },
                 organization: {
                     name: 'ACME'
@@ -640,13 +638,18 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:02+03',
             models: {
                 type: {
                     name: 'html'
                 },
                 status: {
-                    name: 'Under Review'
+                    name: 'En revisión'
                 },
                 organization: {
                     name: 'Umbrella Corp'
@@ -655,7 +658,7 @@ module.exports = {
                     name: 'Dataset 2'
                 },
                 updateFrequency: {
-                    name: 'Annual'
+                    name: 'Anual'
                 },
                 owner: {
                     username: 'admin'
@@ -680,13 +683,18 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:03+03',
             models: {
                 type: {
                     name: 'ics'
                 },
                 status: {
-                    name: 'Rejected'
+                    name: 'Rechazado'
                 },
                 organization: {
                     name: 'Oscorp'
@@ -695,7 +703,7 @@ module.exports = {
                     name: 'Dataset 3'
                 },
                 updateFrequency: {
-                    name: 'Monthly'
+                    name: 'Mensual'
                 },
                 owner: {
                     username: 'admin'
@@ -720,13 +728,18 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:04+03',
             models: {
                 type: {
                     name: 'rar'
                 },
                 status: {
-                    name: 'Published'
+                    name: 'Publicado'
                 },
                 organization: {
                     name: 'Aperture Labs'
@@ -735,7 +748,7 @@ module.exports = {
                     name: 'Dataset 4'
                 },
                 updateFrequency: {
-                    name: 'Weekly'
+                    name: 'Semanal'
                 },
                 owner: {
                     username: 'admin'
@@ -760,13 +773,18 @@ module.exports = {
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/u7CUz6v.png',
             visible: 1,
+            optionals: {
+                'optional1': 'first',
+                'optional2': 'second',
+                'foo': 'bar'
+            },
             publishedAt: '2011-01-01 00:00:05+03',
             models: {
                 type: {
                     name: 'pdf'
                 },
                 status: {
-                    name: 'Unpublished'
+                    name: 'Despublicado'
                 },
                 organization: {
                     name: 'ACME'
@@ -775,7 +793,7 @@ module.exports = {
                     name: 'Dataset 5'
                 },
                 updateFrequency: {
-                    name: 'Quarterly'
+                    name: 'Trimestral'
                 },
                 owner: {
                     username: 'admin'
@@ -800,6 +818,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -811,6 +830,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -822,6 +842,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -833,6 +854,7 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
@@ -844,18 +866,24 @@ module.exports = {
             description: 'An example chart.',
             notes: 'Lorem ipsum dolor sit amet...',
             url: 'http://i.imgur.com/i2604rk.jpg',
+            embedCode: "<div></div>",
             models: {
                 createdBy: {
                     username: 'admin'
                 }
             }
         }],
+        Basemap: [{
+            id: 'nYrnfYEv',
+            name: 'roadmap',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        }],
         Map: [{
             id: '6ogPbIz9',
             name: 'Map 1',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'roadmap',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -869,7 +897,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -909,7 +937,7 @@ module.exports = {
             name: 'Map 2',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'satellite',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -923,7 +951,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -952,7 +980,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 2'
                 },
                 createdBy: {
                     username: 'admin'
@@ -963,7 +991,7 @@ module.exports = {
             name: 'Map 3',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'hybrid',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -977,7 +1005,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1006,7 +1034,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 3'
                 },
                 createdBy: {
                     username: 'admin'
@@ -1017,7 +1045,7 @@ module.exports = {
             name: 'Map 4',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'terrain',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -1031,7 +1059,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1060,7 +1088,7 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 4'
                 },
                 createdBy: {
                     username: 'admin'
@@ -1071,7 +1099,7 @@ module.exports = {
             name: 'Map 5',
             description: 'An example map.',
             notes: 'Lorem ipsum dolor sit amet...',
-            basemap: 'roadmap',
+            basemap: 'nYrnfYEv',
             url: 'http://i.imgur.com/ZjlW5iP.jpg',
             latitudeKey: 'latitude',
             longitudeKey: 'longitude',
@@ -1085,7 +1113,7 @@ module.exports = {
                     "type": "Feature",
                     "id": "Feature|1",
                     "properties": {
-                        "Nombre": "Landmark 1",
+                        "Name": "Landmark 1",
                         "Id": "Feature|1"
                     }
                 }, {
@@ -1114,115 +1142,35 @@ module.exports = {
             },
             models: {
                 file: {
-                    name: 'File 1'
+                    name: 'File 5'
                 },
                 createdBy: {
                     username: 'admin'
                 }
             }
         }],
-        View: [{
-            id: '1ogP1Iz9',
-            name: 'View 1',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                }
-            }
-        }, {
-            id: '2ogP2Iz9',
-            name: 'View 2',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                }
-            }
-        }, {
-            id: '3ogP3Iz9',
-            name: 'View 3',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 7', 'Tag 8', 'Tag 9']
-                }
-            }
-        }, {
-            id: '4ogP4Iz9',
-            name: 'View 4',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 1', 'Tag 2', 'Tag 3']
-                }
-            }
-        }, {
-            id: '5ogP5Iz9',
-            name: 'View 5',
-            description: 'An example view.',
-            notes: 'Lorem ipsum dolor sit amet...',
-            models: {
-                createdBy: {
-                    username: 'admin'
-                }
-            },
-            collections: {
-                // Queries a 'where' query internally
-                // with {username: user} as object.
-                // resulting documents are added to the
-                // alias of the 'user' association
-                tag: {
-                    name: ['Tag 4', 'Tag 5', 'Tag 6']
-                }
-            }
-        }],
         Config: [{
             id: '1ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            description: 'Modelos logueados',
+            type: 'model',
+            multiple: true,
+            key: 'logWhitelist',
+            value: ['category', 'dataset', 'fileType', 'file',
+                'organization', 'status', 'tag', 'updateFrequency', 'user'
+            ],
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '0ogPzIz9',
+            description: 'Estado por defecto',
+            type: 'model',
+            multiple: false,
+            model: 'Statuses',
+            key: 'defaultStatus',
+            value: 'qWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1230,10 +1178,12 @@ module.exports = {
             }
         }, {
             id: '2ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            description: 'Estado publicado',
+            type: 'model',
+            multiple: false,
+            model: 'Statuses',
+            key: 'publishedStatus',
+            value: 'qWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1241,10 +1191,12 @@ module.exports = {
             }
         }, {
             id: '3ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            description: 'Estado despublicado',
+            type: 'model',
+            multiple: false,
+            model: 'Statuses',
+            key: 'unpublishedStatus',
+            value: 'rWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1252,10 +1204,12 @@ module.exports = {
             }
         }, {
             id: '4ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            description: 'Estado rechazado',
+            type: 'model',
+            multiple: false,
+            model: 'Statuses',
+            key: 'rejectedStatus',
+            value: 'sWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1263,10 +1217,11 @@ module.exports = {
             }
         }, {
             id: '5ogPzIz9',
-            description: 'An example config.',
-            type: 'string',
-            key: 'key',
-            value: 'value',
+            description: 'Paginación en frontend',
+            type: 'integer',
+            multiple: false,
+            key: 'frontEndPagination',
+            value: 50,
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1274,10 +1229,35 @@ module.exports = {
             }
         }, {
             id: '6ogPzIz9',
-            description: 'An example config.',
+            description: 'Paginación en admin',
+            type: 'integer',
+            multiple: false,
+            key: 'adminPagination',
+            value: 20,
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '7ogPzIz9',
+            description: 'Url base frontend',
             type: 'string',
-            key: 'key',
-            value: 'value',
+            multiple: false,
+            key: 'frontEndUrl',
+            value: 'www.odinproject.org',
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: '8ogPzIz9',
+            description: 'Limite de puntos para creación de mapa',
+            type: 'integer',
+            multiple: false,
+            key: 'mapPointsLimit',
+            value: 2000,
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -1344,6 +1324,34 @@ module.exports = {
                     username: 'admin'
                 }
             }
+        }],
+        Statistic: [{
+            id: 'B12SrQH_',
+            method: 'OPTIONS',
+            resource: 'File',
+            endpoint: '/files/tWRhpRb',
+            querystring: '{ include: tags };',
+            client: '',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
+        }, {
+            id: 'B13SrQH_',
+            method: 'OPTIONS',
+            resource: 'File',
+            endpoint: '/files/tWRhpRb',
+            querystring: '{ include: tags };',
+            client: '',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
+        }, {
+            id: 'B225rQH_',
+            method: 'GET',
+            resource: 'File',
+            endpoint: '/files/first',
+            querystring: '',
+            client: '',
+            useragent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36',
+            ip: '127.0.0.1'
         }]
     }
 };

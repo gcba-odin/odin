@@ -42,15 +42,29 @@ module.exports = (req, res) => {
                 links: builder.links(undefined)
             });
             else {
-                //if (!_.isEmpty(builder.includes)) {
-                //    records[0] = _.assign(records[0], builder.includes);
-                //}
-                return res.ok(
+                if(_.isUndefined(req.user)){
+                    builder.filterObject(records, 'owner');
+                    builder.filterObject(records, 'createdBy');
+                }
+
+                if(!_.isUndefined(builder.params.where.deep) && !_.isEmpty(builder.params.where.deep)){
+                    //Some models don't need to filter records because of empty associations
+                    //In those cases, we're previously paginating on server
+                    if(builder._model.removeEmptyAssociations) {
+                        records = builder.filterAssociations(records);
+                        builder.count(records);
+                        records = builder.paginate(records);
+                    }
+                }
+                builder.removeIncludes(records);
+                           
+                res.ok(
                     records, {
                         meta: builder.meta(records),
                         links: builder.links(records)
                     }
                 );
+                records = null;
             }
         })
         .catch(res.negotiate);
