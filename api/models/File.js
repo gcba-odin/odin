@@ -47,6 +47,14 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        maps: {
+            collection: 'map',
+            via: 'file'
+        },
+        charts: {
+            collection: 'chart',
+            via: 'file'
+        },
         url: {
             type: 'string',
             url: true,
@@ -69,18 +77,9 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
-
-        maps: {
-            collection: 'map',
-            via: 'file',
-        },
-        charts: {
-            collection: 'chart',
-            via: 'file'
-        },
         type: {
             model: 'filetype'
-            // required: true
+                // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
@@ -98,7 +97,7 @@ module.exports = {
         },
         dataset: {
             model: 'dataset'
-            // required: true
+                // required: true
         },
         restService: {
             model: 'restservice'
@@ -117,7 +116,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-            // required: true
+                // required: true
         },
 
         toJSON() {
@@ -131,7 +130,7 @@ module.exports = {
     beforeCreate: (values, next) => {
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function (err, record) {
+        }).exec(function(err, record) {
             values.status = record.value;
 
             if (_.endsWith(values.url, '/id')) {
