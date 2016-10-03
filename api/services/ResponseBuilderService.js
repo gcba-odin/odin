@@ -223,72 +223,21 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     findQuery() {
+        // We separate filters into:
+        // a)Main model (full filters)
+        // b)Nested collections (deep filters)
+
+        if(_.isUndefined(this.params.where)) {
+            this.params.where = {};
+        }
         
+        this.params.where.deep = this.getDeepConditions();
+
         //Multiple results (find)
         if (this._many) {
-
-            // We separate filters into:
-            // a)Main model (full filters)
-            // b)Nested collections (deep filters)
-
-            // Get "invited" full filters in case there's no req.user
-            var frontFullFilters = this.getFrontFullFilters();
-            var frontDeepFilters = this.getFrontDeepFilters();
-
-            // Parse user full + deep filters 
-            var fullFilters = this.parseFullFilters(this.params.where.full);
-            var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep);
-            frontDeepFilters = this.parseDeepFilters({}, frontDeepFilters);
-
-            // Convert full filters to query conditions            
-            var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
-            if (!_.isUndefined(fullConditions.or) && _.isEmpty(fullConditions.or)) {
-                fullConditions = {};                  
-            }
-            var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
-
-            // Merge both user and "invited" conditions
-            _.merge(fullConditions, frontFullConditions);
-            this.params.where.full = fullConditions;
-
-            // Now convert deep filters to query conditions (Both user and "invited" filters)
-            var deepConditions = {};
             
-            this.params.include.remove = [];
-                
-            // Each nested collection has its corresponding deep conditions
-            // Example: {'categories': {slug: 'test', status: 'publishedId'}, 'files': {...}}
-            _.forEach(this.collections, function (value, key) {
-                // Get collection model
-                var keyModel = sails.models[value.collection];
-                
-                // Get collection conditions
-                var keyConditions = this.filtersToConditions(deepFilters[key], this.params.condition, keyModel);
-                if (!_.isUndefined(keyConditions.or) && _.isEmpty(keyConditions.or)) {
-                    keyConditions = {};                  
-                }
-                deepConditions[key] = keyConditions;  
+            this.params.where.full = this.getFullConditions();
 
-                // Merge with collection front conditions
-                var keyFrontConditions = this.filtersToAndConditions(frontDeepFilters[key], keyModel);
-                _.merge(deepConditions[key], keyFrontConditions);                
-
-                // We need to temporary include collections for populate deep conditions
-                // Then, when retrieving the data, removing unnecessary nested collections
-                if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
-                    if (!_.includes(this.params.include.full, key)) {
-                        this.params.include.full.push(key);
-                        this.params.include.remove.push(key);   
-                    }
-                }
-            }.bind(this));
-            
-            //Back to params
-            this.params.where.deep = deepConditions;
-
-            //console.log(this.params.where.full);
-            //console.log(this.params.where.deep);
-            
             this._query = this._model.find()
                 .where(this.params.where.full)
                 .sort(this.params.sort);
@@ -309,15 +258,88 @@ class ResponseGET extends ResponseBuilder {
         //Single result (find one)
         else {
             this.params.pk = actionUtil.requirePk(this.req);
-            this._query = this._model.find(this.params.pk);
-            if(_.isUndefined(this.params.where)) {
-                this.params.where = {};
-            }    
+            this._query = this._model.find(this.params.pk);    
         }
 
+        //console.log(this.params.where.full);
+        //console.log(this.params.where.deep);
+            
         this._query = this.populate(this._query, this._model, this.params.include, this.params.where.deep);
         
         return this._query;
+    }
+
+    /*
+     * Given this.params.where.full, get full conditions:
+     * 1) Parse full filters (Leave only model ones)
+     * 2) Merge with front full conditions if invited user
+     * 3) Convert filters to conditions (the ones that query accepts)
+     */
+    getFullConditions(){
+        // Get "invited" full filters in case there's no req.user
+        var frontFullFilters = this.getFrontFullFilters();
+        
+        // Parse user full filters 
+        var fullFilters = this.parseFullFilters(this.params.where.full);
+        
+        // Convert full filters to query conditions            
+        var fullConditions = this.filtersToConditions(fullFilters, this.params.condition, this._model);
+        if (!_.isUndefined(fullConditions.or) && _.isEmpty(fullConditions.or)) {
+            fullConditions = {};                  
+        }
+        var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
+
+        // Merge both user and "invited" conditions
+        _.merge(fullConditions, frontFullConditions);
+        return fullConditions;    
+    }
+
+    /*
+     * Given this.params.where.full + this.params.where.deep, get deep conditions:
+     * 1) Parse deep filters (Leave only collection ones)
+     * 2) Merge with front deep conditions if invited user
+     * 3) Convert filters to conditions (the ones that query accepts)
+     */
+    getDeepConditions(){
+        // Get "invited" deep filters in case there's no req.user
+        var frontDeepFilters = this.getFrontDeepFilters();
+        
+        // Parse user deep filters 
+        var deepFilters = this.parseDeepFilters(this.params.where.full, this.params.where.deep);
+        frontDeepFilters = this.parseDeepFilters({}, frontDeepFilters);
+
+        // Now convert deep filters to query conditions (Both user and "invited" filters)
+        var deepConditions = {};
+        
+        this.params.include.remove = [];
+            
+        // Each nested collection has its corresponding deep conditions
+        // Example: {'categories': {slug: 'test', status: 'publishedId'}, 'files': {...}}
+        _.forEach(this.collections, function (value, key) {
+            // Get collection model
+            var keyModel = sails.models[value.collection];
+            
+            // Get collection conditions
+            var keyConditions = this.filtersToConditions(deepFilters[key], this.params.condition, keyModel);
+            if (!_.isUndefined(keyConditions.or) && _.isEmpty(keyConditions.or)) {
+                keyConditions = {};                  
+            }
+            deepConditions[key] = keyConditions;  
+
+            // Merge with collection front conditions
+            var keyFrontConditions = this.filtersToAndConditions(frontDeepFilters[key], keyModel);
+            _.merge(deepConditions[key], keyFrontConditions);                
+
+            // We need to temporary include collections for populate deep conditions
+            // Then, when retrieving the data, removing unnecessary nested collections
+            if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
+                if (!_.includes(this.params.include.full, key)) {
+                    this.params.include.full.push(key);
+                    this.params.include.remove.push(key);   
+                }
+            }
+        }.bind(this));
+        return deepConditions;    
     }
 
     /*

@@ -16,13 +16,22 @@ class ParamsProcessor {
         // this.query = '';
         this.fields = this.parseFields(this.req);
         this.include = this.parseInclude();
+        this.match = this.parseMatch(this.req);
+        this.condition = this.parseCondition(this.req);
+        this.where = this.parseCriteria(this.req);
+        delete this.where.full.match;
+        delete this.where.full.condition;
+            
+        this.result = {
+            include: this.include,
+            fields: this.fields,
+            where: this.where,
+            pk: this.pk,
+            match: this.match,
+            condition: this.condition
+        };
 
         if (this._many) {
-            this.match = this.parseMatch(this.req);
-            this.condition = this.parseCondition(this.req);
-            this.where = this.parseCriteria(this.req);
-            delete this.where.full.match;
-            delete this.where.full.condition;
             this.limit = _actionUtil.parseLimit(this.req) || sails.config.blueprints.defaultLimit;
 
             this.skip = this.req.param('page') * this.limit || _actionUtil.parseSkip(this.req) || 0;
@@ -33,23 +42,20 @@ class ParamsProcessor {
             // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
-            this.result = {
-                include: this.include,
-                fields: this.fields,
-                where: this.where,
-                limit: this.limit,
+            
+            var manyResult = {
                 skip: this.skip,
                 sort: this.sort,
                 page: this.page,
-                match: this.match,
-                condition: this.condition
-            };
+                limit: this.limit
+            }
+            _.merge(this.result, manyResult);
+            
         } else {
-            this.result = {
-                include: this.include,
-                fields: this.fields,
+            var singleResult = {
                 pk: this.pk
-            };
+            }
+            _.merge(this.result, singleResult);
         }
 
         return this.result;
