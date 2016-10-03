@@ -1,0 +1,13 @@
+{
+    "script": "app.js",
+    "instances": "max",
+    "env": {
+        "NODE_ENV": "production"
+    },
+    "max_memory_restart" : "1G",
+    "exec_mode": "cluster",
+    "error_file": "err.log",
+    "out_file": "out.log",
+    "merge_logs": true,
+    "log_date_format": "YYYY-MM-DD HH:mm Z"
+}
