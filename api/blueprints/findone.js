@@ -13,17 +13,6 @@ const Response = require('../services/ResponseBuilderService');
  * An API call to find and return a single model instance from the data adapter using the specified id.
  */
 module.exports = (req, res) => {
-    // _.set(req.options, 'criteria.blacklist', ['fields', 'populate', 'limit', 'skip', 'page', 'sort']);
-    //
-    // const fields = req.param('fields') ? req.param('fields').replace(/ /g, '').split(',') : [];
-    // const populate = req.param('populate') ? req.param('populate').replace(/ /g, '').split(',') : [];
-    // const Model = actionUtil.parseModel(req);
-    // const pk = actionUtil.requirePk(req);
-    // const query = Model.find(pk, fields.length > 0 ? {
-    //     select: fields
-    // } : null);
-    // const findQuery = _.reduce(_.intersection(populate, takeAliases(Model.associations)), populateAliases, query);
-
     // Create Builder instance here, then execute findQuery off it (ie, builder.findQuery)
     // Then save the instance in the config object (the one with the 'root' key)
     // And move over to the response file to finish the response off
@@ -41,7 +30,8 @@ module.exports = (req, res) => {
                     builder.filterObject(returnRecord, 'owner');
                     builder.filterObject(returnRecord, 'createdBy');
                 }
-
+                builder.removeIncludes(records);
+                
                 return res.ok(
                     returnRecord, {
                         meta: builder.meta(returnRecord),

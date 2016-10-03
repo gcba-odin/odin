@@ -15,21 +15,6 @@ const Response = require('../services/ResponseBuilderService');
  * If an id was specified, just the instance with that unique id will be returned.
  */
 module.exports = (req, res) => {
-    // _.set(req.options, 'criteria.blacklist', ['fields', 'populate', 'limit', 'skip', 'page', 'sort']);
-    //
-    // const fields = req.param('fields') ? req.param('fields').replace(/ /g, '').split(',') : [];
-    // const populate = req.param('populate') ? req.param('populate').replace(/ /g, '').split(',') : [];
-    // const Model = actionUtil.parseModel(req);
-    // const where = actionUtil.parseCriteria(req);
-    // const limit = actionUtil.parseLimit(req);
-    // const skip = req.param('page') * limit || actionUtil.parseSkip(req);
-    // const sort = actionUtil.parseSort(req);
-    // const query = Model.find(null, fields.length > 0 ? {
-    //   select: fields
-    // } : null).where(where).limit(limit).skip(skip).sort(sort);
-    // const findQuery = _.reduce(_.intersection(populate, takeAlias(Model.associations)), populateAlias, query);
-
-
     // Create Builder instance here, then execute findQuery off it (ie, builder.findQuery)
     // Then save the instance in the config object (the one with the 'root' key)
     // And move over to the response file to finish the response off

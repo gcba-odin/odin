@@ -37,16 +37,16 @@ ODIN has not been tested with earlier versions of Node.js and MongoDB.
 
 1. Clone the repo
 
-``` bash
-  $ git clone https://github.com/gcba-odin/odin.git
-```
+    ``` bash
+      $ git clone https://github.com/gcba-odin/odin.git
+    ```
 
 2. Install dependencies
 
-```bash
-  $ cd odin
-  $ npm install
-```
+    ```bash
+      $ cd odin
+      $ npm install
+    ```
 
 3. Create postgres database. dbname: `odin`, owner: `postgres`, owner password `postgres`
 
@@ -54,20 +54,23 @@ ODIN has not been tested with earlier versions of Node.js and MongoDB.
 
 5. Start the app
 
-``` bash
-  $ npm start
-```
+    ``` bash
+      $ npm start
+    ```
+
 6. To make sure your app server will start back up if it crashes use pm2 `npm install -g pm2`
 
 7. Start the app with `pm2 start app.js -i 0 -- --prod`, where `-i` indicates how many CPUs will use.
 For more information read pm2 [docs](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/)
 
+8. Execute `pm2 startup` to generate the startup script
+
 ## PostgreSQL
 Ubuntu instructions:
-```bash
-    sudo apt-get update
-    sudo apt-get install postgresql postgresql-contrib
-```
+    ```bash
+        sudo apt-get update
+        sudo apt-get install postgresql postgresql-contrib
+    ```
 
 For more information visit the PostgreSQL [oficial page](https://www.postgresql.org/).
 
@@ -79,12 +82,12 @@ For more information visit the PostgreSQL [oficial page](https://www.postgresql.
 
    Note: **Use 0.8.x version**
 
-```bash
-    1. Download the package from https://github.com/Mashape/kong/releases/tag/0.8.3
-    2. sudo apt-get update
-    3. sudo apt-get install netcat openssl libpcre3 dnsmasq procps
-    4. sudo dpkg -i kong-0.8.3.*.deb
-```
+    ```bash
+        1. Download the package from https://github.com/Mashape/kong/releases/tag/0.8.3
+        2. sudo apt-get update
+        3. sudo apt-get install netcat openssl libpcre3 dnsmasq procps
+        4. sudo dpkg -i kong-0.8.3.*.deb
+    ```
 
 2. Create the postgres database: db name: `kong`, password `postgres`
 
@@ -92,17 +95,12 @@ For more information visit the PostgreSQL [oficial page](https://www.postgresql.
 
 4. Modify `kong.yml` configurations according needs
 
-5. Start Kong
+5. Load the database dump `sudo -u postgres psql < kong.sql`
+
+6. Start Kong
 
    ```bash
     $ sudo kong start
-   ```
-6. Load the database dump
-
-7. Restart Kong
-
-   ```bash
-    $ sudo kong restart
    ```
 
 ## Troubleshooting
