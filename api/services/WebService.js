@@ -4,31 +4,37 @@ module.exports = {
     /*
      * Syncs all SOAP and REST services by update frequency
      */
-    sync: function(updateFrequency, callback){
+    sync: function(updateFrequency){
         File.find({
             updateFrequency: updateFrequency.id,
             or: [ { soapService: {'!': null} },  { restService: {'!': null} }]
-        }).exec(function(err, files) {
-            if (err) return callback(err, files);
-
+        })
+        .populate(['dataset', 'soapService', 'restService'])
+        .exec(function(err, files) {    
+            if (err) return console.log(err);
             files.forEach(function(file) {
                 if(file.restService) {
-                    //RestService.getData(file.restService, function(err, result){
-                    //    console.log(err);
-                    //    console.log(result);
-                    //});
+                    RestWebService.getData(file.restService, function(err, result){
+                        //TODO: Persist cron history
+                        if(err) {
+                            console.log(err);
+                        }
+                        else{
+                            console.log(result);    
+                        }
+                    });
                 }
                 else if(file.soapService) {
-                    //SoapService.getData(file.soapService, function(err, result){
-                    //    console.log(err);
-                    //    console.log(result);
-                    //});
+                    SoapWebService.getData(file.soapService, function(err, result){
+                        if(err) {
+                            console.log(err);
+                        }
+                        else{
+                            console.log(result);    
+                        }
+                    });
                 }
-            });           
-
-            //For now, returning files
-            return callback(err, files);
-            
+            });
         });
     },
 }

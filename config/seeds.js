@@ -133,7 +133,8 @@ module.exports = {
             name: 'Semanal'
         }, {
             id: 'xWRhpR6',
-            name: 'Tiempo Real'
+            name: 'Tiempo Real',
+            timePattern: '0 */1 * * * *'
         }],
 
         Basemap: [{

@@ -67,15 +67,12 @@ module.exports = {
         //We should run a cron job per update frequency
         updateFrequencies.forEach(function(updateFrequency) {
           try {
-            var CronJob = require('cron').CronJob;
-            //TODO: Replace with updateFrequency.timePattern
-            var timePattern = '0 */1 * * * *'; 
-            new CronJob(timePattern, function() {
-              WebService.sync(updateFrequency, function(err, result){
-                //console.log(err);
-                //console.log(result);
-              });
-            }, null, true);
+            if(updateFrequency.timePattern){
+              var CronJob = require('cron').CronJob;
+              new CronJob(updateFrequency.timePattern, function() {
+                WebService.sync(updateFrequency);
+              }, null, true);
+            }
           } 
           catch(ex) {
             console.log("cron pattern not valid");
