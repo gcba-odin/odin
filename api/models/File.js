@@ -55,6 +55,14 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        maps: {
+            collection: 'map',
+            via: 'file'
+        },
+        charts: {
+            collection: 'chart',
+            via: 'file'
+        },
         gatheringDate: {
             type: 'date'
         },
