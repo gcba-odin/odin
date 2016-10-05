@@ -8,7 +8,7 @@ var requestify = require('requestify');
 var parseString = require('xml2js').parseString;
 
 module.exports = {
-    getData: function (restService, callback) {
+    getData: function(restService, callback) {
 
         // Object where all the rest web service options will be stored
         var requestOptions = {};
@@ -32,16 +32,16 @@ module.exports = {
         }
 
         // make the call to the defined url, sending the parameters made
-        requestify.get(restService.url, requestOptions).then(function (response) {
+        requestify.get(restService.url, requestOptions).then(function(response) {
             // if is xml we parse it
             if (response.body.indexOf("<?xml") != -1) {
                 var options = {
                     ignoreAttrs: true,
                     explicitArray: false
                 };
-                parseString(response.body, options, function (err, result) {
+                parseString(response.body, options, function(err, result) {
                     // To get the route to the data
-                    if(err) return callback(err, null);
+                    if (err) return callback(err, null);
 
                     result = result[restService.dataPath];
                     return callback(null, result);
@@ -50,6 +50,7 @@ module.exports = {
             // if is json directly return it
             else {
                 response = response.getBody();
+                response = JSON.parse(response);
                 return callback(null, _.isUndefined(restService.dataPath) ? response : response[restService.dataPath]);
             }
         });
