@@ -113,31 +113,31 @@ module.exports = {
         }, {
             id: 'zWRhpR8',
             name: 'Bianual',
-            timePattern: '0 0 0 1 1/1 ? *'
+            timePattern: '0 0 0 1 1/1 * *'
         }, {
             id: 'sWRhpR1',
             name: 'Anual',
-            timePattern: '0 0 0 1 1 ? *'
+            timePattern: '0 0 0 1 1 * *'
         }, {
             id: 'wWRhpR5',
             name: 'Semestral',
-            timePattern: '0 0 0 1 1/6 ? *'
+            timePattern: '0 0 0 1 1/6 * *'
         }, {
             id: 'vWRhpR4',
             name: 'Trimestral',
-            timePattern: '0 0 0 1 1/3 ? *'
+            timePattern: '0 0 0 1 1/3 * *'
         }, {
             id: '0WRhpR9',
             name: 'Bimestral',
-            timePattern: '0 0 0 1 1/2 ? *'
+            timePattern: '0 0 0 1 1/2 * *'
         }, {
             id: 'uWRhpR3',
             name: 'Mensual',
-            timePattern: '0 0 0 1 1/1 ? *'
+            timePattern: '0 0 0 1 1/1 * *'
         }, {
             id: 'yWRhpR7',
             name: 'Semanal',
-            timePattern: '0 0 0 ? * SUN *'
+            timePattern: '0 0 0 * * 0 *'
         }, {
             id: 'xWRhpR6',
             name: 'Tiempo Real',
