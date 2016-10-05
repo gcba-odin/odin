@@ -20,7 +20,10 @@ module.exports = {
                             console.log(err);
                         }
                         else{
-                            console.log(result);    
+                            UploadService.uploadServiceFile(file, result, function(err, uploadedFile){
+                                //console.log(err);
+                                //console.log(uploadedFile);
+                            });    
                         }
                     });
                 }

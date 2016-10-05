@@ -32,9 +32,7 @@ module.exports = {
         }
 
         // make the call to the defined url, sending the parameters made
-        requestify.get(restService.url, requestOptions).then(function (err, response) {
-            if(err) return callback(err, null);
-
+        requestify.get(restService.url, requestOptions).then(function (response) {
             // if is xml we parse it
             if (response.body.indexOf("<?xml") != -1) {
                 var options = {

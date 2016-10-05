@@ -14,7 +14,7 @@
     "ipaddr.js": "^1.2.0",
     "json2csv": "^3.6.2",
     "json2xls": "^0.1.2",
-    "jsonfile": "^2.3.1",
+    "jsonfile": "^2.4.0",
     "jwt-simple": "^0.5.0",
     "kerberos": "0.0.21",
     "lodash": "^4.13.1",
