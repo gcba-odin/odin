@@ -112,25 +112,32 @@ module.exports = {
             name: 'Eventual'
         }, {
             id: 'zWRhpR8',
-            name: 'Bianual'
+            name: 'Bianual',
+            timePattern: '0 0 0 1 1/1 ? *'
         }, {
             id: 'sWRhpR1',
-            name: 'Anual'
+            name: 'Anual',
+            timePattern: '0 0 0 1 1 ? *'
         }, {
             id: 'wWRhpR5',
-            name: 'Semestral'
+            name: 'Semestral',
+            timePattern: '0 0 0 1 1/6 ? *'
         }, {
             id: 'vWRhpR4',
-            name: 'Trimestral'
+            name: 'Trimestral',
+            timePattern: '0 0 0 1 1/3 ? *'
         }, {
             id: '0WRhpR9',
-            name: 'Bimestral'
+            name: 'Bimestral',
+            timePattern: '0 0 0 1 1/2 ? *'
         }, {
             id: 'uWRhpR3',
-            name: 'Mensual'
+            name: 'Mensual',
+            timePattern: '0 0 0 1 1/1 ? *'
         }, {
             id: 'yWRhpR7',
-            name: 'Semanal'
+            name: 'Semanal',
+            timePattern: '0 0 0 ? * SUN *'
         }, {
             id: 'xWRhpR6',
             name: 'Tiempo Real',
