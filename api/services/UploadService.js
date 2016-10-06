@@ -42,7 +42,7 @@ module.exports = {
         });
         file.fileName += '.' + extension;
         
-        var upath = this.getFilePath(file.dataset, file);
+        var upath = UploadService.getFilePath(file.dataset, file);
         fs.lstat(upath, function(err, stats) {
             if (!err && stats.isFile()) {
                 UploadService.deleteFile(file.dataset.id, file.fileName, {});
@@ -68,7 +68,7 @@ module.exports = {
     },
 
     getFilePath: function(dataset, file){
-        return this.getDatasetPath(dataset) + '/' + file.fileName;                                 
+        return UploadService.getDatasetPath(dataset) + '/' + file.fileName;                                 
     },
 
     uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
@@ -115,7 +115,7 @@ module.exports = {
                                             // if the uploaded name is the same of the one saved on the filesystem
                                             // don't deleted, just overwrite it
                                             if (file.fileName !== data.fileName) {
-                                                var upath = this.getFilePath(file.dataset, file);
+                                                var upath = UploadService.getFilePath(file.dataset, file);
                                                 fs.lstat(upath, function(err, stats) {
                                                     if (!err && stats.isFile()) {
                                                         UploadService.deleteFile(file.dataset.id, file.fileName, res);
@@ -152,7 +152,7 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 if (record.api) {
-                                    var filePath = this.getFilePath(dataset, data);
+                                    var filePath = UploadService.getFilePath(dataset, data);
                                     
                                     // Read the file
                                     fs.createReadStream(filePath)
