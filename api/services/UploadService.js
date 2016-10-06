@@ -127,7 +127,7 @@ module.exports = {
                                     return cb(null, data.fileName);
                                 }
                             },
-                            dirname: this.getDatasetPath(dataset),
+                            dirname: UploadService.getDatasetPath(dataset),
                             maxBytes: 2000000000
 
                         },
