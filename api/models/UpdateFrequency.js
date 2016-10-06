@@ -26,6 +26,9 @@ module.exports = {
       unique: true,
       minLength: 1
     },
+    timePattern: {
+      type: 'string',
+    },
 
     toJSON() {
       return this.toObject();

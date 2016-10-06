@@ -15,6 +15,7 @@ const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
 const pluralize = require('pluralize');
 var slug = require('slug');
+var jsonfile = require('jsonfile');
 
 module.exports = {
     createFile: function(req, res, fileRequired, cb) {
@@ -31,6 +32,43 @@ module.exports = {
         } else {
             this.uploadFile(req, res, uploadedFile, fileRequired, cb);
         }
+    },
+
+    uploadServiceFile: function(file, json, callback){
+        //TODO: Double check if we need https://www.npmjs.com/package/jsonfile
+        var extension = 'json';
+        file.fileName = slug(file.name, {
+            lower: true
+        });
+        file.fileName += '.' + extension;
+        
+        var upath = UploadService.getFilePath(file.dataset, file);
+        fs.lstat(upath, function(err, stats) {
+            if (!err && stats.isFile()) {
+                UploadService.deleteFile(file.dataset.id, file.fileName, {});
+            }
+
+            jsonfile.writeFile(upath, json, function (err) {
+                if(err) return callback(err, null);
+                // Connect to the db
+                DataStorageService.mongoSave(file.dataset.id, file.fileName, json, {});
+                
+                // Update their visualizations
+                file.dataset = file.dataset.id;
+                VisualizationsUpdateService.update(file)
+                
+                callback(null, file);
+            })
+        });
+    },
+
+    getDatasetPath: function(dataset){
+        return path.resolve(sails.config.odin.uploadFolder +
+            '/' + slug(dataset.name, { lower: true }));
+    },
+
+    getFilePath: function(dataset, file){
+        return UploadService.getDatasetPath(dataset) + '/' + file.fileName;                                 
     },
 
     uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
@@ -77,10 +115,7 @@ module.exports = {
                                             // if the uploaded name is the same of the one saved on the filesystem
                                             // don't deleted, just overwrite it
                                             if (file.fileName !== data.fileName) {
-                                                var upath = path.resolve(sails.config.odin.uploadFolder +
-                                                    '/' + slug(file.dataset.name, {
-                                                        lower: true
-                                                    }) + '/' + file.fileName);
+                                                var upath = UploadService.getFilePath(file.dataset, file);
                                                 fs.lstat(upath, function(err, stats) {
                                                     if (!err && stats.isFile()) {
                                                         UploadService.deleteFile(file.dataset.id, file.fileName, res);
@@ -92,10 +127,7 @@ module.exports = {
                                     return cb(null, data.fileName);
                                 }
                             },
-                            dirname: path.resolve(sails.config.odin.uploadFolder +
-                                '/' + slug(dataset.name, {
-                                    lower: true
-                                })),
+                            dirname: UploadService.getDatasetPath(dataset),
                             maxBytes: 2000000000
 
                         },
@@ -120,10 +152,8 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 if (record.api) {
-                                    var filePath = sails.config.odin.uploadFolder + "/" + slug(dataset.name, {
-                                        lower: true
-                                    }) + '/' + data.fileName;
-
+                                    var filePath = UploadService.getFilePath(dataset, data);
+                                    
                                     // Read the file
                                     fs.createReadStream(filePath)
                                         // Encode it
@@ -184,7 +214,6 @@ module.exports = {
 
         }
     },
-
 
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
