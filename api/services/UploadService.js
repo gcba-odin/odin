@@ -155,9 +155,11 @@ module.exports = {
                                     var filePath = UploadService.getFilePath(dataset, data);
 
                                     // Read the file
-                                    fs.createReadStream(filePath)
-                                        // Encode it
-                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
+                                    var readStream = fs.createReadStream(filePath);
+                                    // Encode it
+                                    readStream
+                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
+                                        .collect(function(err, result) {
                                             if (err) return res.negotiate(err);
 
                                             if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
@@ -207,6 +209,7 @@ module.exports = {
                                                 });
                                             }
                                         });
+                                    readStream.destroy();
                                 }
                                 cb(data);
 
