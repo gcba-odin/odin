@@ -34,41 +34,41 @@ module.exports = {
         }
     },
 
-    uploadServiceFile: function(file, json, callback){
+    uploadServiceFile: function(file, json, callback) {
         //TODO: Double check if we need https://www.npmjs.com/package/jsonfile
         var extension = 'json';
         file.fileName = slug(file.name, {
             lower: true
         });
         file.fileName += '.' + extension;
-        
+
         var upath = UploadService.getFilePath(file.dataset, file);
         fs.lstat(upath, function(err, stats) {
             if (!err && stats.isFile()) {
                 UploadService.deleteFile(file.dataset.id, file.fileName, {});
             }
 
-            jsonfile.writeFile(upath, json, function (err) {
-                if(err) return callback(err, null);
+            jsonfile.writeFile(upath, json, function(err) {
+                if (err) return callback(err, null);
                 // Connect to the db
                 DataStorageService.mongoSave(file.dataset.id, file.fileName, json, {});
-                
+
                 // Update their visualizations
                 file.dataset = file.dataset.id;
                 VisualizationsUpdateService.update(file)
-                
+
                 callback(null, file);
             })
         });
     },
 
-    getDatasetPath: function(dataset){
+    getDatasetPath: function(dataset) {
         return path.resolve(sails.config.odin.uploadFolder +
             '/' + slug(dataset.name, { lower: true }));
     },
 
-    getFilePath: function(dataset, file){
-        return UploadService.getDatasetPath(dataset) + '/' + file.fileName;                                 
+    getFilePath: function(dataset, file) {
+        return UploadService.getDatasetPath(dataset) + '/' + file.fileName;
     },
 
     uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
@@ -132,7 +132,7 @@ module.exports = {
 
                         },
                         function onUploadComplete(err, files) {
-                            //	IF ERROR Return and send 500 error with error
+                            //  IF ERROR Return and send 500 error with error
                             if (err) return res.serverError(err);
                             if (files.length === 0) {
                                 return res.badRequest(null, {
@@ -153,7 +153,7 @@ module.exports = {
                                 // If the file is consumable via the API
                                 if (record.api) {
                                     var filePath = UploadService.getFilePath(dataset, data);
-                                    
+
                                     // Read the file
                                     fs.createReadStream(filePath)
                                         // Encode it
@@ -166,24 +166,27 @@ module.exports = {
                                             var json = [];
                                             if (extension === 'xls' || extension === 'xlsx') {
                                                 //Convert XLS to json, store on nosql database
-                                                var workbook = XLSX.readFile(files[0].fd);
+                                                try {
+                                                    var workbook = XLSX.readFile(files[0].fd);
 
-                                                //Join all the worksheets on one json
-                                                json = _.reduce(workbook.SheetNames, function(result, sheetName) {
-                                                    var worksheet = workbook.Sheets[sheetName];
+                                                    //Join all the worksheets on one json
+                                                    json = _.reduce(workbook.SheetNames, function(result, sheetName) {
+                                                        var worksheet = workbook.Sheets[sheetName];
 
-                                                    var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                                    result = _.concat(result, currentJson);
-                                                    return result;
-                                                }, []);
-                                                DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                                        var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                                        result = _.concat(result, currentJson);
+                                                        return result;
+                                                    }, []);
+                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                                } catch (err) {
 
-
+                                                }
                                             } else {
                                                 // Convert to JSON
 
                                                 var converter = new Converter({
-                                                    delimiter: 'auto'
+                                                    delimiter: 'auto',
+                                                    workerNum: 2
                                                 });
 
                                                 converter.fromString(result, function(err, json) {

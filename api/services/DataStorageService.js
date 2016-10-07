@@ -24,21 +24,26 @@ module.exports = {
             }, function(err) {
                 if (err && !res.headersSent) return res.negotiate(err);
             });
+            db.close();
         });
     },
     mongoCount: function(dataset, filename, res, cb) {
-        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
-            var collection = db.collection(filename);
-            collection.count({}, function(err, count) {
-                if (err) console.error(err);
-                cb(count);
+        if (!_.isNull(filename)) {
+            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+                var collection = db.collection(filename);
+                collection.count({}, function(err, count) {
+                    if (err) console.error(err);
+                    cb(count);
+                });
+                db.close();
             });
-        });
+        }
     },
     deleteCollection: function(dataset, filename, res) {
         if (!_.isNull(filename)) {
             DataStorageService.mongoConnect(dataset, filename, res, function(db) {
                 db.collection(filename).drop();
+                db.close();
             });
         }
     }
