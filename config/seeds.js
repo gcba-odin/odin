@@ -122,7 +122,7 @@ module.exports = {
             api: false,
             editable: true
         }, {
-            id: '8WRhpRV',
+            id: '9WRhpRV',
             name: 'json',
             mimetype: 'application/json',
             api: true,
