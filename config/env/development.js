@@ -8,7 +8,7 @@
 const sails = require('sails');
 
 module.exports = {
-  hookTimeout: 60000,
+  hookTimeout: 100000,
   port: 3000,
   log: {
     level: 'verbose'
