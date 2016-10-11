@@ -35,77 +35,98 @@ module.exports = {
             id: 'sWRhpRV',
             name: 'csv',
             mimetype: 'text/csv',
-            api: true
+            api: true,
+            editable: false
         }, {
             id: 'tWRhpRV',
             name: 'html',
             mimetype: 'text/html',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: 'uWRhpRV',
             name: 'ics',
             mimetype: 'text/calendar',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: 'vWRhpRV',
             name: 'pdf',
             mimetype: 'application/pdf',
-            api: false
+            api: false,
+            editable: false
         }, {
             id: 'wWRhpRV',
             name: 'rar',
             mimetype: 'application/x-rar-compressed',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: 'xWRhpRV',
             name: 'shp',
             mimetype: 'application/octet-stream',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: 'yWRhpRV',
             name: 'xls',
             mimetype: 'application/xls',
-            api: true
+            api: true,
+            editable: false
         }, {
             id: '1WRhpRV',
             name: 'xlsx',
             mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            api: true
+            api: true,
+            editable: false
         }, {
             id: '2WRhpRV',
             name: 'application-xml',
             mimetype: 'application/xml',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: '3WRhpRV',
             name: 'text-xml',
             mimetype: 'text/xml',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: '4WRhpRV',
             name: 'ms-excel',
             mimetype: 'application/vnd.ms-excel',
-            api: true
+            api: true,
+            editable: false
         }, {
             id: '5WRhpRV',
             name: 'zip',
             mimetype: 'application/zip',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: '6WRhpRV',
             name: 'zip-compressed',
             mimetype: 'application/x-zip-compressed',
-            api: false
+            api: false,
+            editable: true
         }, {
             id: '8WRhpRV',
             name: 'excel',
             mimetype: 'application/vnd.ms-excel',
-            api: true
+            api: true,
+            editable: false
         }, {
             id: '7WRhpRV',
             name: 'xml2',
             mimetype: 'text/xml',
-            api: false
+            api: false,
+            editable: true
+        }, {
+            id: '8WRhpRV',
+            name: 'json',
+            mimetype: 'application/json',
+            api: true,
+            editable: false
         }],
         UpdateFrequency: [{
             id: 'tWRhpR2',

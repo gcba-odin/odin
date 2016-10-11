@@ -38,6 +38,10 @@ module.exports = {
             type: 'string',
             size: 200
         },
+        editable: {
+            type: 'boolean',
+            defaultsTo: true
+        },
         files: {
             collection: 'file',
             via: 'type'
