@@ -46,24 +46,20 @@ module.exports = {
         },
         FileController: {
             create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            update: true,
-            //upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
 
         RestServiceController: {
-            //create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
-            create: true,
-            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
             destroy: ['isAuthenticated', 'statistics']
         },
         SoapServiceController: {
-            //create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
-            create: true,
-            update: true,
-            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
             destroy: ['isAuthenticated', 'statistics']
         },
         FileTypeController: {
