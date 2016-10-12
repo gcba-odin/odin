@@ -10,14 +10,19 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 module.exports = {
     create: function(req, res) {
         var data = actionUtil.parseValues(req);
+        // add the url field , as if it was the 'addUrl' policy
         data.file.url = sails.config.odin.baseUrl + '/model/id';
-        data.file.createdBy = req.user
+        // add the createdBy field, as if it was the 'addCreatedBy' policy
+        data.file.createdBy = req.user;
+        // real file name in the filesystem
         data.file.fileName = slug(data.file.name, {
             lower: true
         }) + '.json';
+
+        // json filetype
+        data.file.type = '9WRhpRV';
         File.create(data.file).then(function(createdFile) {
-            console.dir(createdFile)
-            data.file = createdFile
+            data.file = createdFile;
             RestService.create(data).then(function(createdService) {
 
                 // Logs
@@ -55,7 +60,7 @@ module.exports = {
                         var meta = {
                             code: sails.config.success.CREATED.code,
                             message: sails.config.success.CREATED.message
-                        }
+                        };
 
                         var links = {
                             record: sails.config.odin.baseUrl + '/files/' + record[0].id,
