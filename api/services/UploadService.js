@@ -207,8 +207,8 @@ module.exports = {
                                                     }
                                                 });
                                             }
+                                            readStream.destroy();
                                         });
-                                    // readStream.destroy();
                                 }
                                 cb(data);
 
