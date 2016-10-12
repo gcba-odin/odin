@@ -187,8 +187,7 @@ module.exports = {
                                                 // Convert to JSON
 
                                                 var converter = new Converter({
-                                                    delimiter: 'auto',
-                                                    workerNum: 2
+                                                    delimiter: 'auto'
                                                 });
 
                                                 converter.fromString(result, function(err, json) {
@@ -209,7 +208,7 @@ module.exports = {
                                                 });
                                             }
                                         });
-                                    readStream.destroy();
+                                    // readStream.destroy();
                                 }
                                 cb(data);
 
