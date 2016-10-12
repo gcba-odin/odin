@@ -23,8 +23,8 @@ module.exports = {
                 w: 1
             }, function(err) {
                 if (err && !res.headersSent) return res.negotiate(err);
+                db.close();
             });
-            db.close();
         });
     },
     mongoCount: function(dataset, filename, res, cb) {
@@ -33,9 +33,9 @@ module.exports = {
                 var collection = db.collection(filename);
                 collection.count({}, function(err, count) {
                     if (err) console.error(err);
+                    db.close();
                     cb(count);
                 });
-                db.close();
             });
         }
     },
