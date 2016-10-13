@@ -53,8 +53,11 @@ module.exports = {
                             associations.push(key);
                         }
                     });
-                    //populate the response
 
+                    //Run web service sync
+                    WebService.syncByFileId(updatedFile.id);
+                    
+                    //populate the response
                     File.find(updatedFile.id).populate(associations).exec(function(err, record) {
                         if (err) res.negotiate(err);
 
