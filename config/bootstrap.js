@@ -70,7 +70,7 @@ module.exports = {
             if(updateFrequency.timePattern){
               var CronJob = require('cron').CronJob;
               new CronJob(updateFrequency.timePattern, function() {
-                WebService.sync(updateFrequency);
+                WebService.syncByUpdateFrequency(updateFrequency);
               }, null, true);
             }
           } 
