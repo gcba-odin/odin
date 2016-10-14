@@ -14,14 +14,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -54,7 +54,6 @@ CREATE FUNCTION increment_rate_limits(a_id uuid, i text, p text, p_date timestam
       $$;
 
 
-ALTER FUNCTION public.increment_rate_limits(a_id uuid, i text, p text, p_date timestamp with time zone, v integer) OWNER TO postgres;
 
 --
 -- Name: increment_response_rate_limits(uuid, text, text, timestamp with time zone, integer); Type: FUNCTION; Schema: public; Owner: postgres
@@ -81,7 +80,6 @@ CREATE FUNCTION increment_response_rate_limits(a_id uuid, i text, p text, p_date
       $$;
 
 
-ALTER FUNCTION public.increment_response_rate_limits(a_id uuid, i text, p text, p_date timestamp with time zone, v integer) OWNER TO postgres;
 
 --
 -- Name: upsert_schema_migrations(text, character varying); Type: FUNCTION; Schema: public; Owner: postgres
@@ -100,7 +98,6 @@ CREATE FUNCTION upsert_schema_migrations(identifier text, migration_name charact
       $$;
 
 
-ALTER FUNCTION public.upsert_schema_migrations(identifier text, migration_name character varying) OWNER TO postgres;
 
 --
 -- Name: upsert_ttl(text, uuid, text, text, timestamp without time zone); Type: FUNCTION; Schema: public; Owner: postgres
@@ -126,7 +123,6 @@ CREATE FUNCTION upsert_ttl(v_primary_key_value text, v_primary_uuid_value uuid, 
       $$;
 
 
-ALTER FUNCTION public.upsert_ttl(v_primary_key_value text, v_primary_uuid_value uuid, v_primary_key_name text, v_table_name text, v_expire_at timestamp without time zone) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -144,7 +140,6 @@ CREATE TABLE acls (
 );
 
 
-ALTER TABLE acls OWNER TO postgres;
 
 --
 -- Name: apis; Type: TABLE; Schema: public; Owner: postgres
@@ -162,7 +157,6 @@ CREATE TABLE apis (
 );
 
 
-ALTER TABLE apis OWNER TO postgres;
 
 --
 -- Name: basicauth_credentials; Type: TABLE; Schema: public; Owner: postgres
@@ -177,7 +171,6 @@ CREATE TABLE basicauth_credentials (
 );
 
 
-ALTER TABLE basicauth_credentials OWNER TO postgres;
 
 --
 -- Name: consumers; Type: TABLE; Schema: public; Owner: postgres
@@ -191,7 +184,6 @@ CREATE TABLE consumers (
 );
 
 
-ALTER TABLE consumers OWNER TO postgres;
 
 --
 -- Name: hmacauth_credentials; Type: TABLE; Schema: public; Owner: postgres
@@ -206,7 +198,6 @@ CREATE TABLE hmacauth_credentials (
 );
 
 
-ALTER TABLE hmacauth_credentials OWNER TO postgres;
 
 --
 -- Name: jwt_secrets; Type: TABLE; Schema: public; Owner: postgres
@@ -223,7 +214,6 @@ CREATE TABLE jwt_secrets (
 );
 
 
-ALTER TABLE jwt_secrets OWNER TO postgres;
 
 --
 -- Name: keyauth_credentials; Type: TABLE; Schema: public; Owner: postgres
@@ -237,7 +227,6 @@ CREATE TABLE keyauth_credentials (
 );
 
 
-ALTER TABLE keyauth_credentials OWNER TO postgres;
 
 --
 -- Name: nodes; Type: TABLE; Schema: public; Owner: postgres
@@ -250,7 +239,6 @@ CREATE TABLE nodes (
 );
 
 
-ALTER TABLE nodes OWNER TO postgres;
 
 --
 -- Name: oauth2_authorization_codes; Type: TABLE; Schema: public; Owner: postgres
@@ -265,7 +253,6 @@ CREATE TABLE oauth2_authorization_codes (
 );
 
 
-ALTER TABLE oauth2_authorization_codes OWNER TO postgres;
 
 --
 -- Name: oauth2_credentials; Type: TABLE; Schema: public; Owner: postgres
@@ -282,7 +269,6 @@ CREATE TABLE oauth2_credentials (
 );
 
 
-ALTER TABLE oauth2_credentials OWNER TO postgres;
 
 --
 -- Name: oauth2_tokens; Type: TABLE; Schema: public; Owner: postgres
@@ -301,7 +287,6 @@ CREATE TABLE oauth2_tokens (
 );
 
 
-ALTER TABLE oauth2_tokens OWNER TO postgres;
 
 --
 -- Name: plugins; Type: TABLE; Schema: public; Owner: postgres
@@ -318,7 +303,6 @@ CREATE TABLE plugins (
 );
 
 
-ALTER TABLE plugins OWNER TO postgres;
 
 --
 -- Name: ratelimiting_metrics; Type: TABLE; Schema: public; Owner: postgres
@@ -333,7 +317,6 @@ CREATE TABLE ratelimiting_metrics (
 );
 
 
-ALTER TABLE ratelimiting_metrics OWNER TO postgres;
 
 --
 -- Name: response_ratelimiting_metrics; Type: TABLE; Schema: public; Owner: postgres
@@ -348,7 +331,6 @@ CREATE TABLE response_ratelimiting_metrics (
 );
 
 
-ALTER TABLE response_ratelimiting_metrics OWNER TO postgres;
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: postgres
@@ -360,7 +342,6 @@ CREATE TABLE schema_migrations (
 );
 
 
-ALTER TABLE schema_migrations OWNER TO postgres;
 
 --
 -- Name: ttls; Type: TABLE; Schema: public; Owner: postgres
@@ -375,7 +356,6 @@ CREATE TABLE ttls (
 );
 
 
-ALTER TABLE ttls OWNER TO postgres;
 
 --
 -- Data for Name: acls; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -1496,7 +1476,7 @@ COPY oauth2_tokens (id, credential_id, access_token, token_type, refresh_token, 
 
 COPY plugins (id, name, api_id, consumer_id, config, enabled, created_at) FROM stdin;
 5cf1e12f-a467-4e22-8b2b-9fcb95e1d9f8	acl	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"whitelist":["external_users"]}	t	2016-07-20 18:30:04
-2c58b6f8-f1d7-4b75-a935-8837a98f7be5	cors	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"methods":["HEAD","GET","POST","PATCH","DELETE"],"credentials":false,"origin":"*","exposed_headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection"],"preflight_continue":false,"headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection","Accepts"]}	t	2016-07-20 18:35:12
+2c58b6f8-f1d7-4b75-a935-8837a98f7be5	cors	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"methods":["HEAD","GET","POST","PATCH","PUT","DELETE"],"credentials":false,"origin":"*","exposed_headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection"],"preflight_continue":false,"headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection","Accepts"]}	t	2016-07-20 18:35:12
 eeb3cd0c-1bad-430a-92ed-2899001f53f4	request-size-limiting	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"allowed_payload_size":2000}	t	2016-07-20 18:40:32
 877959d1-33ff-4edb-97ce-b86f7e8460df	jwt	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"uri_param_names":["jwt"],"secret_is_base64":false,"key_claim_name":"iss"}	t	2016-07-20 18:46:50
 \.
