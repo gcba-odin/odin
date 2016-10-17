@@ -1,6 +1,7 @@
 "use strict";
 
 const _actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const _ = require('lodash');
 
 class ParamsProcessor {
     constructor(req, res, many) {
@@ -21,7 +22,7 @@ class ParamsProcessor {
         this.where = this.parseCriteria(this.req);
         delete this.where.full.match;
         delete this.where.full.condition;
-            
+
         this.result = {
             include: this.include,
             fields: this.fields,
@@ -42,7 +43,7 @@ class ParamsProcessor {
             // Delete the skip query parameter
             this.requestQuery = this.req.query;
             delete this.requestQuery.skip;
-            
+
             var manyResult = {
                 skip: this.skip,
                 sort: this.sort,
@@ -50,7 +51,7 @@ class ParamsProcessor {
                 limit: this.limit
             }
             _.merge(this.result, manyResult);
-            
+
         } else {
             var singleResult = {
                 pk: this.pk

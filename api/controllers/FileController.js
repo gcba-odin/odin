@@ -4,12 +4,14 @@
  * FileController
  * @description :: Server-side logic for ...
  */
+
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const mime = require('mime');
 const slug = require('slug');
-var json2csv = require('json2csv');
-var json2xls = require('json2xls');
+const json2csv = require('json2csv');
+const json2xls = require('json2xls');
+const _ = require('lodash');
 
 // var dirname = require('path')
 var SkipperDisk = require('skipper-disk');

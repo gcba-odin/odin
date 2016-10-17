@@ -4,11 +4,13 @@
  * DatasetController
  * @description :: Server-side logic for ...
  */
+
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const _ = require('lodash');
 const Response = require('../services/ResponseBuilderService');
-var RSS = require('rss');
-var SkipperDisk = require('skipper-disk');
-var slug = require('slug');
+const RSS = require('rss');
+const SkipperDisk = require('skipper-disk');
+const slug = require('slug');
 
 module.exports = {
     publish: function(req, res) {

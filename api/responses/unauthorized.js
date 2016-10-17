@@ -1,5 +1,7 @@
 "use strict";
 
+const _ = require('lodash');
+
 /**
  * 401 (Unauthorized) Response
  *

@@ -1,5 +1,6 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-var ipaddr = require('ipaddr.js');
+const ipaddr = require('ipaddr.js');
+const _ = require('lodash');
 
 module.exports = (req, res, next) => {
     //TBD: Client with KONG!

@@ -1,5 +1,6 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-var winston = require('winston');
+const _ = require('lodash');
+const winston = require('winston');
 
 module.exports = {
 

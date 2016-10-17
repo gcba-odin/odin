@@ -4,7 +4,9 @@
  * @description :: Server-side logic for managing Restservices
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-var slug = require('slug');
+
+const slug = require('slug');
+const _ = require('lodash');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {

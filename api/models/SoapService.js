@@ -5,7 +5,8 @@
  * @description :: Soap service implementation
  */
 
-var webServicesModel  = require('./shared/WebServicesModel');
+const _ = require('lodash');
+const webServicesModel  = require('./shared/WebServicesModel');
 
 module.exports = _.merge({}, webServicesModel, {
 	attributes: {

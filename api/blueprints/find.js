@@ -6,6 +6,7 @@
 // const populateAlias = (model, alias) => model.populate(alias);
 
 const Response = require('../services/ResponseBuilderService');
+const _ = require('lodash');
 
 /**
  * Find Records
@@ -42,7 +43,7 @@ module.exports = (req, res) => {
                     }
                 }
                 builder.removeIncludes(records);
-                           
+
                 res.ok(
                     records, {
                         meta: builder.meta(records),
