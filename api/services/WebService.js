@@ -23,7 +23,11 @@ module.exports = {
         .populate(['dataset', 'soapService', 'restService'])
         .exec(function(err, files) {    
             if (err) return console.log(err);
-            WebService.sync(files);
+            try {
+                WebService.sync(files);
+            } catch(err) {
+                console.log(err);
+            }
         });
     },
 

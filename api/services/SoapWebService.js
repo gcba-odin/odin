@@ -8,9 +8,13 @@ var soap = require('soap');
 
 module.exports = {
     getData: function (soapService, callback) {
-        soap.createClient(soapService.url, function (err, client) {
-          var serviceAction = client[soapService.method];
-          serviceAction(soapService.parameters, callback);
-        });
+    	try {
+        	soap.createClient(soapService.url, function (err, client) {
+				var serviceAction = client[soapService.method];
+				serviceAction(soapService.parameters, callback);
+        	});
+        } catch(err) {
+            callback(err, null);
+        }
     }
 };
