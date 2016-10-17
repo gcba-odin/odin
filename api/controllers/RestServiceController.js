@@ -36,6 +36,7 @@ module.exports = {
                 File.update(createdFile.id, {
                     restService: createdService
                 }).then(function(updatedFile) {
+                    updatedFile = updatedFile[0];
 
                     // Logs
                     LogService.log(req, updatedFile.id);
@@ -55,7 +56,7 @@ module.exports = {
 
                     //Run web service sync
                     WebService.syncByFileId(updatedFile.id);
-                    
+
                     //populate the response
                     File.find(updatedFile.id).populate(associations).exec(function(err, record) {
                         if (err) res.negotiate(err);

@@ -17,8 +17,8 @@ module.exports = {
         data.file.createdBy = req.user;
         // real file name in the filesystem
         data.file.fileName = slug(data.file.name, {
-                lower: true
-            }) + '.json';
+            lower: true
+        }) + '.json';
 
         // json filetype
         data.file.type = '9WRhpRV';
@@ -37,6 +37,7 @@ module.exports = {
                 File.update(createdFile.id, {
                     soapService: createdService
                 }).then(function(updatedFile) {
+                    updatedFile = updatedFile[0];
 
                     // Logs
                     LogService.log(req, updatedFile.id);
@@ -56,7 +57,7 @@ module.exports = {
 
                     //Run web service sync
                     WebService.syncByFileId(updatedFile.id);
-                    
+
                     //populate the response
                     File.find(updatedFile.id).populate(associations).exec(function(err, record) {
                         if (err) res.negotiate(err);
