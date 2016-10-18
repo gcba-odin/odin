@@ -2,36 +2,36 @@ var MongoClient = require('mongodb').MongoClient;
 
 module.exports = {
 
-    mongoConnect: function(dataset, filename, res, cb) {
+    mongoConnect: function (dataset, filename, res, cb) {
         // Connect to the db
         MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
             sails.config.odin.dataStorage.port + "/" + dataset,
-            function(err, db) {
+            function (err, db) {
                 if (err && !res.headersSent) return res.negotiate(err);
                 cb(db);
             });
     },
-    mongoSave: function(dataset, filename, json, res) {
-        json = _.transform(json, function(result, each) {
-            result.push(_.mapKeys(each, function(value, key) {
+    mongoSave: function (dataset, filename, json, res) {
+        json = _.transform(json, function (result, each) {
+            result.push(_.mapKeys(each, function (value, key) {
                 return _.replace(key, ".", " ");
             }));
         }, [])
-        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+        DataStorageService.mongoConnect(dataset, filename, res, function (db) {
             var collection = db.collection(filename);
             collection.insert(json, {
                 w: 1
-            }, function(err) {
+            }, function (err) {
                 if (err && !res.headersSent) return res.negotiate(err);
                 db.close();
             });
         });
     },
-    mongoCount: function(dataset, filename, res, cb) {
+    mongoCount: function (dataset, filename, res, cb) {
         if (!_.isNull(filename)) {
-            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+            DataStorageService.mongoConnect(dataset, filename, res, function (db) {
                 var collection = db.collection(filename);
-                collection.count({}, function(err, count) {
+                collection.count({}, function (err, count) {
                     if (err) console.error(err);
                     db.close();
                     cb(count);
@@ -39,11 +39,14 @@ module.exports = {
             });
         }
     },
-    deleteCollection: function(dataset, filename, res) {
+    deleteCollection: function (dataset, filename, res) {
         if (!_.isNull(filename)) {
-            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
-                db.collection(filename).drop();
-                db.close();
+            DataStorageService.mongoConnect(dataset, filename, res, function (db) {
+                var collection = db.collection(filename);
+                collection.drop(function (err, reply) {
+                    if (err) console.error(err);
+                    db.close();
+                });
             });
         }
     }
