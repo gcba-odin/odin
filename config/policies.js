@@ -13,53 +13,53 @@
 
 module.exports = {
     policies: {
-        '*': ['addLoggedUser', 'statistics', 'ensureQueryTypeCast'],
+        '*': ['addLoggedUser', 'statistics'],
         BasemapController: {
             create: ['isAuthenticated', 'statistics'],
             update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics']
         },
         CategoryController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
             destroy: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             image: ['addLoggedUser', 'statistics']
         },
         ChartController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
         ConfigController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             destroy: ['isAuthenticated', 'statistics', 'addCreatedBy']
         },
         DatasetController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
         FileController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            upload: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            upload: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
 
         RestServiceController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics']
         },
         SoapServiceController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast'],
+            create: ['isAuthenticated', 'statistics'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics']
         },
         FileTypeController: {
@@ -73,20 +73,20 @@ module.exports = {
             destroy: ['isAuthenticated', 'statistics']
         },
         MapController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
         OptionsController: true,
         OrganizationController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             destroy: ['isAuthenticated', 'statistics']
         },
         TagController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             destroy: ['isAuthenticated', 'statistics']
         },
         StatusController: {
@@ -95,14 +95,14 @@ module.exports = {
             destroy: ['isAuthenticated', 'statistics']
         },
         UserController: {
-            create: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             login: true,
             refreshToken: true
         },
         DeleteController: {
-            delete: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
-            restore: ['isAuthenticated', 'statistics', 'ensureQueryTypeCast', 'addCreatedBy'],
+            delete: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            restore: ['isAuthenticated', 'statistics', 'addCreatedBy'],
             deactivate: ['isAuthenticated', 'statistics']
         }
     }
