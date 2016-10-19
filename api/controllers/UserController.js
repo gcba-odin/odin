@@ -6,8 +6,9 @@
  */
 const _ = require('lodash');
 const passport = require('passport');
-var requestify = require('requestify');
-var jwt = require('jwt-simple');
+const requestify = require('requestify');
+const jwt = require('jwt-simple');
+
 
 module.exports = {
 

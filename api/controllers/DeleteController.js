@@ -4,10 +4,11 @@
  * DeleteController
  * @description :: Server-side logic for ...
  */
+
 const Response = require('../services/ResponseBuilderService');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-
-var destroy = require('../blueprints/destroy.js');
+const destroy = require('../blueprints/destroy.js');
+const _ = require('lodash');
 
 module.exports = {
     delete: function(req, res) {

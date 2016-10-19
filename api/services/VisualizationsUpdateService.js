@@ -6,7 +6,9 @@
  When a file is updated, either from a WS or from a physical file this service should be called
  */
 
-var shortid = require('shortid');
+const shortid = require('shortid');
+const _ = require('lodash');
+
 module.exports = {
     update: function (file) {
         if (shortid.isValid(file.id)) {

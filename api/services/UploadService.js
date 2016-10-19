@@ -14,8 +14,9 @@ const Converter = require("csvtojson").Converter;
 const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
 const pluralize = require('pluralize');
-var slug = require('slug');
-var jsonfile = require('jsonfile');
+const slug = require('slug');
+const jsonfile = require('jsonfile');
+const _ = require('lodash');
 
 module.exports = {
     createFile: function(req, res, fileRequired, cb) {

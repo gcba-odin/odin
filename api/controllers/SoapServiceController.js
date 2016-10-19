@@ -5,8 +5,9 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var slug = require('slug');
+const slug = require('slug');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const _ = require('lodash');
 
 module.exports = {
     create: function(req, res) {

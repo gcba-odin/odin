@@ -1,5 +1,7 @@
 "use strict";
 
+const _ = require('lodash');
+
 /**
  * 415 (Unsuported media type) Response
  *

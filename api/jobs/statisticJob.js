@@ -1,6 +1,7 @@
-var moment = require('moment');
-var jsonfile = require('jsonfile')
+const moment = require('moment');
+const jsonfile = require('jsonfile')
 const path = require('path');
+const _ = require('lodash');
 
 module.exports = function(agenda) {
     var job = {

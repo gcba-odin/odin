@@ -1,5 +1,7 @@
 "use strict";
 
+const _ = require('lodash');
+
 /**
  * 500 (Internal Server Error) Response
  *

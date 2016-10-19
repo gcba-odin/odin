@@ -1,4 +1,5 @@
-var MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
+const _ = require('lodash');
 
 module.exports = {
 

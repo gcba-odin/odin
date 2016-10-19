@@ -5,7 +5,8 @@
  * @description :: Model for storing Chart records
  */
 
-var shortId = require('shortid');
+const shortId = require('shortid');
+const _ = require('lodash');
 
 module.exports = {
     schema: true,
