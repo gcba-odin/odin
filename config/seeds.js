@@ -12,7 +12,8 @@ module.exports = {
             lastName: 'Admin',
             active: true,
             createdBy: 'dogPzIz9',
-            organization: 'eWRhpRV'
+            organization: 'eWRhpRV',
+            role: 'superadmin'
         }],
 
         Status: [{

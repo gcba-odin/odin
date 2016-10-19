@@ -56,6 +56,15 @@ module.exports = {
         organization: {
             model: 'organization'
         },
+        role: {
+            type: 'string',
+            required: true,
+            enum: [
+                'superadmin',
+                'admin',
+                'guest'
+            ]
+        },
         createdBy: {
             model: 'user'
         },
