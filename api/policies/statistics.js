@@ -7,6 +7,9 @@ module.exports = (req, res, next) => {
 	var ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.connection.remoteAddress
 		// automatically parse and converts to ipv4
 
+	// Fix if network sends two ips
+	ip = _.indexOf(ip, ',') !== -1 ? ip.split(',')[0] : ip;
+
 	var addr = ipaddr.process(ip);
 	try {
 		resource = _.capitalize(actionUtil.parseModel(req).identity);
