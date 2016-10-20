@@ -128,4 +128,5 @@ module.exports.odin = {
     logFolder: 'logs', // --> Folder where the logs will be saved
     logLevel: 'error', // --> Log level
     statisticsPath: 'stats' // -->Path where the statistics will be saved each month
+}
 ```
