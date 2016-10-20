@@ -38,7 +38,7 @@ module.exports = {
             type: 'string'
         },
         tms: {
-            type: boolean,
+            type: 'boolean',
             defaultsTo: false
         },
         maxZoom: {
