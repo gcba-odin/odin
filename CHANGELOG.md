@@ -1,3 +1,29 @@
+# Version 1.1.0 (20/10/2016)
+
+## New features
+
+- **Files** - Layout field on files
+- **Files** - Files now generated via WebServices Rest and Soap
+- **Files** - Cron for updates files created via WebService.
+- **Visualizations** - Automatic updated of visualization on file update.
+- **Visualizations** - Automatic updated of visualization on getting data from WebService.
+- **Configs** - Added new configs
+- **Models** - Added slug field on Filetypes, Organizations and Tags
+- Edited production seeds
+- Created development seeds
+- Created process.json for pm2
+
+## Fixes
+
+- **Responses** - Fix findone includes
+- **Charts** - Refactor chart creation
+- **Files** - Refactor datastorage service
+- **Responses** - Refactor param processor service
+- **Responses** - Fix deep filters
+- **Responses** - Refactor response builder
+- **Policies** - Updated policies
+
+
 # Version 0.2.0 Beta (09/09/2016)
 
 ## New features
@@ -38,7 +64,7 @@
 - Set up a logging system with [Winston](https://github.com/winstonjs/winston)
 
 ## Enhancements
- 
+
 - Added unit tests
 - Some configs are now in the DB
 
