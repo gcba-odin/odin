@@ -255,6 +255,30 @@ module.exports = {
                     username: 'admin'
                 }
             }
+        }, {
+            id: '9ogPzIz9',
+            description: 'Zoom maximo en la creacion de mapa base',
+            type: 'integer',
+            multiple: false,
+            key: 'defaultMaxZoom',
+            value: 18,
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'aogPzIz9',
+            description: 'Zoom minimo en la creacion de mapa base',
+            type: 'integer',
+            multiple: false,
+            key: 'defaultMinZoom',
+            value: 0,
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
         }]
 
     }

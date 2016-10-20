@@ -34,8 +34,23 @@ module.exports = {
             type: 'string',
             size: 500
         },
-        attribution:{
+        attribution: {
             type: 'string'
+        },
+        tms: {
+            type: boolean,
+            defaultsTo: false
+        },
+        maxZoom: {
+            type: 'integer',
+            defaultsTo: 18
+        },
+        minZoom: {
+            type: 'integer',
+            defaultsTo: 0
+        },
+        optionals: {
+            type: 'json'
         },
 
         toJSON() {
