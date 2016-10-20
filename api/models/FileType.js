@@ -35,8 +35,7 @@ module.exports = {
             minLength: 1
         },
         mimetype: {
-            type: 'string',
-            size: 200
+            type: 'array'
         },
         editable: {
             type: 'boolean',

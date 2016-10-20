@@ -5,6 +5,7 @@
 // const takeAliases = _.partial(_.map, _, item => item.alias);
 // const populateAliases = (model, alias) => model.populate(alias);
 const Response = require('../services/ResponseBuilderService');
+const _ = require('lodash');
 
 /**
  * Find One Record
@@ -31,7 +32,7 @@ module.exports = (req, res) => {
                     builder.filterObject(returnRecord, 'createdBy');
                 }
                 builder.removeIncludes(records);
-                
+
                 return res.ok(
                     returnRecord, {
                         meta: builder.meta(returnRecord),

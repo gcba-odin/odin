@@ -4,8 +4,10 @@
  * CategoryController
  * @description :: Server-side logic for ...
  */
+
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-var SkipperDisk = require('skipper-disk');
+const SkipperDisk = require('skipper-disk');
+const _ = require('lodash');
 
 module.exports = {
     create: function(req, res, cb) {

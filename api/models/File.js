@@ -5,8 +5,9 @@
  * @description :: Model for storing File records
  */
 
-var shortId = require('shortid');
+const shortId = require('shortid');
 const fs = require('fs');
+const _ = require('lodash');
 
 module.exports = {
     schema: true,

@@ -62,25 +62,7 @@ module.exports = {
     // log the app has lifted
     sails.on('lifted', function() {
       LogService.winstonLog('info', 'Sails has lifted!');
-    
-      UpdateFrequency.find(function(err, updateFrequencies){
-        //We should run a cron job per update frequency
-        updateFrequencies.forEach(function(updateFrequency) {
-          try {
-            if(updateFrequency.timePattern){
-              var CronJob = require('cron').CronJob;
-              new CronJob(updateFrequency.timePattern, function() {
-                WebService.sync(updateFrequency);
-              }, null, true);
-            }
-          } 
-          catch(ex) {
-            console.log("cron pattern not valid");
-          } 
-        });
-      });
-
-    });
+    })
 
     cb();
   }

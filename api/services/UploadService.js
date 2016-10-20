@@ -14,8 +14,9 @@ const Converter = require("csvtojson").Converter;
 const iconv = require('iconv-lite');
 const XLSX = require('xlsx');
 const pluralize = require('pluralize');
-var slug = require('slug');
-var jsonfile = require('jsonfile');
+const slug = require('slug');
+const jsonfile = require('jsonfile');
+const _ = require('lodash');
 
 module.exports = {
     createFile: function(req, res, fileRequired, cb) {
@@ -64,7 +65,9 @@ module.exports = {
 
     getDatasetPath: function(dataset) {
         return path.resolve(sails.config.odin.uploadFolder +
-            '/' + slug(dataset.name, { lower: true }));
+            '/' + slug(dataset.name, {
+                lower: true
+            }));
     },
 
     getFilePath: function(dataset, file) {
@@ -77,20 +80,28 @@ module.exports = {
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
         var allowedTypes;
+
+        data.fileName = slug(data.name, {
+            lower: true
+        });
+
         if (uploadedFile.isNoop) {
+            // If the file metadata was updated but no new file was added
+            // update the fileName in case the name changed
+            var oldExtension = data.fileName.split('.').pop();
+            data.fileName += '.' + oldExtension;
             return cb(data);
+
         } else {
             Dataset.findOne(dataset).then(function(dataset) {
 
                 FileType.find().exec(function(err, filetypes) {
                     if (err) return res.negotiate(err);
                     allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
-                        allowedTypes.push(filetype.mimetype);
+                        _.forEach(filetype.mimetype, function(mime) {
+                            allowedTypes.push(mime);
+                        })
                     }, []);
-
-                    data.fileName = slug(data.name, {
-                        lower: true
-                    });
                     uploadedFile.upload({
                             saveAs: function(file, cb) {
 
@@ -142,7 +153,9 @@ module.exports = {
 
                             // Get the id of the filetype based on mime of the file
                             sails.models.filetype.findOne({
-                                name: extension
+                                mimetype: {
+                                    contains: extension
+                                }
                             }).exec(function(err, record) {
                                 if (err) return res.negotiate(err);
                                 if (!record) {

@@ -9,6 +9,7 @@
  */
 
 const pluralize = require('pluralize');
+const _ = require('lodash');
 
 module.exports = function(data, config) {
     if (_.isUndefined(config) || _.isUndefined(config.links)) {

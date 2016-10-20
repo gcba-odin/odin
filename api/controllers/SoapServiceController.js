@@ -5,8 +5,9 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var slug = require('slug');
+const slug = require('slug');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const _ = require('lodash');
 
 module.exports = {
     create: function(req, res) {
@@ -17,8 +18,8 @@ module.exports = {
         data.file.createdBy = req.user;
         // real file name in the filesystem
         data.file.fileName = slug(data.file.name, {
-                lower: true
-            }) + '.json';
+            lower: true
+        }) + '.json';
 
         // json filetype
         data.file.type = '9WRhpRV';
@@ -37,6 +38,7 @@ module.exports = {
                 File.update(createdFile.id, {
                     soapService: createdService
                 }).then(function(updatedFile) {
+                    updatedFile = updatedFile[0];
 
                     // Logs
                     LogService.log(req, updatedFile.id);
@@ -53,8 +55,11 @@ module.exports = {
                             associations.push(key);
                         }
                     });
-                    //populate the response
 
+                    //Run web service sync
+                    WebService.syncByFileId(updatedFile.id);
+
+                    //populate the response
                     File.find(updatedFile.id).populate(associations).exec(function(err, record) {
                         if (err) res.negotiate(err);
 

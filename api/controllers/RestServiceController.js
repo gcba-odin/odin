@@ -4,7 +4,9 @@
  * @description :: Server-side logic for managing Restservices
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-var slug = require('slug');
+
+const slug = require('slug');
+const _ = require('lodash');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
@@ -36,6 +38,7 @@ module.exports = {
                 File.update(createdFile.id, {
                     restService: createdService
                 }).then(function(updatedFile) {
+                    updatedFile = updatedFile[0];
 
                     // Logs
                     LogService.log(req, updatedFile.id);
@@ -52,8 +55,11 @@ module.exports = {
                             associations.push(key);
                         }
                     });
-                    //populate the response
 
+                    //Run web service sync
+                    WebService.syncByFileId(updatedFile.id);
+
+                    //populate the response
                     File.find(updatedFile.id).populate(associations).exec(function(err, record) {
                         if (err) res.negotiate(err);
 

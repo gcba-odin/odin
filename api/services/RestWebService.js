@@ -6,6 +6,7 @@
 
 var requestify = require('requestify');
 var parseString = require('xml2js').parseString;
+const _ = require('lodash');
 
 module.exports = {
     getData: function(restService, callback) {
