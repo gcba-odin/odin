@@ -7,6 +7,7 @@
 
 const shortId = require('shortid');
 const _ = require('lodash');
+const roles = require('../services/PermissionConstantService').roles;
 
 module.exports = {
     schema: true,
@@ -59,11 +60,7 @@ module.exports = {
         role: {
             type: 'string',
             required: true,
-            enum: [
-                'superadmin',
-                'admin',
-                'guest'
-            ]
+            enum: _.values(roles)
         },
         createdBy: {
             model: 'user'
