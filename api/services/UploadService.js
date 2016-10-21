@@ -79,6 +79,11 @@ module.exports = {
         var extension = '';
         var dataset = req.param('dataset');
         var data = actionUtil.parseValues(req);
+
+        // In case that publishedAt or gatheringDate values are 'null'
+        // Set it to null, otherwise the ORM will crash
+        data.publishedAt = data.publishedAt === 'null' ? null : data.publishedAt
+        data.gatheringDate = data.gatheringDate === 'null' ? null : data.gatheringDate
         var allowedTypes;
 
         data.fileName = slug(data.name, {
