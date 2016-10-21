@@ -128,6 +128,8 @@ module.exports = {
                                     if (!fileRequired) {
                                         const pk = actionUtil.requirePk(req);
                                         File.findOne(pk).populate('dataset').then(function(file) {
+                                            DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
+
                                             // if the uploaded name is the same of the one saved on the filesystem
                                             // don't deleted, just overwrite it
                                             if (file.fileName !== data.fileName) {
