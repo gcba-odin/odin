@@ -33,7 +33,10 @@ module.exports = {
         model: {
             type: 'string',
             required: true
+        },
+        owner: {
+            type: 'boolean',
+            defaultsTo: false
         }
     }
 };
-

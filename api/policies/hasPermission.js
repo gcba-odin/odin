@@ -12,11 +12,18 @@ module.exports = (req, res, next) => {
         return next();
     }
 
-    PermissionRule.findOne({
-        role: req.user.role,
-        action: req.options.action,
-        model: req.options.model
-    }).then(found => {
-        return found ? next() : res.forbidden();
-    });
+   PermissionRule
+        .findOne({
+            role: req.user.role,
+            action: req.options.action,
+            model: req.options.model
+        })
+        .then(permission => {
+            if (permission) {
+                req.permission = permission;
+                next();
+            } else {
+                res.forbidden();
+            }
+        });
 };
