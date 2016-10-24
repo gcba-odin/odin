@@ -133,6 +133,7 @@ module.exports = {
             }
         }, this.baseAttributes);
     },
+    // this model method is for endpoint OPTIONS /users
     loginMethod() {
         return {
             'POST': function() {

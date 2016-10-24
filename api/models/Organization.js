@@ -28,7 +28,9 @@ module.exports = {
             minLength: 1
         },
         slug: {
-            type: 'string'
+            type: 'string',
+            size: 150,
+            minLength: 1
         },
         description: {
             type: 'string',

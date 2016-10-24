@@ -27,6 +27,6 @@ module.exports = _.merge({}, webServicesModel, {
             required: true,
             size: 500,
             minLength: 1
-        },
+        }
     }
 });

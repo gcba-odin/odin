@@ -62,10 +62,6 @@ module.exports = {
             type: 'string',
             enum: ['quantitative', 'qualitative']
         },
-        embedCode: {
-            type: 'string',
-            size: 500
-        },
         publishedAt: {
             type: 'datetime'
         },

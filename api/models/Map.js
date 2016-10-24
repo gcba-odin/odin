@@ -61,7 +61,7 @@ module.exports = {
             size: 100
         },
         properties: {
-            type: 'array',
+            type: 'array'
         },
         longitudeKey: {
             type: 'string',

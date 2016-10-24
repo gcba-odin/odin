@@ -51,10 +51,6 @@ module.exports = {
         optionals: {
             type: 'json'
         },
-        disclaimer: {
-            type: 'string',
-            size: 500
-        },
         publishedAt: {
             type: 'datetime'
         },

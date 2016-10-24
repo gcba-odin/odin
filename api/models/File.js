@@ -40,10 +40,6 @@ module.exports = {
             type: 'string',
             size: 500
         },
-        collection: {
-            type: 'string',
-            size: 500
-        },
         visible: {
             type: 'boolean',
             defaultsTo: false
@@ -67,14 +63,11 @@ module.exports = {
         gatheringDate: {
             type: 'date'
         },
-        updateDate: {
-            type: 'datetime'
-        },
-        updated: {
+        layout: {
             type: 'boolean',
             defaultsTo: false
         },
-        layout: {
+        updated: {
             type: 'boolean',
             defaultsTo: false
         },

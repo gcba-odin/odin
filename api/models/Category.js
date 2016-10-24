@@ -30,6 +30,7 @@ module.exports = {
         },
         slug: {
             type: 'string',
+            size: 150
         },
         description: {
             type: 'string',
@@ -49,7 +50,7 @@ module.exports = {
         },
         fileName: {
             type: 'string',
-            size: 20
+            size: 150
         },
         datasets: {
             collection: 'dataset',
