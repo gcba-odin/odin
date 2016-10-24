@@ -15,51 +15,51 @@ module.exports = {
     policies: {
         '*': ['addLoggedUser', 'statistics'],
         BasemapController: {
-            create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         CategoryController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             image: ['addLoggedUser', 'statistics']
         },
         ChartController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics'],
-            publish: ['isAuthenticated', 'statistics'],
-            unpublish: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         ConfigController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         DatasetController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics'],
-            publish: ['isAuthenticated', 'statistics'],
-            unpublish: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            destroy: ['isAuthenticated', 'statistics','hasPermission', 'isOwner'],
+            publish: ['isAuthenticated', 'statistics','hasPermission', 'isOwner'],
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         FileController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics'],
-            publish: ['isAuthenticated', 'statistics'],
-            unpublish: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission' ,'isOwner']
         },
         RestServiceController: {
-            create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         SoapServiceController: {
-            create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         FileTypeController: {
-            create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         LogController: {
             create: ['isAuthenticated', 'statistics'],
@@ -67,27 +67,27 @@ module.exports = {
             destroy: ['isAuthenticated', 'statistics']
         },
         MapController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics'],
-            publish: ['isAuthenticated', 'statistics'],
-            unpublish: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         OptionsController: true,
         OrganizationController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         TagController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy']
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy']
         },
         StatusController: {
-            create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         UserController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isHimself'],
             login: true,
             refreshToken: true
         },
@@ -103,9 +103,9 @@ module.exports = {
             statistics: ['isAuthenticated', 'statistics', 'hasPermission']
         },
         DestroyController: {
-            destroy: ['isAuthenticated', 'statistics'],
-            restore: ['isAuthenticated', 'statistics'],
-            deactivate: ['isAuthenticated', 'statistics']
+            destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            restore: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            deactivate: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         }
     }
 };
