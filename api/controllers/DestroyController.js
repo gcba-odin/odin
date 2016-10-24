@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * DeleteController
+ * DestroyController
  * @description :: Server-side logic for ...
  */
 
@@ -11,7 +11,7 @@ const destroy = require('../blueprints/destroy.js');
 const _ = require('lodash');
 
 module.exports = {
-    delete: function(req, res) {
+    destroy: function(req, res) {
         var model = actionUtil.parseModel(req);
         var id = req.param('id');
 
@@ -47,13 +47,13 @@ module.exports = {
                         destroy(req, res);
                     } else {
                         //Existing model relations: Soft delete
-                        sails.controllers.delete.softDelete(req, res, model, id);
+                        sails.controllers.delete.softDestroy(req, res, model, id);
                     }
                 }
             })
             .catch(res.negotiate);
     },
-    softDelete: function(req, res, model, id) {
+    softDestroy: function(req, res, model, id) {
         //Soft delete
         model.update({
             id: id
@@ -94,6 +94,6 @@ module.exports = {
         var user;
         user = (_.isUndefined(req.user) ? 'noUser' : req.user.id);
 
-        this.softDelete(req, res, model, id);
+        this.softDestroy(req, res, model, id);
     }
 };

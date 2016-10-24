@@ -91,8 +91,8 @@ module.exports = {
             login: true,
             refreshToken: true
         },
-        DeleteController: {
-            delete: ['isAuthenticated', 'statistics'],
+        DestroyController: {
+            destroy: ['isAuthenticated', 'statistics'],
             restore: ['isAuthenticated', 'statistics'],
             deactivate: ['isAuthenticated', 'statistics']
         }

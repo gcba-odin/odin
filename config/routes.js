@@ -19,17 +19,17 @@ module.exports = {
         },
 
         'DELETE /users/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'user',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /users/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'user',
             action: 'restore'
         },
         'POST /users/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'user',
             action: 'deactivate'
         },
@@ -123,17 +123,17 @@ module.exports = {
         },
 
         'DELETE /organizations/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'organization',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /organizations/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'organization',
             action: 'restore'
         },
         'POST /organizations/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'organization',
             action: 'deactivate'
         },
@@ -237,17 +237,17 @@ module.exports = {
         },
 
         'DELETE /categories/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'category',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /categories/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'category',
             action: 'restore'
         },
         'POST /categories/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'category',
             action: 'deactivate'
         },
@@ -309,17 +309,17 @@ module.exports = {
         },
 
         'DELETE /statuses/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'status',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /statuses/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'status',
             action: 'restore'
         },
         'POST /statuses/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'status',
             action: 'deactivate'
         },
@@ -387,17 +387,17 @@ module.exports = {
         },
 
         'DELETE /filetypes/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'filetype',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /filetypes/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'filetype',
             action: 'restore'
         },
         'POST /filetypes/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'filetype',
             action: 'deactivate'
         },
@@ -576,9 +576,9 @@ module.exports = {
             action: 'update'
         },
         'DELETE /restservices/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'restservice',
-            action: 'delete'
+            action: 'destroy'
         },
         'GET /restservices/search': {
             blueprint: 'search',
@@ -638,9 +638,9 @@ module.exports = {
             action: 'update'
         },
         'DELETE /soapservices/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'soapservice',
-            action: 'delete'
+            action: 'destroy'
         },
         'GET /soapservices/search': {
             blueprint: 'search',
@@ -800,17 +800,17 @@ module.exports = {
         },
 
         'DELETE /tags/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'tag',
-            action: 'delete'
+            action: 'destroy'
         },
         'POST /tags/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'tag',
             action: 'restore'
         },
         'POST /tags/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'tag',
             action: 'deactivate'
         },
@@ -1341,18 +1341,18 @@ module.exports = {
         },
 
         'DELETE /basemaps/:id': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'basemap',
-            action: 'delete'
+            action: 'destroy'
         },
 
         'POST /basemaps/:id/restore': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'basemap',
             action: 'restore'
         },
         'POST /basemaps/:id/deactivate': {
-            controller: 'Delete',
+            controller: 'Destroy',
             model: 'basemap',
             action: 'deactivate'
         },
