@@ -279,6 +279,19 @@ module.exports = {
                     username: 'admin'
                 }
             }
+        },{
+            id: 'bogPzIz9',
+            description: 'Organizacion por defecto',
+            type: 'model',
+            multiple: false,
+            model: 'Organizations',
+            key: 'defaultOrganization',
+            value: '',
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
         }]
 
     }
