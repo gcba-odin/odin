@@ -1,7 +1,12 @@
+const _ = require('lodash');
+const PermissionService = require('../api/services/PermissionService');
+const roles = PermissionService.roles;
+const actions = PermissionService.actions;
+
 module.exports = {
     fixtures: {
         order: [
-            'User', 'Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
+            'User', 'PermissionRule','Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -15,6 +20,32 @@ module.exports = {
             organization: 'eWRhpRV',
             role: 'superadmin'
         }],
+
+        PermissionRule: _.flattenDeep([
+            //Admin
+            { role: roles.ADMIN, model: 'user', action: actions.READ },
+            { role: roles.ADMIN, model: 'user', action: actions.UPDATE },
+            { role: roles.ADMIN, model: 'config', action: actions.READ },
+            _.map(['organization', 'dataset', 'file', 'restservice', 'soapservice', 'chart', 'map',
+                'category', 'tag', 'updatefrequency', 'status', 'filetype', 'basemap', 'config'], (model) => [
+                { role: roles.ADMIN, model: model, action: actions.CREATE },
+                { role: roles.ADMIN, model: model, action: actions.UPDATE },
+                { role: roles.ADMIN, model: model, action: actions.DESTROY },
+                { role: roles.ADMIN, model: model, action: actions.DEACTIVATE },
+                { role: roles.ADMIN, model: model, action: actions.RESTORE }
+            ]),
+            _.map(['dataset', 'file', 'chart', 'map'], (model) => [
+                { role: roles.ADMIN, model: model, action: actions.PUBLISH },
+                { role: roles.ADMIN, model: model, action: actions.UNPUBLISH }
+            ]),
+
+            //Guest
+            _.map(['file', 'chart', 'map'], (model) => [
+                { role: roles.GUEST, model: model, action: actions.CREATE },
+                { role: roles.GUEST, model: model, action: actions.UPDATE, owner: true }
+            ]),
+            { role: roles.GUEST, model: 'tag', action: actions.CREATE }
+        ]),
 
         Status: [{
             id: 'nWRhpRV',
