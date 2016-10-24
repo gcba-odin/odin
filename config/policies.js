@@ -91,6 +91,9 @@ module.exports = {
             login: true,
             refreshToken: true
         },
+        UserRoleController: {
+            find: ['isAuthenticated']
+        },
         DestroyController: {
             destroy: ['isAuthenticated', 'statistics'],
             restore: ['isAuthenticated', 'statistics'],

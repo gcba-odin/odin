@@ -12,6 +12,7 @@ module.exports = {
         // Users
         'POST /users/login': 'User.login',
         'POST /clients/tokens': 'User.refreshToken',
+        'GET /roles': 'UserRoleController.find',
 
         'GET /users/statistics': {
             blueprint: 'statistics',
