@@ -16,56 +16,50 @@ module.exports = {
         '*': ['addLoggedUser', 'statistics'],
         BasemapController: {
             create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         CategoryController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics'],
             image: ['addLoggedUser', 'statistics']
         },
         ChartController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
         ConfigController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics', 'addCreatedBy']
+            update: ['isAuthenticated', 'statistics'],
+            destroy: ['isAuthenticated', 'statistics']
         },
         DatasetController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
         FileController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            upload: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
         },
-
         RestServiceController: {
             create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         SoapServiceController: {
             create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         FileTypeController: {
             create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         LogController: {
             create: ['isAuthenticated', 'statistics'],
@@ -74,7 +68,7 @@ module.exports = {
         },
         MapController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy', 'addUrl'],
+            update: ['isAuthenticated', 'statistics'],
             destroy: ['isAuthenticated', 'statistics'],
             publish: ['isAuthenticated', 'statistics'],
             unpublish: ['isAuthenticated', 'statistics']
@@ -82,27 +76,24 @@ module.exports = {
         OptionsController: true,
         OrganizationController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         TagController: {
-            create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            destroy: ['isAuthenticated', 'statistics']
+            create: ['isAuthenticated', 'statistics', 'addCreatedBy']
         },
         StatusController: {
             create: ['isAuthenticated', 'statistics'],
-            update: ['isAuthenticated', 'statistics'],
-            destroy: ['isAuthenticated', 'statistics']
+            update: ['isAuthenticated', 'statistics']
         },
         UserController: {
             create: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics'],
             login: true,
             refreshToken: true
         },
         DeleteController: {
-            delete: ['isAuthenticated', 'statistics', 'addCreatedBy'],
-            restore: ['isAuthenticated', 'statistics', 'addCreatedBy'],
+            delete: ['isAuthenticated', 'statistics'],
+            restore: ['isAuthenticated', 'statistics'],
             deactivate: ['isAuthenticated', 'statistics']
         }
     }
