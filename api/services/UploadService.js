@@ -161,7 +161,7 @@ module.exports = {
                             // Get the id of the filetype based on mime of the file
                             sails.models.filetype.findOne({
                                 mimetype: {
-                                    contains: extension
+                                    contains: mimetype
                                 }
                             }).exec(function(err, record) {
                                 if (err) return res.negotiate(err);
