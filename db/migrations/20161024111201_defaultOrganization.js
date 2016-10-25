@@ -1,6 +1,6 @@
 var moment = require('moment');
 
-exports.up = function (knex, Promise) {
+exports.up = function(knex, Promise) {
     var now = moment().format('YYYY-MM-DD HH:mm:ss Z');
     var defaultOrganization = {
         id: 'bogPzIz9',
@@ -14,7 +14,7 @@ exports.up = function (knex, Promise) {
         createdAt: now,
         updatedAt: now
     };
-    var defaultMaxZoom= {
+    var defaultMaxZoom = {
         id: '9ogPzIz9',
         description: 'Zoom maximo en la creacion de mapa base',
         type: 'integer',
@@ -38,9 +38,11 @@ exports.up = function (knex, Promise) {
         knex.insert(defaultMinZoom).into('config'),
         knex.insert(defaultMaxZoom).into('config'),
         knex.insert(defaultOrganization).into('config')
-    ]);
+    ]).catch(function(error) {
+        console.log(error);
+    });
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function(knex, Promise) {
 
 };

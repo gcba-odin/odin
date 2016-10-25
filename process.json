@@ -4,7 +4,7 @@
     "env": {
         "NODE_ENV": "production"
     },
-    "max_memory_restart" : "1G",
+    "max_memory_restart" : "2G",
     "exec_mode": "cluster",
     "error_file": "err.log",
     "out_file": "out.log",
