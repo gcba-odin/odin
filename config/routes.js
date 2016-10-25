@@ -474,9 +474,9 @@ module.exports = {
 
         'GET /files/:id/resources': 'File.resources',
 
-        'GET /files/:id/download': 'File.download',
+        'GET /files/:identifier/download': 'File.download',
 
-        'GET /files/:id/download/:format': 'File.formattedDownload',
+        'GET /files/:identifier/download/:format': 'File.formattedDownload',
 
         'DELETE /files': {
             controller: 'NotImplemented',
@@ -681,7 +681,7 @@ module.exports = {
             model: 'soapservice',
             action: 'instance'
         },
-        
+
         // Datasets
 
         'PATCH /datasets/:id/publish': {

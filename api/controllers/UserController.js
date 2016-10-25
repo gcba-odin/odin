@@ -31,24 +31,6 @@ module.exports = {
             });
     },
 
-    /**
-     * Accept JSON Web Token and updates with new one
-     * @param req
-     * @param res
-     */
-    // refreshToken(req, res) {
-    //     if (!req.param('token')) return res.badRequest(null, {
-    //         message: 'You must provide token parameter'
-    //     });
-    //
-    //     const oldDecoded = CipherService.jwt.decodeSync(req.param('token'));
-    //
-    //     res.ok({
-    //         token: CipherService.jwt.encodeSync({
-    //             id: oldDecoded.id
-    //         })
-    //     });
-    // }
     refreshToken(req, res) {
         var consumerId = req.param('consumerId');
         var consumerUsername = req.param('consumer');

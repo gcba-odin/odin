@@ -9,6 +9,7 @@ const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const Response = require('../services/ResponseBuilderService');
 const mime = require('mime');
 const slug = require('slug');
+const shortid = require('shortid');
 const json2csv = require('json2csv');
 const json2xls = require('json2xls');
 const _ = require('lodash');
@@ -39,9 +40,13 @@ module.exports = {
         }.bind(this));
     },
     download: function(req, res) {
-        const pk = actionUtil.requirePk(req);
+        // const pk = actionUtil.requirePk(req);
+        var identifier = req.param('identifier');
 
-        File.findOne(pk).populate('dataset').then(function(file) {
+        var findCriteria = shortid.isValid(identifier) ? identifier : {
+            fileName: identifier
+        }
+        File.findOne(findCriteria).populate('dataset').then(function(file) {
             if (!file) return res.notFound();
 
             var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {
@@ -56,7 +61,7 @@ module.exports = {
 
             LogService.winstonLog('verbose', 'file downloaded', {
                 ip: req.ip,
-                resource: pk
+                resource: file.id
             });
 
             fileAdapter.read(dirname).on('error', function(err) {
@@ -93,8 +98,11 @@ module.exports = {
         });
     },
     formattedDownload: function(req, res) {
-        const values = actionUtil.parseValues(req);
-        const pk = actionUtil.requirePk(req);
+        var identifier = req.param('identifier');
+
+        var findCriteria = shortid.isValid(identifier) ? identifier : {
+            fileName: identifier
+        }
 
         // find the fileid within the parameters
         var format = _.get(values, 'format', '');
@@ -109,7 +117,7 @@ module.exports = {
         if (availableFormats.indexOf(format) === -1) {
             return res.badRequest();
         } else {
-            File.findOne(pk).populate(['type', 'dataset']).exec(function(err, file) {
+            File.findOne(findCriteria).populate(['type', 'dataset']).exec(function(err, file) {
                 if (err) return res.negotiate(err);
                 if (file.type.mimetype === format) {
                     return this.download(req, res)
@@ -125,7 +133,7 @@ module.exports = {
 
                     LogService.winstonLog('verbose', 'file downloaded', {
                         ip: req.ip,
-                        resource: pk
+                        resource: file.id
                     });
 
                     var slugifiedName = slug(file.name, {
