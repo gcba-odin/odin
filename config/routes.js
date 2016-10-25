@@ -6,17 +6,46 @@
  * Your routes map URLs to views and controllers
  */
 
+const readActions = require('../api/services/PermissionService').readActions;
+
 module.exports = {
     routes: {
 
         // Users
         'POST /users/login': 'User.login',
         'POST /clients/tokens': 'User.refreshToken',
+
         'GET /roles': 'UserRoleController.find',
 
+        'GET /users': {
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.FIND
+        },
+        'GET /users/search': {
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.SEARCH
+        },
+        'GET /users/first': {
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.FIRST
+        },
+        'GET /users/last': {
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.LAST
+        },
         'GET /users/statistics': {
-            blueprint: 'statistics',
-            model: 'user'
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.STATISTICS
+        },
+        'GET /users/:id': {
+            controller: 'RestrictedRead',
+            model: 'user',
+            action: readActions.FIND_ONE
         },
 
         'DELETE /users/:id': {
@@ -33,20 +62,6 @@ module.exports = {
             controller: 'Destroy',
             model: 'user',
             action: 'deactivate'
-        },
-
-        'GET /users/search': {
-            blueprint: 'search',
-            model: 'user'
-        },
-        'GET /users/first': {
-            blueprint: 'first',
-            model: 'user'
-        },
-
-        'GET /users/last': {
-            blueprint: 'last',
-            model: 'user'
         },
 
         // 'PATCH /users/:id': {
@@ -934,21 +949,35 @@ module.exports = {
         },
 
         // Configs
-        'GET /configs/statistics': {
-            blueprint: 'statistics',
-            model: 'config'
+        'GET /configs': {
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.FIND
         },
         'GET /configs/first': {
-            blueprint: 'first',
-            model: 'config'
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.FIRST
         },
         'GET /configs/last': {
-            blueprint: 'last',
-            model: 'config'
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.LAST
         },
         'GET /configs/search': {
-            blueprint: 'search',
-            model: 'config'
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.SEARCH
+        },
+        'GET /configs/statistics': {
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.STATISTICS
+        },
+        'GET /configs/:id': {
+            controller: 'RestrictedRead',
+            model: 'config',
+            action: readActions.FIND_ONE
         },
 
         // 'PATCH /configs/:id': {

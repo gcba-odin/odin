@@ -94,6 +94,14 @@ module.exports = {
         UserRoleController: {
             find: ['isAuthenticated']
         },
+        RestrictedReadController: {
+            find: ['isAuthenticated', 'statistics', 'hasPermission'],
+            findone: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            last: ['isAuthenticated', 'statistics', 'hasPermission'],
+            first: ['isAuthenticated', 'statistics', 'hasPermission'],
+            search: ['isAuthenticated', 'statistics', 'hasPermission'],
+            statistics: ['isAuthenticated', 'statistics', 'hasPermission']
+        },
         DestroyController: {
             destroy: ['isAuthenticated', 'statistics'],
             restore: ['isAuthenticated', 'statistics'],

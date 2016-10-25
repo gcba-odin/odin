@@ -7,7 +7,7 @@
 
 const shortId = require('shortid');
 const _ = require('lodash');
-const actions = require('../services/PermissionConstantService').actions;
+const actions = require('../services/PermissionService').actions;
 
 module.exports = {
     schema: true,

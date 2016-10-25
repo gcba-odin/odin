@@ -7,7 +7,7 @@
 
 const shortId = require('shortid');
 const _ = require('lodash');
-const roles = require('../services/PermissionConstantService').roles;
+const roles = require('../services/PermissionService').roles;
 
 module.exports = {
     schema: true,
@@ -84,6 +84,10 @@ module.exports = {
             obj.fullName = this.fullName();
 
             return obj;
+        },
+
+        isSuperAdmin() {
+            return this.role === roles.SUPERADMIN
         }
     },
 

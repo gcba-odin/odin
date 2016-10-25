@@ -5,7 +5,7 @@
  * @description :: Server-side logic for ...
  */
 
-const roles = require('../services/PermissionConstantService').roles;
+const roles = require('../services/PermissionService').roles;
 
 module.exports = {
     find: function(req, res) {

@@ -1,21 +1,21 @@
 "use strict";
 
-const roles = require('../services/PermissionConstantService').roles;
-
 /**
  * hasPermission
  * @description :: Policy that validates if user has permission to perform an action
  */
 
+const permissionService = require('../services/PermissionService');
+
 module.exports = (req, res, next) => {
-    if (req.user.role === roles.SUPERADMIN) {
+    if (req.user.isSuperAdmin()) {
         return next();
     }
 
    PermissionRule
         .findOne({
             role: req.user.role,
-            action: req.options.action,
+            action: permissionService.getAction(req),
             model: req.options.model
         })
         .then(permission => {
