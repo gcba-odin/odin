@@ -96,6 +96,23 @@ module.exports = {
                 lower: true
             });
             data.fileName += '.' + oldExtension;
+
+            // change physical file
+
+            File.find(data.id).populate('dataset').limit(1).then(function(file) {
+                file = file[0];
+
+                if (file.fileName !== data.fileName) {
+
+                    var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
+                    var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+                    fs.rename(originalFileName, newFileName, function(err) {
+                        if (err) throw err;
+                        console.log('File renamed');
+                    });
+                }
+            });
+
             return cb(data);
 
         } else {
