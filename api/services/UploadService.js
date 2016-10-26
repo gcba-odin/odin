@@ -103,6 +103,7 @@ module.exports = {
                 file = file[0];
 
                 if (file.fileName !== data.fileName) {
+                    DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, res);
 
                     var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
                     var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
