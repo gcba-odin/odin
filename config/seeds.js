@@ -201,7 +201,7 @@ module.exports = {
             multiple: false,
             model: 'Statuses',
             key: 'rejectedStatus',
-            value: 'sWRhpRV',
+            value: 'pWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
@@ -279,7 +279,7 @@ module.exports = {
                     username: 'admin'
                 }
             }
-        },{
+        }, {
             id: 'bogPzIz9',
             description: 'Organizacion por defecto',
             type: 'model',
@@ -292,7 +292,19 @@ module.exports = {
                     username: 'admin'
                 }
             }
+        }, {
+            id: 'cogPzIz9',
+            description: 'Estado en revisión',
+            type: 'model',
+            multiple: false,
+            model: 'Statuses',
+            key: 'underReviewStatus',
+            value: 'oWRhpRV',
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
         }]
-
     }
 };

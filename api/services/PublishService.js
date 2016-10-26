@@ -8,18 +8,26 @@ module.exports = {
             key: requiredStatus
         }).exec(function (err, statusConfig) {
             if (err) return res.negotiate(err);
-            if (requiredStatus === 'unpublishedStatus') {
+            if (requiredStatus === 'unpublishedStatus' || requiredStatus === 'rejectedStatus') {
                 // associations will return 0,1,2 depending on the model unpublished
                 var associations = this.checkAssociations(model);
                 // if associations is eq to 2, the unpublished model is a dataset
                 // so we need to unpublish the files associated, and theirs visualizations
                 if (associations === 2) {
-                    this.unpublishFiles(id, statusConfig.value);
+                    if (requiredStatus === 'unpublishedStatus') {
+                        this.unpublishFiles(id, statusConfig.value);
+                    } else {
+                        this.rejectFiles(id, statusConfig.value);
+                    }
                 }
                 //    if associations is eq to 1, the unpublished model is a a file
                 //    we need to unpublish their visualization
                 else if (associations === 1) {
-                    this.unpublishVisualizations(id, statusConfig.value)
+                    if (requiredStatus === 'unpublishedStatus') {
+                        this.unpublishVisualizations(id, statusConfig.value)
+                    } else {
+                        this.rejectVisualizations(id, statusConfig.value);
+                    }
                 }
             }
             model.update(id, {
@@ -44,7 +52,7 @@ module.exports = {
         }.bind(this));
     },
     unpublishFiles: function (id, configValue) {
-        File.update({dataset: id}, {
+        File.update({ dataset: id }, {
             status: configValue,
             publishedAt: null
         }).then(function (files) {
@@ -54,17 +62,38 @@ module.exports = {
         });
 
     },
-    unpublishVisualizations(id, configValue){
+    unpublishVisualizations(id, configValue) {
 
-        _Map.update({file: id}, {
+        _Map.update({ file: id }, {
             status: configValue,
             publishedAt: null
         }).then(function (maps) {
-            }
-        );
-        Chart.update({file: id}, {
+        }
+            );
+        Chart.update({ file: id }, {
             status: configValue,
             publishedAt: null
+        }).then(function (charts) {
+        });
+    },
+    rejectFiles: function (id, configValue) {
+        File.update({ dataset: id }, {
+            status: configValue
+        }).then(function (files) {
+            _.forEach(files, function (file) {
+                PublishService.rejectVisualizations(file.id, configValue)
+            });
+        });
+
+    },
+
+    rejectVisualizations(id, configValue) {
+        _Map.update({ file: id }, {
+            status: configValue
+        }).then(function (maps) {
+        });
+        Chart.update({ file: id }, {
+            status: configValue
         }).then(function (charts) {
         });
     },
@@ -88,4 +117,4 @@ module.exports = {
         return value
     }
 }
-;
+    ;

@@ -17,6 +17,10 @@ module.exports = {
         const pk = actionUtil.requirePk(req);
         return PublishService.publishModel(_Map, pk, 'unpublishedStatus', res)
     },
+    reject: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(_Map, pk, 'rejectedStatus', res)
+    },
     create: function(req, res) {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters

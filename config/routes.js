@@ -466,6 +466,11 @@ module.exports = {
             model: 'file',
             action: 'unpublish'
         },
+        'PATCH /files/:id/reject': {
+            controller: 'File',
+            model: 'file',
+            action: 'reject'
+        },
 
         'GET /files/statistics': {
             blueprint: 'statistics',
@@ -1054,6 +1059,11 @@ module.exports = {
             model: 'map',
             action: 'unpublish'
         },
+        'PATCH /maps/:id/reject': {
+            controller: 'Map',
+            model: 'map',
+            action: 'reject'
+        },
 
         'GET /maps/statistics': {
             blueprint: 'statistics',
@@ -1144,6 +1154,11 @@ module.exports = {
             controller: 'Chart',
             model: 'chart',
             action: 'unpublish'
+        },
+        'PATCH /charts/:id/reject': {
+            controller: 'Chart',
+            model: 'chart',
+            action: 'reject'
         },
 
         'GET /charts/statistics': {

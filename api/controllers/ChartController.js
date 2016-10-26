@@ -17,6 +17,10 @@ module.exports = {
         const pk = actionUtil.requirePk(req);
         return PublishService.publishModel(Chart, pk, 'unpublishedStatus', res)
     },
+    reject: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(Chart, pk, 'rejectedStatus', res)
+    },
     create: function(req, res) {
         this.createChart(req, res, function(values) {
             UploadService.metadataSave(Chart, values, 'chart', req, res);

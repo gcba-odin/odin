@@ -26,6 +26,10 @@ module.exports = {
         const pk = actionUtil.requirePk(req);
         return PublishService.publishModel(File, pk, 'unpublishedStatus', res)
     },
+    reject: function(req, res) {
+        const pk = actionUtil.requirePk(req);
+        return PublishService.publishModel(File, pk, 'rejectedStatus', res)
+    },
     create: function(req, res) {
         UploadService.createFile(req, res, true, function(data) {
             UploadService.metadataSave(File, data, 'file', req, res);
