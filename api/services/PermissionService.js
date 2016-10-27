@@ -16,7 +16,8 @@ module.exports = {
         DEACTIVATE: 'deactivate',
         RESTORE: 'restore',
         PUBLISH: 'publish',
-        UNPUBLISH: 'unpublish'
+        UNPUBLISH: 'unpublish',
+        REJECT: 'reject'
     },
     readActions: {
         FIND: 'find',

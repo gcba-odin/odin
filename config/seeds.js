@@ -36,7 +36,8 @@ module.exports = {
             ]),
             _.map(['dataset', 'file', 'chart', 'map'], (model) => [
                 { role: roles.ADMIN, model: model, action: actions.PUBLISH },
-                { role: roles.ADMIN, model: model, action: actions.UNPUBLISH }
+                { role: roles.ADMIN, model: model, action: actions.UNPUBLISH },
+                { role: roles.ADMIN, model: model, action: actions.REJECT }
             ]),
 
             //Guest

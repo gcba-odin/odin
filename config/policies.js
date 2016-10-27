@@ -28,7 +28,8 @@ module.exports = {
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
-            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            reject: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         ConfigController: {
             create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
@@ -47,7 +48,8 @@ module.exports = {
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
-            unpublish: ['isAuthenticated', 'statistics', 'hasPermission' ,'isOwner']
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission' ,'isOwner'],
+            reject: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         RestServiceController: {
             create: ['isAuthenticated', 'statistics', 'hasPermission'],
@@ -71,7 +73,8 @@ module.exports = {
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
-            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
+            unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            reject: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         OptionsController: true,
         OrganizationController: {
