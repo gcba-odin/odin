@@ -194,66 +194,79 @@ module.exports = {
                                 // If the file is consumable via the API
                                 if (record.api) {
                                     var filePath = UploadService.getFilePath(dataset, data);
+                                    var converter = new Converter({
+                                        delimiter: 'auto',
+                                        constructResult: false
+                                    });
+                                    var json = [];
+                                    var i = 0;
+                                    console.dir(i)
 
+                                    converter.on("record_parsed", function(resultRow, rawRow, rowIndex) {
+                                        i++;
+                                        json.push(resultRow);
+                                        if (i === 10000) {
+                                            console.dir(i)
+                                            i = 0
+                                            DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                            json = []
+                                        }
+
+                                    });
+                                    converter.on("end_parsed", function() {
+                                        console.log('on end parsed')
+                                        DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                        json = []
+                                            //If file is required the method was update,
+                                            // then we update their visualizations
+                                        if (!fileRequired) {
+                                            VisualizationsUpdateService.update(data)
+                                        }
+                                        readStream.destroy();
+                                        cb(data);
+
+
+                                    });
                                     // Read the file
                                     var readStream = fs.createReadStream(filePath);
                                     // Encode it
                                     readStream
-                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
-                                        .collect(function(err, result) {
-                                            if (err) return res.negotiate(err);
+                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).pipe(converter)
+                                        // .collect(function(err, result) {
+                                        //     if (err) return res.negotiate(err);
 
-                                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                                    //     if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                            //Should check which type the file is and convert it .
-                                            var json = [];
-                                            if (extension === 'xls' || extension === 'xlsx') {
-                                                //Convert XLS to json, store on nosql database
-                                                try {
-                                                    var workbook = XLSX.readFile(files[0].fd);
+                                    //     //Should check which type the file is and convert it .
+                                    //     var json = [];
+                                    //     if (extension === 'xls' || extension === 'xlsx') {
+                                    //         //Convert XLS to json, store on nosql database
+                                    //         try {
+                                    //             var workbook = XLSX.readFile(files[0].fd);
 
-                                                    //Join all the worksheets on one json
-                                                    json = _.reduce(workbook.SheetNames, function(result, sheetName) {
-                                                        var worksheet = workbook.Sheets[sheetName];
+                                    //             //Join all the worksheets on one json
+                                    //             json = _.reduce(workbook.SheetNames, function(result, sheetName) {
+                                    //                 var worksheet = workbook.Sheets[sheetName];
 
-                                                        var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                                        result = _.concat(result, currentJson);
-                                                        return result;
-                                                    }, []);
-                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                                } catch (err) {
+                                    //                 var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                    //                 result = _.concat(result, currentJson);
+                                    //                 return result;
+                                    //             }, []);
+                                    //             DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                    //         } catch (err) {
 
-                                                }
-                                            } else {
-                                                // Convert to JSON
+                                    //         }
+                                    //     } else {
+                                    // Convert to JSON
 
-                                                var converter = new Converter({
-                                                    delimiter: 'auto'
-                                                });
 
-                                                converter.fromString(result, function(err, json) {
-                                                    if (err) {
-                                                        return res.negotiate(err);
-                                                    }
-                                                    if (json.length === 0) return res.badRequest(null, {
-                                                        message: "Invalid or empty csv."
-                                                    });
 
-                                                    // Connect to the db
-                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                                    //If file is required the method was update,
-                                                    // then we update their visualizations
-                                                    if (!fileRequired) {
-                                                        VisualizationsUpdateService.update(data)
-                                                    }
-                                                });
-                                            }
-                                            readStream.destroy();
-                                        });
+
+                                    // }
                                 }
-                                cb(data);
-
                             });
+
+                            // });
                         });
                 });
             });
