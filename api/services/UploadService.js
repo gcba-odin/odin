@@ -17,11 +17,13 @@ const pluralize = require('pluralize');
 const slug = require('slug');
 const jsonfile = require('jsonfile');
 const _ = require('lodash');
+const bulkMongo = require('bulk-mongo');
 
 module.exports = {
-    createFile: function (req, res, fileRequired, cb) {
+    createFile: function(req, res, fileRequired, cb) {
+        req.setTimeout(15 * 60 * 1000); // 15 minutes
 
-        var uploadedFile = req.file('uploadFile').on('error', function (err) {
+        var uploadedFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
 
@@ -35,7 +37,7 @@ module.exports = {
         }
     },
 
-    uploadServiceFile: function (file, json, callback) {
+    uploadServiceFile: function(file, json, callback) {
         //TODO: Double check if we need https://www.npmjs.com/package/jsonfile
         var extension = 'json';
         file.fileName = slug(file.name, {
@@ -44,12 +46,12 @@ module.exports = {
         file.fileName += '.' + extension;
 
         var upath = UploadService.getFilePath(file.dataset, file);
-        fs.lstat(upath, function (err, stats) {
+        fs.lstat(upath, function(err, stats) {
             if (!err && stats.isFile()) {
                 UploadService.deleteFile(file.dataset.id, file.fileName, {});
             }
 
-            jsonfile.writeFile(upath, json, function (err) {
+            jsonfile.writeFile(upath, json, function(err) {
                 if (err) return callback(err, null);
                 // Connect to the db
                 DataStorageService.mongoSave(file.dataset.id, file.fileName, json, {});
@@ -63,18 +65,18 @@ module.exports = {
         });
     },
 
-    getDatasetPath: function (dataset) {
+    getDatasetPath: function(dataset) {
         return path.resolve(sails.config.odin.uploadFolder +
             '/' + slug(dataset.name, {
                 lower: true
             }));
     },
 
-    getFilePath: function (dataset, file) {
+    getFilePath: function(dataset, file) {
         return UploadService.getDatasetPath(dataset) + '/' + file.fileName;
     },
 
-    uploadFile: function (req, res, uploadedFile, fileRequired, cb) {
+    uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
@@ -99,7 +101,7 @@ module.exports = {
 
             // change physical file
 
-            File.find(data.id).populate('dataset').limit(1).then(function (file) {
+            File.find(data.id).populate('dataset').limit(1).then(function(file) {
                 file = file[0];
 
                 if (file.fileName !== data.fileName) {
@@ -107,7 +109,7 @@ module.exports = {
 
                     var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
                     var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                    fs.rename(originalFileName, newFileName, function (err) {
+                    fs.rename(originalFileName, newFileName, function(err) {
                         if (err) throw err;
                         console.log('File renamed');
                     });
@@ -117,17 +119,19 @@ module.exports = {
             return cb(data);
 
         } else {
-            Dataset.findOne(dataset).then(function (dataset) {
+            Dataset.findOne(dataset).then(function(dataset) {
 
-                FileType.find().exec(function (err, filetypes) {
-                    if (err) return res.negotiate(err);
-                    allowedTypes = _.transform(filetypes, function (allowedTypes, filetype) {
-                        _.forEach(filetype.mimetype, function (mime) {
+                FileType.find().exec(function(err, filetypes) {
+                    if (err) {
+                        return res.negotiate(err);
+                    }
+                    allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
+                        _.forEach(filetype.mimetype, function(mime) {
                             allowedTypes.push(mime);
                         })
                     }, []);
                     uploadedFile.upload({
-                        saveAs: function (file, cb) {
+                        saveAs: function(file, cb) {
                             data.fileName = slug(data.name, {
                                 lower: true
                             });
@@ -148,14 +152,14 @@ module.exports = {
                                 //If file exists, deleted it
                                 if (!fileRequired) {
                                     const pk = actionUtil.requirePk(req);
-                                    File.findOne(pk).populate('dataset').then(function (file) {
+                                    File.findOne(pk).populate('dataset').then(function(file) {
                                         DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
 
                                         // if the uploaded name is the same of the one saved on the filesystem
                                         // don't deleted, just overwrite it
                                         if (file.fileName !== data.fileName) {
                                             var upath = UploadService.getFilePath(file.dataset, file);
-                                            fs.lstat(upath, function (err, stats) {
+                                            fs.lstat(upath, function(err, stats) {
                                                 if (!err && stats.isFile()) {
                                                     UploadService.deleteFile(file.dataset.id, file.fileName, res);
                                                 }
@@ -172,7 +176,9 @@ module.exports = {
                     },
                         function onUploadComplete(err, files) {
                             //  IF ERROR Return and send 500 error with error
-                            if (err) return res.serverError(err);
+                            if (err) {
+                                return res.serverError(err);
+                            }
                             if (files.length === 0) {
                                 return res.badRequest(null, {
                                     message: 'No file was uploaded'
@@ -184,8 +190,10 @@ module.exports = {
                                 mimetype: {
                                     contains: mimetype
                                 }
-                            }).exec(function (err, record) {
-                                if (err) return res.negotiate(err);
+                            }).exec(function(err, record) {
+                                if (err) {
+                                    return res.negotiate(err);
+                                }
                                 if (!record) {
                                     return res.serverError('Could not find the filetype uploaded: ' + extension);
                                 }
@@ -193,94 +201,82 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 if (record.api) {
+
                                     var filePath = UploadService.getFilePath(dataset, data);
-                                    var converter = new Converter({
-                                        delimiter: 'auto',
-                                        constructResult: false,
-                                        workerNum: 4
-                                    });
+                                    var readStream = fs.createReadStream(filePath);
 
-                                    var json = [];
-                                    var i = 0;
-
-                                    DataStorageService.mongoBulkInit(dataset.id, data.fileName, res, function () {
-
-                                        converter.on("record_parsed", function (resultRow, rawRow, rowIndex) {
-                                            i++;
-                                            json.push(resultRow);
-                                            if (i % 1000 == 0) {
-                                                console.log(i);
-                                                DataStorageService.mongoBulkSave(dataset.id, data.fileName, json, res, false);
-                                                json = [];
-                                            }
-                                        });
-                                        converter.on("end_parsed", function () {
-                                            console.log('on end parsed');
-                                            DataStorageService.mongoBulkSave(dataset.id, data.fileName, json, res, true);
-                                            json = [];
-                                            //If file is required the method was update,
-                                            // then we update their visualizations
-                                            if (!fileRequired) {
-                                                VisualizationsUpdateService.update(data);
-                                            }
-                                            readStream.destroy();
-                                            cb(data);
-                                        });
-                                        // Read the file
-                                        var readStream = fs.createReadStream(filePath);
-                                        // Encode it
+                                    if (extension === 'xls' || extension === 'xlsx') {
                                         readStream
                                             .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
-                                            .pipe(converter);
-                                    });
+                                            .collect(function(err, result) {
+                                                if (err) return res.negotiate(err);
 
-                                    // .collect(function(err, result) {
-                                    //     if (err) return res.negotiate(err);
+                                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
-                                    //     if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                                                //Should check which type the file is and convert it .
+                                                var json = [];
+                                                //Convert XLS to json, store on nosql database
+                                                try {
+                                                    var workbook = XLSX.readFile(files[0].fd);
 
-                                    //     //Should check which type the file is and convert it .
-                                    //     var json = [];
-                                    //     if (extension === 'xls' || extension === 'xlsx') {
-                                    //         //Convert XLS to json, store on nosql database
-                                    //         try {
-                                    //             var workbook = XLSX.readFile(files[0].fd);
+                                                    //Join all the worksheets on one json
+                                                    json = _.reduce(workbook.SheetNames, function(result, sheetName) {
+                                                        var worksheet = workbook.Sheets[sheetName];
 
-                                    //             //Join all the worksheets on one json
-                                    //             json = _.reduce(workbook.SheetNames, function(result, sheetName) {
-                                    //                 var worksheet = workbook.Sheets[sheetName];
+                                                        var currentJson = XLSX.utils.sheet_to_json(worksheet);
+                                                        result = _.concat(result, currentJson);
+                                                        return result;
+                                                    }, []);
+                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
+                                                } catch (err) {
 
-                                    //                 var currentJson = XLSX.utils.sheet_to_json(worksheet);
-                                    //                 result = _.concat(result, currentJson);
-                                    //                 return result;
-                                    //             }, []);
-                                    //             DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                    //         } catch (err) {
+                                                }
+                                                readStream.destroy();
+                                                cb(data);
+                                            });
+                                    } else {
+                                        // Convert to JSON
+                                        var params = {
+                                            constructResult: false,
+                                            delimiter: 'auto',
+                                            workerNum: 2
+                                        };
 
-                                    //         }
-                                    //     } else {
-                                    // Convert to JSON
+                                        var converter = new Converter(params, {
+                                            objectMode: true,
+                                            highWaterMark: 65535
+                                        });
 
+                                        DataStorageService.mongoConnect(dataset.id, data.fileName, res, function(db) {
+                                            var factory_function = bulkMongo(db);
+                                            var bulkWriter = factory_function(data.fileName);
 
+                                            bulkWriter.on('done', () => {
+                                                readStream.destroy();
+                                                cb(data);
+                                            });
 
-
-                                    // }
+                                            readStream
+                                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
+                                                .pipe(converter)
+                                                .pipe(bulkWriter);
+                                        });
+                                    }
+                                } else {
+                                    cb(data);
                                 }
                             });
-
-                            // });
                         });
                 });
             });
-
         }
     },
 
-    uploadImage: function (req, res, cb) {
+    uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
 
-        var uploadFile = req.file('uploadImage').on('error', function (err) {
+        var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
@@ -289,7 +285,7 @@ module.exports = {
             });
 
             uploadFile.upload({
-                saveAs: function (file, cb) {
+                saveAs: function(file, cb) {
                     var mimetype = mime.lookup(file.filename.split('.').pop());
 
                     if (mimetype !== 'image/svg+xml') {
@@ -318,9 +314,11 @@ module.exports = {
         }
     },
 
-    metadataSave: function (model, data, modelName, req, res, extraRecordsResponse) {
+    metadataSave: function(model, data, modelName, req, res, extraRecordsResponse) {
         model.create(data).exec(function created(err, newInstance) {
-            if (err) return res.negotiate(err);
+            if (err) {
+                return res.negotiate(err);
+            }
 
             LogService.log(req, newInstance.id);
 
@@ -338,7 +336,7 @@ module.exports = {
 
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function (instance) {
+                    _.map(newInstance, function(instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
@@ -347,17 +345,19 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
 
-            model.find(newInstance.id).populate(associations).exec(function (err, record) {
+            model.find(newInstance.id).populate(associations).exec(function(err, record) {
                 if (!_.isUndefined(extraRecordsResponse)) {
                     record[0] = _.merge(record[0], extraRecordsResponse);
                 }
-                if (err) res.negotiate(err);
+                if (err) {
+                    res.negotiate(err);
+                }
                 res.created(record[0], {
                     meta: {
                         code: sails.config.success.CREATED.code,
@@ -374,14 +374,16 @@ module.exports = {
 
     },
 
-    metadataUpdate: function (model, data, modelName, req, res, extraRecordsResponse) {
+    metadataUpdate: function(model, data, modelName, req, res, extraRecordsResponse) {
         // Look up the model
         model.update(data.id, data).exec(function updated(err, records) {
 
             // Differentiate between waterline-originated validation errors
             // and serious underlying issues. Respond with badRequest if a
             // validation error is encountered, w/ validation info.
-            if (err) return res.negotiate(err);
+            if (err) {
+                return res.negotiate(err);
+            }
 
 
             // Because this should only update a single record and update
@@ -415,14 +417,16 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function (value, key) {
+            _.forEach(model.definition, function(value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
             //populate the response
-            model.find(updatedRecord.id).populate(associations).exec(function (err, record) {
-                if (err) return res.negotiate(err);
+            model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
+                if (err) {
+                    return res.negotiate(err);
+                }
 
                 //if we have any extraRecords to add to the response,
                 // we merge it to the response
@@ -446,14 +450,14 @@ module.exports = {
 
     },
 
-    deleteFile: function (datasetId, fileName, res) {
-        Dataset.findOne(datasetId).then(function (dataset) {
+    deleteFile: function(datasetId, fileName, res) {
+        Dataset.findOne(datasetId).then(function(dataset) {
 
             var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {
                 lower: true
             }) + '/' + fileName;
 
-            fs.unlink(path, function () {
+            fs.unlink(path, function() {
                 DataStorageService.deleteCollection(dataset.id, fileName, res);
                 ZipService.createZip(dataset.id);
             });

@@ -29,31 +29,6 @@ module.exports = {
             });
         });
     },
-    mongoBulkInit: function (dataset, filename, res, cb) {
-        if (bulkConnectionDb) {
-            cb();
-        } else {
-            DataStorageService.mongoConnect(dataset, filename, res, function (db) {
-                bulkConnectionDb = db;
-                cb();
-            });
-        }
-    },
-    mongoBulkSave: function (dataset, filename, json, res, close) {
-        json = _.transform(json, function (result, each) {
-            result.push(_.mapKeys(each, function (value, key) {
-                return _.replace(key, ".", " ");
-            }));
-        }, []);
-        if (bulkConnectionDb) {
-            DataStorageService.bulkInsert(filename, json, res, close);
-        } else {
-            DataStorageService.mongoConnect(dataset, filename, res, function (db) {
-                bulkConnectionDb = db;
-                DataStorageService.bulkInsert(filename, json, res, close);
-            });
-        }
-    },
     mongoCount: function (dataset, filename, res, cb) {
         if (!_.isNull(filename)) {
             DataStorageService.mongoConnect(dataset, filename, res, function (db) {
@@ -85,18 +60,5 @@ module.exports = {
                 });
             });
         }
-    },
-    bulkInsert: function (filename, json, res, close) {
-        var collection = bulkConnectionDb.collection(filename);
-        collection.insertMany(json, {
-            w: 1,
-            ordered: false
-        }, function (err) {
-            if (err && !res.headersSent) return res.negotiate(err);
-            if (close) {
-                bulkConnectionDb.close();
-                bulkConnectionDb = null;
-            }
-        });
     }
 };
