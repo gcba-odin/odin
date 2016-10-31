@@ -9,6 +9,9 @@ const fs = require('fs');
 var winston = require('winston');
 var path = require('path');
 var mkdirp = require('mkdirp');
+var exec = require('child_process').exec;
+const moment = require('moment');
+var CronJob = require('cron').CronJob;
 
 module.exports = {
   bootstrap: cb => {
@@ -44,6 +47,11 @@ module.exports = {
       }
     });
 
+    // create the backup folder
+    mkdirp(sails.config.odin.backupFolder, function(err) {
+      if (err) console.error(err);
+      else console.log('backup folder created on: ' + sails.config.odin.backupFolder)
+    });
 
     // create stats folder which will contain the statistics of the site
 
@@ -63,12 +71,29 @@ module.exports = {
     sails.on('lifted', function() {
       LogService.winstonLog('info', 'Sails has lifted!');
 
+      // cron databases and files backup
+      var connection = sails.config.connections[sails.config.models.connection];
+      var currentDate = moment().format("MM.DD.YYYY");
+      var outputPath = sails.config.odin.backupFolder + '/odin_backup_' + currentDate
+        // command for backing up postgres database
+      var command = 'PGPASSWORD=' + connection.password + ' pg_dump ' + connection.database + ' -h ' + connection.host +
+        ' -p ' + connection.port + ' -U ' + connection.user + ' > ' + outputPath;
+
+      // new CronJob('00 00 00 * * 0-6', function() {
+      new CronJob('*/10 * * * * *', function() {
+        console.dir('inside tick')
+        var child = exec(command, function(error, stdout, stderr) {
+          if (error) console.log(error);
+          process.stdout.write(stdout);
+          process.stderr.write(stderr);
+        });
+      }, null, true);
+
       UpdateFrequency.find(function(err, updateFrequencies) {
         //We should run a cron job per update frequency
         updateFrequencies.forEach(function(updateFrequency) {
           try {
             if (updateFrequency.timePattern) {
-              var CronJob = require('cron').CronJob;
               new CronJob(updateFrequency.timePattern, function() {
                 WebService.syncByUpdateFrequency(updateFrequency);
               }, null, true);

@@ -1,6 +1,9 @@
 # Local
 config/local.js
 
+#backup folder
+backups
+
 # Files
 files
 

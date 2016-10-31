@@ -6,7 +6,7 @@
  */
 
 const find = require('../blueprints/find');
-const findone = require('../blueprints/findOne');
+const findone = require('../blueprints/findone');
 const first = require('../blueprints/first');
 const last = require('../blueprints/last');
 const search = require('../blueprints/search');
@@ -19,4 +19,4 @@ module.exports = {
     last: last,
     search: search,
     statistics: statistics
- };
+};
