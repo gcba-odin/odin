@@ -19,9 +19,9 @@ const jsonfile = require('jsonfile');
 const _ = require('lodash');
 
 module.exports = {
-    createFile: function(req, res, fileRequired, cb) {
+    createFile: function (req, res, fileRequired, cb) {
 
-        var uploadedFile = req.file('uploadFile').on('error', function(err) {
+        var uploadedFile = req.file('uploadFile').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
 
@@ -35,7 +35,7 @@ module.exports = {
         }
     },
 
-    uploadServiceFile: function(file, json, callback) {
+    uploadServiceFile: function (file, json, callback) {
         //TODO: Double check if we need https://www.npmjs.com/package/jsonfile
         var extension = 'json';
         file.fileName = slug(file.name, {
@@ -44,12 +44,12 @@ module.exports = {
         file.fileName += '.' + extension;
 
         var upath = UploadService.getFilePath(file.dataset, file);
-        fs.lstat(upath, function(err, stats) {
+        fs.lstat(upath, function (err, stats) {
             if (!err && stats.isFile()) {
                 UploadService.deleteFile(file.dataset.id, file.fileName, {});
             }
 
-            jsonfile.writeFile(upath, json, function(err) {
+            jsonfile.writeFile(upath, json, function (err) {
                 if (err) return callback(err, null);
                 // Connect to the db
                 DataStorageService.mongoSave(file.dataset.id, file.fileName, json, {});
@@ -63,18 +63,18 @@ module.exports = {
         });
     },
 
-    getDatasetPath: function(dataset) {
+    getDatasetPath: function (dataset) {
         return path.resolve(sails.config.odin.uploadFolder +
             '/' + slug(dataset.name, {
                 lower: true
             }));
     },
 
-    getFilePath: function(dataset, file) {
+    getFilePath: function (dataset, file) {
         return UploadService.getDatasetPath(dataset) + '/' + file.fileName;
     },
 
-    uploadFile: function(req, res, uploadedFile, fileRequired, cb) {
+    uploadFile: function (req, res, uploadedFile, fileRequired, cb) {
         var mimetype = '';
         var extension = '';
         var dataset = req.param('dataset');
@@ -99,7 +99,7 @@ module.exports = {
 
             // change physical file
 
-            File.find(data.id).populate('dataset').limit(1).then(function(file) {
+            File.find(data.id).populate('dataset').limit(1).then(function (file) {
                 file = file[0];
 
                 if (file.fileName !== data.fileName) {
@@ -107,7 +107,7 @@ module.exports = {
 
                     var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
                     var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                    fs.rename(originalFileName, newFileName, function(err) {
+                    fs.rename(originalFileName, newFileName, function (err) {
                         if (err) throw err;
                         console.log('File renamed');
                     });
@@ -117,59 +117,59 @@ module.exports = {
             return cb(data);
 
         } else {
-            Dataset.findOne(dataset).then(function(dataset) {
+            Dataset.findOne(dataset).then(function (dataset) {
 
-                FileType.find().exec(function(err, filetypes) {
+                FileType.find().exec(function (err, filetypes) {
                     if (err) return res.negotiate(err);
-                    allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
-                        _.forEach(filetype.mimetype, function(mime) {
+                    allowedTypes = _.transform(filetypes, function (allowedTypes, filetype) {
+                        _.forEach(filetype.mimetype, function (mime) {
                             allowedTypes.push(mime);
                         })
                     }, []);
                     uploadedFile.upload({
-                            saveAs: function(file, cb) {
-                                data.fileName = slug(data.name, {
-                                    lower: true
+                        saveAs: function (file, cb) {
+                            data.fileName = slug(data.name, {
+                                lower: true
+                            });
+                            //Get the mime and the extension of the file
+                            mimetype = mime.lookup(file.filename.split('.').pop());
+                            extension = file.filename.split('.').pop();
+                            data.fileName += '.' + extension;
+
+                            // If the mime is present on the array of allowed types we can save it
+                            if (allowedTypes.indexOf(mimetype) === -1) {
+                                return res.negotiate({
+                                    status: 415,
+                                    code: 415,
+                                    message: 'filetype not allowed'
                                 });
-                                //Get the mime and the extension of the file
-                                mimetype = mime.lookup(file.filename.split('.').pop());
-                                extension = file.filename.split('.').pop();
-                                data.fileName += '.' + extension;
+                            } else {
 
-                                // If the mime is present on the array of allowed types we can save it
-                                if (allowedTypes.indexOf(mimetype) === -1) {
-                                    return res.negotiate({
-                                        status: 415,
-                                        code: 415,
-                                        message: 'filetype not allowed'
+                                //If file exists, deleted it
+                                if (!fileRequired) {
+                                    const pk = actionUtil.requirePk(req);
+                                    File.findOne(pk).populate('dataset').then(function (file) {
+                                        DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
+
+                                        // if the uploaded name is the same of the one saved on the filesystem
+                                        // don't deleted, just overwrite it
+                                        if (file.fileName !== data.fileName) {
+                                            var upath = UploadService.getFilePath(file.dataset, file);
+                                            fs.lstat(upath, function (err, stats) {
+                                                if (!err && stats.isFile()) {
+                                                    UploadService.deleteFile(file.dataset.id, file.fileName, res);
+                                                }
+                                            });
+                                        }
                                     });
-                                } else {
-
-                                    //If file exists, deleted it
-                                    if (!fileRequired) {
-                                        const pk = actionUtil.requirePk(req);
-                                        File.findOne(pk).populate('dataset').then(function(file) {
-                                            DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
-
-                                            // if the uploaded name is the same of the one saved on the filesystem
-                                            // don't deleted, just overwrite it
-                                            if (file.fileName !== data.fileName) {
-                                                var upath = UploadService.getFilePath(file.dataset, file);
-                                                fs.lstat(upath, function(err, stats) {
-                                                    if (!err && stats.isFile()) {
-                                                        UploadService.deleteFile(file.dataset.id, file.fileName, res);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                    return cb(null, data.fileName);
                                 }
-                            },
-                            dirname: UploadService.getDatasetPath(dataset),
-                            maxBytes: 2000000000
-
+                                return cb(null, data.fileName);
+                            }
                         },
+                        dirname: UploadService.getDatasetPath(dataset),
+                        maxBytes: 2000000000
+
+                    },
                         function onUploadComplete(err, files) {
                             //  IF ERROR Return and send 500 error with error
                             if (err) return res.serverError(err);
@@ -184,7 +184,7 @@ module.exports = {
                                 mimetype: {
                                     contains: mimetype
                                 }
-                            }).exec(function(err, record) {
+                            }).exec(function (err, record) {
                                 if (err) return res.negotiate(err);
                                 if (!record) {
                                     return res.serverError('Could not find the filetype uploaded: ' + extension);
@@ -196,44 +196,46 @@ module.exports = {
                                     var filePath = UploadService.getFilePath(dataset, data);
                                     var converter = new Converter({
                                         delimiter: 'auto',
-                                        constructResult: false
+                                        constructResult: false,
+                                        workerNum: 4
                                     });
+
                                     var json = [];
                                     var i = 0;
-                                    console.dir(i)
 
-                                    converter.on("record_parsed", function(resultRow, rawRow, rowIndex) {
-                                        i++;
-                                        json.push(resultRow);
-                                        if (i === 10000) {
-                                            console.dir(i)
-                                            i = 0
-                                            DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                            json = []
-                                        }
+                                    DataStorageService.mongoBulkInit(dataset.id, data.fileName, res, function () {
 
-                                    });
-                                    converter.on("end_parsed", function() {
-                                        console.log('on end parsed')
-                                        DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                        json = []
+                                        converter.on("record_parsed", function (resultRow, rawRow, rowIndex) {
+                                            i++;
+                                            json.push(resultRow);
+                                            if (i % 1000 == 0) {
+                                                console.log(i);
+                                                DataStorageService.mongoBulkSave(dataset.id, data.fileName, json, res, false);
+                                                json = [];
+                                            }
+                                        });
+                                        converter.on("end_parsed", function () {
+                                            console.log('on end parsed');
+                                            DataStorageService.mongoBulkSave(dataset.id, data.fileName, json, res, true);
+                                            json = [];
                                             //If file is required the method was update,
                                             // then we update their visualizations
-                                        if (!fileRequired) {
-                                            VisualizationsUpdateService.update(data)
-                                        }
-                                        readStream.destroy();
-                                        cb(data);
-
-
+                                            if (!fileRequired) {
+                                                VisualizationsUpdateService.update(data);
+                                            }
+                                            readStream.destroy();
+                                            cb(data);
+                                        });
+                                        // Read the file
+                                        var readStream = fs.createReadStream(filePath);
+                                        // Encode it
+                                        readStream
+                                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
+                                            .pipe(converter);
                                     });
-                                    // Read the file
-                                    var readStream = fs.createReadStream(filePath);
-                                    // Encode it
-                                    readStream
-                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).pipe(converter)
-                                        // .collect(function(err, result) {
-                                        //     if (err) return res.negotiate(err);
+
+                                    // .collect(function(err, result) {
+                                    //     if (err) return res.negotiate(err);
 
                                     //     if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
 
@@ -274,11 +276,11 @@ module.exports = {
         }
     },
 
-    uploadImage: function(req, res, cb) {
+    uploadImage: function (req, res, cb) {
         var data = actionUtil.parseValues(req);
         var path = sails.config.odin.uploadFolder + '/categories';
 
-        var uploadFile = req.file('uploadImage').on('error', function(err) {
+        var uploadFile = req.file('uploadImage').on('error', function (err) {
             if (!res.headersSent) return res.negotiate(err);
         });
         if (!uploadFile.isNoop) {
@@ -287,7 +289,7 @@ module.exports = {
             });
 
             uploadFile.upload({
-                saveAs: function(file, cb) {
+                saveAs: function (file, cb) {
                     var mimetype = mime.lookup(file.filename.split('.').pop());
 
                     if (mimetype !== 'image/svg+xml') {
@@ -316,7 +318,7 @@ module.exports = {
         }
     },
 
-    metadataSave: function(model, data, modelName, req, res, extraRecordsResponse) {
+    metadataSave: function (model, data, modelName, req, res, extraRecordsResponse) {
         model.create(data).exec(function created(err, newInstance) {
             if (err) return res.negotiate(err);
 
@@ -336,7 +338,7 @@ module.exports = {
 
                 // Make sure data is JSON-serializable before publishing
                 var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function(instance) {
+                    _.map(newInstance, function (instance) {
                         return instance.toJSON();
                     }) :
                     newInstance.toJSON();
@@ -345,13 +347,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function(value, key) {
+            _.forEach(model.definition, function (value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
 
-            model.find(newInstance.id).populate(associations).exec(function(err, record) {
+            model.find(newInstance.id).populate(associations).exec(function (err, record) {
                 if (!_.isUndefined(extraRecordsResponse)) {
                     record[0] = _.merge(record[0], extraRecordsResponse);
                 }
@@ -372,7 +374,7 @@ module.exports = {
 
     },
 
-    metadataUpdate: function(model, data, modelName, req, res, extraRecordsResponse) {
+    metadataUpdate: function (model, data, modelName, req, res, extraRecordsResponse) {
         // Look up the model
         model.update(data.id, data).exec(function updated(err, records) {
 
@@ -413,13 +415,13 @@ module.exports = {
 
             var associations = [];
 
-            _.forEach(model.definition, function(value, key) {
+            _.forEach(model.definition, function (value, key) {
                 if (value.foreignKey) {
                     associations.push(key);
                 }
             });
             //populate the response
-            model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
+            model.find(updatedRecord.id).populate(associations).exec(function (err, record) {
                 if (err) return res.negotiate(err);
 
                 //if we have any extraRecords to add to the response,
@@ -444,14 +446,14 @@ module.exports = {
 
     },
 
-    deleteFile: function(datasetId, fileName, res) {
-        Dataset.findOne(datasetId).then(function(dataset) {
+    deleteFile: function (datasetId, fileName, res) {
+        Dataset.findOne(datasetId).then(function (dataset) {
 
             var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {
                 lower: true
             }) + '/' + fileName;
 
-            fs.unlink(path, function() {
+            fs.unlink(path, function () {
                 DataStorageService.deleteCollection(dataset.id, fileName, res);
                 ZipService.createZip(dataset.id);
             });
