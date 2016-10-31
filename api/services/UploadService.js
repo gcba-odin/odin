@@ -86,15 +86,34 @@ module.exports = {
         data.gatheringDate = data.gatheringDate === 'null' ? null : data.gatheringDate
         var allowedTypes;
 
-        data.fileName = slug(data.name, {
-            lower: true
-        });
+
 
         if (uploadedFile.isNoop) {
             // If the file metadata was updated but no new file was added
             // update the fileName in case the name changed
             var oldExtension = data.fileName.split('.').pop();
+            data.fileName = slug(data.name, {
+                lower: true
+            });
             data.fileName += '.' + oldExtension;
+
+            // change physical file
+
+            File.find(data.id).populate('dataset').limit(1).then(function(file) {
+                file = file[0];
+
+                if (file.fileName !== data.fileName) {
+                    DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, res);
+
+                    var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
+                    var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+                    fs.rename(originalFileName, newFileName, function(err) {
+                        if (err) throw err;
+                        console.log('File renamed');
+                    });
+                }
+            });
+
             return cb(data);
 
         } else {
@@ -109,7 +128,9 @@ module.exports = {
                     }, []);
                     uploadedFile.upload({
                             saveAs: function(file, cb) {
-
+                                data.fileName = slug(data.name, {
+                                    lower: true
+                                });
                                 //Get the mime and the extension of the file
                                 mimetype = mime.lookup(file.filename.split('.').pop());
                                 extension = file.filename.split('.').pop();
