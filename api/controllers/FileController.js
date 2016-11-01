@@ -100,10 +100,10 @@ module.exports = {
     formattedDownload: function(req, res) {
         var identifier = req.param('identifier');
         const values = actionUtil.parseValues(req);
-        
+
         var findCriteria = shortid.isValid(identifier) ? identifier : {
             fileName: identifier
-        }
+        };
 
         // find the fileid within the parameters
         var format = _.get(values, 'format', '');
@@ -120,7 +120,7 @@ module.exports = {
         } else {
             File.findOne(findCriteria).populate(['type', 'dataset']).exec(function(err, file) {
                 if (err) return res.negotiate(err);
-                if (file.type.mimetype === format) {
+                if (file.type.mimetype.indexOf(format) !== -1) {
                     return this.download(req, res)
                 }
                 if (!file.type.api) {
