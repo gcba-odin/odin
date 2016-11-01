@@ -99,7 +99,8 @@ module.exports = {
     },
     formattedDownload: function(req, res) {
         var identifier = req.param('identifier');
-
+        const values = actionUtil.parseValues(req);
+        
         var findCriteria = shortid.isValid(identifier) ? identifier : {
             fileName: identifier
         }
