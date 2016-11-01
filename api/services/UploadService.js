@@ -17,9 +17,11 @@ const pluralize = require('pluralize');
 const slug = require('slug');
 const jsonfile = require('jsonfile');
 const _ = require('lodash');
+const bulkMongo = require('bulk-mongo');
 
 module.exports = {
     createFile: function(req, res, fileRequired, cb) {
+        req.setTimeout(15 * 60 * 1000); // 15 minutes
 
         var uploadedFile = req.file('uploadFile').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
@@ -120,59 +122,63 @@ module.exports = {
             Dataset.findOne(dataset).then(function(dataset) {
 
                 FileType.find().exec(function(err, filetypes) {
-                    if (err) return res.negotiate(err);
+                    if (err) {
+                        return res.negotiate(err);
+                    }
                     allowedTypes = _.transform(filetypes, function(allowedTypes, filetype) {
                         _.forEach(filetype.mimetype, function(mime) {
                             allowedTypes.push(mime);
                         })
                     }, []);
                     uploadedFile.upload({
-                            saveAs: function(file, cb) {
-                                data.fileName = slug(data.name, {
-                                    lower: true
+                        saveAs: function(file, cb) {
+                            data.fileName = slug(data.name, {
+                                lower: true
+                            });
+                            //Get the mime and the extension of the file
+                            mimetype = mime.lookup(file.filename.split('.').pop());
+                            extension = file.filename.split('.').pop();
+                            data.fileName += '.' + extension;
+
+                            // If the mime is present on the array of allowed types we can save it
+                            if (allowedTypes.indexOf(mimetype) === -1) {
+                                return res.negotiate({
+                                    status: 415,
+                                    code: 415,
+                                    message: 'filetype not allowed'
                                 });
-                                //Get the mime and the extension of the file
-                                mimetype = mime.lookup(file.filename.split('.').pop());
-                                extension = file.filename.split('.').pop();
-                                data.fileName += '.' + extension;
+                            } else {
 
-                                // If the mime is present on the array of allowed types we can save it
-                                if (allowedTypes.indexOf(mimetype) === -1) {
-                                    return res.negotiate({
-                                        status: 415,
-                                        code: 415,
-                                        message: 'filetype not allowed'
+                                //If file exists, deleted it
+                                if (!fileRequired) {
+                                    const pk = actionUtil.requirePk(req);
+                                    File.findOne(pk).populate('dataset').then(function(file) {
+                                        DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
+
+                                        // if the uploaded name is the same of the one saved on the filesystem
+                                        // don't deleted, just overwrite it
+                                        if (file.fileName !== data.fileName) {
+                                            var upath = UploadService.getFilePath(file.dataset, file);
+                                            fs.lstat(upath, function(err, stats) {
+                                                if (!err && stats.isFile()) {
+                                                    UploadService.deleteFile(file.dataset.id, file.fileName, res);
+                                                }
+                                            });
+                                        }
                                     });
-                                } else {
-
-                                    //If file exists, deleted it
-                                    if (!fileRequired) {
-                                        const pk = actionUtil.requirePk(req);
-                                        File.findOne(pk).populate('dataset').then(function(file) {
-                                            DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
-
-                                            // if the uploaded name is the same of the one saved on the filesystem
-                                            // don't deleted, just overwrite it
-                                            if (file.fileName !== data.fileName) {
-                                                var upath = UploadService.getFilePath(file.dataset, file);
-                                                fs.lstat(upath, function(err, stats) {
-                                                    if (!err && stats.isFile()) {
-                                                        UploadService.deleteFile(file.dataset.id, file.fileName, res);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                    return cb(null, data.fileName);
                                 }
-                            },
-                            dirname: UploadService.getDatasetPath(dataset),
-                            maxBytes: 2000000000
-
+                                return cb(null, data.fileName);
+                            }
                         },
+                        dirname: UploadService.getDatasetPath(dataset),
+                        maxBytes: 2000000000
+
+                    },
                         function onUploadComplete(err, files) {
                             //  IF ERROR Return and send 500 error with error
-                            if (err) return res.serverError(err);
+                            if (err) {
+                                return res.serverError(err);
+                            }
                             if (files.length === 0) {
                                 return res.badRequest(null, {
                                     message: 'No file was uploaded'
@@ -185,7 +191,9 @@ module.exports = {
                                     contains: mimetype
                                 }
                             }).exec(function(err, record) {
-                                if (err) return res.negotiate(err);
+                                if (err) {
+                                    return res.negotiate(err);
+                                }
                                 if (!record) {
                                     return res.serverError('Could not find the filetype uploaded: ' + extension);
                                 }
@@ -193,21 +201,20 @@ module.exports = {
 
                                 // If the file is consumable via the API
                                 if (record.api) {
+
                                     var filePath = UploadService.getFilePath(dataset, data);
-
-                                    // Read the file
                                     var readStream = fs.createReadStream(filePath);
-                                    // Encode it
-                                    readStream
-                                        .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
-                                        .collect(function(err, result) {
-                                            if (err) return res.negotiate(err);
 
-                                            if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+                                    if (extension === 'xls' || extension === 'xlsx') {
+                                        readStream
+                                            .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
+                                            .collect(function(err, result) {
+                                                if (err) return res.negotiate(err);
 
-                                            //Should check which type the file is and convert it .
-                                            var json = [];
-                                            if (extension === 'xls' || extension === 'xlsx') {
+                                                if (sails.config.odin.defaultEncoding === 'utf8') result = '\ufeff' + result;
+
+                                                //Should check which type the file is and convert it .
+                                                var json = [];
                                                 //Convert XLS to json, store on nosql database
                                                 try {
                                                     var workbook = XLSX.readFile(files[0].fd);
@@ -224,40 +231,45 @@ module.exports = {
                                                 } catch (err) {
 
                                                 }
-                                            } else {
-                                                // Convert to JSON
+                                                readStream.destroy();
+                                                cb(data);
+                                            });
+                                    } else {
+                                        // Convert to JSON
+                                        var params = {
+                                            constructResult: false,
+                                            delimiter: 'auto',
+                                            workerNum: 2
+                                        };
 
-                                                var converter = new Converter({
-                                                    delimiter: 'auto'
-                                                });
-
-                                                converter.fromString(result, function(err, json) {
-                                                    if (err) {
-                                                        return res.negotiate(err);
-                                                    }
-                                                    if (json.length === 0) return res.badRequest(null, {
-                                                        message: "Invalid or empty csv."
-                                                    });
-
-                                                    // Connect to the db
-                                                    DataStorageService.mongoSave(dataset.id, data.fileName, json, res);
-                                                    //If file is required the method was update,
-                                                    // then we update their visualizations
-                                                    if (!fileRequired) {
-                                                        VisualizationsUpdateService.update(data)
-                                                    }
-                                                });
-                                            }
-                                            readStream.destroy();
+                                        var converter = new Converter(params, {
+                                            objectMode: true,
+                                            highWaterMark: 65535
                                         });
-                                }
-                                cb(data);
 
+                                        DataStorageService.mongoConnect(dataset.id, data.fileName, res, function(db) {
+                                            var factory_function = bulkMongo(db);
+                                            var bulkWriter = factory_function(data.fileName);
+
+                                            bulkWriter.on('done', () => {
+                                                readStream.destroy();
+                                                db.close();
+                                                cb(data);
+                                            });
+
+                                            readStream
+                                                .pipe(iconv.decodeStream(sails.config.odin.defaultEncoding))
+                                                .pipe(converter)
+                                                .pipe(bulkWriter);
+                                        });
+                                    }
+                                } else {
+                                    cb(data);
+                                }
                             });
                         });
                 });
             });
-
         }
     },
 
@@ -305,7 +317,9 @@ module.exports = {
 
     metadataSave: function(model, data, modelName, req, res, extraRecordsResponse) {
         model.create(data).exec(function created(err, newInstance) {
-            if (err) return res.negotiate(err);
+            if (err) {
+                return res.negotiate(err);
+            }
 
             LogService.log(req, newInstance.id);
 
@@ -342,7 +356,9 @@ module.exports = {
                 if (!_.isUndefined(extraRecordsResponse)) {
                     record[0] = _.merge(record[0], extraRecordsResponse);
                 }
-                if (err) res.negotiate(err);
+                if (err) {
+                    res.negotiate(err);
+                }
                 res.created(record[0], {
                     meta: {
                         code: sails.config.success.CREATED.code,
@@ -366,7 +382,9 @@ module.exports = {
             // Differentiate between waterline-originated validation errors
             // and serious underlying issues. Respond with badRequest if a
             // validation error is encountered, w/ validation info.
-            if (err) return res.negotiate(err);
+            if (err) {
+                return res.negotiate(err);
+            }
 
 
             // Because this should only update a single record and update
@@ -407,7 +425,9 @@ module.exports = {
             });
             //populate the response
             model.find(updatedRecord.id).populate(associations).exec(function(err, record) {
-                if (err) return res.negotiate(err);
+                if (err) {
+                    return res.negotiate(err);
+                }
 
                 //if we have any extraRecords to add to the response,
                 // we merge it to the response

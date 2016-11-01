@@ -1477,7 +1477,7 @@ COPY oauth2_tokens (id, credential_id, access_token, token_type, refresh_token, 
 COPY plugins (id, name, api_id, consumer_id, config, enabled, created_at) FROM stdin;
 5cf1e12f-a467-4e22-8b2b-9fcb95e1d9f8	acl	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"whitelist":["external_users"]}	t	2016-07-20 18:30:04
 2c58b6f8-f1d7-4b75-a935-8837a98f7be5	cors	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"methods":["HEAD","GET","POST","PATCH","PUT","DELETE"],"credentials":false,"origin":"*","exposed_headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection"],"preflight_continue":false,"headers":["Authorization","Content-Type","Content-Lenght","Date","ETag","Connection","Accepts"]}	t	2016-07-20 18:35:12
-eeb3cd0c-1bad-430a-92ed-2899001f53f4	request-size-limiting	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"allowed_payload_size":2000}	t	2016-07-20 18:40:32
+eeb3cd0c-1bad-430a-92ed-2899001f53f4	request-size-limiting	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"allowed_payload_size":20000}	t	2016-07-20 18:40:32
 877959d1-33ff-4edb-97ce-b86f7e8460df	jwt	6b6e07fb-7040-417f-90e1-353cf3a70d1d	\N	{"uri_param_names":["jwt"],"secret_is_base64":false,"key_claim_name":"iss"}	t	2016-07-20 18:46:50
 \.
 
