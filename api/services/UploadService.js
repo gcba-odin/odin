@@ -253,6 +253,7 @@ module.exports = {
 
                                             bulkWriter.on('done', () => {
                                                 readStream.destroy();
+                                                db.close();
                                                 cb(data);
                                             });
 
