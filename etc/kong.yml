@@ -223,6 +223,7 @@ nginx: |
     send_timeout 60s;
 
     # Proxy Settings
+    proxy_read_timeout 600s
     proxy_buffer_size 128k;
     proxy_buffers 4 256k;
     proxy_busy_buffers_size 256k;
@@ -376,7 +377,7 @@ nginx: |
         alias /home/odinPreProduccion/odin-admin/dist;
         expires -1;
       }
-        
+
       ################################################
     }
 
@@ -400,7 +401,7 @@ nginx: |
         }
       #try_files $uri $uri/ /index.html =404;
       }
-      
+
       location /nginx_status {
         internal;
         access_log off;
