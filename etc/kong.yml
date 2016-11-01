@@ -223,7 +223,7 @@ nginx: |
     send_timeout 60s;
 
     # Proxy Settings
-    proxy_read_timeout 600s
+    proxy_read_timeout 600s;
     proxy_buffer_size 128k;
     proxy_buffers 4 256k;
     proxy_busy_buffers_size 256k;
