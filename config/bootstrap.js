@@ -20,12 +20,12 @@ module.exports = {
 
         // Create the upload folder
 
-        mkdirp(sails.config.odin.uploadFolder, function (err) {
+        mkdirp(sails.config.odin.uploadFolder, function(err) {
             if (err) console.error(err);
             else console.log('Upload folder created on: ' + sails.config.odin.uploadFolder)
         });
 
-        mkdirp(sails.config.odin.datasetZipFolder, function (err) {
+        mkdirp(sails.config.odin.datasetZipFolder, function(err) {
             if (err) console.error(err);
             else console.log('Zip folder created on: ' + sails.config.odin.datasetZipFolder)
         });
@@ -34,11 +34,11 @@ module.exports = {
         // Create the logs folder
         var logCompletePath = path.join(sails.config.odin.logFolder, sails.config.odin.logFile);
 
-        mkdirp(sails.config.odin.logFolder, function (err) {
+        mkdirp(sails.config.odin.logFolder, function(err) {
             if (err) console.error(err);
             else {
                 console.log('Log folder created on: ' + sails.config.odin.logFolder);
-                fs.lstat(logCompletePath, function (err, stats) {
+                fs.lstat(logCompletePath, function(err, stats) {
                     if (err || !stats.isFile()) {
                         var fd = fs.openSync(logCompletePath, 'w');
                     }
@@ -47,14 +47,14 @@ module.exports = {
         });
 
         // create the backup folder
-        mkdirp(sails.config.odin.backupFolder, function (err) {
+        mkdirp(sails.config.odin.backupFolder, function(err) {
             if (err) console.error(err);
             else console.log('backup folder created on: ' + sails.config.odin.backupFolder)
         });
 
         // create stats folder which will contain the statistics of the site
 
-        mkdirp(sails.config.odin.statisticsPath, function (err) {
+        mkdirp(sails.config.odin.statisticsPath, function(err) {
             if (err) console.error(err);
             else console.log('Stats path created on: ' + sails.config.odin.statisticsPath)
         });
@@ -67,7 +67,7 @@ module.exports = {
         winston.remove(winston.transports.Console);
 
         // log the app has lifted
-        sails.on('lifted', function () {
+        sails.on('lifted', function() {
             LogService.winstonLog('info', 'Sails has lifted!');
 
             /**
@@ -75,33 +75,54 @@ module.exports = {
              mongodump --out /home/odinPreProduccion/backups/prepro.backup.mongo
              **/
 
+
             // cron databases and files backup
             var currentDate = moment().format("MM.DD.YYYY");
 
-            // postgres connection data
+            // files backup
+            var filesCommand = 'tar -zcvf ' + sails.config.odin.backupFolder + '/odin_files_backup_' + currentDate + '.tar.gz ' + sails.config.odin.uploadFolder
+
+            // mongo backup
+            var mongoCommand = 'mongodump --out ' + sails.config.odin.backupFolder + '/odin_mongo_backup_' + currentDate
+                // postgres connection data
             var pgConnection = sails.config.connections[sails.config.models.connection];
             // path where pg dump will be saved
-            var pgOutputPath = sails.config.odin.backupFolder + '/odin_backup_' + currentDate + '.sql';
+            var pgOutputPath = sails.config.odin.backupFolder + '/odin_pg_backup_' + currentDate + '.sql';
 
             // command for backing up postgres database
             var pgCommand = 'PGPASSWORD=' + pgConnection.password + ' pg_dump ' + pgConnection.database + ' -h ' + pgConnection.host +
                 ' -p ' + pgConnection.port + ' -U ' + pgConnection.user + ' > ' + pgOutputPath;
 
-            new CronJob('00 00 00 * * 0-6', function() {
-            // new CronJob('*/10 * * * * *', function () {
-                var child = exec(pgCommand, function (error, stdout, stderr) {
+            // new CronJob('00 00 00 * * 0-6', function() {
+            new CronJob('*/10 * * * * *', function() {
+                var pgBackup = exec(pgCommand, function(error, stdout, stderr) {
                     if (error) console.log(error);
                     process.stdout.write(stdout);
                     process.stderr.write(stderr);
+                    console.log('Postgres backup executed on: ' + currentDate)
                 });
+                var filesBackup = exec(filesCommand, function(error, stdout, stderr) {
+                    if (error) console.log(error);
+                    process.stdout.write(stdout);
+                    process.stderr.write(stderr);
+                    console.log('Files backup executed on: ' + currentDate)
+                });
+                var mongoBackup = exec(mongoCommand, function(error, stdout, stderr) {
+                    if (error) console.log(error);
+                    process.stdout.write(stdout);
+                    process.stderr.write(stderr);
+                    console.log('Mongo backup executed on: ' + currentDate)
+                });
+
+
             }, null, true);
 
-            UpdateFrequency.find(function (err, updateFrequencies) {
+            UpdateFrequency.find(function(err, updateFrequencies) {
                 //We should run a cron job per update frequency
-                updateFrequencies.forEach(function (updateFrequency) {
+                updateFrequencies.forEach(function(updateFrequency) {
                     try {
                         if (updateFrequency.timePattern) {
-                            new CronJob(updateFrequency.timePattern, function () {
+                            new CronJob(updateFrequency.timePattern, function() {
                                 WebService.syncByUpdateFrequency(updateFrequency);
                             }, null, true);
                         }
