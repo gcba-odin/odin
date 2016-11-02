@@ -93,8 +93,7 @@ module.exports = {
             var pgCommand = 'PGPASSWORD=' + pgConnection.password + ' pg_dump ' + pgConnection.database + ' -h ' + pgConnection.host +
                 ' -p ' + pgConnection.port + ' -U ' + pgConnection.user + ' > ' + pgOutputPath;
 
-            // new CronJob('00 00 00 * * 0-6', function() {
-            new CronJob('*/10 * * * * *', function() {
+            new CronJob('00 00 00 * * 0-6', function() {
                 var pgBackup = exec(pgCommand, function(error, stdout, stderr) {
                     if (error) console.log(error);
                     process.stdout.write(stdout);
