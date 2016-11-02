@@ -6,7 +6,7 @@ const actions = PermissionService.actions;
 module.exports = {
     fixtures: {
         order: [
-            'User', 'PermissionRule','Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
+            'User', 'PermissionRule', 'Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
         ],
         User: [{
             id: 'dogPzIz9',
@@ -23,29 +23,71 @@ module.exports = {
 
         PermissionRule: _.flattenDeep([
             //Admin
-            { role: roles.ADMIN, model: 'user', action: actions.READ },
-            { role: roles.ADMIN, model: 'user', action: actions.UPDATE },
-            { role: roles.ADMIN, model: 'config', action: actions.READ },
+            {
+                role: roles.ADMIN,
+                model: 'user',
+                action: actions.READ
+            }, {
+                role: roles.ADMIN,
+                model: 'user',
+                action: actions.UPDATE
+            }, {
+                role: roles.ADMIN,
+                model: 'config',
+                action: actions.READ
+            },
             _.map(['organization', 'dataset', 'file', 'restservice', 'soapservice', 'chart', 'map',
-                'category', 'tag', 'updatefrequency', 'status', 'filetype', 'basemap', 'config'], (model) => [
-                { role: roles.ADMIN, model: model, action: actions.CREATE },
-                { role: roles.ADMIN, model: model, action: actions.UPDATE },
-                { role: roles.ADMIN, model: model, action: actions.DESTROY },
-                { role: roles.ADMIN, model: model, action: actions.DEACTIVATE },
-                { role: roles.ADMIN, model: model, action: actions.RESTORE }
-            ]),
-            _.map(['dataset', 'file', 'chart', 'map'], (model) => [
-                { role: roles.ADMIN, model: model, action: actions.PUBLISH },
-                { role: roles.ADMIN, model: model, action: actions.UNPUBLISH },
-                { role: roles.ADMIN, model: model, action: actions.REJECT }
-            ]),
+                'category', 'tag', 'updatefrequency', 'status', 'filetype', 'basemap', 'config'
+            ], (model) => [{
+                role: roles.ADMIN,
+                model: model,
+                action: actions.CREATE
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.UPDATE
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.DESTROY
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.DEACTIVATE
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.RESTORE
+            }]),
+            _.map(['dataset', 'file', 'chart', 'map'], (model) => [{
+                role: roles.ADMIN,
+                model: model,
+                action: actions.PUBLISH
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.UNPUBLISH
+            }, {
+                role: roles.ADMIN,
+                model: model,
+                action: actions.REJECT
+            }]),
 
             //Guest
-            _.map(['file', 'chart', 'map'], (model) => [
-                { role: roles.GUEST, model: model, action: actions.CREATE },
-                { role: roles.GUEST, model: model, action: actions.UPDATE, owner: true }
-            ]),
-            { role: roles.GUEST, model: 'tag', action: actions.CREATE }
+            _.map(['file', 'chart', 'map'], (model) => [{
+                role: roles.GUEST,
+                model: model,
+                action: actions.CREATE
+            }, {
+                role: roles.GUEST,
+                model: model,
+                action: actions.UPDATE,
+                owner: true
+            }]), {
+                role: roles.GUEST,
+                model: 'tag',
+                action: actions.CREATE
+            }
         ]),
 
         Status: [{
@@ -333,6 +375,18 @@ module.exports = {
             model: 'Statuses',
             key: 'underReviewStatus',
             value: 'oWRhpRV',
+            models: {
+                updatedBy: {
+                    username: 'admin'
+                }
+            }
+        }, {
+            id: 'fogPzIz9',
+            description: 'Opcionales por default',
+            type: 'model',
+            multiple: true,
+            key: 'defaultOptionals',
+            value: [],
             models: {
                 updatedBy: {
                     username: 'admin'
