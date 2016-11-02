@@ -131,49 +131,49 @@ module.exports = {
                         })
                     }, []);
                     uploadedFile.upload({
-                        saveAs: function(file, cb) {
-                            data.fileName = slug(data.name, {
-                                lower: true
-                            });
-                            //Get the mime and the extension of the file
-                            mimetype = mime.lookup(file.filename.split('.').pop());
-                            extension = file.filename.split('.').pop();
-                            data.fileName += '.' + extension;
-
-                            // If the mime is present on the array of allowed types we can save it
-                            if (allowedTypes.indexOf(mimetype) === -1) {
-                                return res.negotiate({
-                                    status: 415,
-                                    code: 415,
-                                    message: 'filetype not allowed'
+                            saveAs: function(file, cb) {
+                                data.fileName = slug(data.name, {
+                                    lower: true
                                 });
-                            } else {
+                                //Get the mime and the extension of the file
+                                mimetype = mime.lookup(file.filename.split('.').pop());
+                                extension = file.filename.split('.').pop();
+                                data.fileName += '.' + extension;
 
-                                //If file exists, deleted it
-                                if (!fileRequired) {
-                                    const pk = actionUtil.requirePk(req);
-                                    File.findOne(pk).populate('dataset').then(function(file) {
-                                        DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
-
-                                        // if the uploaded name is the same of the one saved on the filesystem
-                                        // don't deleted, just overwrite it
-                                        if (file.fileName !== data.fileName) {
-                                            var upath = UploadService.getFilePath(file.dataset, file);
-                                            fs.lstat(upath, function(err, stats) {
-                                                if (!err && stats.isFile()) {
-                                                    UploadService.deleteFile(file.dataset.id, file.fileName, res);
-                                                }
-                                            });
-                                        }
+                                // If the mime is present on the array of allowed types we can save it
+                                if (allowedTypes.indexOf(mimetype) === -1) {
+                                    return res.negotiate({
+                                        status: 415,
+                                        code: 415,
+                                        message: 'filetype not allowed'
                                     });
-                                }
-                                return cb(null, data.fileName);
-                            }
-                        },
-                        dirname: UploadService.getDatasetPath(dataset),
-                        maxBytes: 2000000000
+                                } else {
 
-                    },
+                                    //If file exists, deleted it
+                                    if (!fileRequired) {
+                                        const pk = actionUtil.requirePk(req);
+                                        File.findOne(pk).populate('dataset').then(function(file) {
+                                            DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
+
+                                            // if the uploaded name is the same of the one saved on the filesystem
+                                            // don't deleted, just overwrite it
+                                            if (file.fileName !== data.fileName) {
+                                                var upath = UploadService.getFilePath(file.dataset, file);
+                                                fs.lstat(upath, function(err, stats) {
+                                                    if (!err && stats.isFile()) {
+                                                        UploadService.deleteFile(file.dataset.id, file.fileName, res);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                    return cb(null, data.fileName);
+                                }
+                            },
+                            dirname: UploadService.getDatasetPath(dataset),
+                            maxBytes: 2000000000
+
+                        },
                         function onUploadComplete(err, files) {
                             //  IF ERROR Return and send 500 error with error
                             if (err) {
@@ -254,6 +254,9 @@ module.exports = {
                                             bulkWriter.on('done', () => {
                                                 readStream.destroy();
                                                 db.close();
+                                                if (!fileRequired) {
+                                                    VisualizationsUpdateService.update(data)
+                                                }
                                                 cb(data);
                                             });
 
