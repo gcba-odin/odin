@@ -383,10 +383,10 @@ module.exports = {
         }, {
             id: 'fogPzIz9',
             description: 'Opcionales por default',
-            type: 'model',
+            type: 'string',
             multiple: true,
             key: 'defaultOptionals',
-            value: [],
+            value: '',
             models: {
                 updatedBy: {
                     username: 'admin'

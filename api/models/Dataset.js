@@ -8,6 +8,7 @@
 var shortId = require('shortid');
 var slug = require('slug');
 var fs = require('fs');
+var mkdirp = require('mkdirp');
 
 module.exports = {
     schema: true,
@@ -92,18 +93,18 @@ module.exports = {
 
         if (values.id) {
 
-            Dataset.find(values.id).limit(1).then(function (originalDataset) {
+            Dataset.find(values.id).limit(1).then(function(originalDataset) {
                 originalDataset = originalDataset[0];
 
                 if (originalDataset.name !== values.name) {
 
                     var originalDirname = sails.config.odin.uploadFolder + "/" + slug(originalDataset.name, {
-                            lower: true
-                        });
+                        lower: true
+                    });
                     var newDirname = sails.config.odin.uploadFolder + "/" + slug(values.name, {
-                            lower: true
-                        });
-                    fs.rename(originalDirname, newDirname, function (err) {
+                        lower: true
+                    });
+                    fs.rename(originalDirname, newDirname, function(err) {
                         if (err) throw err;
                         console.log('Datasets folder renamed');
                     });
@@ -112,20 +113,74 @@ module.exports = {
 
         }
         if (values.name) {
-            values.slug = slug(values.name, {lower: true});
+            values.slug = slug(values.name, {
+                lower: true
+            });
         }
         next()
     },
     beforeCreate: (values, next) => {
         if (values.name) {
-            values.slug = slug(values.name, {lower: true});
+            values.slug = slug(values.name, {
+                lower: true
+            });
         }
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function (err, record) {
+        }).exec(function(err, record) {
             values.status = record.value;
             next();
         });
     },
-    afterCreate: (values, next) => next()
+    saveDatasetAssociatedFile: (dataset) => {
+
+        Dataset.find(dataset.id).populate(['categories', 'tags']).limit(1).then(function(dataset) {
+            dataset = dataset[0];
+
+            var datasetFolder = sails.config.odin.uploadFolder + "/" + dataset.slug;
+            var datasetFile = datasetFolder + '/' + dataset.slug + '.txt'
+                // Make the dataset folder
+            mkdirp(datasetFolder, function(err) {
+                if (err) console.error(err);
+                else console.log('Dataset folder created on : ' + datasetFolder)
+
+                // Get list of categories and tags
+                var categories = _.reduce(dataset.categories, function(names, category) {
+                    return names + ' ' + category.name
+
+                }, '');
+                var tags = _.reduce(dataset.tags, function(names, tag) {
+                    return names + ' ' + tag.name
+                }, '');
+
+                // Text to write on file
+                var fileText = 'Nombre: ' + dataset.name +
+                    '\n Descripcion: ' + dataset.description +
+                    '\n Notas: ' + dataset.notes +
+                    '\n Categorias: ' + categories +
+                    '\n Etiquetas: ' + tags +
+                    '\n Publicacion: ' + dataset.publishedAt +
+                    '\n Ultima modificacion: ' + dataset.updatedAt;
+
+                fs.writeFile(datasetFile, fileText, function(err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+
+                    console.log("The file was saved!");
+                });
+            });
+        });
+
+    },
+    afterCreate: (values, next) => {
+        console.dir('after create')
+        Dataset.saveDatasetAssociatedFile(values);
+        next()
+    },
+    afterUpdate: (values, next) => {
+        console.dir('after create')
+        Dataset.saveDatasetAssociatedFile(values);
+        next()
+    }
 };

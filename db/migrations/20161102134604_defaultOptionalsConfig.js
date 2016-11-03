@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
         type: 'string',
         multiple: true,
         key: 'defaultOptionals',
-        value: [],
+        value: '',
         createdAt: now,
         updatedAt: now
     };
