@@ -1,7 +1,10 @@
 ![ODIN](http://imgur.com/y0vcjnk.png)
 
 # ODIN: Open Data INitiative
-[![Build Status](https://travis-ci.org/gcba-odin/odin.svg?branch=dev)](https://travis-ci.org/gcba-odin/odin) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a61e5f13c19c43c099202315ce753d71)](https://www.codacy.com/app/ODIN/odin?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gcba-odin/odin&amp;utm_campaign=Badge_Grade) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://img.shields.io/badge/License-GPL%20v2-blue.svg)
+[![Build Status](https://travis-ci.org/gcba-odin/odin.svg?branch=dev)](https://travis-ci.org/gcba-odin/odin)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a61e5f13c19c43c099202315ce753d71)](https://www.codacy.com/app/ODIN/odin?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gcba-odin/odin&amp;utm_campaign=Badge_Grade)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://img.shields.io/badge/License-GPL%20v3-blue.svg)
+[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://gcba-odin.github.io/odin-tech-docs)
 
 
 ODIN is an API first open source DMS (data management system) created to help governments publish and share their data.
@@ -116,6 +119,8 @@ module.exports.odin = {
     kongHost: 'http://kongexample.com', // --> Url where kong is hosted
     kongAdmin: 'http://kongexample.com:8001', // --> Kong port to acces configurations
 
+    recaptchaSecret: 'GoogleRecaptchaSecretForTheAdminHere',
+
     uploadFolder: 'files', // --> Path to the folder where the datasets files will be stored
     datasetZipFolder: 'datasets', // --> Path where the datasets zips will be stored
 
@@ -127,6 +132,7 @@ module.exports.odin = {
     logFile: 'sailsApp.log', // --> File name and path of the log file
     logFolder: 'logs', // --> Folder where the logs will be saved
     logLevel: 'error', // --> Log level
-    statisticsPath: 'stats' // -->Path where the statistics will be saved each month
+    statisticsPath: 'stats', // -->Path where the statistics will be saved each month
+    backupFolder: 'backups' // --> Folder where the backups will be saved
 }
 ```
