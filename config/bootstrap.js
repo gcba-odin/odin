@@ -6,17 +6,21 @@
  * @param {Function} cb This function should always be called, so DON'T REMOVE IT
  */
 const fs = require('fs');
-var winston = require('winston');
-var path = require('path');
-var mkdirp = require('mkdirp');
-var exec = require('child_process').exec;
+const winston = require('winston');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const exec = require('child_process').exec;
 const moment = require('moment');
-var CronJob = require('cron').CronJob;
+const CronJob = require('cron').CronJob;
+const CategorySeed =  require('../seeds/CategorySeed');
 
 module.exports = {
     bootstrap: cb => {
 
         console.dir('Inside bootstrap function');
+
+        // Calls seed functions
+        CategorySeed.load();
 
         // Create the upload folder
 
