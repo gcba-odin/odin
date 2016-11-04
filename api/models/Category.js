@@ -56,6 +56,13 @@ module.exports = {
             collection: 'dataset',
             via: 'categories'
         },
+        parent: {
+            model: 'category'
+        },
+        subcategories: {
+            collection: 'category',
+            via: 'parent'
+        },
 
         toJSON() {
             return this.toObject();
@@ -64,15 +71,26 @@ module.exports = {
 
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => {
-        if(values.name){
-            values.slug = slug(values.name, {lower: true});
+    beforeValidate: (values, next) => {
+        if (values.parent) {
+            Category
+                .findOneById(values.parent)
+                .then(parentCategory => {
+                    next(parentCategory.parent ? new Error('The parent category cannot be a subcategory') : null);
+                });
+        } else {
+            next();
         }
-        next()
+    },
+    beforeUpdate: (values, next) => {
+        if(values.name) {
+            values.slug = slug(values.name, { lower: true });
+        }
+        next();
     },
     beforeCreate: (values, next) => {
-        if(values.name){
-            values.slug = slug(values.name, {lower: true});
+        if(values.name) {
+            values.slug = slug(values.name, { lower: true });
         }
         if (_.endsWith(values.image, '/id')) {
 
