@@ -3,35 +3,21 @@
 const readActions = require('../../api/services/PermissionService').readActions;
 
 module.exports = {
-    'GET /configs': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.FIND
-    },
     'GET /configs/first': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.FIRST
+        blueprint: 'first',
+        model: 'config'
     },
     'GET /configs/last': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.LAST
+        blueprint: 'last',
+        model: 'config'
     },
     'GET /configs/search': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.SEARCH
+        blueprint: 'search',
+        model: 'config'
     },
     'GET /configs/statistics': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.STATISTICS
-    },
-    'GET /configs/:id': {
-        controller: 'RestrictedRead',
-        model: 'config',
-        action: readActions.FIND_ONE
+        blueprint: 'statistics',
+        model: 'config'
     },
     // 'PATCH /configs/:id': {
     //     blueprint: 'update',

@@ -31,10 +31,6 @@ module.exports = {
                 role: roles.ADMIN,
                 model: 'user',
                 action: actions.UPDATE
-            }, {
-                role: roles.ADMIN,
-                model: 'config',
-                action: actions.READ
             },
             _.map(['organization', 'dataset', 'file', 'restservice', 'soapservice', 'chart', 'map',
                 'category', 'tag', 'updatefrequency', 'status', 'filetype', 'basemap', 'config'
