@@ -63,7 +63,8 @@ module.exports = {
         subcategories: {
             collection: 'category',
             via: 'datasetsSubcategories',
-            dominant: true
+            dominant: true,
+            ignoreRemoveAssociations: true
         },
         status: {
             model: 'status'

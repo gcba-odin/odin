@@ -167,7 +167,7 @@ class ResponseGET extends ResponseBuilder {
         this.collections = {};
 
         _.forEach(this._model.associations, function (association) {
-            if (association.type === 'collection'){
+            if (association.type === 'collection') {
                 this.collections[association.alias] = association;
             }
         }.bind(this));
@@ -209,15 +209,15 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Performs count query
      */
-    performCountQuery(){
+    performCountQuery() {
         this._model.count().where(this.params.where.full)
-        .then(function (count) {
-            this._count = count;
-            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-        }.bind(this))
-        .catch(function (err) {
-            console.log(err);
-        });
+            .then(function (count) {
+                this._count = count;
+                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+            }.bind(this))
+            .catch(function (err) {
+                console.log(err);
+            });
     }
 
     /*
@@ -228,7 +228,7 @@ class ResponseGET extends ResponseBuilder {
         // a)Main model (full filters)
         // b)Nested collections (deep filters)
 
-        if(_.isUndefined(this.params.where)) {
+        if (_.isUndefined(this.params.where)) {
             this.params.where = {};
         }
 
@@ -247,7 +247,7 @@ class ResponseGET extends ResponseBuilder {
             // We could only paginate on server if:
             // (a) No deep params are supplied
             // (b) removeEmptyAssociations is not specified or false (model).
-            if(_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) ||
+            if (_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) ||
                 _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
 
                 this._query = this._query.limit(this.params.limit);
@@ -276,7 +276,7 @@ class ResponseGET extends ResponseBuilder {
      * 2) Merge with front full conditions if invited user
      * 3) Convert filters to conditions (the ones that query accepts)
      */
-    getFullConditions(){
+    getFullConditions() {
         // Get "invited" full filters in case there's no req.user
         var frontFullFilters = this.getFrontFullFilters();
 
@@ -301,7 +301,7 @@ class ResponseGET extends ResponseBuilder {
      * 2) Merge with front deep conditions if invited user
      * 3) Convert filters to conditions (the ones that query accepts)
      */
-    getDeepConditions(){
+    getDeepConditions() {
         // Get "invited" deep filters in case there's no req.user
         var frontDeepFilters = this.getFrontDeepFilters();
 
@@ -346,12 +346,12 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Parse full filters
      */
-    parseFullFilters(fullFilters){
+    parseFullFilters(fullFilters) {
         //Parse full filters
         var finalFullFilters = {}
         _.forEach(fullFilters, function (value, key) {
             // Not a collection. Eg: "name="
-            if(_.isUndefined(this.collections[key])){
+            if (_.isUndefined(this.collections[key])) {
                 finalFullFilters[key] = value;
             }
         }.bind(this));
@@ -362,13 +362,13 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Parse deep filters
      */
-    parseDeepFilters(fullFilters, deepFilters){
+    parseDeepFilters(fullFilters, deepFilters) {
         var finalDeepFilters = {};
 
         //Parse full filters
         _.forEach(fullFilters, function (value, key) {
             //Collection filter: Move to deep filters. Eg: "categories="
-            if(!_.isUndefined(this.collections[key])){
+            if (!_.isUndefined(this.collections[key])) {
                 var modelName = this.collections[key].collection;
                 var primaryKey = (key + '.' + sails.models[modelName].primaryKey);
                 finalDeepFilters[primaryKey] = value;
@@ -386,7 +386,7 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Group deep filters by collection
      */
-    groupDeepFilters(deepFilters){
+    groupDeepFilters(deepFilters) {
         //Parse deep filters
         var groupedDeepFilters = {};
         _.forEach(deepFilters, function (value, key) {
@@ -395,7 +395,7 @@ class ResponseGET extends ResponseBuilder {
             var collectionName = splittedKey[0];
             var collectionField = splittedKey[1];
 
-            if(_.isUndefined(groupedDeepFilters[collectionName])){
+            if (_.isUndefined(groupedDeepFilters[collectionName])) {
                 groupedDeepFilters[collectionName] = {}
             }
             groupedDeepFilters[collectionName][collectionField] = value;
@@ -416,7 +416,7 @@ class ResponseGET extends ResponseBuilder {
     filtersToOrConditions(params, model) {
         return _.transform(params, function (result, val, key) {
             if (val === 'null') val = null;
-            if(!_.isUndefined(model.definition[key])){
+            if (!_.isUndefined(model.definition[key])) {
                 if (model.definition[key].type === 'boolean' || val === null) {
                     result.or.push({
                         [key]: val
@@ -434,8 +434,8 @@ class ResponseGET extends ResponseBuilder {
                 }
             }
         }.bind(this), {
-            or: []
-        });
+                or: []
+            });
     }
 
     /*
@@ -444,16 +444,16 @@ class ResponseGET extends ResponseBuilder {
     filtersToAndConditions(params, model) {
         return _.transform(params, function (result, val, key) {
             if (val === 'null') val = null;
-            if(!_.isUndefined(model.definition[key])){
+            if (!_.isUndefined(model.definition[key])) {
                 if (model.definition[key].type === 'boolean' || val === null) {
-                    result[key]= val;
+                    result[key] = val;
                 } else {
                     // If the condition AND we just replace commas for spaces
                     // var value = _.replace(val, ',', ' ');
-                    if(val.indexOf(',') > 0){
+                    if (val.indexOf(',') > 0) {
                         result[key] = _.split(val, ',');
                     }
-                    else{
+                    else {
                         result[key] = {
                             [this.params.match]: val
                         };
@@ -634,16 +634,16 @@ class ResponseGET extends ResponseBuilder {
             const _linkToModel = _baseLinkToModel + 'skip=';
 
             const _previous = (this.params.page > 1 ? _linkToModel +
-            (this.params.limit * (this.params.page - 2)) : undefined);
+                (this.params.limit * (this.params.page - 2)) : undefined);
 
             const _next = ((this.params.pages === 1 && this._count > this.params.limit) ||
-            this.params.page < this.params.pages ? _linkToModel +
-            (this.params.limit * this.params.page) : undefined);
+                this.params.page < this.params.pages ? _linkToModel +
+                (this.params.limit * this.params.page) : undefined);
 
             const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
 
             const _last = (this.params.page < this.params.pages ?
-            _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
+                _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
 
             if (_previous) this._links.previous = _previous;
             if (_next) this._links.next = _next;
@@ -708,8 +708,8 @@ class ResponseGET extends ResponseBuilder {
             if (includes.full) {
                 _.forEach(includes.full, function (element) {
                     var conditions = {};
-                    if(!_.isUndefined(deepConditions)){
-                        if(!_.isUndefined(deepConditions[element])){
+                    if (!_.isUndefined(deepConditions)) {
+                        if (!_.isUndefined(deepConditions[element])) {
                             conditions = deepConditions[element];
                         }
                     }
@@ -723,18 +723,18 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Return paginated records based on skip and limit
      */
-    paginate(records){
+    paginate(records) {
         return _(records).slice(this.params.skip).take(this.params.limit).value();
     }
 
     /*
      * Remove includes that have been added only for deep conditions
      */
-    removeIncludes(records){
+    removeIncludes(records) {
         //Get model collections
-        return _.map(records, function(item){
+        return _.map(records, function (item) {
             _.forEach(this.params.include.remove, function (include) {
-                if(!_.isUndefined(item[include])){
+                if (!_.isUndefined(item[include])) {
                     //TODO: delete item[include]
                     item[include] = null;
                 }
@@ -746,13 +746,14 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Filter records at least one association is empty
      */
-    filterAssociations(records){
+    filterAssociations(records) {
         //Get model collections
 
         var collections = {};
         _.forEach(this.collections, function (value, key) {
             var associationCond = this.params.where.deep[key];
-            if(!_.isUndefined(associationCond) && !_.isEmpty(associationCond)){
+            if (_.isUndefined(this._model.attributes[key].ignoreRemoveAssociations) &&
+                !_.isUndefined(associationCond) && !_.isEmpty(associationCond)) {
                 collections[key] = value;
             }
         }.bind(this));
@@ -762,7 +763,7 @@ class ResponseGET extends ResponseBuilder {
             var include = true;
             _.forEach(collections, function (value, key) {
                 var collectionValue = record[key];
-                if(_.isUndefined(collectionValue) || _.isEmpty(collectionValue)){
+                if (_.isUndefined(collectionValue) || _.isEmpty(collectionValue)) {
                     include = false;
                     return;
                 }
@@ -774,7 +775,7 @@ class ResponseGET extends ResponseBuilder {
     /*
      * Set count from current records
      */
-    count(records){
+    count(records) {
         this._count = records.length;
         this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
     }
