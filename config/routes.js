@@ -794,21 +794,21 @@ module.exports = {
             model: 'tag'
         },
 
-        'DELETE /tags/:id': {
-            controller: 'Delete',
-            model: 'tag',
-            action: 'delete'
-        },
-        'POST /tags/:id/restore': {
-            controller: 'Delete',
-            model: 'tag',
-            action: 'restore'
-        },
-        'POST /tags/:id/deactivate': {
-            controller: 'Delete',
-            model: 'tag',
-            action: 'deactivate'
-        },
+        // 'DELETE /tags/:id': {
+        //     controller: 'Delete',
+        //     model: 'tag',
+        //     action: 'delete'
+        // },
+        // 'POST /tags/:id/restore': {
+        //     controller: 'Delete',
+        //     model: 'tag',
+        //     action: 'restore'
+        // },
+        // 'POST /tags/:id/deactivate': {
+        //     controller: 'Delete',
+        //     model: 'tag',
+        //     action: 'deactivate'
+        // },
         'GET /tags/first': {
             blueprint: 'first',
             model: 'tag'

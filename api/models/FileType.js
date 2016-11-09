@@ -25,6 +25,7 @@ module.exports = {
             defaultsTo: false
         },
         slug: {
+            unique: true,
             type: 'string'
         },
         name: {
