@@ -98,7 +98,8 @@ module.exports = {
                     id: user.id
                 }),
                 user: user.id,
-                username: user.username
+                username: user.username,
+                role: user.role
                     // We dont need user data returned
                     // user: user
             });
