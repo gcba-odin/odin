@@ -752,8 +752,8 @@ class ResponseGET extends ResponseBuilder {
         var collections = {};
         _.forEach(this.collections, function (value, key) {
             var associationCond = this.params.where.deep[key];
-            if (_.isUndefined(this._model.attributes[key].ignoreRemoveAssociations) &&
-                !_.isUndefined(associationCond) && !_.isEmpty(associationCond)) {
+            if ((!this._model.ignoredAssociations || (this._model.ignoredAssociations && this._model.ignoredAssociations.indexOf(key) == -1))
+                && !_.isUndefined(associationCond) && !_.isEmpty(associationCond)) {
                 collections[key] = value;
             }
         }.bind(this));

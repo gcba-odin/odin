@@ -63,8 +63,7 @@ module.exports = {
         subcategories: {
             collection: 'category',
             via: 'datasetsSubcategories',
-            dominant: true,
-            ignoreRemoveAssociations: true
+            dominant: true
         },
         status: {
             model: 'status'
@@ -94,6 +93,8 @@ module.exports = {
     removeEmptyAssociations: true,
 
     searchables: ['name', 'description'],
+
+    ignoredAssociations: ['subcategories'],
 
     beforeUpdate: (values, next) => {
 
