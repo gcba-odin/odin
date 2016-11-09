@@ -60,6 +60,11 @@ module.exports = {
             via: 'datasets',
             dominant: true
         },
+        subcategories: {
+            collection: 'category',
+            via: 'datasetsSubcategories',
+            dominant: true
+        },
         status: {
             model: 'status'
         },
@@ -93,7 +98,7 @@ module.exports = {
 
         if (values.id) {
 
-            Dataset.find(values.id).limit(1).then(function(originalDataset) {
+            Dataset.find(values.id).limit(1).then(function (originalDataset) {
                 originalDataset = originalDataset[0];
 
                 if (originalDataset.name !== values.name) {
@@ -104,7 +109,7 @@ module.exports = {
                     var newDirname = sails.config.odin.uploadFolder + "/" + slug(values.name, {
                         lower: true
                     });
-                    fs.rename(originalDirname, newDirname, function(err) {
+                    fs.rename(originalDirname, newDirname, function (err) {
                         if (err) throw err;
                         console.log('Datasets folder renamed');
                     });
@@ -127,29 +132,29 @@ module.exports = {
         }
         Config.findOne({
             key: 'defaultStatus'
-        }).exec(function(err, record) {
+        }).exec(function (err, record) {
             values.status = record.value;
             next();
         });
     },
     saveDatasetAssociatedFile: (dataset) => {
 
-        Dataset.find(dataset.id).populate(['categories', 'tags']).limit(1).then(function(dataset) {
+        Dataset.find(dataset.id).populate(['categories', 'tags']).limit(1).then(function (dataset) {
             dataset = dataset[0];
 
             var datasetFolder = sails.config.odin.uploadFolder + "/" + dataset.slug;
             var datasetFile = datasetFolder + '/' + dataset.slug + '.txt'
-                // Make the dataset folder
-            mkdirp(datasetFolder, function(err) {
+            // Make the dataset folder
+            mkdirp(datasetFolder, function (err) {
                 if (err) console.error(err);
                 else console.log('Dataset folder created on : ' + datasetFolder)
 
                 // Get list of categories and tags
-                var categories = _.reduce(dataset.categories, function(names, category) {
+                var categories = _.reduce(dataset.categories, function (names, category) {
                     return names + ' ' + category.name
 
                 }, '');
-                var tags = _.reduce(dataset.tags, function(names, tag) {
+                var tags = _.reduce(dataset.tags, function (names, tag) {
                     return names + ' ' + tag.name
                 }, '');
 
@@ -162,7 +167,7 @@ module.exports = {
                     '\n Publicacion: ' + dataset.publishedAt +
                     '\n Ultima modificacion: ' + dataset.updatedAt;
 
-                fs.writeFile(datasetFile, fileText, function(err) {
+                fs.writeFile(datasetFile, fileText, function (err) {
                     if (err) {
                         return console.log(err);
                     }

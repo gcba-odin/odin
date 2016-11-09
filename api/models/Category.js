@@ -56,6 +56,10 @@ module.exports = {
             collection: 'dataset',
             via: 'categories'
         },
+        datasetsSubcategories: {
+            collection: 'dataset',
+            via: 'subcategories'
+        },
         parent: {
             model: 'category'
         },
