@@ -486,8 +486,11 @@ class ResponseGET extends ResponseBuilder {
         var deepFilters = {};
         if (_.isUndefined(this.req.user)) {
             _.forEach(this.collections, function (value, key) {
-                var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
-                _.merge(deepFilters, associationFilter);
+                if (!this._model.ignoredAssociations ||
+                    (this._model.ignoredAssociations && this._model.ignoredAssociations.indexOf(key) == -1)) {
+                    var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
+                    _.merge(deepFilters, associationFilter);
+                }
             }.bind(this));
         }
         return deepFilters;
@@ -752,8 +755,7 @@ class ResponseGET extends ResponseBuilder {
         var collections = {};
         _.forEach(this.collections, function (value, key) {
             var associationCond = this.params.where.deep[key];
-            if ((!this._model.ignoredAssociations || (this._model.ignoredAssociations && this._model.ignoredAssociations.indexOf(key) == -1))
-                && !_.isUndefined(associationCond) && !_.isEmpty(associationCond)) {
+            if (!_.isUndefined(associationCond) && !_.isEmpty(associationCond)) {
                 collections[key] = value;
             }
         }.bind(this));
