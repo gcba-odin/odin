@@ -3,8 +3,8 @@ const sails = require('sails');
 
 module.exports.odin = {
     baseUrl: 'http://localhost:3000',
-    kongHost: 'http://kongexample.com',
-    kongAdmin: 'http://kongexample.com:8001',
+    kongHost: '0.0.0.0',
+    kongAdmin: '0.0.0.0:8001',
     recaptchaSecret: '6LetbAcUAAAAADUH2850T6PNg_d1EXV04Sv48mZP',
     uploadFolder: 'files',
     datasetZipFolder: 'datasets',
