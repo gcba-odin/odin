@@ -89,6 +89,7 @@ module.exports = {
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         UserController: {
+            me: ['isAuthenticated'],
             create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isHimself'],
             login: true,

@@ -8,7 +8,7 @@ const _ = require('lodash');
 const passport = require('passport');
 const requestify = require('requestify');
 const jwt = require('jwt-simple');
-
+const findone = require('../blueprints/findone');
 
 module.exports = {
 
@@ -54,5 +54,10 @@ module.exports = {
                     return res.ok(token);
                 });
         }
+    },
+
+    me(req, res) {
+        req.params.id = req.user.id;
+        findone(req, res);
     }
 };

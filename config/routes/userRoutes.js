@@ -6,6 +6,7 @@ module.exports = {
     'POST /users/login': 'User.login',
     'POST /clients/tokens': 'User.refreshToken',
     'GET /roles': 'UserRoleController.find',
+    'GET /users/me': 'UserController.me',
     'GET /users': {
         controller: 'RestrictedRead',
         model: 'user',
@@ -80,6 +81,11 @@ module.exports = {
         controller: 'Options',
         model: 'user',
         action: 'count'
+    },
+    'OPTIONS /users/me': {
+        controller: 'Options',
+        model: 'user',
+        action: 'instance'
     },
     'OPTIONS /users/:id': {
         controller: 'Options',
