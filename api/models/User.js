@@ -86,8 +86,12 @@ module.exports = {
             return obj;
         },
 
+        hasRole(role) {
+            return this.role === role;
+        },
+
         isSuperAdmin() {
-            return this.role === roles.SUPERADMIN
+            return this.hasRole(roles.SUPERADMIN);
         }
     },
 

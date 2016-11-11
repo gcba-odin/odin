@@ -24,7 +24,7 @@ module.exports = {
             image: ['addLoggedUser', 'statistics']
         },
         ChartController: {
-            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl', 'addStatus'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
@@ -44,7 +44,7 @@ module.exports = {
             unpublish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         FileController: {
-            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl', 'addStatus'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
@@ -69,7 +69,7 @@ module.exports = {
             destroy: ['isAuthenticated', 'statistics']
         },
         MapController: {
-            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy', 'addUrl', 'addStatus'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
             publish: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],

@@ -122,21 +122,21 @@ module.exports = {
 
     beforeUpdate: (values, next) => next(),
     beforeCreate: (values, next) => {
-        Config.findOne({
-            key: 'defaultStatus'
-        }).exec(function(err, record) {
-            values.status = record.value;
+        if (_.endsWith(values.url, '/id')) {
+            values.url = _.replace(values.url, 'model', 'files');
+            values.url = _.replace(values.url, 'id', values.fileName);
+            values.url = values.url + '/download';
+        }
 
-            if (_.endsWith(values.url, '/id')) {
-
-                values.url = _.replace(values.url, 'model', 'files');
-                values.url = _.replace(values.url, 'id', values.fileName);
-                values.url = values.url + '/download';
-            }
+        if (!values.status) {
+            Config.findOne({ key: 'defaultStatus' })
+                .then(record => {
+                    values.status = record.value;
+                    next();
+                });
+        } else {
             next();
-        });
-
-
+        }
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);

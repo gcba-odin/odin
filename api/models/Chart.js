@@ -83,18 +83,18 @@ module.exports = {
     beforeUpdate: (values, next) => next(),
 
     beforeCreate: (values, next) => {
+        values.url = _.replace(values.url, 'model', 'charts');
+        values.url = _.replace(values.url, 'id', values.id);
 
-        Config.findOne({
-            key: 'defaultStatus'
-        }).exec(function (err, record) {
-            values.status = record.value;
-
-            values.url = _.replace(values.url, 'model', 'charts');
-            values.url = _.replace(values.url, 'id', values.id);
+        if (!values.status) {
+            Config.findOne({ key: 'defaultStatus' })
+                .then(record => {
+                    values.status = record.value;
+                    next();
+                });
+        } else {
             next();
-        });
-
-
+        }
     },
     afterUpdate: (values, next) => {
         next();
