@@ -3,6 +3,9 @@ exports.up = function(knex, Promise) {
             knex.schema.alterTable('category', function(t) {
                 t.unique('slug');
             }),
+            knex.schema.alterTable('organization', function(t) {
+                t.unique('slug');
+            }),
             knex.schema.alterTable('dataset', function(t) {
                 t.unique('slug');
             }), knex.schema.alterTable('file', function(t) {
