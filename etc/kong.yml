@@ -213,6 +213,8 @@ nginx: |
     resolver {{dns_resolver}} ipv6=off;
     charset UTF-8;
 
+    add_header X-Frame-Options SAMEORIGIN;
+
     access_log logs/access.log;
     access_log off;
 
@@ -274,6 +276,8 @@ nginx: |
       listen {{proxy_listen}};
       listen {{proxy_listen_ssl}} ssl;
 
+      server_tokens off;
+
       ssl_certificate_by_lua_block {
         kong.ssl_certificate()
       }
@@ -284,6 +288,12 @@ nginx: |
 
       location /robots.txt {
         return 200 'User-agent: *\nDisallow: /';
+      }
+
+      error_page 403 = @notfound;
+
+      location @notfound {
+        return 404;
       }
 
       error_page 500 502 503 504 /50x;
@@ -413,4 +423,3 @@ nginx: |
       }
     }
   }
-

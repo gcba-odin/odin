@@ -30,7 +30,8 @@ module.exports = {
         slug: {
             type: 'string',
             size: 150,
-            minLength: 1
+            minLength: 1,
+            unique:true
         },
         description: {
             type: 'string',

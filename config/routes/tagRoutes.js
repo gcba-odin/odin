@@ -5,21 +5,21 @@ module.exports = {
         blueprint: 'statistics',
         model: 'tag'
     },
-    'DELETE /tags/:id': {
-        controller: 'Destroy',
-        model: 'tag',
-        action: 'destroy'
-    },
-    'POST /tags/:id/restore': {
-        controller: 'Destroy',
-        model: 'tag',
-        action: 'restore'
-    },
-    'POST /tags/:id/deactivate': {
-        controller: 'Destroy',
-        model: 'tag',
-        action: 'deactivate'
-    },
+    // 'DELETE /tags/:id': {
+    //     controller: 'Destroy',
+    //     model: 'tag',
+    //     action: 'destroy'
+    // },
+    // 'POST /tags/:id/restore': {
+    //     controller: 'Destroy',
+    //     model: 'tag',
+    //     action: 'restore'
+    // },
+    // 'POST /tags/:id/deactivate': {
+    //     controller: 'Destroy',
+    //     model: 'tag',
+    //     action: 'deactivate'
+    // },
     'GET /tags/first': {
         blueprint: 'first',
         model: 'tag'

@@ -37,8 +37,7 @@ module.exports = {
             });
 
             fileAdapter.read(dirname).on('error', function(err) {
-                console.dir(err);
-                return res.serverError(err);
+                return res.notFound('Image not found');
             }).pipe(res);
         }).fail(function(err) {
             if (err) console.error(err);

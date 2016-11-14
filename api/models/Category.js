@@ -30,6 +30,7 @@ module.exports = {
         },
         slug: {
             type: 'string',
+            unique: true,
             size: 150
         },
         description: {

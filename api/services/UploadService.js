@@ -278,8 +278,8 @@ module.exports = {
 
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
-        var path = sails.config.odin.uploadFolder + '/categories';
-
+        var savePath =  path.resolve(sails.config.odin.uploadFolder + '/categories');
+console.dir(savePath);
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
@@ -303,7 +303,7 @@ module.exports = {
                         return cb(null, data.fileName);
                     }
                 },
-                dirname: path
+                dirname: savePath
             }, function onUploadComplete(err, files) {
                 if (err) return res.serverError(err);
                 if (files.length === 0) {
