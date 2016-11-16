@@ -23,7 +23,7 @@ module.exports = {
         },
         fileName: {
             type: 'string',
-            unique:true,
+            unique: true,
             size: 15
         },
         name: {
@@ -141,6 +141,8 @@ module.exports = {
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
+        if (values.fileName) values.url = sails.config.odin.baseUrl + '/files/' +
+        values.fileName + '/download';
         next();
     },
     afterCreate: (values, next) => {
