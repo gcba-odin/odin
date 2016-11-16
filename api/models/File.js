@@ -121,7 +121,11 @@ module.exports = {
 
     searchables: ['name', 'description'],
 
-    beforeUpdate: (values, next) => next(),
+    beforeUpdate: (values, next) => {
+        if (values.fileName) values.url = sails.config.odin.baseUrl + '/files/' +
+            values.fileName + '/download';
+        next()
+    },
     beforeCreate: (values, next) => {
         if (_.endsWith(values.url, '/id')) {
             values.url = _.replace(values.url, 'model', 'files');
@@ -130,7 +134,9 @@ module.exports = {
         }
 
         if (!values.status) {
-            Config.findOne({ key: 'defaultStatus' })
+            Config.findOne({
+                    key: 'defaultStatus'
+                })
                 .then(record => {
                     values.status = record.value;
                     next();
@@ -141,8 +147,6 @@ module.exports = {
     },
     afterUpdate: (values, next) => {
         if (values.dataset) ZipService.createZip(values.dataset);
-        if (values.fileName) values.url = sails.config.odin.baseUrl + '/files/' +
-        values.fileName + '/download';
         next();
     },
     afterCreate: (values, next) => {
