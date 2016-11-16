@@ -18,17 +18,17 @@ module.exports = {
      * @param res
      */
     login(req, res) {
-        // var secret = sails.config.odin.recaptchaSecret;
-        // var response = req.param('g-recaptcha-response');
-        // requestify.get('https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response)
-        //     .then(function(response) {
-        //         var data = response.getBody();
-        //         if (data.success) {
+        var secret = sails.config.odin.recaptchaSecret;
+        var response = req.param('g-recaptcha-response');
+        requestify.get('https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response)
+            .then(function(response) {
+                var data = response.getBody();
+                if (data.success) {
                     passport.authenticate('local', _.partial(sails.config.passport.onPassportAuth, req, res))(req, res);
-            //     } else {
-            //         return res.forbidden(data);
-            //     }
-            // });
+                } else {
+                    return res.forbidden(data);
+                }
+            });
     },
 
     refreshToken(req, res) {

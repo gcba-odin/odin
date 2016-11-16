@@ -24,7 +24,8 @@ module.exports = {
         req.setTimeout(15 * 60 * 1000); // 15 minutes
 
         var uploadedFile = req.file('uploadFile').on('error', function(err) {
-            if (!res.headersSent) return res.negotiate(err);
+            console.dir(err);
+            // if (!res.headersSent) return res.negotiate(err);
         });
 
         // If there is a file
@@ -44,7 +45,6 @@ module.exports = {
             lower: true
         });
         file.fileName += '.' + extension;
-
         var upath = UploadService.getFilePath(file.dataset, file);
         fs.lstat(upath, function(err, stats) {
             if (!err && stats.isFile()) {
