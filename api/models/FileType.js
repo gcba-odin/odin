@@ -42,6 +42,9 @@ module.exports = {
             type: 'boolean',
             defaultsTo: true
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         files: {
             collection: 'file',
             via: 'type'

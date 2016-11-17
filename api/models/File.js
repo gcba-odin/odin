@@ -50,6 +50,9 @@ module.exports = {
             url: true,
             size: 500
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         publishedAt: {
             type: 'datetime'
         },

@@ -49,6 +49,12 @@ module.exports = {
             type: 'integer',
             defaultsTo: 0
         },
+        deletedAt: {
+            type: 'datetime'
+        },
+        createdBy: {
+            model: 'user'
+        },
         optionals: {
             type: 'json'
         },

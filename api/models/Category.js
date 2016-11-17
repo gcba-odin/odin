@@ -53,6 +53,9 @@ module.exports = {
             type: 'string',
             size: 150
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         datasets: {
             collection: 'dataset',
             via: 'categories'

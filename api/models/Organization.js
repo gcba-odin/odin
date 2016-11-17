@@ -51,6 +51,9 @@ module.exports = {
         parent: {
             model: 'organization'
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         children: {
             collection: 'organization',
             via: 'parent'

@@ -77,6 +77,9 @@ module.exports = {
             model: 'file',
             required: true
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         createdBy: {
             model: 'user'
             // required: true
