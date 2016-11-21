@@ -69,6 +69,9 @@ module.exports = {
             collection: 'file',
             via: 'createdBy'
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         datasets: {
             collection: 'dataset',
             via: 'createdBy'

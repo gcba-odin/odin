@@ -5,7 +5,7 @@ module.exports.odin = {
     baseUrl: 'http://localhost:3000',
     kongHost: '0.0.0.0',
     kongAdmin: '0.0.0.0:8001',
-    recaptchaSecret: '6LetbAcUAAAAADUH2850T6PNg_d1EXV04Sv48mZP',
+    recaptchaSecret: '6LcBhAkUAAAAABqD6jm_Cd3uFALNoXRr6ZXqvyBG',
     uploadFolder: 'files',
     datasetZipFolder: 'datasets',
     logFolder: 'logs',

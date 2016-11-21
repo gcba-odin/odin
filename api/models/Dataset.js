@@ -69,6 +69,9 @@ module.exports = {
         status: {
             model: 'status'
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         files: {
             collection: 'file',
             via: 'dataset'

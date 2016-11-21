@@ -65,6 +65,9 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        deletedAt: {
+            type: 'datetime'
+        },
         file: {
             model: 'file'
                 // required: true
