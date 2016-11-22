@@ -1,11 +1,17 @@
 exports.up = function(knex, Promise) {
     return Promise.all([
         knex.schema.alterTable('dataset', function(t) {
-            t.dropColumn('disclaimer');
+            knex.schema.hasColumn('dataset', 'disclaimer').then(exits => {
+                t.dropColumn('disclaimer');
+            })
         }),
         knex.schema.alterTable('file', function(t) {
-            t.dropColumn('collection');
-            t.dropColumn('updateDate');
+            knex.schema.hasColumn('file', 'collection').then(exits => {
+                t.dropColumn('collection');
+            })
+            knex.schema.hasColumn('file', 'updateDate').then(exits => {
+                t.dropColumn('updateDate');
+            })
         }),
         knex.schema.dropTableIfExists('mimetype')
 
