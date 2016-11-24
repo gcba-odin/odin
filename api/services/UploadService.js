@@ -103,16 +103,30 @@ module.exports = {
 
             File.find(data.id).populate('dataset').limit(1).then(function(file) {
                 file = file[0];
+                // in case the fileName changed, rename the physical file
+                var hasSameName = file.fileName == data.fileName;
+                var isSameDataset = data.dataset === file.dataset.id;
 
-                if (file.fileName !== data.fileName) {
-                    DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, res);
+                console.log('has same name = ' + hasSameName)
+                console.log('is same dataset = ' + isSameDataset)
 
-                    var originalFileName = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
-                    var newFileName = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                    fs.rename(originalFileName, newFileName, function(err) {
-                        if (err) throw err;
-                        console.log('File renamed');
+                var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
+                console.log('original path = ' + originalPath)
+                if (!isSameDataset) {
+                    Dataset.find(data.dataset).limit(1).then(function(newDataset) {
+                        newDataset = newDataset[0];
+                        DataStorageService.mongoReplace(file.dataset.id,
+                            newDataset.id, file.fileName, data.fileName, res);
+
+                        var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
+                        UploadService.changeFileName(originalPath, newPath);
                     });
+                } else {
+                    if (!hasSameName) {
+                        DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, res);
+                        var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+                        UploadService.changeFileName(originalPath, newPath);
+                    }
                 }
             });
 
@@ -278,8 +292,8 @@ module.exports = {
 
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
-        var savePath =  path.resolve(sails.config.odin.uploadFolder + '/categories');
-console.dir(savePath);
+        var savePath = path.resolve(sails.config.odin.uploadFolder + '/categories');
+        console.dir(savePath);
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             if (!res.headersSent) return res.negotiate(err);
         });
@@ -465,6 +479,12 @@ console.dir(savePath);
                 DataStorageService.deleteCollection(dataset.id, fileName, res);
                 ZipService.createZip(dataset.id);
             });
+        });
+    },
+    changeFileName: function(originalPath, newPath) {
+        fs.rename(originalPath, newPath, function(err) {
+            if (err) throw err;
+            console.log('File renamed');
         });
     }
 };
