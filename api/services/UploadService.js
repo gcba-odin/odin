@@ -293,9 +293,8 @@ module.exports = {
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var savePath = path.resolve(sails.config.odin.uploadFolder + '/categories');
-        console.dir(savePath);
         var uploadFile = req.file('uploadImage').on('error', function(err) {
-            if (!res.headersSent) return res.negotiate(err);
+            console.dir(err);
         });
         if (!uploadFile.isNoop) {
             data.fileName = slug(data.name, {
