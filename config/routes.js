@@ -1394,6 +1394,11 @@ module.exports = {
             controller: 'Options',
             model: 'basemap',
             action: 'instance'
+        },
+
+        'POST /email/send':{
+            controller: 'Email',
+            action: 'send'
         }
     }
 };

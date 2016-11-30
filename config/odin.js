@@ -20,3 +20,11 @@ module.exports.odin = {
 
     statisticsPath: 'stats'
 };
+
+module.exports.email = {
+  service: 'Gmail',
+  auth: {user: 'examplemail@gmail.com', pass: 'onepass'},
+  alwaysSendTo: 'examplemail@gmail.com',
+  testMode: false,
+  templateDir: 'api/views'
+};
