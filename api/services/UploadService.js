@@ -107,9 +107,6 @@ module.exports = {
                 var hasSameName = file.fileName == data.fileName;
                 var isSameDataset = data.dataset === file.dataset.id;
 
-                console.log('has same name = ' + hasSameName)
-                console.log('is same dataset = ' + isSameDataset)
-
                 var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
                 console.log('original path = ' + originalPath)
                 if (!isSameDataset) {
@@ -185,7 +182,7 @@ module.exports = {
                                 }
                             },
                             dirname: UploadService.getDatasetPath(dataset),
-                            maxBytes: 2000000000
+                            maxBytes: 4000000000
 
                         },
                         function onUploadComplete(err, files) {
