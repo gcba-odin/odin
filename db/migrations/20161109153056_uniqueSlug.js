@@ -21,7 +21,9 @@ exports.up = function(knex, Promise) {
                 t.dropUnique('slug')
                 t.unique('slug');
             })
-        ])
+        ]).catch(function(error) {
+            console.log(error);
+        });
 };
 
 exports.down = function(knex, Promise) {
