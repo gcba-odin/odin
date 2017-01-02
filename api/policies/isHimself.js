@@ -6,5 +6,5 @@
  */
 
 module.exports = (req, res, next) => {
-    return req.params.id === req.user.id ? next() : res.forbidden();
+    return req.params.id === req.user.id || req.user.isSuperAdmin() ? next() : res.forbidden();
 };
