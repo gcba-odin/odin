@@ -80,6 +80,10 @@ module.exports = {
         deletedAt: {
             type: 'datetime'
         },
+        kml: {
+            type: 'boolean',
+            defaultsTo: false
+        },
         createdBy: {
             model: 'user'
             // required: true
