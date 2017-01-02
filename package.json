@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "app.js",
   "dependencies": {
+    "@mapbox/togeojson": "^0.16.0",
     "archiver": "^1.0.0",
     "bluebird": "^3.4.0",
     "bulk-mongo": "^0.1.0",

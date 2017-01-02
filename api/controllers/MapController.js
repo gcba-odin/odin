@@ -7,6 +7,9 @@
 
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const _ = require('lodash');
+var tj = require('@mapbox/togeojson'),
+    fs = require('fs'),
+    DOMParser = require('xmldom').DOMParser;
 
 module.exports = {
     publish: function(req, res) {
@@ -25,6 +28,7 @@ module.exports = {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
+        var kmlFile = _.get(values, 'kml', 'false');
         var latitude = _.get(values, 'latitudeKey', '');
         var longitude = _.get(values, 'longitudeKey', '');
 
@@ -36,30 +40,42 @@ module.exports = {
 
         if (fileId === '') return res.notFound();
 
-        // look for the file with given id
-        File.findOne(fileId).exec(function(err, record) {
-            if (err) return res.negotiate(err);
+        // check if file is kml
+        if (kml !== '') {
 
-            if (link !== null) {
-                this.mapCreate(values, req, res)
-            } else {
+            // look for the file with given id
+            File.findOne(fileId).exec(function(err, record) {
+                if (err) return res.negotiate(err);
 
-                // fetch the collection data of the file
-                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
+                if (link !== null) {
+                    this.mapCreate(values, req, res)
+                } else {
 
-                    this.generateGeoJson(data, latitude, longitude, propertiesArray,
-                        function(geoJson, incorrect, correct) {
-                            values.geojson = geoJson;
-                            // Once the geoJson is created, we create the map
-                            UploadService.metadataSave(_Map, values, 'maps', req, res, {
-                                incorrect: incorrect,
-                                correct: correct
-                            });
+                    // fetch the collection data of the file
+                    FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
 
-                        }.bind(this));
-                }.bind(this));
-            }
-        }.bind(this));
+                        this.generateGeoJson(data, latitude, longitude, propertiesArray,
+                            function(geoJson, incorrect, correct) {
+                                values.geojson = geoJson;
+                                // Once the geoJson is created, we create the map
+                                UploadService.metadataSave(_Map, values, 'maps', req, res, {
+                                    incorrect: incorrect,
+                                    correct: correct
+                                });
+
+                            }.bind(this));
+                    }.bind(this));
+                }
+            }.bind(this));
+        } else {
+            this.kmlToGeoJson(fileId, function(geoJson) {
+                values.geojson = geoJson;
+                UploadService.metadataSave(_Map, values, 'maps', req, res, {
+                    incorrect: incorrect,
+                    correct: correct
+                });
+            })
+        }
     },
 
     update: function(req, res) {
@@ -168,6 +184,31 @@ module.exports = {
                 }
             });
         });
+    },
+
+    kmlToGeoJson(fileId, cb) {
+
+        if (fileId === '') return res.notFound();
+
+        // look for the file with given id
+        File.findOne(fileId).populate('dataset').exec(function(err, record) {
+
+            var path = path.resolve(sails.config.odin.uploadFolder +
+                '/' + record.dataset.slug + '/' + record.fileName);
+            console.log(path)
+            var kml = new DOMParser().parseFromString(fs.readFileSync(path, 'utf8'));
+
+            var converted = tj.kml(kml);
+
+            var convertedWithStyles = tj.kml(kml, {
+                styles: true
+            });
+            console.dir(converted)
+            console.log('=========================\n\n')
+            console.dir(convertedWithStyles)
+            cb(converted)
+        });
+
     }
 
 };

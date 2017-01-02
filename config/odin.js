@@ -1,6 +1,3 @@
-const path = require('path');
-const sails = require('sails');
-
 module.exports.odin = {
     baseUrl: 'http://localhost:3000',
     kongHost: '0.0.0.0',
