@@ -7,6 +7,7 @@
 
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const _ = require('lodash');
+const path = require('path');
 var tj = require('@mapbox/togeojson'),
     fs = require('fs'),
     DOMParser = require('xmldom').DOMParser;
@@ -28,7 +29,6 @@ module.exports = {
         const values = actionUtil.parseValues(req);
         // find the fileid within the parameters
         var fileId = _.get(values, 'file', '');
-        var kmlFile = _.get(values, 'kml', 'false');
         var latitude = _.get(values, 'latitudeKey', '');
         var longitude = _.get(values, 'longitudeKey', '');
 
@@ -40,20 +40,20 @@ module.exports = {
 
         if (fileId === '') return res.notFound();
 
-        // check if file is kml
-        if (kml !== '') {
 
-            // look for the file with given id
-            File.findOne(fileId).exec(function(err, record) {
-                if (err) return res.negotiate(err);
+        // look for the file with given id
+        File.findOne(fileId).populate('type').populate('dataset').exec(function(err, record) {
+            if (err) return res.negotiate(err);
 
+                // check if file is kml ; if not
+            if (_.indexOf(record.type.mimetype, 'application/vnd.google-earth.kml+xml') === -1) {
+                // if link is given, iframe is asumed, then geojson won't be created
                 if (link !== null) {
                     this.mapCreate(values, req, res)
                 } else {
-
                     // fetch the collection data of the file
-                    FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
-
+                    console.log('before contents')
+                    FileContentsService.mongoContents(record.dataset.id, record.fileName, 0, 0, res, function(data) {
                         this.generateGeoJson(data, latitude, longitude, propertiesArray,
                             function(geoJson, incorrect, correct) {
                                 values.geojson = geoJson;
@@ -66,16 +66,20 @@ module.exports = {
                             }.bind(this));
                     }.bind(this));
                 }
-            }.bind(this));
-        } else {
-            this.kmlToGeoJson(fileId, function(geoJson) {
-                values.geojson = geoJson;
-                UploadService.metadataSave(_Map, values, 'maps', req, res, {
-                    incorrect: incorrect,
-                    correct: correct
-                });
-            })
-        }
+            }
+            // else, is a kml
+            else {
+                this.kmlToGeoJson(record, function(geoJson) {
+                    values.geojson = geoJson;
+                    UploadService.metadataSave(_Map, values, 'maps', req, res, {
+                        incorrect: 0,
+                        correct: 0
+                    });
+                })
+            }
+
+        }.bind(this));
+
     },
 
     update: function(req, res) {
@@ -186,29 +190,21 @@ module.exports = {
         });
     },
 
-    kmlToGeoJson(fileId, cb) {
+    kmlToGeoJson(record, cb) {
+        var filePath = path.resolve(sails.config.odin.uploadFolder +
+            '/' + record.dataset.slug + '/' + record.fileName);
+        console.log(filePath)
+        var kml = new DOMParser().parseFromString(fs.readFileSync(filePath, 'utf8'));
 
-        if (fileId === '') return res.notFound();
+        var converted = tj.kml(kml);
 
-        // look for the file with given id
-        File.findOne(fileId).populate('dataset').exec(function(err, record) {
-
-            var path = path.resolve(sails.config.odin.uploadFolder +
-                '/' + record.dataset.slug + '/' + record.fileName);
-            console.log(path)
-            var kml = new DOMParser().parseFromString(fs.readFileSync(path, 'utf8'));
-
-            var converted = tj.kml(kml);
-
-            var convertedWithStyles = tj.kml(kml, {
-                styles: true
-            });
-            console.dir(converted)
-            console.log('=========================\n\n')
-            console.dir(convertedWithStyles)
-            cb(converted)
+        var convertedWithStyles = tj.kml(kml, {
+            styles: true
         });
-
+        console.dir(converted)
+        console.log('=========================\n\n')
+        console.dir(convertedWithStyles)
+        cb(converted)
     }
 
 };
