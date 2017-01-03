@@ -14,10 +14,10 @@ module.exports = function(data, config) {
     const response = _.assign({
         meta: {
             code: 'E_BAD_REQUEST',
-            message: _.isNil(config.message) ?
+            message: _.isNil(config) || _.isNil(config.message) ?
                 'The request cannot be fulfilled due to bad syntax' : config.message
         },
-        links: _.isNil(config.links) ? {} : config.links,
+        links: _.isNil(config) || _.isNil(config.links) ? {} : config.links,
         data: _.isNil(data) ? {} : data
     });
 
