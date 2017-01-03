@@ -4,28 +4,27 @@
  * BasemapController
  * @description :: Server-side logic for ...
  */
+const requestify = require('requestify');
 
 module.exports = {
     send(req, res) {
-
         var secret = sails.config.odin.recaptchaSecret;
         var response = req.param('g-recaptcha-response');
         requestify.get('https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response)
             .then(function(response) {
                 var data = response.getBody();
                 if (data.success) {
-                    this.sendMail(req)
+                    this.sendMail(req, res)
                 } else {
                     return res.forbidden(data);
                 }
             }.bind(this));
 
     },
-    sendMail (req) {
+    sendMail(req, res) {
         var mail = req.param('mail');
         var name = req.param('name');
         var description = req.param('description');
-
         sails.hooks.email.send(
             "", {
                 name: name,
@@ -35,7 +34,8 @@ module.exports = {
                 subject: "Odin"
             },
             function(err) {
-                console.log(err || "Mail sent");
+                if (err) return res.negotiate(err)
+                else return res.ok('email sent')
             }
         )
     }

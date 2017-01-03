@@ -193,7 +193,7 @@ module.exports = {
     kmlToGeoJson(record, cb) {
         var filePath = path.resolve(sails.config.odin.uploadFolder +
             '/' + record.dataset.slug + '/' + record.fileName);
-        console.log(filePath)
+
         var kml = new DOMParser().parseFromString(fs.readFileSync(filePath, 'utf8'));
 
         var converted = tj.kml(kml);
@@ -201,7 +201,7 @@ module.exports = {
         var convertedWithStyles = tj.kml(kml, {
             styles: true
         });
-        cb(converted)
+        cb(convertedWithStyles)
     }
 
 };
