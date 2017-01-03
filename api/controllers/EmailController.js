@@ -21,7 +21,7 @@ module.exports = {
             }.bind(this));
 
     },
-    sendMail: (req) {
+    sendMail (req) {
         var mail = req.param('mail');
         var name = req.param('name');
         var description = req.param('description');
