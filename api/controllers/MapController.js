@@ -52,7 +52,6 @@ module.exports = {
                     this.mapCreate(values, req, res)
                 } else {
                     // fetch the collection data of the file
-                    console.log('before contents')
                     FileContentsService.mongoContents(record.dataset.id, record.fileName, 0, 0, res, function(data) {
                         this.generateGeoJson(data, latitude, longitude, propertiesArray,
                             function(geoJson, incorrect, correct) {
@@ -88,6 +87,7 @@ module.exports = {
         var fileId = _.get(values, 'file', '');
         var latitude = _.get(values, 'latitudeKey', '');
         var longitude = _.get(values, 'longitudeKey', '');
+        var kml = _.get(values, 'kml', false);
 
         var properties = _.get(values, 'properties', '');
 
@@ -101,7 +101,7 @@ module.exports = {
         File.findOne(fileId).exec(function(err, record) {
             if (err) return res.negotiate(err);
 
-            if (link !== null) {
+            if (link !== null || kml === true) {
                 UploadService.metadataUpdate(_Map, values, 'maps', req, res);
             } else {
                 // fetch the collection data of the file
@@ -201,9 +201,6 @@ module.exports = {
         var convertedWithStyles = tj.kml(kml, {
             styles: true
         });
-        console.dir(converted)
-        console.log('=========================\n\n')
-        console.dir(convertedWithStyles)
         cb(converted)
     }
 

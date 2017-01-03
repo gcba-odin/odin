@@ -44,7 +44,7 @@ module.exports = {
                     file: file.id,
                     kml: true
                 }).then(function(maps) {
-                    if (!_.empty(maps)) {
+                    if (!_.isEmpty(maps)) {
                         File.find(file.id).populate('dataset').then(function(file) {
                             sails.controllers.map.kmlToGeoJson(file, function(geojson) {
                                 _Map.update({

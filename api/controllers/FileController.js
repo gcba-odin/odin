@@ -96,7 +96,7 @@ module.exports = {
                         });
                     });
                 } else {
-                    return res.forbidden();
+                    return res.notAcceptable();
                 }
             });
         });
