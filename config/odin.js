@@ -18,3 +18,11 @@ module.exports.odin = {
     logLevel: 'error'
 
 };
+
+module.exports.email = {
+  service: 'Gmail',
+  auth: {user: 'examplemail@gmail.com', pass: 'onepass'},
+  alwaysSendTo: 'examplemail@gmail.com',
+  testMode: false,
+  templateDir: 'api/views'
+};
