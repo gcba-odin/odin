@@ -32,7 +32,4 @@ const models = [
 module.exports = {
     routes: _.reduce(models, (routes, model) => _.assign(routes, require('./routes/' + model + 'Routes')), {})
 
-
-
-    }
 };
