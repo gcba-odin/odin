@@ -35,6 +35,10 @@ module.exports = {
             type: 'boolean',
             boolean: true
         },
+        editable: {
+            type: 'boolean',
+            boolean: true
+        },
         key: {
             type: 'string',
             required: true,
