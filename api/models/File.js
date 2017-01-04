@@ -56,6 +56,18 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        unPublishedAt: {
+            type: 'datetime'
+        },
+        rejectedAt: {
+            type: 'datetime'
+        },
+        cancelledAt: {
+            type: 'datetime'
+        },
+        reviewedAt: {
+            type: 'datetime'
+        },
         maps: {
             collection: 'map',
             via: 'file'

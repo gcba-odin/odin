@@ -65,6 +65,18 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        unPublishedAt: {
+            type: 'datetime'
+        },
+        rejectedAt: {
+            type: 'datetime'
+        },
+        cancelledAt: {
+            type: 'datetime'
+        },
+        reviewedAt: {
+            type: 'datetime'
+        },
         deletedAt: {
             type: 'datetime'
         },
