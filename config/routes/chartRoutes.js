@@ -1,11 +1,11 @@
 "use strict";
 
 module.exports = {
-    'PATCH /charts/:id/publish': {
-        controller: 'Chart',
-        model: 'chart',
-        action: 'publish'
-    },
+    // 'PATCH /charts/:id/publish': {
+    //     controller: 'Chart',
+    //     model: 'chart',
+    //     action: 'publish'
+    // },
     'PATCH /charts/:id/unpublish': {
         controller: 'Chart',
         model: 'chart',

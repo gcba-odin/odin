@@ -12,7 +12,6 @@ const models = [
     'user',
     'organization',
     'category',
-    'status',
     'mail',
     'fileType',
     'file',
@@ -25,6 +24,7 @@ const models = [
     'log',
     'map',
     'chart',
+    'status',
     'statistic',
     'basemap'
 ];

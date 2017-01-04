@@ -1,11 +1,11 @@
 "use strict";
 
 module.exports = {
-    'PATCH /datasets/:id/publish': {
-        controller: 'Dataset',
-        model: 'dataset',
-        action: 'publish'
-    },
+    // 'PATCH /datasets/:id/publish': {
+    //     controller: 'Dataset',
+    //     model: 'dataset',
+    //     action: 'publish'
+    // },
     'PATCH /datasets/:id/unpublish': {
         controller: 'Dataset',
         model: 'dataset',

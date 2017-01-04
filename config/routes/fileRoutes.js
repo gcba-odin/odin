@@ -1,11 +1,11 @@
 "use strict";
 
 module.exports = {
-    'PATCH /files/:id/publish': {
-        controller: 'File',
-        model: 'file',
-        action: 'publish'
-    },
+    // 'PATCH /files/:id/publish': {
+    //     controller: 'File',
+    //     model: 'file',
+    //     action: 'publish'
+    // },
     'PATCH /files/:id/unpublish': {
         controller: 'File',
         model: 'file',

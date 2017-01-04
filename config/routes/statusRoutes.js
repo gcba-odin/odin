@@ -1,25 +1,52 @@
 "use strict";
 
 module.exports = {
+
+    'PATCH /:model/:id/reject': {
+        controller: 'Status',
+        model: 'status',
+        action: 'reject'
+    },
+    'PATCH /:model/:id/publish': {
+        controller: 'Status',
+        model: 'status',
+        action: 'publish'
+    },
+    'PATCH /:model/:id/unpublish': {
+        controller: 'Status',
+        model: 'status',
+        action: 'unpublish'
+    },
+    'PATCH /:model/:id/cancel': {
+        controller: 'Status',
+        model: 'status',
+        action: 'cancel'
+    },
+    'PATCH /:model/:id/review': {
+        controller: 'Status',
+        model: 'status',
+        action: 'review'
+    },
+
     'GET /statuses/statistics': {
         blueprint: 'statistics',
         model: 'status'
     },
-    'DELETE /statuses/:id': {
-        controller: 'Destroy',
-        model: 'status',
-        action: 'destroy'
-    },
-    'POST /statuses/:id/restore': {
-        controller: 'Destroy',
-        model: 'status',
-        action: 'restore'
-    },
-    'POST /statuses/:id/deactivate': {
-        controller: 'Destroy',
-        model: 'status',
-        action: 'deactivate'
-    },
+    // 'DELETE /statuses/:id': {
+    //     controller: 'Destroy',
+    //     model: 'status',
+    //     action: 'destroy'
+    // },
+    // 'POST /statuses/:id/restore': {
+    //     controller: 'Destroy',
+    //     model: 'status',
+    //     action: 'restore'
+    // },
+    // 'POST /statuses/:id/deactivate': {
+    //     controller: 'Destroy',
+    //     model: 'status',
+    //     action: 'deactivate'
+    // },
     'GET /statuses/first': {
         blueprint: 'first',
         model: 'status'

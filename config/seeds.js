@@ -240,45 +240,6 @@ module.exports = {
                 }
             }
         }, {
-            id: '2ogPzIz9',
-            description: 'Estado publicado',
-            type: 'model',
-            multiple: false,
-            model: 'Statuses',
-            key: 'publishedStatus',
-            value: 'qWRhpRV',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: '3ogPzIz9',
-            description: 'Estado despublicado',
-            type: 'model',
-            multiple: false,
-            model: 'Statuses',
-            key: 'unpublishedStatus',
-            value: 'rWRhpRV',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: '4ogPzIz9',
-            description: 'Estado rechazado',
-            type: 'model',
-            multiple: false,
-            model: 'Statuses',
-            key: 'rejectedStatus',
-            value: 'pWRhpRV',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
             id: '5ogPzIz9',
             description: 'Paginación en frontend',
             type: 'integer',
@@ -358,19 +319,6 @@ module.exports = {
             model: 'Organizations',
             key: 'defaultOrganization',
             value: '',
-            models: {
-                updatedBy: {
-                    username: 'admin'
-                }
-            }
-        }, {
-            id: 'cogPzIz9',
-            description: 'Estado en revisión',
-            type: 'model',
-            multiple: false,
-            model: 'Statuses',
-            key: 'underReviewStatus',
-            value: 'oWRhpRV',
             models: {
                 updatedBy: {
                     username: 'admin'
