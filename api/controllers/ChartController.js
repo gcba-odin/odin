@@ -9,17 +9,13 @@ const _ = require('lodash');
 
 
 module.exports = {
-    publish: function(req, res) {
-        const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(Chart, pk, 'publishedStatus', res)
-    },
     unpublish: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(Chart, pk, 'unpublishedStatus', res)
+        return PublishService.publishModel(Chart, pk, 'unpublished', res)
     },
     reject: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(Chart, pk, 'rejectedStatus', res)
+        return PublishService.publishModel(Chart, pk, 'rejected', res)
     },
     create: function(req, res) {
         this.createChart(req, res, function(values) {

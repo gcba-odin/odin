@@ -18,17 +18,17 @@ const _ = require('lodash');
 var SkipperDisk = require('skipper-disk');
 
 module.exports = {
-    publish: function(req, res) {
-        const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(File, pk, 'publishedStatus', res)
-    },
+    // publish: function(req, res) {
+    //     const pk = actionUtil.requirePk(req);
+    //     return PublishService.publishModel(File, pk, 'publishedStatus', res)
+    // },
     unpublish: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(File, pk, 'unpublishedStatus', res)
+        return PublishService.publishModel(File, pk, 'unpublished', res)
     },
     reject: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(File, pk, 'rejectedStatus', res)
+        return PublishService.publishModel(File, pk, 'rejected', res)
     },
     create: function(req, res) {
         UploadService.createFile(req, res, true, function(data) {

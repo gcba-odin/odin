@@ -13,13 +13,13 @@ const SkipperDisk = require('skipper-disk');
 const slug = require('slug');
 
 module.exports = {
-    publish: function(req, res) {
-        const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(Dataset, pk, 'publishedStatus', res)
-    },
+    // publish: function(req, res) {
+    //     const pk = actionUtil.requirePk(req);
+    //     return PublishService.publishModel(Dataset, pk, 'publishedStatus', res)
+    // },
     unpublish: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(Dataset, pk, 'unpublishedStatus', res)
+        return PublishService.publishModel(Dataset, pk, 'unpublished', res)
     },
 
     download: function(req, res) {

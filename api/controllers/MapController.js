@@ -13,17 +13,17 @@ var tj = require('@mapbox/togeojson'),
     DOMParser = require('xmldom').DOMParser;
 
 module.exports = {
-    publish: function(req, res) {
-        const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(_Map, pk, 'publishedStatus', res)
-    },
+    // publish: function(req, res) {
+    //     const pk = actionUtil.requirePk(req);
+    //     return PublishService.publishModel(_Map, pk, 'publishedStatus', res)
+    // },
     unpublish: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(_Map, pk, 'unpublishedStatus', res)
+        return PublishService.publishModel(_Map, pk, 'unpublished', res)
     },
     reject: function(req, res) {
         const pk = actionUtil.requirePk(req);
-        return PublishService.publishModel(_Map, pk, 'rejectedStatus', res)
+        return PublishService.publishModel(_Map, pk, 'rejected', res)
     },
     create: function(req, res) {
         const values = actionUtil.parseValues(req);
