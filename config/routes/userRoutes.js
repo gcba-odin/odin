@@ -7,11 +7,11 @@ module.exports = {
     'POST /clients/tokens': 'User.refreshToken',
     'GET /roles': 'UserRoleController.find',
     'GET /users/me': 'UserController.me',
-    'GET /users': {
-        controller: 'RestrictedRead',
-        model: 'user',
-        action: readActions.FIND
-    },
+    // 'GET /users': {
+    //     controller: 'RestrictedRead',
+    //     model: 'user',
+    //     action: readActions.FIND
+    // },
     'GET /users/search': {
         controller: 'RestrictedRead',
         model: 'user',

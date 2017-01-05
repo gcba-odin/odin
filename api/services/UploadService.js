@@ -86,6 +86,7 @@ module.exports = {
         // Set it to null, otherwise the ORM will crash
         data.publishedAt = data.publishedAt === 'null' ? null : data.publishedAt
         data.gatheringDate = data.gatheringDate === 'null' ? null : data.gatheringDate
+        data.cancelledAt = data.cancelledAt === 'null' ? null : data.cancelledAt
         var allowedTypes;
 
 
