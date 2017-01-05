@@ -102,20 +102,20 @@ module.exports = {
 
             // change physical file
 
-            File.find(data.id).populate('dataset').limit(1).then(function(file) {
+            File.find(data.id).populate('dataset').populate('type').limit(1).then(function(file) {
                 file = file[0];
                 // in case the fileName changed, rename the physical file
                 var hasSameName = file.fileName == data.fileName;
                 var isSameDataset = data.dataset === file.dataset.id;
 
                 var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
-                console.log('original path = ' + originalPath)
                 if (!isSameDataset) {
                     Dataset.find(data.dataset).limit(1).then(function(newDataset) {
                         newDataset = newDataset[0];
-                        DataStorageService.mongoReplace(file.dataset.id,
-                            newDataset.id, file.fileName, data.fileName, res);
-
+                        if (file.type.api === 'true') {
+                            DataStorageService.mongoReplace(file.dataset.id,
+                                newDataset.id, file.fileName, data.fileName, res);
+                        }
                         var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
                         UploadService.changeFileName(originalPath, newPath);
                     });
