@@ -261,9 +261,6 @@ class ResponseGET extends ResponseBuilder {
             this._query = this._model.find(this.params.pk);
         }
 
-        //console.log(this.params.where.full);
-        //console.log(this.params.where.deep);
-
         this._query = this.populate(this._query, this._model, this.params.include, this.params.where.deep);
 
         return this._query;
@@ -278,8 +275,7 @@ class ResponseGET extends ResponseBuilder {
     getFullConditions() {
         // Get "invited" full filters in case there's no req.user
         var frontFullFilters = this.getFrontFullFilters();
-        console.log('font full filter');
-        console.dir(frontFullFilters)
+
         // Parse user full filters
         var fullFilters = this.parseFullFilters(this.params.where.full);
 
@@ -289,8 +285,6 @@ class ResponseGET extends ResponseBuilder {
             fullConditions = {};
         }
         var frontFullConditions = this.filtersToAndConditions(frontFullFilters, this._model);
-        console.dir(fullConditions)
-        console.dir(frontFullConditions)
         // Merge both user and "invited" conditions
         _.merge(fullConditions, frontFullConditions);
         return fullConditions;
@@ -428,7 +422,7 @@ class ResponseGET extends ResponseBuilder {
                     var values = _.split(val, ',');
 
                     _.forEach(values, function(value) {
-                        console.dir(this.params.match)
+
                         if (this.params.match == 'exact') {
                             result.or.push(_.set({}, key, value))
                         } else {
