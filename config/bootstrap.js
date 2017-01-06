@@ -20,7 +20,7 @@ module.exports = {
         console.dir('Inside bootstrap function');
 
         // Calls seed functions
-        CategorySeed.load();
+        // CategorySeed.load();
 
         // Create the upload folder
 
