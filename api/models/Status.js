@@ -30,6 +30,9 @@ module.exports = {
             collection: 'file',
             via: 'status'
         },
+        createdBy: {
+            model: 'user'
+        },
         datasets: {
             collection: 'dataset',
             via: 'status'

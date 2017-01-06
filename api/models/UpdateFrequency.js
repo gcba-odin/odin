@@ -19,6 +19,9 @@ module.exports = {
       primaryKey: true,
       size: 15
     },
+    createdBy: {
+        model: 'user'
+    },
     name: {
       type: 'string',
       required: true,

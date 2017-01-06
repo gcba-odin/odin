@@ -42,6 +42,9 @@ module.exports = {
             type: 'boolean',
             defaultsTo: true
         },
+        createdBy: {
+            model: 'user'
+        },
         deletedAt: {
             type: 'datetime'
         },
