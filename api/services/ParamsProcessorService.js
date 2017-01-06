@@ -71,7 +71,7 @@ class ParamsProcessor {
             case 'ends':
                 return 'endsWith';
             case '':
-                return 'contains';
+                return 'exact';
             case 'contains':
                 return 'contains';
             default:
