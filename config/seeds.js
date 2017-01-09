@@ -5,11 +5,8 @@ const actions = PermissionService.actions;
 
 module.exports = {
     fixtures: {
-        // order: [
-        //     'User', 'PermissionRule', 'Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
-        // ],
         order: [
-            'PermissionRule'
+            'User', 'PermissionRule', 'Status', 'FileType', 'Config', 'UpdateFrequency', 'Basemap'
         ],
         User: [{
             id: 'dogPzIz9',
