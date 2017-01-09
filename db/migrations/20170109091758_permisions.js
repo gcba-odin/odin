@@ -79,6 +79,7 @@ exports.up = function(knex, Promise) {
             table.string('model');
             table.timestamp('createdAt').defaultTo(now);
             table.timestamp('updatedAt').defaultTo(now);
+            table.timestamp('deletedAt');
             table.boolean('owner').defaultTo(false);
         }),
         knex('permissionrule').insert(permissions)
