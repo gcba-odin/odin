@@ -8,11 +8,7 @@ exports.up = function(knex, Promise) {
         }),
         knex.schema.alterTable('updatefrequency', function(t) {
             t.text('createdBy');
-        }),
-        knex.schema.alterTable('basemap', function(t) {
-            t.text('createdBy');
         })
-
     ]).catch(function(error) {
         console.log(error);
     });
