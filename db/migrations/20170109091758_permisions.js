@@ -83,8 +83,9 @@ exports.up = function(knex, Promise) {
             table.boolean('owner').defaultTo(false);
         }),
         knex('permissionrule').insert(permissions)
-
-    ])
+    ]).catch(function(error) {
+        console.log(error);
+    });
 
 };
 
