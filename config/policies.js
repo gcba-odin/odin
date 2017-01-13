@@ -91,7 +91,7 @@ module.exports = {
         UserController: {
             me: ['isAuthenticated'],
             create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isHimself'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isHimself', 'editRole'],
             login: true,
             refreshToken: true
         },
