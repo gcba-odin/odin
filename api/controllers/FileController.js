@@ -13,6 +13,7 @@ const shortid = require('shortid');
 const json2csv = require('json2csv');
 const json2xls = require('json2xls');
 const _ = require('lodash');
+const ipaddr = require('ipaddr.js');
 
 // var dirname = require('path')
 var SkipperDisk = require('skipper-disk');
@@ -66,6 +67,21 @@ module.exports = {
             LogService.winstonLog('verbose', 'file downloaded', {
                 ip: req.ip,
                 resource: file.id
+            });
+
+            var datasetEndpoint = '/datasets/' + file.dataset.id + '/download'
+
+            var ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.connection.remoteAddress
+            ip = _.indexOf(ip, ',') !== -1 ? ip.split(',')[0] : ip;
+            var addr = ipaddr.process(ip);
+            Statistic.create({
+                method: 'GET',
+                resource: 'Dataset',
+                endpoint: datasetEndpoint,
+                ip: addr.toString(),
+                useragent: req.headers['user-agent'],
+            }).exec(function(err, statistic) {
+                console.log('dataset statistic created')
             });
 
             fileAdapter.read(dirname).on('error', function(err) {
