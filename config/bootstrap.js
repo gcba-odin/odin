@@ -12,7 +12,7 @@ const mkdirp = require('mkdirp');
 const exec = require('child_process').exec;
 const moment = require('moment');
 const CronJob = require('cron').CronJob;
-const CategorySeed =  require('../seeds/CategorySeed');
+const CategorySeed = require('../seeds/CategorySeed');
 
 module.exports = {
     bootstrap: cb => {
@@ -74,12 +74,7 @@ module.exports = {
         sails.on('lifted', function() {
             LogService.winstonLog('info', 'Sails has lifted!');
 
-            /**
-             tar -zcvf preproFiles.tar.gz ../odin-files/
-             mongodump --out /home/odinPreProduccion/backups/prepro.backup.mongo
-             **/
-
-
+            /* crons
             // cron databases and files backup
             var currentDate = moment().format("MM.DD.YYYY");
 
@@ -119,6 +114,7 @@ module.exports = {
 
 
             }, null, true);
+            */
 
             UpdateFrequency.find(function(err, updateFrequencies) {
                 //We should run a cron job per update frequency
