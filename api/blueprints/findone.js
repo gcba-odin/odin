@@ -31,7 +31,9 @@ module.exports = (req, res) => {
                     builder.filterObject(returnRecord, 'owner');
                     builder.filterObject(returnRecord, 'createdBy');
                 }
+                builder.partialIncludes(records);
                 builder.removeIncludes(records);
+                builder.filterFields(records);
 
                 return res.ok(
                     returnRecord, {

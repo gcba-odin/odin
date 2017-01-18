@@ -170,8 +170,8 @@ class ResponseGET extends ResponseBuilder {
             if (association.type === 'collection') {
                 this.collections[association.alias] = association;
             }
-        }.bind(this));
 
+        }.bind(this));
 
         // TODO: Extract full and deep filters logic here (ResponseGET, ResponseCOUNT)
         // In addition, make collections a class property
@@ -328,11 +328,12 @@ class ResponseGET extends ResponseBuilder {
 
             // We need to temporary include collections for populate deep conditions
             // Then, when retrieving the data, removing unnecessary nested collections
-            if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
-                if (!_.includes(this.params.include.full, key)) {
-                    this.params.include.full.push(key);
-                    this.params.include.remove.push(key);
-                }
+
+            // if (!_.isUndefined(keyConditions) && !_.isEmpty(keyConditions)) {
+            if (!_.includes(this.params.include.full, key)) {
+                this.params.include.full.push(key);
+                this.params.include.remove.push(key);
+                // }
             }
         }.bind(this));
         return deepConditions;
@@ -454,7 +455,7 @@ class ResponseGET extends ResponseBuilder {
                         result[key] = _.split(val, ',');
                     } else {
                         if (this.params.match === 'exact') {
-                          result[key] = val
+                            result[key] = val
                         } else {
                             result[key] = {
                                 [this.params.match]: val
@@ -708,7 +709,6 @@ class ResponseGET extends ResponseBuilder {
                 query.populate(key);
             }
         });
-
         if (includes) {
             // Fully populate collections
             if (includes.full) {
@@ -733,6 +733,29 @@ class ResponseGET extends ResponseBuilder {
         return _(records).slice(this.params.skip).take(this.params.limit).value();
     }
 
+    deleteFields(record, filters, partials) {
+        var keys = _.keys(record)
+        _.forEach(keys, function(key) {
+            // if key is not present in include, delete it
+            if (_.indexOf(filters, key) === -1) {
+                delete record[key]
+            }
+            // else, if we are looking for partials, and the key is present call this method again
+            else if (partials && !_.isUndefined(this.params.fields.partials[key])) {
+                this.deleteFields(record[key], this.params.fields.partials[key], false)
+            }
+        }.bind(this));
+        return record
+    }
+
+    filterFields(records) {
+        if (!_.isEmpty(this.params.fields.full)) {
+            return _.map(records, function(item) {
+                return this.deleteFields(item, this.params.fields.full, true)
+            }.bind(this));
+        }
+
+    }
     /*
      * Remove includes that have been added only for deep conditions
      */
@@ -740,13 +763,30 @@ class ResponseGET extends ResponseBuilder {
         //Get model collections
         return _.map(records, function(item) {
             _.forEach(this.params.include.remove, function(include) {
-                if (!_.isUndefined(item[include])) {
-                    //TODO: delete item[include]
-                    item[include] = null;
+                if (_.isUndefined(this.params.include.partials[include])) {
+                    if (!_.isUndefined(item[include])) {
+                        //TODO: delete item[include]
+                        item[include] = null;
+                    }
                 }
             }.bind(this));
             return item;
         }.bind(this));
+    }
+
+    partialIncludes(records) {
+        return _.map(records, function(item) {
+            _.forEach(this.params.include.partials, function(includes, key) {
+                // for each model with partial include, filter it
+                item[key] = _.map(item[key], function(collection) {
+                    // save each model key to iterate over
+                    return this.deleteFields(collection, includes, false)
+                    // return collection
+                }.bind(this))
+            }.bind(this));
+            return item;
+        }.bind(this));
+
     }
 
     /*
