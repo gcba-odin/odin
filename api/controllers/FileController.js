@@ -147,7 +147,7 @@ module.exports = {
                     return res.badRequest();
                 }
                 var result;
-                FileContentsService.mongoContents(file.dataset.id, file.fileName, 0, 0, res, function(data) {
+                DataStorageService.mongoContents(file.dataset.id, file.fileName, 0, 0, res, function(data) {
                     _.forEach(data, function(elem) {
                         delete elem._id
                     });

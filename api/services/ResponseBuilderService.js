@@ -572,7 +572,7 @@ class ResponseGET extends ResponseBuilder {
             this._count = count;
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
 
-            FileContentsService.mongoContents(dataset, file, this.params.limit, this.params.skip, this.res, cb);
+            DataStorageService.mongoContents(dataset, file, this.params.limit, this.params.skip, this.res, cb);
         }.bind(this));
     }
 

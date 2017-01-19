@@ -50,7 +50,7 @@ module.exports = {
             File.findOne(fileId).exec(function(err, record) {
 
                 if (err) return res.negotiate(err);
-                FileContentsService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(table) {
+                DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(table) {
                     this.generateChartData(table, dataType, element1, element2, function(chartData) {
                         values.data = {
                             labels: _.keys(chartData),

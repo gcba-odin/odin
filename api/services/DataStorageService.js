@@ -51,7 +51,7 @@ module.exports = {
         }
     },
     mongoReplace: function(oldDataset, newDataset, oldFilename, newFilename, res, cb) {
-        FileContentsService.mongoContents(oldDataset, oldFilename, 0, 0, res, function(json){
+        DataStorageService.mongoContents(oldDataset, oldFilename, 0, 0, res, function(json) {
             this.mongoSave(newDataset, newFilename, json, res)
             this.deleteCollection(oldDataset, oldFilename, res);
 
@@ -68,5 +68,24 @@ module.exports = {
                 });
             });
         }
+    },
+    mongoContents: function(dataset, filename, limit, skip, res, cb) {
+        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+            var data = [];
+
+            var collection = db.collection(filename);
+            var cursor = collection.find().skip(skip).limit(limit);
+
+            cursor.each(function(err, doc) {
+                if (err) console.error(err);
+
+                if (doc !== null) {
+                    data.push(doc);
+                } else {
+                    db.close();
+                    return cb(data);
+                }
+            });
+        });
     }
 };
