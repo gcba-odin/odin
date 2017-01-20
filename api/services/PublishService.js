@@ -9,8 +9,6 @@ module.exports = {
         // get the status id
         var status = sails.config.statuses[requiredStatus];
 
-        console.dir(sails.config.statuses)
-        console.dir(requiredStatus)
         // if associations is eq to 2, the unpublished model is a dataset
         // so we need to unpublish the files associated, and theirs visualizations
         if (associations === 2) {

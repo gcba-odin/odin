@@ -20,7 +20,7 @@ module.exports = {
                 this.updateCharts(data)
             }.bind(this))
         }
-    }
+    },
     updateMaps: function(data) {
         // Find all the related maps
         _Map.find({
@@ -49,7 +49,7 @@ module.exports = {
                 }).then(function(updated) {});
             })
 
-    }
+    },
 
     updateKmlMaps: function(data) {
         // If file is kml, it can have a related map
@@ -70,7 +70,7 @@ module.exports = {
             }
 
         });
-    }
+    },
     updateCharts: function(data) {
         // Find all the related charts
         Chart.find({
@@ -79,12 +79,12 @@ module.exports = {
             _.forEach(charts, function(chart) {
                 // If the chart doesn't have a link we procced to update it
                 if (!chart.link) {
-                    VisualizationsUpdateService.updateChartData(data,chart)
+                    VisualizationsUpdateService.updateChartData(data, chart)
                 }
             });
         })
     },
-    updateChartData(data,chart) { // get the needed data to create the cart
+    updateChartData(data, chart) { // get the needed data to create the cart
         var dataSeries = _.split(chart.dataSeries, ',');
         var element1 = dataSeries[0];
         var element2 = dataSeries[1];

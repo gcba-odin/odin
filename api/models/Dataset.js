@@ -56,6 +56,9 @@ module.exports = {
         publishedAt: {
             type: 'datetime'
         },
+        unPublishedAt: {
+            type: 'datetime'
+        },
         categories: {
             collection: 'category',
             via: 'datasets',
