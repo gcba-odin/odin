@@ -15,16 +15,16 @@ module.exports = {
 
             // Find the file content on mongo with the data to update the visualizations
             DataStorageService.mongoContents(file.dataset, file.fileName, 0, 0, null, function(data) {
-                this.updateMaps(data);
-                this.updateKmlMaps(data);
-                this.updateCharts(data)
+                this.updateMaps(data, file.id);
+                this.updateKmlMaps(data, file.id);
+                this.updateCharts(data, file.id)
             }.bind(this))
         }
     },
-    updateMaps: function(data) {
+    updateMaps: function(data, fileId) {
         // Find all the related maps
         _Map.find({
-            file: file.id,
+            file: fileId,
             kml: false
         }).then(function(maps) {
             _.forEach(maps, function(map) {
@@ -51,10 +51,10 @@ module.exports = {
 
     },
 
-    updateKmlMaps: function(data) {
+    updateKmlMaps: function(data, fileId) {
         // If file is kml, it can have a related map
         _Map.find({
-            file: file.id,
+            file: fileId,
             kml: true
         }).then(function(maps) {
             if (!_.isEmpty(maps)) {
@@ -71,10 +71,10 @@ module.exports = {
 
         });
     },
-    updateCharts: function(data) {
+    updateCharts: function(data,fileId) {
         // Find all the related charts
         Chart.find({
-            file: file.id
+            file: fileId
         }).then(function(charts) {
             _.forEach(charts, function(chart) {
                 // If the chart doesn't have a link we procced to update it
