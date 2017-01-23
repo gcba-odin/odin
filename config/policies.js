@@ -15,7 +15,7 @@ module.exports = {
     policies: {
         '*': ['addLoggedUser', 'statistics'],
         BasemapController: {
-            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         CategoryController: {
@@ -60,7 +60,11 @@ module.exports = {
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         FileTypeController: {
-            create: ['isAuthenticated', 'statistics', 'hasPermission'],
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
+        },
+        UpdateFrequencyController: {
+            create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
             update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         LogController: {
