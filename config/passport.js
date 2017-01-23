@@ -48,7 +48,8 @@ const JWT_STRATEGY_CONFIG = {
 const _onLocalStrategyAuth = (req, username, password, next) => {
     User
         .findOne({
-            [LOCAL_STRATEGY_CONFIG.usernameField]: username
+            [LOCAL_STRATEGY_CONFIG.usernameField]: username,
+            deletedAt: null
         })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
@@ -69,7 +70,8 @@ const _onLocalStrategyAuth = (req, username, password, next) => {
 const _onJwtStrategyAuth = (req, payload, next) => {
     User
         .findOne({
-            id: payload.id
+            id: payload.id,
+            deletedAt: null
         })
         .then(user => {
             if (!user) return next(null, null, sails.config.errors.USER_NOT_FOUND);
@@ -100,8 +102,8 @@ module.exports = {
                 user: user.id,
                 username: user.username,
                 role: user.role
-                    // We dont need user data returned
-                    // user: user
+                // We dont need user data returned
+                // user: user
             });
         }
     }

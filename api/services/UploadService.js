@@ -302,6 +302,7 @@ module.exports = {
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var savePath = path.resolve(sails.config.odin.uploadFolder + '/categories');
+        console.dir(data)
         var uploadFile = req.file('uploadImage').on('error', function(err) {
             console.dir(err);
         });
@@ -336,6 +337,9 @@ module.exports = {
                 cb(data);
             });
         } else {
+            if (data.deleteImage === 'true') {
+                UploadService.deleteImage(data.fileName);
+            }
             return cb(data);
         }
     },
@@ -488,6 +492,14 @@ module.exports = {
                 ZipService.createZip(dataset.id);
             });
         });
+    },
+
+    deleteImage: function(fileName) {
+        var categoryPath = path.resolve(sails.config.odin.uploadFolder + '/categories/' + fileName);
+        fs.unlink(categoryPath, function(err) {
+            console.log(err)
+            console.log('Category image deleted');
+        })
     },
 
     changeFileName: function(originalPath, newPath) {
