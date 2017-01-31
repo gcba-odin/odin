@@ -44,6 +44,23 @@ module.exports = {
             var dataType = _.get(values, 'dataType', '');
             values.dataSeries = _.split(_.get(values, 'dataSeries', ''), ',');
 
+
+            var fileId = values.file;
+            var type = values.type;
+            var dataType = values.dataType;
+            var dataSeries = values.dataSeries
+
+            var base = _.take(dataSeries);
+            var elements = dataSeries.length;
+            dataSeries = _.slice(dataSeries, 1, elements);
+
+            console.log(fileId)
+            console.log(type)
+            console.log(dataType)
+            console.log(dataSeries)
+            console.log(base)
+            console.log(elements)
+
             var element1 = values.dataSeries[0];
             var element2 = values.dataSeries[1];
             // var serie = [element1];
@@ -68,25 +85,24 @@ module.exports = {
         if (dataType === 'qualitative') {
 
             //if the chart is qualitative we group all the data referenced by the element asked
-
             chartData = _.groupBy(data, function(value) {
                 return value[element1];
             });
         } else {
             if (dataType === 'quantitative') {
                 //if the chart is quantitative return associative array
-
                 var groupedData = _.groupBy(data, function(value) {
                     return value[element1];
                 });
+                console.log('groupedData \n')
+                console.log(groupedData);
+                console.log('end groupedData \n\n')
                 chartData = _.transform(groupedData, function(result, value) {
+                    console.log('value = ' + value)
                     var key = value[0][element1];
                     var val = _.sumBy(value, function(each) {
-                        // in case a number is like 192.123.522, transform it to 192123522
-                        // var withoutDots = _.join(_.split(each[element2], '.'), "");
                         // in case a number is like 192123,522, transform it to 192123.522
                         return _.toNumber(_.replace(each[element2], ',', '.'));
-
                     });
                     result[key] = _.round(val, 2);
                 }, {});
