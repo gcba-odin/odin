@@ -73,6 +73,6 @@ module.exports = {
      * The default number of records to show in the response from a "find" action
      * @type {Number}
      */
-    defaultLimit: 50
+    defaultLimit: 20
   }
 };
