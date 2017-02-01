@@ -33,7 +33,7 @@ module.exports = {
         },
         ConfigController: {
             create: ['isAuthenticated', 'statistics', 'hasPermission', 'addCreatedBy'],
-            update: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner'],
+            update: ['isAuthenticated', 'statistics', 'hasPermission', 'editConfig'],
             destroy: ['isAuthenticated', 'statistics', 'hasPermission', 'isOwner']
         },
         DatasetController: {
