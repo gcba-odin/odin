@@ -29,13 +29,29 @@ module.exports = {
         type: {
             type: 'string',
             required: true,
-            enum: ['bool', 'string', 'integer', 'float', 'model']
+            enum: ['bool', 'string', 'integer', 'float', 'model', 'group']
+        },
+        category: {
+          type: 'string',
+          required: true,
+          enum: ['site','visualizations','integrations']
+        },
+        parent: {
+            model: 'config'
+        },
+        subconfigs: {
+            collection: 'config',
+            via: 'parent'
         },
         multiple: {
             type: 'boolean',
             boolean: true
         },
         editable: {
+            type: 'boolean',
+            boolean: true
+        },
+        required: {
             type: 'boolean',
             boolean: true
         },
