@@ -339,6 +339,7 @@ module.exports = {
         } else {
             if (data.deleteImage === 'true') {
                 UploadService.deleteImage(data.fileName);
+                data.fileName = null;
             }
             return cb(data);
         }
