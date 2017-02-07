@@ -71,7 +71,7 @@ module.exports = {
         },
         tooltip: {
             type: 'string'
-        }
+        },
         updatedBy: {
             model: 'user'
         },
