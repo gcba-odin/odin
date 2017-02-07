@@ -32,9 +32,9 @@ module.exports = {
             enum: ['bool', 'string', 'integer', 'float', 'model', 'group']
         },
         category: {
-          type: 'string',
-          required: true,
-          enum: ['site','visualizations','integrations']
+            type: 'string',
+            required: true,
+            enum: ['site', 'visualizations', 'integrations']
         },
         parent: {
             model: 'config'
@@ -69,6 +69,9 @@ module.exports = {
             type: 'string',
             size: 50
         },
+        tooltip: {
+            type: 'string'
+        }
         updatedBy: {
             model: 'user'
         },
