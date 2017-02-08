@@ -414,7 +414,7 @@ exports.up = function(knex, Promise) {
             category: 'visualizations',
             required: true,
             editable: true,
-            description: 'Min zoom'
+            description: 'Min zoom',
             tooltip: 'Min zoom on basemap creation'
         }),
         knex('config').where('key', '=', 'defaultOrganization').update({
