@@ -14,7 +14,7 @@ exports.up = function(knex, Promise) {
         createdAt: now,
         updatedAt: now,
         category: 'integrations',
-        required: true,
+        required: false,
         editable: false
     };
     var facebook = {
@@ -179,8 +179,6 @@ exports.up = function(knex, Promise) {
         parent: 'jogGzCz9',
         tooltip: 'Account where the statistics will be shown'
     };
-
-
 
     var disqus = {
         id: 'qlgCzCz9',
@@ -361,6 +359,7 @@ exports.up = function(knex, Promise) {
         knex.insert(linkedin).into('config'),
         knex.insert(github).into('config'),
         knex.insert(googleAnalytics).into('config'),
+        knex.insert(googleAnalyticsAccount).into('config'),
         knex.insert(disqus).into('config'),
         knex.insert(disqusDisableMobile).into('config'),
         knex.insert(disqusConfigLanguage).into('config'),
@@ -369,6 +368,9 @@ exports.up = function(knex, Promise) {
         knex.insert(reCaptcha).into('config'),
         knex.insert(reCaptchaSecret).into('config'),
         knex.insert(reCaptchaPublicKey).into('config'),
+        knex.insert(reCaptchaAdmin).into('config'),
+        knex.insert(reCaptchaFrontend).into('config'),
+
 
         knex('config').where('key', '=', 'defaultStatus').update({
             category: 'site',
