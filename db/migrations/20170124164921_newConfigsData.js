@@ -197,7 +197,7 @@ exports.up = function(knex, Promise) {
     };
     var disqusDisableMobile = {
         id: 'inaG9Cz9',
-        description: 'Enable/disable mobile disqus',
+        description: 'Disqus mobile',
         type: 'boolean',
         multiple: false,
         model: '',
@@ -210,11 +210,11 @@ exports.up = function(knex, Promise) {
         parent: 'qlgCzCz9',
         required: false,
         editable: false,
-        tooltip: 'Enable/disable mobile disqus'
+        tooltip: 'Enable/disable disqus mobile'
     };
     var disqusConfigLanguage = {
         id: '3jnG0Cz9',
-        description: 'Choose a particular language (Browser language by default)',
+        description: 'Language',
         type: 'string',
         multiple: false,
         model: '',
@@ -227,11 +227,11 @@ exports.up = function(knex, Promise) {
         parent: 'qlgCzCz9',
         required: false,
         editable: false,
-        tooltip: 'Choose a particular language',
+        tooltip: 'Choose a particular language (Browser language by default)',
     };
     var disqusApiKey = {
         id: '2soC1Cz9',
-        description: 'Disqus Public Key provided through its administration panel',
+        description: 'Public Key',
         type: 'string',
         multiple: false,
         model: '',
@@ -244,11 +244,11 @@ exports.up = function(knex, Promise) {
         parent: 'qlgCzCz9',
         required: false,
         editable: false,
-        tooltip: 'Disqus Public Key, depends on disqusRemoteAuthS3 field'
+        tooltip: 'Disqus Public Key provided through its administration panel, depends on disqusRemoteAuthS3 ﬁeld'
     };
     var disqusRemoteAuthS3 = {
         id: '2z0GmCz9',
-        description: 'Authentication format provided by Disqus through its administration panel',
+        description: 'Authentication format',
         type: 'string',
         multiple: false,
         model: '',
@@ -261,7 +261,7 @@ exports.up = function(knex, Promise) {
         parent: 'qlgCzCz9',
         required: false,
         editable: false,
-        tooltip: 'Authentication format provided by Disqus, depends on disquisApiKey field'
+        tooltip: 'Authentication format provided by Disqus through its administration panel, depends on disquisApiKey ﬁeld'
     };
 
     var reCaptcha = {
@@ -281,7 +281,7 @@ exports.up = function(knex, Promise) {
     };
     var reCaptchaSecret = {
         id: 'p8Ah9cz9',
-        description: 'Google Private API KEY',
+        description: 'Private Key',
         type: 'string',
         multiple: false,
         model: '',
@@ -298,7 +298,7 @@ exports.up = function(knex, Promise) {
     };
     var reCaptchaPublicKey = {
         id: '2htG0Cz9',
-        description: 'Google Public API KEY',
+        description: 'Public Key',
         type: 'string',
         multiple: false,
         model: '',
@@ -317,7 +317,7 @@ exports.up = function(knex, Promise) {
 
     var reCaptchaFrontend = {
         id: '3gqG0Cz9',
-        description: 'Enable frontend captcha',
+        description: 'Frontend captcha',
         type: 'boolean',
         multiple: false,
         model: '',
@@ -333,7 +333,7 @@ exports.up = function(knex, Promise) {
     };
     var reCaptchaAdmin = {
         id: '2va4ACz9',
-        description: 'Enable admin captcha',
+        description: 'Admin captcha',
         type: 'boolean',
         multiple: false,
         model: '',
@@ -400,19 +400,22 @@ exports.up = function(knex, Promise) {
             category: 'visualizations',
             required: true,
             editable: true,
-            description: 'Points limit on map creation'
+            description: 'Points limit',
+            tooltip: 'Points limit on map creation'
         }),
         knex('config').where('key', '=', 'defaultMaxZoom').update({
             category: 'visualizations',
             required: true,
             editable: true,
-            description: 'Max zoom on basemap creation'
+            description: 'Max zoom',
+            tooltip: 'Max zoom on basemap creation'
         }),
         knex('config').where('key', '=', 'defaultMinZoom').update({
             category: 'visualizations',
             required: true,
             editable: true,
-            description: 'Min zoom on basemap creation'
+            description: 'Min zoom'
+            tooltip: 'Min zoom on basemap creation'
         }),
         knex('config').where('key', '=', 'defaultOrganization').update({
             category: 'site',
