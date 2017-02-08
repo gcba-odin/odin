@@ -231,7 +231,7 @@ exports.up = function(knex, Promise) {
     };
     var disqusApiKey = {
         id: '2soC1Cz9',
-        description: 'Public Key',
+        description: 'Disqus Public Key',
         type: 'string',
         multiple: false,
         model: '',
@@ -281,7 +281,7 @@ exports.up = function(knex, Promise) {
     };
     var reCaptchaSecret = {
         id: 'p8Ah9cz9',
-        description: 'Private Key',
+        description: 'ReCaptcha Private Key',
         type: 'string',
         multiple: false,
         model: '',
@@ -298,7 +298,7 @@ exports.up = function(knex, Promise) {
     };
     var reCaptchaPublicKey = {
         id: '2htG0Cz9',
-        description: 'Public Key',
+        description: 'ReCaptcha Public Key',
         type: 'string',
         multiple: false,
         model: '',
