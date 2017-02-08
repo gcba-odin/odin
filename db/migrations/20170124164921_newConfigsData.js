@@ -158,7 +158,7 @@ exports.up = function(knex, Promise) {
         createdAt: now,
         updatedAt: now,
         category: 'integrations',
-        required: true,
+        required: false,
         editable: false,
     };
 
@@ -192,7 +192,7 @@ exports.up = function(knex, Promise) {
         createdAt: now,
         updatedAt: now,
         category: 'integrations',
-        required: true,
+        required: false,
         editable: false
     };
     var disqusDisableMobile = {
@@ -276,7 +276,7 @@ exports.up = function(knex, Promise) {
         createdAt: now,
         updatedAt: now,
         category: 'integrations',
-        required: true,
+        required: false,
         editable: false
     };
     var reCaptchaSecret = {
@@ -292,7 +292,7 @@ exports.up = function(knex, Promise) {
         updatedAt: now,
         category: 'integrations',
         parent: 'co1HzCz6',
-        required: false,
+        required: true,
         editable: false,
         tooltip: 'Google Private API KEY',
     };
@@ -309,7 +309,7 @@ exports.up = function(knex, Promise) {
         updatedAt: now,
         category: 'integrations',
         parent: 'co1HzCz6',
-        required: false,
+        required: true,
         editable: false,
         tooltip: 'Google Public API KEY',
 
