@@ -99,7 +99,7 @@ module.exports = {
 
     removeEmptyAssociations: true,
 
-    searchables: ['name', 'description'],
+    searchables: ['name', 'description', 'slug'],
 
     ignoredAssociations: ['subcategories'],
 
