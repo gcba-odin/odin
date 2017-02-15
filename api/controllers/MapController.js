@@ -45,7 +45,7 @@ module.exports = {
         File.findOne(fileId).populate('type').populate('dataset').exec(function(err, record) {
             if (err) return res.negotiate(err);
 
-                // check if file is kml ; if not
+            // check if file is kml ; if not
             if (_.indexOf(record.type.mimetype, 'application/vnd.google-earth.kml+xml') === -1) {
                 // if link is given, iframe is asumed, then geojson won't be created
                 if (link !== null) {
@@ -139,7 +139,7 @@ module.exports = {
             // if commas are present, replace them with dots
             value[longitude] = _.toNumber(_.replace(value[longitude], ',', '.'));
             value[latitude] = _.toNumber(_.replace(value[latitude], ',', '.'));
-            if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude])) {
+            if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude]) || value[latitude] == 0 || value[longitude] == 0) {
                 incorrect++;
             } else {
                 correct++;
