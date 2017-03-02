@@ -210,6 +210,7 @@ nginx: |
   }
 
   http {
+
     resolver {{dns_resolver}} ipv6=off;
     charset UTF-8;
 
@@ -241,7 +242,7 @@ nginx: |
     underscores_in_headers on;
     reset_timedout_connection on;
     tcp_nopush on;
-    include /home/odinPreProduccion/mime.types;
+    include /path-to-odin-repo/etc/mime.types;
 
     ################################################
     #  The following code is required to run Kong  #
@@ -290,12 +291,6 @@ nginx: |
         return 200 'User-agent: *\nDisallow: /';
       }
 
-      error_page 403 = @notfound;
-
-      location @notfound {
-        return 404;
-      }
-
       error_page 500 502 503 504 /50x;
 
       location = /50x {
@@ -310,12 +305,9 @@ nginx: |
       #  Edit as needed                              #
       ################################################
 
-      root /home/odinPreProduccion/odin-frontend/dist;
+      root /path-to-frontend-repo/dist;
 
       location / {
-        #if (-e $request_filename){
-                #rewrite ^/(.*) /odin-frontend/dist/index.html break;
-        #}
         try_files $uri $uri/ /index.html =404;
         expires -1;
       }
@@ -384,7 +376,8 @@ nginx: |
       }
 
       location /admin {
-        alias /home/odinPreProduccion/odin-admin/dist;
+        alias /path-to-admin-repo/dist;
+        try_files $uri $uri/ /index.html =404;
         expires -1;
       }
 
