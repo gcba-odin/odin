@@ -26,3 +26,16 @@ module.exports.email = {
   testMode: false,
   templateDir: 'api/views'
 };
+
+module.exports.connections = {
+    postgres: {
+        adapter: 'sails-postgresql',
+        database: 'odin',
+        host: 'localhost',
+        user: 'postgres',
+        password: 'postgres',
+        port: 5432,
+        pool: false,
+        ssl: false
+    }
+};
