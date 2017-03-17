@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * BasemapController
- * @description :: Server-side logic for ...
+ * EmailController
+ * @description :: Server-side logic for Email Controller
  */
 const requestify = require('requestify');
 

@@ -71,6 +71,10 @@ module.exports = {
             collection: 'category',
             via: 'parent'
         },
+        requests: {
+            collection: 'datasetrequest',
+            via: 'categories'
+        },
 
         toJSON() {
             return this.toObject();

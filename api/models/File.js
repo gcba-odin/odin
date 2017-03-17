@@ -23,13 +23,11 @@ module.exports = {
         },
         fileName: {
             type: 'string',
-            unique: true,
             size: 15
         },
         name: {
             type: 'string',
             required: true,
-            unique: true,
             size: 150,
             minLength: 1
         },
