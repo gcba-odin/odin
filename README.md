@@ -7,8 +7,8 @@
 [![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://gcba-odin.github.io/odin-tech-docs)
 
 
-Documentación en [Español](#spanish)
-[Inglés](#english) Documentation
+## Documentación en [Español](#spanish)
+## [English](#english) Documentation
 
 ## English
 
