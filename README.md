@@ -7,10 +7,10 @@
 [![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://gcba-odin.github.io/odin-tech-docs)
 
 
-Documentación en [Español](#Español)
-[Inglés](#Inglés) Documentation
+Documentación en [Español](#spanish)
+[Inglés](#english) Documentation
 
-## Inglés
+## English
 
 ODIN is an API first open source DMS (data management system) created to help governments publish and share their data.
 
@@ -168,7 +168,7 @@ module.exports.connections = {
    $ npm install
 ```
 
-## Español
+## Spanish
 
 ODIN is an API first open source DMS (data management system) created to help governments publish and share their data.
 
