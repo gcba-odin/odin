@@ -170,16 +170,16 @@ module.exports.connections = {
 
 ## Spanish
 
-ODIN is an API first open source DMS (data management system) created to help governments publish and share their data.
+ODIN es una plataforma de gestión de datos, creada para ayudar a gobiernos a publicar y compartir sus datos
 
-It takes in CSV, XLS and XLSX files and exposes them in a paginated REST API. The associated metadata is also available, with search and filter capabilities.
+Toma archivos de tipo CSV, XLS y XLSX y los expone mediante una API REST. A su vez la metadata asociada está disponible, con funciones de busqueda y filtros
 
-The UI is kept in two separate projects (Angular.js 1.x clients):
+La interfaz gráfica está separada en dos proyectos separados (Angular.js):
 
 1.  [Admin](https://github.com/gcba-odin/odin-admin)
 2.  [Frontend](https://github.com/gcba-odin/odin-frontend)
 
-The authentication, ACL, rate-limiting, CORS and related features must be handled by a [Kong](https://getkong.org/) instance.
+La autenticación, ACL, rate-limiting, CORS y funcionalodades asociadas, deben ser manejadas por una instancia de [Kong](https://getkong.org/).
 
 
 ## Requerimientos
