@@ -30,7 +30,7 @@ module.exports = (req, res) => {
             if (err) return res.negotiate(err);
 
             var groupedDataById = _.groupBy(data, function(value) {
-                var splittedEndpoint = _.split(value.endpoint, '/'); 
+                var splittedEndpoint = _.split(value.endpoint, '/');
                 var itemId = splittedEndpoint[2];
                 //TODO: Add action filter logic when groupBy === undefined
                 if(action !== undefined){
