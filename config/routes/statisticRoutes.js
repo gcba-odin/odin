@@ -1,10 +1,10 @@
 "use strict";
 
 module.exports = {
-    'GET /statistics/downloads': {
-        controller: 'Statistic',
-        action: 'downloads'
-    },
+    // 'GET /statistics/downloads': {
+    //     controller: 'Statistic',
+    //     action: 'downloads'
+    // },
 
     'POST /statistics': {
         controller: 'NotImplemented',
