@@ -1,3 +1,5 @@
+"use strict"
+
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const ipaddr = require('ipaddr.js');
 const _ = require('lodash');
@@ -5,7 +7,7 @@ const _ = require('lodash');
 module.exports = (req, res, next) => {
     //TBD: Client with KONG!
     next();
-    
+
     var ip = req.headers['x-forwarded-for']
         ? req.headers['x-forwarded-for']
         : req.connection.remoteAddress
