@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
             table.timestamp('createdAt');
             table.timestamp('updatedAt');
         }),
-        knex.schema.createTableIfNotExists('category_requests__datasetrequest_categories', function(t) {
+        knex.schema.createTable('category_requests__datasetrequest_categories', function(t) {
             t.increments();
             t.text('category_requests');
             t.text('datasetrequest_categories')

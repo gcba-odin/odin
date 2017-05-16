@@ -1,18 +1,11 @@
 "use strict";
 
-/**
- * SearchController
- * @description :: Server-side logic for searching within records in database
- */
-
 const _ = require('lodash');
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const pluralize = require('pluralize');
 const shortid = require('shortid');
 
-
 module.exports = (req, res) => {
-
 
     var response = {};
     var modelLowercase = (actionUtil.parseModel(req)).adapter.identity;
@@ -24,19 +17,21 @@ module.exports = (req, res) => {
     var action = req.param('action');
 
     if (groupBy !== undefined) {
-        Statistic.find({
-            resource: model
-        }).exec(function(err, data) {
-            if (err) return res.negotiate(err);
+        Statistic.find({resource: model}).exec(function(err, data) {
+            if (err)
+                return res.negotiate(err);
 
             var groupedDataById = _.groupBy(data, function(value) {
-                var splittedEndpoint = _.split(value.endpoint, '/'); 
+                var splittedEndpoint = _.split(value.endpoint, '/');
                 var itemId = splittedEndpoint[2];
                 //TODO: Add action filter logic when groupBy === undefined
-                if(action !== undefined){
-                    if(splittedEndpoint[3] != action) return null;
-                }
-                return shortid.isValid(itemId) ? itemId : null
+                if (action !== undefined) {
+                    if (splittedEndpoint[3] != action)
+                        return null;
+                    }
+                return shortid.isValid(itemId)
+                    ? itemId
+                    : null
             });
             delete groupedDataById['null']
 
@@ -57,7 +52,8 @@ module.exports = (req, res) => {
             // grouped data by id = { id: count { method : hits }, resource: model }
 
             sails.models[groupBy].find().populate(modelPlural).exec(function(err, records) {
-                if (err) return res.negotiate(err);
+                if (err)
+                    return res.negotiate(err);
                 var groupedByModel = _.transform(records, function(result, val) {
                     // find the associated record. eg.: categories[datasets]
                     _.forEach(val[modelPlural], function(associatedModel) {
@@ -98,10 +94,9 @@ module.exports = (req, res) => {
 
         var filtersValues = _.values(filters)
 
-        Statistic.find({
-            resource: model
-        }).exec(function(err, data) {
-            if (err) return res.negotiate(err);
+        Statistic.find({resource: model}).exec(function(err, data) {
+            if (err)
+                return res.negotiate(err);
             var groupedData = _.groupBy(data, function(value) {
                 return value.endpoint;
             });
@@ -120,7 +115,9 @@ module.exports = (req, res) => {
                     // else, we return an object
                     var value = {
                         count: groupedMethods,
-                        item: shortid.isValid(itemId) ? itemId : '',
+                        item: shortid.isValid(itemId)
+                            ? itemId
+                            : '',
                         resource: _.first(val).resource
                     }
                     result[key] = value;
@@ -128,7 +125,6 @@ module.exports = (req, res) => {
                     result[key] = _.size(val);
                 }
             }, {});
-
 
             response[filters.all] = countedData[filters.all] || 0;
             response[filters.first] = countedData[filters.first] || 0;

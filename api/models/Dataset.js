@@ -188,12 +188,10 @@ module.exports = {
 
     },
     afterCreate: (values, next) => {
-        console.dir('after create')
         Dataset.saveDatasetAssociatedFile(values);
         next()
     },
     afterUpdate: (values, next) => {
-        console.dir('after create')
         Dataset.saveDatasetAssociatedFile(values);
         next()
     }

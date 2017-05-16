@@ -26,7 +26,8 @@ const models = [
     'chart',
     'status',
     'statistic',
-    'basemap'
+    'basemap',
+    'metric'
 ];
 
 module.exports = {
