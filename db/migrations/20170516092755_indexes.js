@@ -18,9 +18,6 @@ exports.up = function(knex, Promise) {
         knex.schema.alterTable('tag', function(t) {
             t.index('slug');
         }),
-        knex.schema.alterTable('config', function(t) {
-            t.index('slug');
-        }),
         knex.schema.alterTable('user', function(t) {
             t.index('username');
         }),
