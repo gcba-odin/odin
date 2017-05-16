@@ -44,13 +44,9 @@ module.exports = {
             console.log('record ', record)
             if (record) {
                 record.count++;
-                Metric.update(record.id, record).exec(function(err, record) {
-                    console.log('Metric updated', record)
-                })
+                Metric.update(record.id, record).exec(function(err, record) {})
             } else {
-                Metric.create({dataset: dataset, count: 1}).exec(function(err, record) {
-                    console.log('Metric created ', record)
-                })
+                Metric.create({dataset: dataset, count: 1}).exec(function(err, record) {})
             }
         })
     }

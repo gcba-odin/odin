@@ -6,7 +6,6 @@
  */
 
 var shortId = require('shortid');
-var slug = require('slug');
 
 module.exports = {
     schema: true,
