@@ -19,6 +19,8 @@ module.exports = (req, res, next) => {
         : ip;
 
     var addr = ipaddr.process(ip);
+
+    var resource;
     try {
         resource = _.capitalize(actionUtil.parseModel(req).identity);
     } catch (err) {
