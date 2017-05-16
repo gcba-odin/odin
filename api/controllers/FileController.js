@@ -48,15 +48,16 @@ module.exports = {
         // const pk = actionUtil.requirePk(req);
         var identifier = req.param('identifier');
 
-        var findCriteria = shortid.isValid(identifier) ? identifier : {
-            fileName: identifier
-        }
+        var findCriteria = shortid.isValid(identifier)
+            ? identifier
+            : {
+                fileName: identifier
+            }
         File.findOne(findCriteria).populate('dataset').then(function(file) {
-            if (!file) return res.notFound();
+            if (!file)
+                return res.notFound();
 
-            var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {
-                lower: true
-            }) + '/' + file.fileName;
+            var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {lower: true}) + '/' + file.fileName;
 
             var fileAdapter = SkipperDisk();
 
@@ -71,25 +72,26 @@ module.exports = {
 
             var datasetEndpoint = '/datasets/' + file.dataset.id + '/download'
 
-            var ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.connection.remoteAddress
-            ip = _.indexOf(ip, ',') !== -1 ? ip.split(',')[0] : ip;
+            var ip = req.headers['x-forwarded-for']
+                ? req.headers['x-forwarded-for']
+                : req.connection.remoteAddress
+            ip = _.indexOf(ip, ',') !== -1
+                ? ip.split(',')[0]
+                : ip;
             var addr = ipaddr.process(ip);
-            Statistic.create({
-                method: 'GET',
-                resource: 'Dataset',
-                endpoint: datasetEndpoint,
-                ip: addr.toString(),
-                useragent: req.headers['user-agent'],
-            }).exec(function(err, statistic) {
+            Statistic.create({method: 'GET', resource: 'Dataset', endpoint: datasetEndpoint, ip: addr.toString(), useragent: req.headers['user-agent']}).exec(function(err, statistic) {
                 console.log('dataset statistic created')
             });
+
+            Metric.updateOrCreateMetric(file.dataset.id)
 
             fileAdapter.read(dirname).on('error', function(err) {
                 console.dir(err);
                 return res.serverError(err);
             }).pipe(res);
         }).fail(function(err) {
-            if (err) console.error(err);
+            if (err)
+                console.error(err);
 
             return res.negotiate();
         });
@@ -98,9 +100,11 @@ module.exports = {
         const pk = actionUtil.requirePk(req);
 
         File.findOne(pk).then(function(file) {
-            if (!file) return res.notFound();
+            if (!file)
+                return res.notFound();
             FileType.findOne(file.type).then(function(filetype) {
-                if (!filetype) return res.notFound();
+                if (!filetype)
+                    return res.notFound();
                 if (filetype.api) {
 
                     var builder = new Response.ResponseGET(req, res, true);
@@ -121,9 +125,11 @@ module.exports = {
         var identifier = req.param('identifier');
         const values = actionUtil.parseValues(req);
 
-        var findCriteria = shortid.isValid(identifier) ? identifier : {
-            fileName: identifier
-        };
+        var findCriteria = shortid.isValid(identifier)
+            ? identifier
+            : {
+                fileName: identifier
+            };
 
         // find the fileid within the parameters
         var format = _.get(values, 'format', '');
@@ -131,15 +137,14 @@ module.exports = {
         var extension = mime.extension(format);
 
         // available downlaod formats are: csv,xls,xlsx
-        var availableFormats = ['text/csv', 'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        ];
+        var availableFormats = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
         if (availableFormats.indexOf(format) === -1) {
             return res.badRequest();
         } else {
             File.findOne(findCriteria).populate(['type', 'dataset']).exec(function(err, file) {
-                if (err) return res.negotiate(err);
+                if (err)
+                    return res.negotiate(err);
                 if (file.type.mimetype.indexOf(format) !== -1) {
                     return this.download(req, res)
                 }
@@ -157,14 +162,10 @@ module.exports = {
                         resource: file.id
                     });
 
-                    var slugifiedName = slug(file.name, {
-                        lower: true
-                    })
+                    var slugifiedName = slug(file.name, {lower: true})
 
                     if (format === 'text/csv') {
-                        result = json2csv({
-                            data: data
-                        });
+                        result = json2csv({data: data});
 
                         res.set('Content-Type', format);
 
@@ -184,17 +185,15 @@ module.exports = {
     resources: function(req, res) {
         var resources = {};
 
-        this.findResource('map', req, res)
-            .then(function(maps) {
-                if (!_.isEmpty(maps))
-                    resources['maps'] = maps;
-                this.findResource('chart', req, res)
-                    .then(function(charts) {
-                        if (!_.isEmpty(charts))
-                            resources['charts'] = charts;
-                        return res.ok(resources);
-                    });
-            }.bind(this));
+        this.findResource('map', req, res).then(function(maps) {
+            if (!_.isEmpty(maps))
+                resources['maps'] = maps;
+            this.findResource('chart', req, res).then(function(charts) {
+                if (!_.isEmpty(charts))
+                    resources['charts'] = charts;
+                return res.ok(resources);
+            });
+        }.bind(this));
     },
     findResource(model, req, res) {
         const pk = actionUtil.requirePk(req);
@@ -215,9 +214,7 @@ module.exports = {
                 },
                 dataset: data.dataset,
                 layout: true
-            }, {
-                layout: false
-            }).then(function(file) {
+            }, {layout: false}).then(function(file) {
                 console.log('layout updated');
             })
         }
