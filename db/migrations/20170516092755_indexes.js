@@ -26,5 +26,8 @@ exports.up = function(knex, Promise) {
             t.index('description');
         })
     ])
+    // .catch(function(error) {
+    //     console.log(error);
+    // });
 }
 exports.down = function(knex, Promise) {};
