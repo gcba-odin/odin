@@ -11,6 +11,7 @@ const Response = require('../services/ResponseBuilderService');
 const RSS = require('rss');
 const SkipperDisk = require('skipper-disk');
 const slug = require('slug');
+var Promise = require('bluebird')
 
 module.exports = {
     // publish: function(req, res) {
@@ -27,9 +28,7 @@ module.exports = {
 
         Dataset.findOne(pk).then(function(dataset) {
 
-            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {
-                lower: true
-            }) + '.zip';
+            var path = sails.config.odin.datasetZipFolder + '/' + slug(dataset.name, {lower: true}) + '.zip';
 
             var fileAdapter = SkipperDisk();
 
@@ -41,24 +40,43 @@ module.exports = {
             }).pipe(res);
         })
     },
+    getFiletypes: (req, res) => {
+        const pk = actionUtil.requirePk(req);
+        File.find({dataset: pk}).populate('type').then((files) => {
+            Promise.reduce(files, (filetypes, each) => {
+                // check if current filetype is already present on array
+                if (_.isUndefined(_.find(filetypes, _.matchesProperty('slug', each.type.slug)))) {
+                  // if current filetype is not present, add filetype of file to the array
+                    filetypes.push(_.pick(each, 'type').type)
+                    return filetypes
+                }
+                // else, return filetypes as it is
+                return filetypes
+            }, []).then((filetypes) => {
+                return res.ok(filetypes)
+            });
+        }).catch((err) => {
+            console.log(err)
+        })
+    },
     feedRss: function(req, res) {
         var feedOptions = {
             title: 'Datasets',
             description: 'Feed de datasets',
             generator: 'ODIN',
             feed_url: sails.config.odin.baseUrl + '/datasets'
-                // site_url: '',
-                // image_url: '',
-                // docs: '',
-                // managingEditor: '',
-                // webMaster: '',
-                // copyright: '',
-                // categories: '',
-                // pubDate: '',
-                // ttl: '',
-                // hub: '',
-                // custom_namespaces: '',
-                // custom_elements: '',
+            // site_url: '',
+            // image_url: '',
+            // docs: '',
+            // managingEditor: '',
+            // webMaster: '',
+            // copyright: '',
+            // categories: '',
+            // pubDate: '',
+            // ttl: '',
+            // hub: '',
+            // custom_namespaces: '',
+            // custom_elements: '',
         };
         var feed = new RSS(feedOptions);
         var builder = new Response.ResponseGET(req, res, false);
@@ -76,10 +94,10 @@ module.exports = {
                     // categories: '',
                     // author: '',
                     date: record.createdAt
-                        // lat: '',
-                        // long: '',
-                        // custom_elements: '',
-                        // enclosure: '',
+                    // lat: '',
+                    // long: '',
+                    // custom_elements: '',
+                    // enclosure: '',
                 };
 
                 feed.item(itemOption);
@@ -87,9 +105,7 @@ module.exports = {
 
             var xml = feed.xml();
 
-            res.set({
-                'Content-Type': 'application/rss+xml'
-            });
+            res.set({'Content-Type': 'application/rss+xml'});
 
             return res.send(xml);
         });

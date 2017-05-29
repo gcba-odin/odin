@@ -11,6 +11,11 @@ module.exports = {
         model: 'dataset',
         action: 'unpublish'
     },
+    'GET /datasets/:id/filetypes': {
+        controller: 'Dataset',
+        model: 'dataset',
+        action: 'getFiletypes'
+    },
     'GET /datasets/statistics': {
         blueprint: 'statistics',
         model: 'dataset'
