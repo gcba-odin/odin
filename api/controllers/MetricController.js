@@ -22,35 +22,16 @@ module.exports = {
                 var statistics = {}
                 statistics.total = 0;
                 _.forEach(datasets, function(dataset) {
-                    statistics['total'] += rows[dataset.id]
                     _.forEach(dataset.categories, function(category) {
                         if (_.isUndefined(statistics[category.id])) {
                             statistics[category.id] = 0
                         }
+                        statistics['total'] += rows[dataset.id]
+
                         statistics[category.id] += rows[dataset.id]
                     })
                 })
                 return res.ok(statistics)
-
-                //     Category.find().populate('datasets', 'id').exec(function(err, records) {
-                //         console.log(records)
-                //         var groupped = _.groupBy(records, function(record) {
-                //             return record.category
-                //         });
-                //         console.log(groupped)
-                //         var links = {
-                //             all: sails.config.odin.baseUrl + '/datasets'
-                //         };
-                //
-                //         var meta = {
-                //             code: sails.config.success.OK.code,
-                //             message: sails.config.success.OK.message
-                //         };
-                //         return res.ok(groupedByModel, {
-                //             links: links,
-                //             meta: meta
-                //         })
-                //
             });
         })
 
