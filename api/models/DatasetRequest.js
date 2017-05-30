@@ -31,7 +31,6 @@ module.exports = {
         },
         email: {
             type: 'email',
-            unique: true,
             email: true,
             size: 250
         },
