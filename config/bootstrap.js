@@ -116,21 +116,6 @@ module.exports = {
             }, null, true);
             */
 
-            UpdateFrequency.find(function(err, updateFrequencies) {
-                //We should run a cron job per update frequency
-                updateFrequencies.forEach(function(updateFrequency) {
-                    try {
-                        if (updateFrequency.timePattern) {
-                            new CronJob(updateFrequency.timePattern, function() {
-                                WebService.syncByUpdateFrequency(updateFrequency);
-                            }, null, true);
-                        }
-                    } catch (ex) {
-                        console.log("cron pattern not valid");
-                    }
-                });
-            });
-
         });
 
         cb();

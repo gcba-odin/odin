@@ -6,7 +6,7 @@ module.exports = {
             id: fileId
         })
         .populate(['dataset', 'soapService', 'restService'])
-        .exec(function(err, files) {    
+        .exec(function(err, files) {
             if (err) return console.log(err);
             WebService.sync(files);
         });
@@ -21,7 +21,7 @@ module.exports = {
             or: [ { soapService: {'!': null} },  { restService: {'!': null} }]
         })
         .populate(['dataset', 'soapService', 'restService'])
-        .exec(function(err, files) {    
+        .exec(function(err, files) {
             if (err) return console.log(err);
             try {
                 WebService.sync(files);
@@ -43,7 +43,7 @@ module.exports = {
                         UploadService.uploadServiceFile(file, result, function(err, uploadedFile){
                             //console.log(err);
                             //console.log(uploadedFile);
-                        });    
+                        });
                     }
                 });
             }
@@ -56,7 +56,7 @@ module.exports = {
                         UploadService.uploadServiceFile(file, result, function(err, uploadedFile){
                             //console.log(err);
                             //console.log(uploadedFile);
-                        });    
+                        });
                     }
                 });
             }
