@@ -38,12 +38,13 @@ module.exports = {
 
         var link = _.get(values, 'link', null);
 
-        if (fileId === '') return res.notFound();
-
+        if (fileId === '')
+            return res.notFound();
 
         // look for the file with given id
         File.findOne(fileId).populate('type').populate('dataset').exec(function(err, record) {
-            if (err) return res.negotiate(err);
+            if (err)
+                return res.negotiate(err);
 
             // check if file is kml ; if not
             if (_.indexOf(record.type.mimetype, 'application/vnd.google-earth.kml+xml') === -1) {
@@ -53,21 +54,18 @@ module.exports = {
                 } else {
                     // fetch the collection data of the file
                     DataStorageService.mongoContents(record.dataset.id, record.fileName, 0, 0, res, function(data) {
-                        this.generateGeoJson(data, latitude, longitude, propertiesArray,
-                            function(geoJson, incorrect, correct) {
-                                values.geojson = geoJson;
-                                // Once the geoJson is created, we create the map
-                                UploadService.metadataSave(_Map, values, 'maps', req, res, {
-                                    incorrect: incorrect,
-                                    correct: correct
-                                });
+                        this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson, incorrect, correct) {
+                            values.geojson = geoJson;
+                            // Once the geoJson is created, we create the map
+                            UploadService.metadataSave(_Map, values, 'maps', req, res, {
+                                incorrect: incorrect,
+                                correct: correct
+                            });
 
-                            }.bind(this));
-                    }.bind(this));
+                        }.bind(this));
+                    }.bind(this)) // else, is a kml;
                 }
-            }
-            // else, is a kml
-            else {
+            } else {
                 this.kmlToGeoJson(record, function(geoJson) {
                     values.geojson = geoJson;
                     UploadService.metadataSave(_Map, values, 'maps', req, res, {
@@ -95,11 +93,13 @@ module.exports = {
 
         var link = _.get(values, 'link', null);
 
-        if (fileId === '') return res.notFound();
+        if (fileId === '')
+            return res.notFound();
 
         // look for the file with given id
         File.findOne(fileId).exec(function(err, record) {
-            if (err) return res.negotiate(err);
+            if (err)
+                return res.negotiate(err);
 
             if (link !== null || kml === true) {
                 UploadService.metadataUpdate(_Map, values, 'maps', req, res);
@@ -107,20 +107,18 @@ module.exports = {
                 // fetch the collection data of the file
                 DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
 
-                    this.generateGeoJson(data, latitude, longitude, propertiesArray,
-                        function(geoJson, incorrect, correct) {
-                            values.geojson = geoJson;
-                            // Once the geoJson is created, we create the map
-                            UploadService.metadataUpdate(_Map, values, 'maps', req, res, {
-                                incorrect: incorrect,
-                                correct: correct
-                            });
+                    this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson, incorrect, correct) {
+                        values.geojson = geoJson;
+                        // Once the geoJson is created, we create the map
+                        UploadService.metadataUpdate(_Map, values, 'maps', req, res, {
+                            incorrect: incorrect,
+                            correct: correct
                         });
+                    });
                 }.bind(this));
             }
         }.bind(this));
     },
-
 
     generateGeoJson(data, latitude, longitude, propertiesArray, cb) {
         var incorrect = 0;
@@ -139,7 +137,7 @@ module.exports = {
             // if commas are present, replace them with dots
             value[longitude] = _.toNumber(_.replace(value[longitude], ',', '.'));
             value[latitude] = _.toNumber(_.replace(value[latitude], ',', '.'));
-            if (!_.isNumber(value[longitude]) || !_.isNumber(value[latitude]) || value[latitude] == 0 || value[longitude] == 0) {
+            if (this.isInvalidCoordinate(value[latitude]) || this.isInvalidCoordinate(value[longitude])) {
                 incorrect++;
             } else {
                 correct++;
@@ -154,13 +152,14 @@ module.exports = {
                 };
                 geoJson.features.push(point);
             }
-        });
+        }.bind(this));
         cb(geoJson, incorrect, correct);
     },
 
     mapCreate: function(values, req, res) {
         _Map.create(values).exec(function created(err, newInstance) {
-            if (err) return res.negotiate(err);
+            if (err)
+                return res.negotiate(err);
 
             if (req._sails.hooks.pubsub) {
                 if (req.isSocket) {
@@ -168,11 +167,11 @@ module.exports = {
                     Model.introduce(newInstance);
                 }
                 // Make sure data is JSON-serializable before publishing
-                var publishData = _.isArray(newInstance) ?
-                    _.map(newInstance, function(instance) {
+                var publishData = _.isArray(newInstance)
+                    ? _.map(newInstance, function(instance) {
                         return instance.toJSON();
-                    }) :
-                    newInstance.toJSON();
+                    })
+                    : newInstance.toJSON();
                 Model.publishCreate(publishData, !req.options.mirror && req);
             }
 
@@ -191,17 +190,18 @@ module.exports = {
     },
 
     kmlToGeoJson(record, cb) {
-        var filePath = path.resolve(sails.config.odin.uploadFolder +
-            '/' + record.dataset.slug + '/' + record.fileName);
+        var filePath = path.resolve(sails.config.odin.uploadFolder + '/' + record.dataset.slug + '/' + record.fileName);
 
         var kml = new DOMParser().parseFromString(fs.readFileSync(filePath, 'utf8'));
 
         var converted = tj.kml(kml);
 
-        var convertedWithStyles = tj.kml(kml, {
-            styles: true
-        });
+        var convertedWithStyles = tj.kml(kml, {styles: true});
         cb(convertedWithStyles)
+    },
+
+    isInvalidCoordinate(coordinate) {
+        return (!_.isNumber(coordinate) || coordinate == 0 || isNaN(coordinate))
     }
 
 };
