@@ -32,14 +32,15 @@ module.exports = {
         return PublishService.publishModel(File, pk, 'rejected', res)
     },
     create: function(req, res) {
-        UploadService.createFile(req, res, true, function(data) {
+        UploadService.createFile(req, res, true, function(err, data) {
+            if (err) return res.negotiate(err)
             UploadService.metadataSave(File, data, 'file', req, res);
             this.updateLayout(data);
         }.bind(this));
-        // UploadService.uploadFile(req, res);
     },
     update: function(req, res) {
-        UploadService.createFile(req, res, false, function(data) {
+        UploadService.createFile(req, res, false, function(err, data) {
+            if (err) return res.negotiate(err)
             UploadService.metadataUpdate(File, data, 'file', req, res);
             this.updateLayout(data);
         }.bind(this));
