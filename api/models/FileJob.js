@@ -20,6 +20,7 @@ module.exports = {
         },
         file: {
             type: 'string',
+            unique: true,
             size: 15
         },
         finish: {
@@ -33,7 +34,7 @@ module.exports = {
         endDate: {
             type: 'datetime',
             defaultsTo: null
-        }
+        },
 
         toJSON() {
             return this.toObject();
