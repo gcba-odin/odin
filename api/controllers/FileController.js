@@ -33,14 +33,16 @@ module.exports = {
     },
     create: function(req, res) {
         UploadService.createFile(req, res, true, function(err, data) {
-            if (err) return res.negotiate(err)
+            if (err)
+                return res.negotiate(err)
             UploadService.metadataSave(File, data, 'file', req, res);
             this.updateLayout(data);
         }.bind(this));
     },
     update: function(req, res) {
         UploadService.createFile(req, res, false, function(err, data) {
-            if (err) return res.negotiate(err)
+            if (err)
+                return res.negotiate(err)
             UploadService.metadataUpdate(File, data, 'file', req, res);
             this.updateLayout(data);
         }.bind(this));
@@ -109,8 +111,9 @@ module.exports = {
                 if (filetype.api) {
 
                     var builder = new Response.ResponseGET(req, res, true);
-                    builder.contentsQuery(file.dataset, file.fileName, function(data) {
-
+                    builder.contentsQuery(file.dataset, file.fileName, function(err, data) {
+                        if (err)
+                            return res.negotiate(err)
                         return res.ok(data, {
                             meta: builder.meta(' '),
                             links: builder.links(' ')
@@ -153,7 +156,9 @@ module.exports = {
                     return res.badRequest();
                 }
                 var result;
-                DataStorageService.mongoContents(file.dataset.id, file.fileName, 0, 0, res, function(data) {
+                DataStorageService.mongoContents(file.dataset.id, file.fileName, 0, 0, function(err, data) {
+                    if (err) 
+                        return res.negotiate(err)
                     _.forEach(data, function(elem) {
                         delete elem._id
                     });

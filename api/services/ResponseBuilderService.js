@@ -48,7 +48,8 @@ class ResponseBuilder {
 
         this._addValue = function(value, target) {
             if (value && _.isArray(value) && typeof value[0] === 'string') { // Setter only
-                if (!_.isPlainObject(target)) return new Error('Target is not an object.');
+                if (!_.isPlainObject(target))
+                    return new Error('Target is not an object.');
                 target[value[0]] = value[1];
             }
         };
@@ -80,10 +81,14 @@ class ResponseBuilder {
 
         // if (!_.isInteger(this.status)) new Error('Status must be an integer.');
         // if (!_.isPlainObject(this.headers)) new Error('Headers is not an object.');
-        if (!_.isPlainObject(this._meta)) return new Error('Meta is not an object.');
-        if (!_.isPlainObject(this._links)) return new Error('Links is not an object.');
-        if (_.isEqual(this._meta, _emptyMeta)) return new Error('Meta is empty.');
-        if (_.isEmpty(this._links)) return new Error('Links is empty.');
+        if (!_.isPlainObject(this._meta))
+            return new Error('Meta is not an object.');
+        if (!_.isPlainObject(this._links))
+            return new Error('Links is not an object.');
+        if (_.isEqual(this._meta, _emptyMeta))
+            return new Error('Meta is empty.');
+        if (_.isEmpty(this._links))
+            return new Error('Links is empty.');
 
         // this.res.set(this.headers);
 
@@ -146,7 +151,6 @@ class ResponseBuilder {
     }
 }
 
-
 /**
  * A class that builds a response to a GET request.
  * Subclasses ResponseBuilder, providing its own meta and _links objects.
@@ -193,14 +197,21 @@ class ResponseGET extends ResponseBuilder {
 
     addData(value) {
         if (this._many) {
-            if (_.isPlainObject(this._data)) this._data = [];
-            else if (_.isArray(this._data)) this._data = _.concat(this._data, value);
-            else return new Error('Data is not an array. It should be, since many is true.');
-        } else {
-            if (_.isArray(this._data)) this._data = {};
-            else if (_.isPlainObject(this._data)) this._addValue(value, this._data);
-            else return new Error('Data is not an object. It should be, since many is false.');
-        }
+            if (_.isPlainObject(this._data))
+                this._data = [];
+            else if (_.isArray(this._data))
+                this._data = _.concat(this._data, value);
+            else
+                return new Error('Data is not an array. It should be, since many is true.');
+            }
+        else {
+            if (_.isArray(this._data))
+                this._data = {};
+            else if (_.isPlainObject(this._data))
+                this._addValue(value, this._data);
+            else
+                return new Error('Data is not an object. It should be, since many is false.');
+            }
 
         return this; // Allows chaining
     }
@@ -209,14 +220,12 @@ class ResponseGET extends ResponseBuilder {
      * Performs count query
      */
     performCountQuery() {
-        this._model.count().where(this.params.where.full)
-            .then(function(count) {
-                this._count = count;
-                this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
-            }.bind(this))
-            .catch(function(err) {
-                console.log(err);
-            });
+        this._model.count().where(this.params.where.full).then(function(count) {
+            this._count = count;
+            this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
+        }.bind(this)).catch(function(err) {
+            console.log(err);
+        });
     }
 
     /*
@@ -238,25 +247,20 @@ class ResponseGET extends ResponseBuilder {
 
             this.params.where.full = this.getFullConditions();
 
-            this._query = this._model.find()
-                .where(this.params.where.full)
-                .sort(this.params.sort);
+            this._query = this._model.find().where(this.params.where.full).sort(this.params.sort);
 
             // NOTE: Waterline populate filters only apply on nested collections.
             // We could only paginate on server if:
             // (a) No deep params are supplied
             // (b) removeEmptyAssociations is not specified or false (model).
-            if (_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) ||
-                _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
+            if (_.isUndefined(this.params.where.deep) || _.isEmpty(this.params.where.deep) || _.isUndefined(this._model.removeEmptyAssociations) || !this._model.removeEmptyAssociations) {
 
                 this._query = this._query.limit(this.params.limit);
                 this._query = this._query.skip(this.params.skip);
 
-                this.performCountQuery();
+                this.performCountQuery()//Single result (find one);
             }
-        }
-        //Single result (find one)
-        else {
+        } else {
             this.params.pk = actionUtil.requirePk(this.req);
             this._query = this._model.find(this.params.pk);
         }
@@ -403,7 +407,9 @@ class ResponseGET extends ResponseBuilder {
      * Convert filters into query condition
      */
     filtersToConditions(params, condition, model) {
-        return condition === 'or' ? this.filtersToOrConditions(params, model) : this.filtersToAndConditions(params, model);
+        return condition === 'or'
+            ? this.filtersToOrConditions(params, model)
+            : this.filtersToAndConditions(params, model);
     }
 
     /*
@@ -411,12 +417,11 @@ class ResponseGET extends ResponseBuilder {
      */
     filtersToOrConditions(params, model) {
         return _.transform(params, function(result, val, key) {
-            if (val === 'null') val = null;
+            if (val === 'null')
+                val = null;
             if (!_.isUndefined(model.definition[key])) {
                 if (model.definition[key].type === 'boolean' || val === null) {
-                    result.or.push({
-                        [key]: val
-                    })
+                    result.or.push({[key]: val})
                 } else {
                     // If the condition is OR we split the values given with comma
                     // And then add it each one of the values as an element of the OR query
@@ -434,9 +439,7 @@ class ResponseGET extends ResponseBuilder {
                     }.bind(this));
                 }
             }
-        }.bind(this), {
-            or: []
-        });
+        }.bind(this), {or: []});
     }
 
     /*
@@ -444,7 +447,8 @@ class ResponseGET extends ResponseBuilder {
      */
     filtersToAndConditions(params, model) {
         return _.transform(params, function(result, val, key) {
-            if (val === 'null') val = null;
+            if (val === 'null')
+                val = null;
             if (!_.isUndefined(model.definition[key])) {
                 if (model.definition[key].type === 'boolean' || val === null) {
                     result[key] = val;
@@ -490,8 +494,7 @@ class ResponseGET extends ResponseBuilder {
         var deepFilters = {};
         if (_.isUndefined(this.req.user)) {
             _.forEach(this.collections, function(value, key) {
-                if (!this._model.ignoredAssociations ||
-                    (this._model.ignoredAssociations && this._model.ignoredAssociations.indexOf(key) == -1)) {
+                if (!this._model.ignoredAssociations || (this._model.ignoredAssociations && this._model.ignoredAssociations.indexOf(key) == -1)) {
                     var associationFilter = this.getFrontFilters(sails.models[value.collection], key);
                     _.merge(deepFilters, associationFilter);
                 }
@@ -533,10 +536,7 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     firstQuery() {
-        this._query = this._model.find({
-            limit: 1,
-            sort: 'createdAt ASC'
-        });
+        this._query = this._model.find({limit: 1, sort: 'createdAt ASC'});
 
         this._query = this.populate(this._query, this._model, this.params.include);
         //this._query = this.select(this._query, this.params.fields);
@@ -548,10 +548,7 @@ class ResponseGET extends ResponseBuilder {
      * Builds and returns the query promise
      */
     lastQuery() {
-        this._query = this._model.find({
-            limit: 1,
-            sort: 'createdAt DESC'
-        });
+        this._query = this._model.find({limit: 1, sort: 'createdAt DESC'});
 
         this._query = this.populate(this._query, this._model, this.params.include);
         //this._query = this.select(this._query, this.params.fields);
@@ -560,19 +557,19 @@ class ResponseGET extends ResponseBuilder {
     }
 
     getDataForFeedQuery() {
-        this._query = this._model.find({
-            sort: 'updatedAt DESC'
-        });
+        this._query = this._model.find({sort: 'updatedAt DESC'});
 
         return this._query;
     }
 
     contentsQuery(dataset, file, cb) {
-        DataStorageService.mongoCount(dataset, file, this.res, function(count) {
+        DataStorageService.mongoCount(dataset, file, function(err, count) {
+            if (err)
+                return cb(err)
             this._count = count;
             this.params.pages = Math.ceil(parseFloat(this._count) / parseFloat(this.params.limit));
 
-            DataStorageService.mongoContents(dataset, file, this.params.limit, this.params.skip, this.res, cb);
+            DataStorageService.mongoContents(dataset, file, this.params.limit, this.params.skip, cb);
         }.bind(this));
     }
 
@@ -589,23 +586,22 @@ class ResponseGET extends ResponseBuilder {
                 count: this._count,
                 limit: this.params.limit,
                 start: this.params.skip + 1,
-                end: skipLimit > this._count ? this._count : skipLimit,
+                end: skipLimit > this._count
+                    ? this._count
+                    : skipLimit,
                 page: this.params.page,
                 pages: this.params.pages
             });
 
             // If a criteria was given, add it to meta
             if (!_.isEmpty(this._where)) {
-                this._meta = _.assign(this._meta, {
-                    criteria: this.params.where
-                });
+                this._meta = _.assign(this._meta, {criteria: this.params.where});
             }
         }
 
         if (!_.isUndefined(records)) {
             //if link to next page is not defined, the content is not paginated
-            if (_.isUndefined(this.params.pages) ||
-                this._count < this.params.limit /*this.params.pages <= this.params.page*/ ) {
+            if (_.isUndefined(this.params.pages) || this._count < this.params.limit/*this.params.pages <= this.params.page*/) {
 
                 _.assign(this._meta, {
                     code: sails.config.success.OK.code,
@@ -637,25 +633,35 @@ class ResponseGET extends ResponseBuilder {
             // If we have &skip or ?skip, we delete it from the url
             var url = this.req.url.replace(/.skip=\d+/g, "");
 
-            const _baseLinkToModel = sails.config.odin.baseUrl + url + (url.indexOf('?') === -1 ? '?' : '&');
+            const _baseLinkToModel = sails.config.odin.baseUrl + url + (url.indexOf('?') === -1
+                ? '?'
+                : '&');
             const _linkToModel = _baseLinkToModel + 'skip=';
 
-            const _previous = (this.params.page > 1 ? _linkToModel +
-                (this.params.limit * (this.params.page - 2)) : undefined);
+            const _previous = (this.params.page > 1
+                ? _linkToModel + (this.params.limit * (this.params.page - 2))
+                : undefined);
 
-            const _next = ((this.params.pages === 1 && this._count > this.params.limit) ||
-                this.params.page < this.params.pages ? _linkToModel +
-                (this.params.limit * this.params.page) : undefined);
+            const _next = ((this.params.pages === 1 && this._count > this.params.limit) || this.params.page < this.params.pages
+                ? _linkToModel + (this.params.limit * this.params.page)
+                : undefined);
 
-            const _first = (this.params.page > 1 ? _linkToModel + 0 : undefined);
+            const _first = (this.params.page > 1
+                ? _linkToModel + 0
+                : undefined);
 
-            const _last = (this.params.page < this.params.pages ?
-                _linkToModel + (this.params.limit * (this.params.pages - 1)) : undefined);
+            const _last = (this.params.page < this.params.pages
+                ? _linkToModel + (this.params.limit * (this.params.pages - 1))
+                : undefined);
 
-            if (_previous) this._links.previous = _previous;
-            if (_next) this._links.next = _next;
-            if (_first) this._links.first = _first;
-            if (_last) this._links.last = _last;
+            if (_previous)
+                this._links.previous = _previous;
+            if (_next)
+                this._links.next = _next;
+            if (_first)
+                this._links.first = _first;
+            if (_last)
+                this._links.last = _last;
 
             this._links = _.assign(this._links, {
                 firstItem: sails.config.odin.baseUrl + '/' + this.modelName + '/first',
@@ -673,23 +679,21 @@ class ResponseGET extends ResponseBuilder {
                 delete this._links.collections;
             }
 
-            return this._links;
-        }
-        // If the client is requesting a single item, we'll show other links
-        else {
-            if (!_.isUndefined(records) /*&& records.deletedAt === null*/ ) {
+            return this.// If the client is requesting a single item, we'll show other links
+            _links;
+        } else {
+            if (!_.isUndefined(records)/*&& records.deletedAt === null*/) {
                 var relations = {};
 
                 _.forEach(this._model.associations, function(association) {
                     if (association.type === 'collection') {
-                        relations[association.alias] =
-                            sails.config.odin.baseUrl + '/' +
-                            this.modelName + '/' + this.params.pk + '/' + association.alias;
+                        relations[association.alias] = sails.config.odin.baseUrl + '/' + this.modelName + '/' + this.params.pk + '/' + association.alias;
                     }
                 }.bind(this));
 
-                if (!_.isEmpty(relations)) this._links.collections = relations;
-            }
+                if (!_.isEmpty(relations))
+                    this._links.collections = relations;
+                }
 
             this._links = _.assign(this._links, {
                 all: sails.config.odin.baseUrl + '/' + this.modelName
@@ -738,10 +742,9 @@ class ResponseGET extends ResponseBuilder {
         _.forEach(keys, function(key) {
             // if key is not present in include, delete it
             if (_.indexOf(filters, key) === -1) {
-                delete record[key]
-            }
-            // else, if we are looking for partials, and the key is present call this method again
-            else if (partials && !_.isUndefined(this.params.fields.partials[key])) {
+                delete record[key// else, if we are looking for partials, and the key is present call this method again
+                ]
+            } else if (partials && !_.isUndefined(this.params.fields.partials[key])) {
                 this.deleteFields(record[key], this.params.fields.partials[key], false)
             }
         }.bind(this));
@@ -886,7 +889,9 @@ class ResponsePATCH extends ResponseBuilder {
         // Make an array out of the request body data if it wasn't one already;
         // this allows us to process multiple entities (e.g. for use with a "create" blueprint) the same way
         // that we process singular entities.
-        var bodyData = _.isArray(req.body) ? req.body : [req.allParams()];
+        var bodyData = _.isArray(req.body)
+            ? req.body
+            : [req.allParams()];
 
         // Process each item in the bodyData array, merging with req.options, omitting blacklisted properties, etc.
         var valuesArray = _.map(bodyData, function(element) {
@@ -905,9 +910,7 @@ class ResponsePATCH extends ResponseBuilder {
             //  values is{"tags":"aWRhpz1,tWRhpz2,uWRhpz2","id":"sWRhpRk"}
 
             _.forEach(values, function(value, key) {
-                var collection = _.find(this._model.associations, [
-                    'alias', key
-                ]);
+                var collection = _.find(this._model.associations, ['alias', key]);
 
                 if (!_.isUndefined(collection) && collection.type === 'collection') {
 
@@ -932,9 +935,11 @@ class ResponsePATCH extends ResponseBuilder {
         // Omit jsonp callback param (but only if jsonp is enabled)
         var jsonpOpts = req.options.jsonp && !req.isSocket;
 
-        jsonpOpts = _.isObject(jsonpOpts) ? jsonpOpts : {
-            callback: JSONP_CALLBACK_PARAM
-        };
+        jsonpOpts = _.isObject(jsonpOpts)
+            ? jsonpOpts
+            : {
+                callback: JSONP_CALLBACK_PARAM
+            };
 
         if (jsonpOpts) {
             values = _.omit(values, [jsonpOpts.callback]);
@@ -1040,7 +1045,8 @@ class ResponseOPTIONS extends ResponseBuilder {
 
 class ResponseQuery extends ResponseBuilder {
     constructor(req, res, sort) {
-        super(req, res); {
+        super(req, res);
+        {
             const modelName = pluralize(this._model.adapter.identity);
 
             this._meta = {
@@ -1050,10 +1056,7 @@ class ResponseQuery extends ResponseBuilder {
             this._links = {
                 all: sails.config.odin.baseUrl + '/' + modelName
             };
-            this.findQuery = this._model.find({
-                limit: 1,
-                sort: sort
-            });
+            this.findQuery = this._model.find({limit: 1, sort: sort});
         }
     }
 }

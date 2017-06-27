@@ -7,7 +7,6 @@
 const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 const _ = require('lodash');
 
-
 module.exports = {
     unpublish: function(req, res) {
         const pk = actionUtil.requirePk(req);
@@ -30,7 +29,6 @@ module.exports = {
 
     createChart: function(req, res, cb) {
 
-
         const values = actionUtil.parseValues(req);
 
         var link = _.get(values, 'link', null);
@@ -44,7 +42,6 @@ module.exports = {
             var dataType = _.get(values, 'dataType', '');
             values.dataSeries = _.split(_.get(values, 'dataSeries', ''), ',');
 
-
             var fileId = values.file;
             var type = values.type;
             var dataType = values.dataType;
@@ -54,24 +51,22 @@ module.exports = {
             var elements = dataSeries.length;
             dataSeries = _.slice(dataSeries, 1, elements);
 
-            console.log(fileId)
-            console.log(type)
-            console.log(dataType)
-            console.log(dataSeries)
-            console.log(base)
-            console.log(elements)
-
             var element1 = values.dataSeries[0];
             var element2 = values.dataSeries[1];
             // var serie = [element1];
             File.findOne(fileId).exec(function(err, record) {
 
-                if (err) return res.negotiate(err);
-                DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(table) {
+                if (err)
+                    return res.negotiate(err);
+                DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, function(err, table) {
+                    if (err)
+                        return res.negotiate(err)
                     this.generateChartData(table, dataType, element1, element2, function(chartData) {
                         values.data = {
                             labels: _.keys(chartData),
-                            data: (dataType === 'quantitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
+                            data: (dataType === 'quantitative')
+                                ? _.values(chartData)
+                                : _.map(_.values(chartData), _.size)
                         };
 
                         cb(values);

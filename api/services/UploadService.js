@@ -78,11 +78,10 @@ module.exports = {
             data.fileName += '.' + oldExtension;
 
             // change physical file and mongo collection
-            UploadService.changeMongoAndPhysicalFile(data, file, newDataset,res)
+            UploadService.changeMongoAndPhysicalFile(data, file, newDataset, res)
             return cb(null, data);
-
         } else {
-            DataStorageService.deleteCollection(file.dataset.id, file.fileName, res);
+            DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => res.negotiate(err));
             // if the uploaded name is the same of the one saved on the filesystem
             // don't deleted, just overwrite it
             if (file.fileName !== data.fileName) {
@@ -166,9 +165,12 @@ module.exports = {
                     // TODO: add json support
                     if (extension === 'xls' || extension === 'xlsx') {
                         files = files[0].fd
-                        UploadService.xlsToJson(newDataset.id, data, res, readStream, fileRequired, files, cb)
+                        UploadService.xlsToJson(data, res, readStream, files, cb)
                     } else {
-                        UploadService.csvToJson(newDataset.id, data, res, readStream, fileRequired, cb)
+                        UploadService.csvToJson(newDataset.id, data, res, readStream, cb)
+                    }
+                    if (!fileRequired) {
+                        VisualizationsUpdateService.update(data)
                     }
                 } else {
                     cb(null, data);
@@ -178,7 +180,7 @@ module.exports = {
     },
 
     // TODO: remove res parameter, to be available to do it, refactor on DataStorageService should be done
-    xlsToJson: function(dataset, data, res, readStream, fileRequired, files, cb) {
+    xlsToJson: function(data, res, readStream, files, cb) {
         console.log('inside xlstojson')
         readStream.pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect(function(err, result) {
             if (err)
@@ -197,7 +199,7 @@ module.exports = {
                     result = _.concat(result, currentJson);
                     return result;
                 }, []);
-                DataStorageService.mongoSave(dataset, data.fileName, json, res);
+                DataStorageService.mongoSave(data.dataset, data.fileName, json, (err) => res.negotiate(err));
             } catch (err) {
                 console.log(err)
             }
@@ -206,8 +208,8 @@ module.exports = {
         });
     },
 
-    csvToJson: function(dataset, data, res, readStream, fileRequired, cb) {
-        console.log('inside csvtojson');
+    // TODO: remove res parameter and work with cb
+    csvToJson: function(dataset, data, res, readStream, cb) {
         var params = {
             constructResult: false,
             delimiter: 'auto',
@@ -219,16 +221,15 @@ module.exports = {
             highWaterMark: 65535
         });
 
-        DataStorageService.mongoConnect(dataset, data.fileName, res, function(db) {
+        DataStorageService.mongoConnect(dataset, data.fileName, function(err, db) {
+            if (err)
+                console.log(err)
             var factory_function = bulkMongo(db);
             var bulkWriter = factory_function(data.fileName);
 
             bulkWriter.on('done', () => {
                 readStream.destroy();
                 db.close();
-                if (!fileRequired) {
-                    VisualizationsUpdateService.update(data)
-                }
                 cb(null, data);
             });
 
@@ -239,9 +240,7 @@ module.exports = {
     uploadImage: function(req, res, cb) {
         var data = actionUtil.parseValues(req);
         var savePath = path.resolve(sails.config.odin.uploadFolder + '/categories');
-        var uploadFile = req.file('uploadImage').on('error', function(err) {
-            console.dir(err);
-        });
+        var uploadFile = req.file('uploadImage').on('error', function(err) {});
         if (!uploadFile.isNoop) {
             data.fileName = slug(data.name, {lower: true});
 
@@ -274,7 +273,7 @@ module.exports = {
         }
     },
 
-    changeMongoAndPhysicalFile: function(data, file, newDataset,res) {
+    changeMongoAndPhysicalFile: function(data, file, newDataset, res) {
         // in case the fileName changed, rename the physical file
         var hasSameName = file.fileName == data.fileName;
         var isSameDataset = data.dataset === file.dataset.id;
@@ -283,13 +282,13 @@ module.exports = {
         if (!isSameDataset) {
             // if the file changed of dataset, finde the new one
             if (file.type.api === 'true') {
-                DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, res);
+                DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, (err) => res.negotiate(err));
             }
             var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
             UploadService.changeFileName(originalPath, newPath);
         } else {
             if (!hasSameName) {
-                DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, res);
+                DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => res.negotiate(err));
                 var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
                 UploadService.changeFileName(originalPath, newPath);
             }
@@ -312,7 +311,7 @@ module.exports = {
                     return callback(err, null);
 
                 // Connect to the db
-                DataStorageService.mongoSave(file.dataset.id, file.fileName, json, {});
+                DataStorageService.mongoSave(file.dataset.id, file.fileName, json, (err) => callback(err, null));
 
                 // Update their visualizations
                 file.dataset = file.dataset.id;
@@ -472,7 +471,7 @@ module.exports = {
         var path = sails.config.odin.uploadFolder + '/' + slug(dataset.name, {lower: true}) + '/' + fileName;
 
         fs.unlink(path, function() {
-            DataStorageService.deleteCollection(dataset.id, fileName, res);
+            DataStorageService.deleteCollection(dataset.id, fileName, (err) => res.negotiate(err));
             ZipService.createZip(dataset.id);
         });
     },

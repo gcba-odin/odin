@@ -53,7 +53,9 @@ module.exports = {
                     this.mapCreate(values, req, res)
                 } else {
                     // fetch the collection data of the file
-                    DataStorageService.mongoContents(record.dataset.id, record.fileName, 0, 0, res, function(data) {
+                    DataStorageService.mongoContents(record.dataset.id, record.fileName, 0, 0, function(err, data) {
+                        if (err)
+                            return res.negotiate(err)
                         this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson, incorrect, correct) {
                             values.geojson = geoJson;
                             // Once the geoJson is created, we create the map
@@ -105,7 +107,9 @@ module.exports = {
                 UploadService.metadataUpdate(_Map, values, 'maps', req, res);
             } else {
                 // fetch the collection data of the file
-                DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, res, function(data) {
+                DataStorageService.mongoContents(record.dataset, record.fileName, 0, 0, function(err, data) {
+                    if (err)
+                        return res.negotiate(err)
 
                     this.generateGeoJson(data, latitude, longitude, propertiesArray, function(geoJson, incorrect, correct) {
                         values.geojson = geoJson;

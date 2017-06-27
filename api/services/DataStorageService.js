@@ -4,86 +4,100 @@ var bulkConnectionDb;
 
 module.exports = {
 
-    mongoConnect: function(dataset, filename, res, cb) {
+    mongoConnect: function(dataset, filename, cb) {
         // Connect to the db
-        MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" +
-            sails.config.odin.dataStorage.port + "/" + dataset,
-            function(err, db) {
-                if (err && !res.headersSent) return res.negotiate(err);
-                cb(db);
-            });
+        MongoClient.connect("mongodb://" + sails.config.odin.dataStorage.host + ":" + sails.config.odin.dataStorage.port + "/" + dataset, function(err, db) {
+            if (err)
+                return cb(err);
+            cb(null, db);
+        });
     },
-    mongoSave: function(dataset, filename, json, res) {
+    mongoSave: function(dataset, filename, json, cb) {
         json = _.transform(json, function(result, each) {
             result.push(_.mapKeys(each, function(value, key) {
                 return _.replace(key, ".", " ");
             }));
         }, [])
-        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+        DataStorageService.mongoConnect(dataset, filename, function(err, db) {
+            if (err)
+                return cb(err)
             var collection = db.collection(filename);
             collection.insert(json, {
                 w: 1
             }, function(err) {
-                if (err && !res.headersSent) return res.negotiate(err);
+                if (err)
+                    return cb(err);
                 db.close();
             });
         });
     },
-    mongoCount: function(dataset, filename, res, cb) {
+    mongoCount: function(dataset, filename, cb) {
         if (!_.isNull(filename)) {
-            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+            DataStorageService.mongoConnect(dataset, filename, function(err, db) {
+                if (err)
+                    return cb(err)
                 var collection = db.collection(filename);
                 collection.count({}, function(err, count) {
-                    if (err) console.error(err);
+                    if (err)
+                        console.error(err);
                     db.close();
-                    cb(count);
+                    cb(null, count);
                 });
             });
         }
     },
-    mongoRename: function(dataset, filename, newfilename, res, cb) {
+    mongoRename: function(dataset, filename, newfilename, cb) {
         if (!_.isNull(filename)) {
-            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+            DataStorageService.mongoConnect(dataset, filename, function(err, db) {
+                if (err)
+                    return cb(err)
                 var collection = db.collection(filename);
                 collection.rename(newfilename);
                 db.close();
             });
         }
     },
-    mongoReplace: function(oldDataset, newDataset, oldFilename, newFilename, res, cb) {
-        DataStorageService.mongoContents(oldDataset, oldFilename, 0, 0, res, function(json) {
-            this.mongoSave(newDataset, newFilename, json, res)
-            this.deleteCollection(oldDataset, oldFilename, res);
-
+    mongoReplace: function(oldDataset, newDataset, oldFilename, newFilename, cb) {
+        DataStorageService.mongoContents(oldDataset, oldFilename, 0, 0, function(err, json) {
+            if (err)
+                return cb(err)
+            this.mongoSave(newDataset, newFilename, json, (err) => cb(err))
+            this.deleteCollection(oldDataset, oldFilename, (err) => cb(err));
         }.bind(this))
 
     },
-    deleteCollection: function(dataset, filename, res) {
+    deleteCollection: function(dataset, filename, cb) {
         if (!_.isNull(filename)) {
-            DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+            DataStorageService.mongoConnect(dataset, filename, function(err, db) {
+                if (err)
+                    return cb(err)
                 var collection = db.collection(filename);
                 collection.drop(function(err, reply) {
-                    if (err) console.error(err);
+                    if (err)
+                        console.error(err);
                     db.close();
                 });
             });
         }
     },
-    mongoContents: function(dataset, filename, limit, skip, res, cb) {
-        DataStorageService.mongoConnect(dataset, filename, res, function(db) {
+    // TODO: should this be donde with streams?
+    mongoContents: function(dataset, filename, limit, skip, cb) {
+        DataStorageService.mongoConnect(dataset, filename, function(err, db) {
+            if (err)
+                return cb(err)
             var data = [];
 
             var collection = db.collection(filename);
             var cursor = collection.find().skip(skip).limit(limit);
 
             cursor.each(function(err, doc) {
-                if (err) console.error(err);
-
+                if (err)
+                    console.error(err);
                 if (doc !== null) {
                     data.push(doc);
                 } else {
                     db.close();
-                    return cb(data);
+                    return cb(null, data);
                 }
             });
         });

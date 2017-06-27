@@ -14,7 +14,9 @@ module.exports = {
         if (shortid.isValid(file.id)) {
 
             // Find the file content on mongo with the data to update the visualizations
-            DataStorageService.mongoContents(file.dataset, file.fileName, 0, 0, null, function(data) {
+            DataStorageService.mongoContents(file.dataset, file.fileName, 0, 0, function(err, data) {
+                if (err) 
+                    console.log(err)
                 this.updateMaps(data, file.id);
                 this.updateKmlMaps(data, file.id);
                 this.updateCharts(data, file.id)
@@ -23,10 +25,7 @@ module.exports = {
     },
     updateMaps: function(data, fileId) {
         // Find all the related maps
-        _Map.find({
-            file: fileId,
-            kml: false
-        }).then(function(maps) {
+        _Map.find({file: fileId, kml: false}).then(function(maps) {
             _.forEach(maps, function(map) {
 
                 // If the map doesn't have a link we procced to update it
@@ -40,42 +39,32 @@ module.exports = {
         var propertiesArray = _.split(map.properties, ',');
         var longitude = map.longitudeKey;
         var latitude = map.latitudeKey;
-        sails.controllers.map.generateGeoJson(data, latitude, longitude, propertiesArray,
-            function(geojson, incorrect, correct) {
-                _Map.update({
-                    id: map.id
-                }, {
-                    geojson: geojson
-                }).then(function(updated) {});
-            })
+        sails.controllers.map.generateGeoJson(data, latitude, longitude, propertiesArray, function(geojson, incorrect, correct) {
+            _Map.update({
+                id: map.id
+            }, {geojson: geojson}).then(function(updated) {});
+        })
 
     },
 
     updateKmlMaps: function(data, fileId) {
         // If file is kml, it can have a related map
-        _Map.find({
-            file: fileId,
-            kml: true
-        }).then(function(maps) {
+        _Map.find({file: fileId, kml: true}).then(function(maps) {
             if (!_.isEmpty(maps)) {
                 File.find(file.id).populate('dataset').then(function(file) {
                     sails.controllers.map.kmlToGeoJson(file, function(geojson) {
                         _Map.update({
                             id: map.id
-                        }, {
-                            geojson: geojson
-                        }).then(function(updated) {});
+                        }, {geojson: geojson}).then(function(updated) {});
                     })
                 })
             }
 
         });
     },
-    updateCharts: function(data,fileId) {
+    updateCharts: function(data, fileId) {
         // Find all the related charts
-        Chart.find({
-            file: fileId
-        }).then(function(charts) {
+        Chart.find({file: fileId}).then(function(charts) {
             _.forEach(charts, function(chart) {
                 // If the chart doesn't have a link we procced to update it
                 if (!chart.link) {
@@ -93,13 +82,13 @@ module.exports = {
         sails.controllers.chart.generateChartData(data, chart.dataType, element1, element2, function(chartData) {
             var data = {
                 labels: _.keys(chartData),
-                data: (chart.dataType === 'quantitative') ? _.values(chartData) : _.map(_.values(chartData), _.size)
+                data: (chart.dataType === 'quantitative')
+                    ? _.values(chartData)
+                    : _.map(_.values(chartData), _.size)
             };
             Chart.update({
                 id: chart.id
-            }, {
-                data: data
-            }).then(function(updated) {});
+            }, {data: data}).then(function(updated) {});
         });
     }
 };
