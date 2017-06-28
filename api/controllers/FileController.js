@@ -32,7 +32,7 @@ module.exports = {
         return PublishService.publishModel(File, pk, 'rejected', res)
     },
     create: function(req, res) {
-        UploadService.createFile(req, res, true, function(err, data) {
+        UploadService.createFile(req, true, function(err, data) {
             if (err)
                 return res.negotiate(err)
             UploadService.metadataSave(File, data, 'file', req, res);
@@ -40,10 +40,11 @@ module.exports = {
         }.bind(this));
     },
     update: function(req, res) {
-        UploadService.createFile(req, res, false, function(err, data) {
+        UploadService.createFile(req, false, function(err, data) {
             if (err)
                 return res.negotiate(err)
             UploadService.metadataUpdate(File, data, 'file', req, res);
+            VisualizationsUpdateService.update(data)
             this.updateLayout(data);
         }.bind(this));
     },
@@ -157,7 +158,7 @@ module.exports = {
                 }
                 var result;
                 DataStorageService.mongoContents(file.dataset.id, file.fileName, 0, 0, function(err, data) {
-                    if (err) 
+                    if (err)
                         return res.negotiate(err)
                     _.forEach(data, function(elem) {
                         delete elem._id

@@ -53,6 +53,7 @@ module.exports = {
                     this.mapCreate(values, req, res)
                 } else {
                     // fetch the collection data of the file
+                    // TODO: check if this can be accomplished with streams
                     DataStorageService.mongoContents(record.dataset.id, record.fileName, 0, 0, function(err, data) {
                         if (err)
                             return res.negotiate(err)
@@ -68,6 +69,7 @@ module.exports = {
                     }.bind(this)) // else, is a kml;
                 }
             } else {
+                // TODO: fix crash on big files
                 this.kmlToGeoJson(record, function(geoJson) {
                     values.geojson = geoJson;
                     UploadService.metadataSave(_Map, values, 'maps', req, res, {

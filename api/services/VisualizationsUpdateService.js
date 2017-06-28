@@ -12,10 +12,9 @@ const _ = require('lodash');
 module.exports = {
     update: function(file) {
         if (shortid.isValid(file.id)) {
-
             // Find the file content on mongo with the data to update the visualizations
             DataStorageService.mongoContents(file.dataset, file.fileName, 0, 0, function(err, data) {
-                if (err) 
+                if (err)
                     console.log(err)
                 this.updateMaps(data, file.id);
                 this.updateKmlMaps(data, file.id);
