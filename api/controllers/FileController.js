@@ -14,8 +14,6 @@ const json2csv = require('json2csv');
 const json2xls = require('json2xls');
 const _ = require('lodash');
 const ipaddr = require('ipaddr.js');
-
-// var dirname = require('path')
 var SkipperDisk = require('skipper-disk');
 
 module.exports = {
@@ -49,7 +47,6 @@ module.exports = {
         }.bind(this));
     },
     download: function(req, res) {
-        // const pk = actionUtil.requirePk(req);
         var identifier = req.param('identifier');
 
         var findCriteria = shortid.isValid(identifier)

@@ -28,6 +28,7 @@ module.exports = {
                 if (err)
                     return cb(err);
                 db.close();
+                cb(null, true)
             });
         });
     },
@@ -58,11 +59,20 @@ module.exports = {
         }
     },
     mongoReplace: function(oldDataset, newDataset, oldFilename, newFilename, cb) {
-        DataStorageService.mongoContents(oldDataset, oldFilename, 0, 0, function(err, json) {
+        return DataStorageService.mongoContents(oldDataset, oldFilename, 0, 0, function(err, json) {
             if (err)
                 return cb(err)
-            this.mongoSave(newDataset, newFilename, json, (err) => cb(err))
-            this.deleteCollection(oldDataset, oldFilename, (err) => cb(err));
+
+            this.deleteCollection(oldDataset, oldFilename, (err) => {
+                if (err)
+                    return cb(err)
+            });
+            this.mongoSave(newDataset, newFilename, json, (err, finished) => {
+                if (err)
+                    return cb(err)
+                if (finished)
+                    return cb(null, finished)
+            })
         }.bind(this))
 
     },

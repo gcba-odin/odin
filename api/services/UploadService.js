@@ -75,7 +75,6 @@ module.exports = {
 
             // change physical file and mongo collection
             UploadService.changeMongoAndPhysicalFile(data, file, newDataset, cb)
-            return cb(null, data);
         } else {
             DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => cb(err));
             // if the uploaded name is the same of the one saved on the filesystem
@@ -161,9 +160,6 @@ module.exports = {
                     } else {
                         UploadService.csvToJson(newDataset.id, data, readStream, cb)
                     }
-                    if (!fileRequired) {
-                        VisualizationsUpdateService.update(data)
-                    }
                 } else {
                     return cb(null, data);
                 }
@@ -171,7 +167,6 @@ module.exports = {
         }).catch(err => cb(err));
     },
 
-    // TODO: remove res parameter, to be available to do it, refactor on DataStorageService should be done
     xlsToJson: function(data, readStream, files, cb) {
         readStream.pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).collect((err, result) => {
             if (err)
@@ -199,7 +194,6 @@ module.exports = {
         });
     },
 
-    // TODO: remove res parameter and work with cb
     csvToJson: function(dataset, data, readStream, cb) {
         var params = {
             constructResult: false,
@@ -271,17 +265,22 @@ module.exports = {
 
         var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
         if (!isSameDataset) {
-            // if the file changed of dataset, finde the new one
-            if (file.type.api === 'true') {
-                DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, (err) => cb(err));
-            }
-            var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
-            UploadService.changeFileName(originalPath, newPath);
-        } else {
-            if (!hasSameName) {
-                DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
-                var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                UploadService.changeFileName(originalPath, newPath);
+            // if the file changed of dataset
+            if (file.type.api === true) {
+                DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, (err) => {
+                    if (err) {
+                        return cb(err)
+                    }
+                    var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
+                    UploadService.changeFileName(originalPath, newPath);
+                    return cb(null, data);
+                })
+            } else {
+                if (!hasSameName) {
+                    DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
+                    var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+                    UploadService.changeFileName(originalPath, newPath);
+                }
             }
         }
     },
