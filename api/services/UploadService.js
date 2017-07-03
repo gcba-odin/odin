@@ -76,19 +76,23 @@ module.exports = {
             // change physical file and mongo collection
             UploadService.changeMongoAndPhysicalFile(data, file, newDataset, cb)
         } else {
-            DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => cb(err));
-            // if the uploaded name is the same of the one saved on the filesystem
-            // don't deleted, just overwrite it
-            if (file.fileName !== data.fileName) {
-                var upath = UploadService.getFilePath(file.dataset, file);
-                fs.lstat(upath, function(err, stats) {
-                    if (!err && stats.isFile()) {
-                        UploadService.deleteFile(file.dataset, file.fileName, cb);
-                    }
-                });
-            }
-            UploadService.uploadAndParseFile(uploadedFile, data, newDataset, fileRequired, req, cb)
+            UploadService.updateNewPhysicalFile(file, data, uploadedFile, newDataset, fileRequired, req, cb)
         }
+    },
+
+    updateNewPhysicalFile: (file, data, uploadedFile, newDataset, fileRequired, req, cb) => {
+        DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => cb(err));
+        // if the uploaded name is the same of the one saved on the filesystem
+        // don't deleted, just overwrite it
+        if (file.fileName !== data.fileName) {
+            var upath = UploadService.getFilePath(file.dataset, file);
+            fs.lstat(upath, function(err, stats) {
+                if (!err && stats.isFile()) {
+                    UploadService.deleteFile(file.dataset, file.fileName, cb);
+                }
+            });
+        }
+        UploadService.uploadAndParseFile(uploadedFile, data, newDataset, fileRequired, req, cb)
     },
 
     uploadAndParseFile: (uploadedFile, data, newDataset, fileRequired, req, cb) => {
@@ -150,18 +154,30 @@ module.exports = {
                 // If the file is consumable via the API
                 // TODO: check if file is priority; else save it to the file job queue
                 if (currentMimetype.api) {
-                    var filePath = UploadService.getFilePath(newDataset, data);
-                    var readStream = fs.createReadStream(filePath);
+                    if (!data.urgent) {
+                        if (data.id) {
+                            FileJob.create({file: data.id, new: false}).then((fileJob) => {
+                                console.log(fileJob)
+                                return cb(null, data);
+                            }).catch((err) => cb(err))
+                        } else {
+                            return cb(null, data);
+                        }
 
-                    // TODO: add json support
-                    if (extension === 'xls' || extension === 'xlsx') {
-                        files = files[0].fd
-                        UploadService.xlsToJson(data, readStream, files, cb)
                     } else {
-                        UploadService.csvToJson(newDataset.id, data, readStream, cb)
+                        var filePath = UploadService.getFilePath(newDataset, data);
+                        var readStream = fs.createReadStream(filePath);
+
+                        // TODO: add json support
+                        if (extension === 'xls' || extension === 'xlsx') {
+                            UploadService.xlsToJson(data, readStream, filePath, cb)
+                        } else {
+                            UploadService.csvToJson(newDataset.id, data, readStream, cb)
+                        }
                     }
                 } else {
                     return cb(null, data);
+
                 }
             });
         }).catch(err => cb(err));
@@ -185,12 +201,16 @@ module.exports = {
                     result = _.concat(result, currentJson);
                     return result;
                 }, []);
-                DataStorageService.mongoSave(data.dataset, data.fileName, json, (err) => cb(err));
+                DataStorageService.mongoSave(data.dataset, data.fileName, json, (err, done) => {
+                    if (err)
+                        cb(err)
+                    cb(null, data)
+                });
             } catch (err) {
                 return cb(err)
             }
             readStream.destroy();
-            return cb(null, data);
+            // return cb(null, data);
         });
     },
 
@@ -329,7 +349,6 @@ module.exports = {
             if (err) {
                 return res.negotiate(err);
             }
-
             LogService.log(req, newInstance.id);
 
             // Log to winston
