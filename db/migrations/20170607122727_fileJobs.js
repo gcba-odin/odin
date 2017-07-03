@@ -1,8 +1,9 @@
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('filejob', function(table) {
         table.increments('id');
-        table.string('file').unique().index();
+        table.string('file').index();
         table.boolean('finish').defaultTo(false);
+        table.boolean('new').defaultTo(true);
         table.boolean('priority').defaultTo(false);
         table.timestamp('endDate').defaultTo(null);
         table.timestamp('createdAt');
@@ -10,6 +11,4 @@ exports.up = function(knex, Promise) {
     })
 };
 
-exports.down = function(knex, Promise) {
-
-};
+exports.down = function(knex, Promise) {};

@@ -11,21 +11,23 @@ module.exports = {
     schema: true,
     attributes: {
         id: {
-            type: 'string',
+            type: 'integer',
+            autoIncrement: true,
             unique: true,
             index: true,
-            defaultsTo: shortId.generate,
-            primaryKey: true,
-            size: 15
+            primaryKey: true
         },
         file: {
             type: 'string',
-            unique: true,
             size: 15
         },
         finish: {
             type: 'boolean',
             defaultsTo: false
+        },
+        new: {
+            type: 'boolean',
+            defaultsTo: true
         },
         priority: {
             type: 'boolean',
