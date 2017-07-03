@@ -87,7 +87,7 @@ module.exports = {
         },
         type: {
             model: 'filetype'
-                // required: true
+            // required: true
         },
         updateFrequency: {
             model: 'updatefrequency',
@@ -105,7 +105,7 @@ module.exports = {
         },
         dataset: {
             model: 'dataset'
-                // required: true
+            // required: true
         },
         restService: {
             model: 'restservice'
@@ -124,7 +124,7 @@ module.exports = {
         },
         createdBy: {
             model: 'user'
-                // required: true
+            // required: true
         },
 
         toJSON() {
@@ -132,11 +132,13 @@ module.exports = {
         }
     },
 
-    searchables: ['name', 'description'],
+    searchables: [
+        'name', 'description'
+    ],
 
     beforeUpdate: (values, next) => {
-        if (values.fileName) values.url = sails.config.odin.baseUrl + '/files/' +
-            values.fileName + '/download';
+        if (values.fileName)
+            values.url = sails.config.odin.baseUrl + '/files/' + values.fileName + '/download';
         next()
     },
     beforeCreate: (values, next) => {
@@ -147,23 +149,26 @@ module.exports = {
         }
 
         if (!values.status) {
-            Config.findOne({
-                    key: 'defaultStatus'
-                })
-                .then(record => {
-                    values.status = record.value;
-                    next();
-                });
+            Config.findOne({key: 'defaultStatus'}).then(record => {
+                values.status = record.value;
+                next();
+            });
         } else {
             next();
         }
     },
     afterUpdate: (values, next) => {
-        if (values.dataset) ZipService.createZip(values.dataset);
+        if (values.dataset)
+            ZipService.createZip(values.dataset);
         next();
     },
     afterCreate: (values, next) => {
-        if (values.dataset) ZipService.createZip(values.dataset);
+        // if the file is not urgent, add it to the file job queue, to be parsed on the cron
+        // if (values.urgent) {
+        FileJob.create({file: values.id}).then((fileJob) => console.log(fileJob)).catch((err) => console.log(err))
+        // }
+        if (values.dataset)
+            ZipService.createZip(values.dataset);
         next();
     },
     afterDestroy: (destroyedRecords, next) => {
