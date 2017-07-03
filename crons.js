@@ -1,6 +1,7 @@
 const CronJob = require('cron').CronJob;
 var Sails = require('sails');
 var fs = require('fs');
+var slug = require('slug');
 var _ = require('lodash');
 
 Sails.load(require('rc')('sails'), function(err, sails) {
@@ -10,7 +11,6 @@ Sails.load(require('rc')('sails'), function(err, sails) {
             try {
                 if (updateFrequency.timePattern) {
                     new CronJob(updateFrequency.timePattern, function() {
-                        console.log('cron executed', updateFrequency.timePattern)
                         WebService.syncByUpdateFrequency(updateFrequency);
                     }, null, true);
                 }
@@ -22,32 +22,44 @@ Sails.load(require('rc')('sails'), function(err, sails) {
 });
 
 // new CronJob('0 30 2 * * *', function() {
-new CronJob('*/5 * * * * *', function() {
+new CronJob('*/10 * * * * *', function() {
     // get all unfinished jobs, order by the date they were created
-    fileJobs.find({ended: false}).sort('createdAt').then((jobs) => {
+    FileJob.find({finish: false}).sort('priority').sort('createdAt').then((jobs) => {
         console.log(jobs)
         _.forEach(jobs, function(job) {
-            File.findOne(job.fileId).populate('dataset').then((file) => {
+            File.findOne(job.file).populate('dataset').then((file) => {
                 var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {lower: true}) + '/' + file.fileName;
+
                 var readStream = fs.createReadStream(dirname);
+
+                var extension = file.fileName.split('.').pop();
+
                 if (extension === 'xls' || extension === 'xlsx') {
-                    UploadService.xlsToJson((data) => {
-                        fileJobs.update(job, {
+                    file.dataset = file.dataset.id
+                    UploadService.xlsToJson(file, readStream, dirname, (err, data) => {
+                        if (err)
+                            console.log(err)
+                        FileJob.update(job, {
                             finish: true,
-                            endDate: Date.now
-                        }, (updatedJob) => {
+                            endDate: new Date()
+                        }, (err, updatedJob) => {
+                            console.log(err)
+                            console.log(updatedJob)
                             console.log('job updated')
                         })
-                    }, dataset, data, res, readStream, true, dirname)
+                    })
                 } else {
-                    UploadService.csvToJson((data) => {
-                        fileJobs.update(job, {
+                    UploadService.csvToJson(file.dataset.id, file, readStream, (err, data) => {
+                        if (err)
+                            console.log(err)
+                        FileJob.update(job, {
                             finish: true,
-                            endDate: Date.now
-                        }, (updatedJob) => {
+                            endDate: new Date()
+                        }).then((updatedJob) => {
+                            console.log(updatedJob)
                             console.log('job updated')
-                        })
-                    }, file.dataset, file, res, readStream, true)
+                        }).catch((err) => console.log('error on job update', err))
+                    })
                 }
             })
         })
