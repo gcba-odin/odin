@@ -52,8 +52,7 @@ module.exports = {
                         UploadService.updateFile(uploadedFile, data, file, dataset, fileRequired, req, cb)
                     });
                 } else {
-                    var dataset = file.dataset
-                    UploadService.updateFile(uploadedFile, data, file, dataset, fileRequired, req, cb)
+                    UploadService.updateFile(uploadedFile, data, file, file.dataset, fileRequired, req, cb)
                 }
             });
         } else {
@@ -67,6 +66,10 @@ module.exports = {
 
     updateFile: (uploadedFile, data, file, newDataset, fileRequired, req, cb) => {
         if (uploadedFile.isNoop) {
+            // if metadata has changed, but the name and the dataset is the same, nothing else to do
+            if (data.name === file.name && newDataset.id === file.dataset.id) {
+                return cb(null, data)
+            }
             // If the file metadata was updated but no new file was added
             // update the fileName in case the name changed
             var oldExtension = data.fileName.split('.').pop();
@@ -81,7 +84,9 @@ module.exports = {
     },
 
     updateNewPhysicalFile: (file, data, uploadedFile, newDataset, fileRequired, req, cb) => {
-        DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => cb(err));
+        // TODO: this should be done if the file is urgent, else should be done on the cron
+        // DataStorageService.deleteCollection(file.dataset.id, file.fileName, (err) => cb(err));
+
         // if the uploaded name is the same of the one saved on the filesystem
         // don't deleted, just overwrite it
         if (file.fileName !== data.fileName) {
@@ -152,10 +157,11 @@ module.exports = {
                 data.type = currentMimetype.id
 
                 // If the file is consumable via the API
-                // TODO: check if file is priority; else save it to the file job queue
                 if (currentMimetype.api) {
-                    if (!data.urgent) {
+                    if (data.urgent === 'false') {
                         if (data.id) {
+                            FileJob.destroy({file: data.id, finish: false}).then((filejobs) => console.log('file jobs deleted', filejobs))
+
                             FileJob.create({file: data.id, new: false}).then((fileJob) => {
                                 console.log(fileJob)
                                 return cb(null, data);
@@ -218,7 +224,7 @@ module.exports = {
         var params = {
             constructResult: false,
             delimiter: 'auto',
-            workerNum: 2
+            workerNum: 1
         };
 
         var converter = new Converter(params, {
@@ -227,18 +233,23 @@ module.exports = {
         });
 
         DataStorageService.mongoConnect(dataset, data.fileName, function(err, db) {
+            console.log('Uploading: ', data.fileName)
             if (err)
                 return cb(err)
             var factory_function = bulkMongo(db);
             var bulkWriter = factory_function(data.fileName);
 
-            bulkWriter.on('done', () => {
-                readStream.destroy();
-                db.close();
-                cb(null, data);
-            });
+            readStream.pipe(converter).pipe(bulkWriter);
 
-            readStream.pipe(iconv.decodeStream(sails.config.odin.defaultEncoding)).pipe(converter).pipe(bulkWriter);
+            bulkWriter.on('error', (err) => {
+                console.log('Error: ')
+                console.log(err)
+            })
+            bulkWriter.on('done', () => {
+                console.log('Finish uploading ', data.fileName)
+                readStream.destroy();
+                cb(null, data);
+            })
         });
     },
 
@@ -280,8 +291,11 @@ module.exports = {
 
     changeMongoAndPhysicalFile: function(data, file, newDataset, cb) {
         // in case the fileName changed, rename the physical file
-        var hasSameName = file.fileName == data.fileName;
+        var hasSameName = file.fileName === data.fileName;
         var isSameDataset = data.dataset === file.dataset.id;
+
+        console.log('has same name ', hasSameName)
+        console.log('is same dataset ', isSameDataset);
 
         var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
         if (!isSameDataset) {
@@ -295,13 +309,15 @@ module.exports = {
                     UploadService.changeFileName(originalPath, newPath);
                     return cb(null, data);
                 })
-            } else {
-                if (!hasSameName) {
-                    DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
-                    var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                    UploadService.changeFileName(originalPath, newPath);
-                }
             }
+        } else {
+            if (!hasSameName) {
+                DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
+                var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+                UploadService.changeFileName(originalPath, newPath);
+                return cb(null, data);
+            }
+
         }
     },
 

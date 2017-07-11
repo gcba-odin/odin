@@ -29,10 +29,6 @@ module.exports = {
             type: 'boolean',
             defaultsTo: true
         },
-        priority: {
-            type: 'boolean',
-            defaultsTo: false
-        },
         endDate: {
             type: 'datetime',
             defaultsTo: null

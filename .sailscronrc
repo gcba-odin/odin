@@ -1,0 +1,25 @@
+{
+  "generators": {
+    "modules": {
+    }
+  },
+  "hooks": {
+    "csrf": false,
+    "grunt": false,
+    "i18n": false,
+    "request": false,
+    "responses": false,
+    "http": false,
+    "email": false,
+    "pluralizehook": false,
+    "cors": false,
+    "counthook": false,
+    "policies": false,
+    "pubsub": false,
+    "fixtures": false,
+    "model-extra": false,
+    "session": false,
+    "sockets": false,
+    "views": false
+  }
+}
