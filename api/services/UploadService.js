@@ -294,31 +294,24 @@ module.exports = {
         var hasSameName = file.fileName === data.fileName;
         var isSameDataset = data.dataset === file.dataset.id;
 
-        console.log('has same name ', hasSameName)
-        console.log('is same dataset ', isSameDataset);
-
         var originalPath = UploadService.getDatasetPath(file.dataset) + "/" + file.fileName;
         if (!isSameDataset) {
             // if the file changed of dataset
-            if (file.type.api === true) {
-                DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, (err) => {
-                    if (err) {
-                        return cb(err)
-                    }
-                    var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
-                    UploadService.changeFileName(originalPath, newPath);
-                    return cb(null, data);
-                })
-            }
-        } else {
-            if (!hasSameName) {
-                DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
-                var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
-                UploadService.changeFileName(originalPath, newPath);
-                return cb(null, data);
-            }
-
+            DataStorageService.mongoReplace(file.dataset.id, newDataset.id, file.fileName, data.fileName, (err) => {
+                if (err)
+                    return cb(err)
+            });
+            var newPath = UploadService.getDatasetPath(newDataset) + "/" + data.fileName;
+            UploadService.changeFileName(originalPath, newPath);
+            return cb(null, data);
         }
+        if (!hasSameName) {
+            DataStorageService.mongoRename(file.dataset.id, file.fileName, data.fileName, (err) => cb(err));
+            var newPath = UploadService.getDatasetPath(file.dataset) + "/" + data.fileName;
+            UploadService.changeFileName(originalPath, newPath);
+            return cb(null, data);
+        }
+
     },
 
     uploadServiceFile: (file, json, callback) => {

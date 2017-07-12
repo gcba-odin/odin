@@ -53,8 +53,8 @@ module.exports = {
                 if (err)
                     return cb(err)
                 var collection = db.collection(filename);
-                collection.rename(newfilename);
-                db.close();
+                collection.rename(newfilename).then(() => db.close());
+                // db.close();
             });
         }
     },

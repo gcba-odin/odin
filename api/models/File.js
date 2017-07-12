@@ -81,6 +81,10 @@ module.exports = {
             type: 'boolean',
             defaultsTo: false
         },
+        urgent: {
+            type: 'boolean',
+            defaultsTo: false
+        },
         updated: {
             type: 'boolean',
             defaultsTo: false
@@ -165,7 +169,7 @@ module.exports = {
     afterCreate: (values, next) => {
         FileJob.destroy({file: values.id, finish: false}).then((filejobs) => console.log('file jobs deleted', filejobs))
         // if the file is not urgent, add it to the file job queue, to be parsed on the cron
-        if (values.urgent === 'false') {
+        if (values.urgent === false) {
             FileJob.create({file: values.id}).then((fileJob) => console.log(fileJob)).catch((err) => console.log(err))
         }
         if (values.dataset)
