@@ -79,6 +79,7 @@ module.exports = {
             ip = _.indexOf(ip, ',') !== -1
                 ? ip.split(',')[0]
                 : ip;
+
             var addr = ipaddr.process(ip);
             Statistic.create({method: 'GET', resource: 'Dataset', endpoint: datasetEndpoint, ip: addr.toString(), useragent: req.headers['user-agent']}).exec(function(err, statistic) {
                 console.log('dataset statistic created')
@@ -97,6 +98,39 @@ module.exports = {
             return res.negotiate();
         });
     },
+
+    view: function(req, res) {
+        var identifier = req.param('identifier');
+
+        var findCriteria = shortid.isValid(identifier)
+            ? identifier
+            : {
+                fileName: identifier
+            }
+        File.findOne(findCriteria).populate('dataset').then(function(file) {
+            if (!file)
+                return res.notFound();
+
+            var dirname = sails.config.odin.uploadFolder + "/" + slug(file.dataset.name, {lower: true}) + '/' + file.fileName;
+
+            var fileAdapter = SkipperDisk();
+
+            var extension = file.fileName.split('.').pop();
+            res.set('Content-Type', mime.lookup(extension));
+            res.set('Content-Disposition', 'inline; filename=' + file.fileName);
+
+            fileAdapter.read(dirname).on('error', function(err) {
+                console.dir(err);
+                return res.serverError(err);
+            }).pipe(res);
+        }).fail(function(err) {
+            if (err)
+                console.error(err);
+
+            return res.negotiate();
+        });
+    },
+
     contents: function(req, res) {
         const pk = actionUtil.requirePk(req);
 

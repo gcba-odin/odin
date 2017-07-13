@@ -22,6 +22,7 @@ module.exports = {
     },
     'GET /files/:id/resources': 'File.resources',
     'GET /files/:identifier/download': 'File.download',
+    'GET /files/:identifier/view': 'File.view',
     'GET /files/:identifier/download/:format': 'File.formattedDownload',
     'DELETE /files': {
         controller: 'NotImplemented',
