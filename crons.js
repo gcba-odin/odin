@@ -5,9 +5,10 @@ var slug = require('slug');
 var _ = require('lodash');
 var sem = require('semaphore')(1);
 
-Sails.load(require('rc')('sailscron'), function(err, sails) {
-
-    // Update WebServices
+Sails.load(require('rc')('sailscron'), (err, sails) => {
+    if (err)
+        console.log(err)
+        // Update WebServices
     UpdateFrequency.find().then((updateFrequencies) => {
         //We should run a cron job per update frequency
         updateFrequencies.forEach(function(updateFrequency) {
@@ -24,8 +25,8 @@ Sails.load(require('rc')('sailscron'), function(err, sails) {
     });
 
     // Queue of files to parse
-    // new CronJob('0 30 2 * * *', function() {
-        new CronJob('0 */1 * * * *', function() {
+    new CronJob('0 30 2 * * *', function() {
+        // new CronJob('0 */1 * * * *', function() {
         // crons = () => {
         // get all unfinished jobs, order by the date they were created
         FileJob.find({finish: false}).sort('priority').sort('createdAt').then((jobs) => {
