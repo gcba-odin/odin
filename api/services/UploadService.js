@@ -171,6 +171,7 @@ module.exports = {
                         }
 
                     } else {
+                        DataStorageService.deleteCollection(data.dataset, data.fileName, (err) => cb(err));
                         var filePath = UploadService.getFilePath(newDataset, data);
                         var readStream = fs.createReadStream(filePath);
 
