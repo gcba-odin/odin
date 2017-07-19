@@ -29,7 +29,7 @@ module.exports = {
             var dirname = sails.config.odin.uploadFolder + '/categories/' + category.fileName;
             var fileAdapter = SkipperDisk();
             res.set('Content-Type', 'image/svg+xml');
-            res.set('Content-Disposition', 'attachment; filename=' + _.snakeCase(category.name) + '.svg');
+            res.set('Content-Disposition', 'inline');
 
             LogService.winstonLog('verbose', 'category image downloaded', {
                 ip: req.ip,
